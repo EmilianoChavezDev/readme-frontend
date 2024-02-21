@@ -20,6 +20,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
 }
 
 .content_detalle h1 {
@@ -40,8 +41,24 @@
   box-sizing: border-box;
 }
 
+.content_detalle input::placeholder {
+  text-align: center;
+}
+
 .content_title_correo {
   margin-bottom: 1rem;
+}
+
+.content_crear_cuenta {
+  display: flex;
+  text-align: center;
+  font-size: 14px;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.content_crear_cuenta a {
+  color: var(--colorPrimario);
 }
 
 .content_button {
@@ -52,10 +69,10 @@
 
 .content_button button {
   background: var(--colorPrimario);
-  padding: 1rem;
+  padding: 14px;
   border-radius: 1rem;
-  margin: 1rem;
   color: aliceblue;
+  margin-top: 2rem;
 }
 
 .content_button button:hover {

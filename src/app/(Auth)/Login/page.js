@@ -12,24 +12,23 @@ const page = () => {
       <div className={styles.content_login}>
         <div className={styles.content_detalle}>
           <div>
-            <h1 className={styles.content_title}>Bienvenido!</h1>
+            <h1 className={styles.content_title}>Readme</h1>
           </div>
           <div>
             <div className={styles.content_title_correo}>
               <p>Ingrese su correo electronico</p>
-              <input type="text" />
+              <input type="text" placeholder="correo o nombre de usuario" />
             </div>
             <div>
               <p>Ingrese su contraseña</p>
-              <input type="password" />
+              <input type="password" placeholder="contraseña" />
             </div>
           </div>
           <div className={styles.content_button}>
-            <button type="submit">Iniciar Sesión</button>
-            <div>
-              <span>No tienes cuenta?</span>
-              {" "}
-              <Link href={"#"}>Registrate</Link>
+            <button type="submit">Iniciar sesión</button>
+            <div className={styles.content_crear_cuenta}>
+              <span>No tienes cuenta?</span>{" "}
+              <Link href={"/Registrarse "}>Registrate</Link>
             </div>
           </div>
         </div>
