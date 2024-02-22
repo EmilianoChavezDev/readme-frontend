@@ -1,4 +1,3 @@
-/* Inicio.module.css */
 .content {
   display: flex;
 }
@@ -6,14 +5,14 @@
 .content_image {
 }
 
-.content_login {
+.content_registrarse {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+  }
 
 .content_detalle {
-  background-color: aliceblue;
+  background-color: var(--colorFondo);
   padding: 3rem;
   border-radius: 10px;
   position: absolute;
@@ -37,10 +36,10 @@
 .content_detalle input {
   padding: 1rem 3rem;
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--blanco);
   box-sizing: border-box;
+  text-align: center;
 }
-
 .content_detalle input::placeholder {
   text-align: center;
 }
@@ -62,12 +61,13 @@
 }
 
 .content_button {
+
   display: flex;
   flex-direction: column;
   text-align: center;
 }
 
-.content_button button {
+.content_button_submit button {
   background: var(--colorPrimario);
   padding: 14px;
   border-radius: 1rem;
@@ -75,13 +75,21 @@
   margin-top: 2rem;
 }
 
-.content_button button:hover {
+.content_button_submit button:hover {
   background-color: var(--colorHoverPrimario);
   box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
 }
 
+.content_button {
+  display: flex;
+  text-align: center;
+  font-size: 14px;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
 .content_button a {
-  font-weight: 600;
+  color: var(--colorPrimario);
 }
 
 .content_button a:hover {
