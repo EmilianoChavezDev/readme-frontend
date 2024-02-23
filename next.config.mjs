@@ -1,4 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    images: {
+        remotePatterns: [     // TODO: remove at ticket end
+          {
+            protocol: 'https',
+            hostname: 'm.media-amazon.com'
+          }
+        ]
+    },
+};
 
 export default nextConfig;
