@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  }
+}
 
 .content_detalle {
   background-color: var(--colorFondo);
