@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles/Registrarse.module.css";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +15,9 @@ const defaultValues = {
 };
 
 const page = () => {
+  const [isError, setIsError] = useState(false);
+  const [isPasswordError, setIsPasswordError] = useState(false);
+
   const { data, error, loading, register: registro } = useAuth();
   const { login: saveUser } = useUser();
 
@@ -31,6 +34,21 @@ const page = () => {
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
+    if (
+      !formData.username ||
+      !formData.password ||
+      !formData.password_confirmation ||
+      !formData.fecha_nacimiento
+    ) {
+      setIsError(true);
+      return;
+    }
+
+    if (formData.password !== formData.password_confirmation) {
+      setIsPasswordError(true);
+      return;
+    }
+
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
     formData.fecha_nacimiento = fecha;
@@ -45,6 +63,17 @@ const page = () => {
       <div className={styles.content_registrarse}>
         <div className={styles.content_detalle}>
           <div className={styles.content_informacion}>
+            {isError && (
+              <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
+                Rellenar todos los campos necesarios
+              </p>
+            )}
+            {isPasswordError && (
+              <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
+                Las contraseñas no coinciden
+              </p>
+            )}
+
             <div className={styles.content_title_correo}>
               <p>Nombre de usuario</p>
               <input
