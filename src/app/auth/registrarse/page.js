@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./styles/Registrarse.module.css";
@@ -55,6 +56,12 @@ const page = () => {
     registro(formData);
   };
 
+import React from "react";
+import styles from "./styles/Registrarse.module.css";
+import Image from "next/image";
+import Link from "next/link";
+const page = () => {
+
   return (
     <div className={styles.content}>
       <div className={styles.content_image}>
@@ -63,6 +70,7 @@ const page = () => {
       <div className={styles.content_registrarse}>
         <div className={styles.content_detalle}>
           <div className={styles.content_informacion}>
+
             {isError && (
               <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
                 Rellenar todos los campos necesarios
@@ -128,12 +136,41 @@ const page = () => {
             >
               {loading ? "Registrandosé..." : "Registrarte"}
             </button>
+
+            <div className={styles.content_title_correo}>
+              <p>Nombre de usuario</p>
+              <input type="text" placeholder="nickname" />
+            </div>
+            <div>
+              <p>Correo electrónico</p>
+              <input type="email" placeholder="example@email.com" />
+            </div>
+            <div>
+              <p>Nueva contraseña</p>
+              <input type="password" placeholder="contraseña nueva" />
+            </div>
+            <div>
+              <p>Confirmar la contraseña</p>
+              <input type="password" placeholder="confirmar contraseña" />
+            </div>
+            <div className={styles.content_date}>
+              <p>Fecha de nacimiento</p>
+              <input type="date" />
+            </div>
+          </div>
+          <div className={styles.content_button_submit}>
+            <button type="submit">Registrarte</button>
+
           </div>
 
           <div />
           <div className={styles.content_button}>
             <p>¿Tienes una cuenta?</p>
+
             <Link href={"/auth/login "}>Iniciar Sesion</Link>
+
+            <Link href={"/Login"}>Iniciar Sesion</Link>
+
           </div>
         </div>
       </div>
