@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  }
+}
 
 .content_detalle {
   background-color: var(--colorFondo);
@@ -40,12 +40,30 @@
   box-sizing: border-box;
   text-align: center;
 }
+
+.content_informacion input::placeholder {
+  text-align: center;
+}
+
+.content_informacion > div {
+  margin-bottom: 1rem;
+}
+
+.content_date {
+  display: flex;
+  flex-direction: column;
+}
+
+.content_button_submit {
+  display: flex;
+  justify-content: center;
+}
 .content_detalle input::placeholder {
   text-align: center;
 }
 
 .content_title_correo {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .content_crear_cuenta {
@@ -61,7 +79,6 @@
 }
 
 .content_button {
-
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -69,10 +86,10 @@
 
 .content_button_submit button {
   background: var(--colorPrimario);
-  padding: 14px;
+  padding: 1rem;
   border-radius: 1rem;
   color: aliceblue;
-  margin-top: 2rem;
+  width: 100%;
 }
 
 .content_button_submit button:hover {
@@ -82,6 +99,7 @@
 
 .content_button {
   display: flex;
+  flex-direction: row;
   text-align: center;
   font-size: 14px;
   justify-content: center;
