@@ -9,4 +9,9 @@
 
   --colorPrimario: #167574;
   --colorHoverPrimario: #0b5755;
+  --blanco: #fff;
+  --negro: #000;
+  --colorFondo: #e9ecef;
+  --colorLink: #353434a1;
+  --colorError: #b91c1c;
 }
