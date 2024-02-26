@@ -87,3 +87,7 @@
 .content_button a:hover {
   text-decoration: underline;
 }
+
+.error_msg {
+  color: var(--colorError)
+}
