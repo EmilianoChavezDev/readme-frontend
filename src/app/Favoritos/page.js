@@ -1,9 +1,11 @@
+'use client'
+
 import { useState } from 'react';
 import styles from "./styles/favoritos.module.css";
 
 
 const cuadros = (key, imageurl, title, author) => {
-  const [favorito, setFavorito] = useState(false);
+  const [favorito, setFavorito] = useState(true);
 
   const fn_btnFavorite = () => {
     setFavorito(!favorito);
@@ -13,12 +15,14 @@ const cuadros = (key, imageurl, title, author) => {
     <>
       <div key={key} className={styles.contenedor_datos_cuadro}>
         <div className={styles.botonContainer} onClick={fn_btnFavorite}>
+          {favorito ? (
           <button className={styles.btnCorazonLleno}>
             <img src="/image/corazon_lleno.png" alt="Corazón lleno" />
           </button>
-          <button className={styles.btnCorazonVacio} onClick={fn_btnFavorite}>
+          ) : ( <button className={styles.btnCorazonVacio} onClick={fn_btnFavorite}>
             <img src="/image/corazon_vacio.png" alt="Corazón vacio" />
           </button>
+          )}
         </div>
         <div>
           <img src={imageurl}></img>
@@ -62,6 +66,10 @@ const pagefavoritos = () => {
     { titulo: "Título 5", autor: "Autor 5", imagenUrl: "url_imagen_5.jpg" },
   ];
 
+  const buscador = () =>{
+
+  }
+  
   const cuadrosConDatos = datosCuadros.map(
     ({ titulo, autor, imagenUrl }, index) =>
       cuadros(index, imagenUrl, titulo, autor)
@@ -92,4 +100,4 @@ const pagefavoritos = () => {
   );
 };
 
-export default  useClient(pagefavoritos);
+export default pagefavoritos;
