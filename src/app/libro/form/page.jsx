@@ -8,7 +8,7 @@ export default function Libro() {
     titulo: "",
     sinopsis: "",
     categoria: "",
-    portada: null,
+    portada: "",
     adulto: false,
   });
 
@@ -19,7 +19,6 @@ export default function Libro() {
     titulo: "",
     sinopsis: "",
     categoria: "",
-    portada: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +44,7 @@ export default function Libro() {
 
     const newErrors = {};
 
-    // Validar que los campos no estén vacíos y cumplir con las longitudes mínimas
+    // Validar que los campos no esten vacios y cumplir con las longitudes minimas
     if (titulo.trim() === "" || titulo.length < 5) {
       newErrors.titulo = "El titulo tiene que ser de al menos 5 caracteres. ";
     }
@@ -57,10 +56,6 @@ export default function Libro() {
 
     if (categoria.trim() === "") {
       newErrors.categoria = "Debes seleccionar una categoría. ";
-    }
-
-    if (portada === null) {
-      newErrors.portada = "Debes seleccionar una portada. ";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -77,16 +72,16 @@ export default function Libro() {
     formData.set("portada", portada);
     formData.set("adulto", adulto);
 
-    // Enviar la información
+    // Enviar la informacion
     const success = await agregarLibro(formData);
 
-    // Si la petición fue exitosa, limpiar el formulario y quitar el error
+    // Si la peticion fue exitosa, limpiar el formulario y quitar el error
     if (success) {
       setInfo({
         titulo: "",
         sinopsis: "",
         categoria: "",
-        portada: null,
+        portada: "",
         adulto: false,
       });
 
@@ -94,7 +89,6 @@ export default function Libro() {
         titulo: "",
         sinopsis: "",
         categoria: "",
-        portada: "",
       });
     }
 
@@ -120,9 +114,6 @@ export default function Libro() {
               onChange={handleInputChange}
               className="text-gray-900"
             />
-            {errors.portada && (
-              <p className="text-red-500 font-semibold">{errors.portada}</p>
-            )}
           </div>
         </div>
         <div className="md:w-8/12 bg-white p-10">
