@@ -44,14 +44,13 @@ export default function Libro() {
 
     const newErrors = {};
 
-    // Validar que los campos no esten vacios y cumplir con las longitudes minimas
-    if (titulo.trim() === "" || titulo.length < 5) {
-      newErrors.titulo = "El titulo tiene que ser de al menos 5 caracteres. ";
+    // Validar que los campos no esten vacios
+    if (titulo.trim() === "") {
+      newErrors.titulo = "El titulo no puede estar vacio. ";
     }
 
-    if (sinopsis.trim() === "" || sinopsis.length < 20) {
-      newErrors.sinopsis =
-        "La sinopsis tiene que ser de al menos 20 caracteres. ";
+    if (sinopsis.trim() === "") {
+      newErrors.sinopsis = "La sinopsis no puede estar vacio. ";
     }
 
     if (categoria.trim() === "") {
@@ -64,7 +63,7 @@ export default function Libro() {
       return;
     }
 
-    // Crear un FormData para enviar la información
+    // Crear un FormData para enviar la informacion
     const formData = new FormData();
     formData.set("titulo", titulo);
     formData.set("sinopsis", sinopsis);
@@ -96,32 +95,50 @@ export default function Libro() {
   };
 
   return (
-    <div className="flex flex-col h-screen-3/4 bg-white ">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center h-full">
-        <div className="md:w-1/4 flex flex-col items-center justify-center p-8 bg-gray-200">
-          <RenderImage inputContainerRef={portada} className="" />
-          <div className="text-center mb-6">
+    <div className="flex flex-col bg-white">
+      {/* Layout */}
+      <div className="bg-[#7eafaf] h-16 flex flex-row justify-between items-center px-4 drop-shadow-lg">
+        <div className="text-white font-semibold text-lg">
+          <h3>Agregar información del libro</h3>
+        </div>
+        <div className="flex gap-4">
+          <button className="bg-[#738d90] text-gray-700 py-2 px-5 rounded-lg">
+            Cancelar
+          </button>
+          <button className="bg-[#167574] text-white py-2 px-7 rounded-lg">
+            Seguir
+          </button>
+        </div>
+      </div>
+
+      {/* Portada */}
+      <div className="container mx-auto flex flex-row items-center justify-center">
+        <div className="w-1/4 h-auto flex flex-col items-center justify-center p-8 bg-[#eeeeee]">
+          <label className="text-center mb-6">
+            <RenderImage inputContainerRef={portada} className="" />
             <label
               htmlFor="portada"
-              className="block text-lg font-semibold mb-2 text-gray-900"
+              className="block text-lg font-semibold mb-2 text-gray-900 my-10"
             >
-              Seleccionar Portada
+              Añadir una portada
             </label>
             <input
               id="portada"
               type="file"
               accept="image/*"
               onChange={handleInputChange}
-              className="text-gray-900"
+              className="text-gray-900 sr-only"
             />
-          </div>
+          </label>
         </div>
-        <div className="md:w-8/12 bg-white p-10">
-          <div className="w-full bg-white p-8 flex flex-col gap-3">
-            <h1 className="text-3xl font-bold mb-8 text-gray-900">
+
+        {/* Formulario */}
+        <div className="w-4/6 bg-white mx-16 my-14">
+          <div className="w-full p-8 flex flex-col gap-3">
+            <h1 className="text-3xl font-bold mb-2 text-gray-900 mx-6">
               Detalle del libro
             </h1>
-            <div className="mb-6 w-full px-10">
+            <div className="mb-2 w-full px-16">
               <label
                 htmlFor="titulo"
                 className="block text-2xl font-semibold mb-2 text-gray-900"
@@ -142,16 +159,17 @@ export default function Libro() {
               )}
             </div>
 
-            <div className="mb-6 w-full px-10">
+            <div className="mb-2 w-full px-16">
               <label
                 htmlFor="sinopsis"
-                className="block text-2xl font-semibold mb-2 text-gray-900"
+                className="block text-2xl font-semibold py-2 text-gray-900"
               >
                 Descripción
               </label>
+
               <textarea
                 id="sinopsis"
-                className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900 h-52 "
+                className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900 h-44 "
                 value={sinopsis}
                 onChange={handleInputChange}
               ></textarea>
@@ -160,31 +178,31 @@ export default function Libro() {
               )}
             </div>
 
-            <div className="mb-6 w-full flex items-center gap-3 px-10">
+            <div className="mb-2 w-full flex items-center gap-3 px-16">
               <label
                 htmlFor="categoria"
-                className="block font-semibold mb-2 text-gray-900 pt-2 text-2xl"
+                className="block font-semibold py-2 text-gray-900 pt-2 text-2xl"
               >
                 Categoría
               </label>
               <select
                 id="categoria"
-                className="w-full border p-2 rounded focus:outline-none text-gray-900 font-semibold"
+                className="border p-2 rounded focus:outline-none text-gray-500 font-semibold "
                 value={categoria}
                 onChange={handleInputChange}
               >
                 <option value="" disabled={true}>
                   Selecciona una categoria
                 </option>
-                <option value="categoria1">Ficcion</option>
-                <option value="categoria2">Fantasia</option>
+                <option value="Ficcion">Ficcion</option>
+                <option value="Fantasia">Fantasia</option>
               </select>
               {errors.categoria && (
                 <p className="text-red-500 font-semibold">{errors.categoria}</p>
               )}
             </div>
 
-            <div className="mb-6 w-full flex items-center gap-3 px-10">
+            <div className="mb-2 w-full flex items-center gap-3 px-16">
               <label
                 htmlFor="adulto"
                 className="text-2xl font-semibold text-gray-900 "

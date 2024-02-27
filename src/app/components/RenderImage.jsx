@@ -20,7 +20,7 @@ export default function RenderImage({ inputContainerRef }) {
       reader.readAsDataURL(inputContainerRef);
     } else {
       //Si no es un archivo, se muestra la imagen por defecto
-      setImageUrl("/image/cover.jpg");
+      setImageUrl("/image/portada.png");
     }
   }, [inputContainerRef]);
 
@@ -32,9 +32,9 @@ export default function RenderImage({ inputContainerRef }) {
           id="gifImage"
           src={imageUrl}
           alt="Imagen del libro"
-          width={300}
-          height={900}
-          className="h-96 max-w-lg rounded-lg w-full object-cover"
+          width={400}
+          height={0}
+          className="max-h-96"
         />
       )}
     </>
