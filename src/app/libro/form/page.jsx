@@ -97,11 +97,11 @@ export default function Libro() {
   return (
     <div className="flex flex-col bg-white">
       {/* Layout */}
-      <div className="bg-[#7eafaf] h-16 flex flex-row justify-between items-center px-4 drop-shadow-lg">
+      <div className="bg-[#7eafaf] h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg">
         <div className="text-white font-semibold text-lg">
-          <h3>Agregar información del libro</h3>
+          <h3 className="px-20">Agregar información del libro</h3>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 px-8">
           <button className="bg-[#738d90] text-gray-700 py-2 px-5 rounded-lg">
             Cancelar
           </button>
@@ -118,9 +118,9 @@ export default function Libro() {
             <RenderImage inputContainerRef={portada} className="" />
             <label
               htmlFor="portada"
-              className="block text-lg font-semibold mb-2 text-gray-900 my-10"
+              className="block text-lg font-semibold mb-2 text-gray-900 my-16"
             >
-              Añadir una portada
+              {!portada ? "Añadir una portada" : "Cambiar portada"}
             </label>
             <input
               id="portada"
