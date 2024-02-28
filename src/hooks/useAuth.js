@@ -9,7 +9,7 @@ const useAuth = () => {
   const login = async (body) => {
     setLoading(true);
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/login`, body);
+      const response = await axios.post(`${process.env.API_URL}/login`, body);
 
       if (response.status < 200 || response.status >= 300) {
         throw error;
@@ -30,7 +30,7 @@ const useAuth = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/register`,
+        `${process.env.API_URL}/register`,
         body
       );
 
