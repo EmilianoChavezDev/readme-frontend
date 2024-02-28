@@ -13,7 +13,7 @@
 }
 
 .content_detalle {
-  background-color: aliceblue;
+  background-color: var(--colorFondo);
   padding: 3rem;
   border-radius: 10px;
   position: absolute;
@@ -89,5 +89,5 @@
 }
 
 .error_msg {
-  color: var(--colorError)
+  color: var(--colorError);
 }

@@ -24,12 +24,12 @@ const page = () => {
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
-    console.log("entro");
     login(formData);
   };
 
   useEffect(() => {
     if (!data || error) return;
+    saveUser(data);
   }, [data]);
 
   return (
@@ -48,9 +48,9 @@ const page = () => {
             <h1 className={styles.content_title}>Readme</h1>
           </div>
           {error && (
-            <div className={styles.error_msg}>
-              Usuario o contraseña incorrectos.
-            </div>
+            <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
+              Usuario o contraseña no valido
+            </p>
           )}
           <div>
             <div className={styles.content_title_correo}>
@@ -64,7 +64,7 @@ const page = () => {
                 onBlur={() => trigger("username")}
               />
               {errors.username && (
-                <div className={styles.error_msg}>
+                <div className="text-red-500 text-center">
                   {errors.username.message}
                 </div>
               )}
@@ -80,7 +80,7 @@ const page = () => {
                 onBlur={() => trigger("password")}
               />
               {errors.password && (
-                <div className={styles.error_msg}>
+                <div className="text-red-500 text-center">
                   {errors.password.message}
                 </div>
               )}
