@@ -19,6 +19,7 @@ const page = () => {
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [isNumeroError, setIsNumeroError] = useState(false);
 
+
   const { data, error, loading, register: registro } = useAuth();
   const { login: saveUser } = useUser();
 
@@ -44,6 +45,7 @@ const page = () => {
       setIsError(true);
       setIsPasswordError(false);
       setIsNumeroError(false);
+
       return;
     }
 
@@ -83,7 +85,6 @@ const page = () => {
                 Por favor complete todos los campos
               </p>
             )}
-
             {isPasswordError && (
               <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
                 Las contraseñas no coinciden

@@ -1,10 +1,13 @@
+
 "use client";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+
   const router = useRouter();
 
   const [token, setToken] = useState(null);
@@ -22,6 +25,7 @@ export const UserProvider = ({ children }) => {
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
     router.push("/auth/prueba");
+
   };
 
   const logout = () => {
@@ -45,10 +49,17 @@ export const UserProvider = ({ children }) => {
       setExpiration(storedExpiration);
     }
 
+
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
       setUsername(storedUsername);
     }
+
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+
 
     const storedRole = localStorage.getItem("role");
     if (storedRole) {
@@ -78,12 +89,13 @@ export const UserProvider = ({ children }) => {
   );
 };
 
+
 export const useUser = () => {
-  const context = useContext(UserContext);
-  if (!context) {
-    throw new Error("useUser debe ser utilizado dentro de un UserContext");
-  }
-  return context;
+    const context = useContext(UserContext);
+    if (!context) {
+        throw new Error('useUser debe ser utilizado dentro de un UserContext');
+    }
+    return context;
 };
 
 export default UserProvider;

@@ -25,6 +25,7 @@ const useAuth = () => {
       setLoading(false);
     }
   };
+
   const register = async (body) => {
     setLoading(true);
     try {
