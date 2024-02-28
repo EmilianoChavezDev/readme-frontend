@@ -13,6 +13,11 @@ const useLibro = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      if (res.status < 200 || res.status >= 300) {
+        throw error;
+      }
+
       return res.data;
     } catch (error) {
       setError(true);

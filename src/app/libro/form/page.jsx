@@ -118,7 +118,7 @@ export default function Libro() {
             <RenderImage inputContainerRef={portada} className="" />
             <label
               htmlFor="portada"
-              className="block text-lg font-semibold mb-2 text-gray-900 my-16"
+              className="block text-lg font-semibold mb-2 text-gray-900 my-11"
             >
               {!portada ? "Añadir una portada" : "Cambiar portada"}
             </label>
