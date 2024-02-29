@@ -2,29 +2,18 @@
 
 import { useEffect, useState } from "react";
 import styles from "./styles/favoritos.module.css";
-import cuadros from "./cuadros.js";
+import Cuadros from "./cuadros.js";
 
 const pagefavoritos = () => {
   const [filtro, setFiltro] = useState("");
-
-  const datosCuadros = [
-    { titulo: "Título 5", autor: "Autor 5", imagenUrl: "url_imagen_5.jpg" },
-    { titulo: "Título 5", autor: "Autor 5", imagenUrl: "url_imagen_5.jpg" },
-  ];
-
-  const cuadrosConDatos = datosCuadros.map(
-    ({ titulo, autor, imagenUrl }, index) =>
-      cuadros(index, imagenUrl, titulo, autor)
-  );
+  const [datosFiltrados, setDatosFiltrados] = useState([]);
+  const [datosCuadros, setDatosCuadros] = useState([
+    { titulo: "Titulo 6", autor: "Autor 5", imagenUrl: "url_imagen_5.jpg" },
+    { titulo: "Titulo 5", autor: "Autor 5", imagenUrl: "url_imagen_5.jpg" },
+  ]);
 
   useEffect(() => {
-    if (filtro.length > 3) {
-      handleSearchBooks();
-    }
-  }, [filtro]);
-
-  const cuadrosDatosFiltrodos = datosCuadros
-    .filter(({ titulo, autor }) => {
+    const cuadrosFiltrados = datosCuadros.filter(({ titulo, autor }) => {
       const lowerCaseTitulo = titulo.toLowerCase();
       const lowerCaseAutor = autor.toLowerCase();
       const lowerCaseFiltro = filtro.toLowerCase();
@@ -33,14 +22,10 @@ const pagefavoritos = () => {
         lowerCaseTitulo.includes(lowerCaseFiltro) ||
         lowerCaseAutor.includes(lowerCaseFiltro)
       );
-    })
-    .map(({ titulo, autor, imagenUrl }, index) =>
-      cuadros(index, imagenUrl, titulo, autor)
-    );
+    });
 
-  const handleSearchBooks = () => {
-    console.log(filtro);
-  };
+    setDatosFiltrados(cuadrosFiltrados);
+  }, [filtro, datosCuadros]);
 
   return (
     <div className={styles.contenedor_global}>
@@ -63,7 +48,23 @@ const pagefavoritos = () => {
         </div>
         <div className={styles.contenedor_padre_cuadros}>
           <div className={styles.contenedor_cuadros}>
-            {filtro ? cuadrosConDatos : cuadrosDatosFiltrodos}
+            {filtro
+              ? datosFiltrados.map(({ titulo, autor, imagenUrl }, index) => (
+                  <Cuadros
+                    key={index}
+                    imageUrl={imagenUrl}
+                    title={titulo}
+                    author={autor}
+                  />
+                ))
+              : datosCuadros.map(({ titulo, autor, imagenUrl }, index) => (
+                  <Cuadros
+                    key={index}
+                    imageUrl={imagenUrl}
+                    title={titulo}
+                    author={autor}
+                  />
+                ))}
           </div>
         </div>
       </div>

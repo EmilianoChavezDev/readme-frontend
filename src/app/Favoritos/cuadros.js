@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "./styles/favoritos.module.css";
 
-const cuadros = (id, imageurl, title, author) => {
+const Cuadros = ({ id, imageurl, title, author }) => {
   const [favorito, setFavorito] = useState(true);
 
   const fn_btnFavorite = () => {
@@ -15,11 +15,11 @@ const cuadros = (id, imageurl, title, author) => {
       <div className={styles.botonContainer} onClick={fn_btnFavorite}>
         {favorito ? (
           <button className={styles.btnCorazonLleno}>
-            <img src="/image/corazon_lleno.png" alt="Corazón lleno" />
+            <img src="/image/img_like.png" alt="Corazón lleno" />
           </button>
         ) : (
           <button className={styles.btnCorazonVacio} onClick={fn_btnFavorite}>
-            <img src="/image/corazon_vacio.png" alt="Corazón vacio" />
+            <img src="/image/img_dislike.png" alt="Corazón vacio" />
           </button>
         )}
       </div>
@@ -36,4 +36,4 @@ const cuadros = (id, imageurl, title, author) => {
   );
 };
 
-export default cuadros;
+export default Cuadros;
