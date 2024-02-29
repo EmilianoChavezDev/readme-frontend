@@ -17,6 +17,8 @@ const defaultValues = {
 const page = () => {
   const [isError, setIsError] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
+  const [isNumeroError, setIsNumeroError] = useState(false);
+
 
   const { data, error, loading, register: registro } = useAuth();
   const { login: saveUser } = useUser();
@@ -41,17 +43,32 @@ const page = () => {
       !formData.fecha_nacimiento
     ) {
       setIsError(true);
+      setIsPasswordError(false);
+      setIsNumeroError(false);
+
       return;
     }
 
     if (formData.password !== formData.password_confirmation) {
       setIsPasswordError(true);
+      setIsError(false);
+      setIsNumeroError(false);
+      return;
+    }
+
+    if (!/\d/.test(formData.password)) {
+      setIsNumeroError(true);
+      setIsPasswordError(false);
+      setIsError(false);
       return;
     }
 
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
     formData.fecha_nacimiento = fecha;
+    setIsPasswordError(false);
+    setIsError(false);
+    setIsNumeroError(false);
     registro(formData);
   };
 
@@ -65,7 +82,7 @@ const page = () => {
           <div className={styles.content_informacion}>
             {isError && (
               <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
-                Rellenar todos los campos necesarios
+                Por favor complete todos los campos
               </p>
             )}
             {isPasswordError && (
@@ -74,11 +91,22 @@ const page = () => {
               </p>
             )}
 
+            {error && (
+              <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
+                Nombre de usuario en uso
+              </p>
+            )}
+
+            {isNumeroError && (
+              <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
+                Contraseña no valida
+              </p>
+            )}
+
             <div className={styles.content_title_correo}>
-              <p>Nombre de usuario</p>
               <input
                 type="text"
-                placeholder="nickname"
+                placeholder="nombre de usuario"
                 {...register("username", {
                   required: "Debe ingresar su nombre de usuario",
                 })}
@@ -87,7 +115,6 @@ const page = () => {
             </div>
 
             <div>
-              <p>Nueva contraseña</p>
               <input
                 type="password"
                 placeholder="ej: pass1234"
@@ -98,10 +125,9 @@ const page = () => {
               />
             </div>
             <div>
-              <p>Confirmar la contraseña</p>
               <input
                 type="password"
-                placeholder="repita la contraseña"
+                placeholder="confirmar la contraseña"
                 {...register("password_confirmation", {
                   required: "Debe ingresar su contraseña",
                 })}
@@ -109,7 +135,6 @@ const page = () => {
               />
             </div>
             <div className={styles.content_date}>
-              <p>Fecha de nacimiento</p>
               <input
                 type="date"
                 {...register("fecha_nacimiento", {
