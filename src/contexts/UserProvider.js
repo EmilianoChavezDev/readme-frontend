@@ -49,12 +49,6 @@ export const UserProvider = ({ children }) => {
       setExpiration(storedExpiration);
     }
 
-
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
-
     const storedUsername = localStorage.getItem("username");
     if (storedUsername) {
       setUsername(storedUsername);
