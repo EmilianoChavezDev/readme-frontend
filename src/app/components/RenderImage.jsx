@@ -2,18 +2,21 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 //Renderiza la imagen del libro para ver el preview
-export default function RenderImage({ inputContainerRef }) {
+export default function RenderImage({ inputContainerRef, setLoadingPortada }) {
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     //Si inputContainerRef es un archivo, se lee el archivo y se muestra la imagen
     if (inputContainerRef && inputContainerRef instanceof File) {
+      setLoadingPortada(true);
+
       //Se lee el archivo
       const reader = new FileReader();
 
       //Se muestra la imagen
       reader.onload = () => {
         setImageUrl(reader.result);
+        setLoadingPortada(false);
       };
 
       // Se lee el archivo como una URL
@@ -22,7 +25,7 @@ export default function RenderImage({ inputContainerRef }) {
       //Si no es un archivo, se muestra la imagen por defecto
       setImageUrl("/image/portada.png");
     }
-  }, [inputContainerRef]);
+  }, [inputContainerRef, setLoadingPortada]);
 
   //Retorna la imagen
   return (

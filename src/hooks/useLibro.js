@@ -4,9 +4,11 @@ import axios from "axios";
 
 const useLibro = () => {
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { token } = useUser(); // Obtiene el token del contexto
 
   const agregarLibro = async (data) => {
+    setIsLoading(true); // Inicia el estado de carga
     try {
       const res = await axios.post(`${process.env.API_URL}/libros`, data, {
         headers: {
@@ -14,18 +16,17 @@ const useLibro = () => {
         },
       });
 
-      if (res.status < 200 || res.status >= 300) {
-        throw error;
-      }
-
       return res.data;
     } catch (error) {
       setError(true);
-      return null;
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { agregarLibro, error };
+  // Devuelve la funcion para agregar un libro, el error y el estado de carga
+  return { agregarLibro, error, isLoading };
 };
 
 export default useLibro;

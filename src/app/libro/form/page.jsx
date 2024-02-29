@@ -1,7 +1,9 @@
 "use client";
+import Link from "next/link";
 import RenderImage from "@/app/components/RenderImage";
 import useLibro from "@/hooks/useLibro";
 import { useState } from "react";
+import { FaAngleLeft } from "react-icons/fa6";
 
 export default function Libro() {
   const [info, setInfo] = useState({
@@ -12,18 +14,19 @@ export default function Libro() {
     adulto: false,
   });
 
-  //Destructuring de los valores del formulario
-  const { titulo, sinopsis, categoria, portada, adulto } = info;
-
   const [errors, setErrors] = useState({
     titulo: "",
     sinopsis: "",
     categoria: "",
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingPortada, setLoadingPortada] = useState(false);
 
-  const { agregarLibro } = useLibro();
+  //Destructuring de los valores del formulario
+  const { titulo, sinopsis, categoria, portada, adulto } = info;
+
+  //Obtener la funcion para agregar un libro, el error y el estado de carga
+  const { agregarLibro, error, isLoading } = useLibro();
 
   //Manejar cambios en el formulario
   const handleInputChange = (e) => {
@@ -33,15 +36,15 @@ export default function Libro() {
     const newValue =
       id === "adulto" ? checked : id === "portada" ? files[0] : value;
 
+    // Actualizar el estado del formulario
     setInfo({
       ...info,
       [id]: newValue,
     });
   };
 
+  //Manejar el envio del formulario
   const handleSubmit = async () => {
-    setIsLoading(true);
-
     const newErrors = {};
 
     // Validar que los campos no esten vacios
@@ -59,7 +62,6 @@ export default function Libro() {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      setIsLoading(false);
       return;
     }
 
@@ -71,7 +73,7 @@ export default function Libro() {
     formData.set("portada", portada);
     formData.set("adulto", adulto);
 
-    // Enviar la informacion
+    // Enviar la informacion, esperar a que la peticion termine
     const success = await agregarLibro(formData);
 
     // Si la peticion fue exitosa, limpiar el formulario y quitar el error
@@ -90,32 +92,52 @@ export default function Libro() {
         categoria: "",
       });
     }
-
-    setIsLoading(false);
   };
 
   return (
     <div className="flex flex-col bg-white">
-      {/* Layout */}
+      {/*Layout*/}
       <div className="bg-[#7eafaf] h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg">
-        <div className="text-white font-semibold text-lg">
-          <h3 className="px-20">Agregar información del libro</h3>
+        <div className="text-white font-semibold text-lg flex items-center">
+          <Link href={"/home"}>
+            <FaAngleLeft className="text-2xl" />
+          </Link>
+          <h3 className="px-4">Agregar información del libro</h3>
         </div>
-        <div className="flex gap-4 px-8">
+        <div className="flex gap-4">
           <button className="bg-[#738d90] text-gray-700 py-2 px-5 rounded-lg">
             Cancelar
           </button>
-          <button className="bg-[#167574] text-white py-2 px-7 rounded-lg">
+          <button
+            onClick={handleSubmit}
+            className={`bg-[#167574] text-white py-2 px-7 rounded-lg ${
+              isLoading || loadingPortada ? "opacity-50 cursor-wait " : ""
+            }`}
+            disabled={isLoading || loadingPortada}
+          >
             Seguir
           </button>
         </div>
+      </div>
+
+      {/*Error del formulario*/}
+      <div className="text-center py-5">
+        {error && (
+          <p className="text-red-500 font-semibold text-xl">
+            Hubo un error al enviar el formulario. Recargue la página o
+            inténtelo de nuevo.
+          </p>
+        )}
       </div>
 
       {/* Portada */}
       <div className="container mx-auto flex flex-row items-center justify-center">
         <div className="w-1/4 h-auto flex flex-col items-center justify-center p-8 bg-[#eeeeee]">
           <label className="text-center mb-6">
-            <RenderImage inputContainerRef={portada} className="" />
+            <RenderImage
+              inputContainerRef={portada}
+              setLoadingPortada={setLoadingPortada}
+            />
             <label
               htmlFor="portada"
               className="block text-lg font-semibold mb-2 text-gray-900 my-11"
@@ -126,8 +148,10 @@ export default function Libro() {
               id="portada"
               type="file"
               accept="image/*"
+              key={portada ? portada.name : "reset"} //Resetamos el input por si se ingresan dos veces la misma imagen
               onChange={handleInputChange}
               className="text-gray-900 sr-only"
+              disabled={isLoading}
             />
           </label>
         </div>
@@ -143,7 +167,7 @@ export default function Libro() {
                 htmlFor="titulo"
                 className="block text-2xl font-semibold mb-2 text-gray-900"
               >
-                Titulo
+                Título
               </label>
               <input
                 id="titulo"
@@ -151,6 +175,7 @@ export default function Libro() {
                 className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900"
                 value={titulo}
                 onChange={handleInputChange}
+                disabled={isLoading}
               />
               {errors.titulo && (
                 <p className="text-red-500 font-semibold py-2">
@@ -172,6 +197,7 @@ export default function Libro() {
                 className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900 h-44 "
                 value={sinopsis}
                 onChange={handleInputChange}
+                disabled={isLoading}
               ></textarea>
               {errors.sinopsis && (
                 <p className="text-red-500 font-semibold">{errors.sinopsis}</p>
@@ -190,8 +216,9 @@ export default function Libro() {
                 className="border p-2 rounded focus:outline-none text-gray-500 font-semibold "
                 value={categoria}
                 onChange={handleInputChange}
+                disabled={isLoading}
               >
-                <option value="" disabled={true}>
+                <option value="" disabled>
                   Selecciona una categoria
                 </option>
                 <option value="Ficcion">Ficcion</option>
@@ -216,18 +243,6 @@ export default function Libro() {
                 className="leading-tight transform scale-150"
                 onChange={handleInputChange}
               />
-            </div>
-
-            <div className="flex items-center flex-col gap-3">
-              <button
-                onClick={handleSubmit}
-                className={`bg-blue-500 text-white font-bold py-2 px-4 rounded ${
-                  isLoading ? "opacity-50 cursor-wait " : ""
-                }`}
-                disabled={isLoading}
-              >
-                Agregar Libro
-              </button>
             </div>
           </div>
         </div>
