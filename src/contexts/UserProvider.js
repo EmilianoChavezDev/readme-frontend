@@ -55,12 +55,6 @@ export const UserProvider = ({ children }) => {
       setUsername(storedUsername);
     }
 
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
-
-
     const storedRole = localStorage.getItem("role");
     if (storedRole) {
       setRole(storedRole);

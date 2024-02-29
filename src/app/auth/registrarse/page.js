@@ -19,7 +19,6 @@ const page = () => {
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [isNumeroError, setIsNumeroError] = useState(false);
 
-
   const { data, error, loading, register: registro } = useAuth();
   const { login: saveUser } = useUser();
 
@@ -98,9 +97,11 @@ const page = () => {
             )}
 
             {isNumeroError && (
-              <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
-                Contraseña no valida
-              </p>
+              <div className="bg-red-500 p-2 text-white font-bold mb-3 m-0" F>
+                <p>La contraseña debe tener</p>
+                <p>8 caracteres minimo</p>
+                <p>debe contener al menos 1 numero</p>
+              </div>
             )}
 
             <div className={styles.content_title_correo}>
