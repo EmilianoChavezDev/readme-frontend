@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import RenderImage from "@/app/components/RenderImage";
+import RenderImage from "@/components/RenderImage";
 import useLibro from "@/hooks/useLibro";
 import { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
