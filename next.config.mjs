@@ -13,8 +13,10 @@ const nextConfig = {
         ]
     },
     env: {
-        API_URL: 'http://localhost:4000',
-    },
+
+        API_URL: 'https://readme-backend.fly.dev',
+      },
+
 };
 
 export default nextConfig;
