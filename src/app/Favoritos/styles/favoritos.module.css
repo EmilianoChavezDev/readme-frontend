@@ -1,9 +1,5 @@
 .contenedor_global{
-    display: flex;
-    justify-content: center;
-}
-
-.contenedor_principal{
+    margin: 30px;
 }
 
 .barra_principal{
@@ -14,7 +10,6 @@
 }
 
 .buscador {
-    /* Estilos predeterminados del input */
     border: 1px solid #ccc;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     border-radius: 2px;
@@ -35,8 +30,8 @@
 
 .contenedor_cuadros {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* Esto hará que haya 5 columnas por fila */
-    gap: 50px; /* Espacio entre los cuadros, ajusta según sea necesario */
+    grid-template-columns: repeat(5, 1fr);
+    gap: 50px; 
 
   }
   
@@ -76,6 +71,7 @@
 .contenedor_datos_cuadro{
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     padding: 10px;
+    width: 170px;
 }
 
 .title{
