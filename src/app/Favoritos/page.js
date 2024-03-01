@@ -3,10 +3,14 @@
 import { useEffect, useState } from "react";
 import styles from "./styles/favoritos.module.css";
 import Cuadros from "./cuadros.js";
+import axios from 'axios';
+import useFavoritos from './hooks/useFavoritos';
+
 
 const pagefavoritos = () => {
   const [filtro, setFiltro] = useState("");
   const [datosFiltrados, setDatosFiltrados] = useState([]);
+  const {traerFavoritosPorUsuario, error, isLoading } = useFavoritos();
   const [datosCuadros, setDatosCuadros] = useState([
     { titulo: "Titulo 6", autor: "Autor 5", imagenUrl: "url_imagen_5.jpg" },
     { titulo: "Titulo 5", autor: "Autor 5", imagenUrl: "url_imagen_5.jpg" },
@@ -26,6 +30,20 @@ const pagefavoritos = () => {
 
     setDatosFiltrados(cuadrosFiltrados);
   }, [filtro, datosCuadros]);
+
+  //Metodos get post put delete ... 
+  useEffect(()=>{
+    const obtenerUsuario = async() =>{
+      try{
+        const favoritos = await traerFavoritosPorUsuario(1);
+        console.log("Favoritos con ID 1: ", favoritos);
+      }catch(error){
+        console.log("Se ha generado un error al tratar de obtener los usuarios ", error);
+      }
+    };
+    obtenerUsuario();
+  }, []);
+
 
   return (
     <div className={styles.contenedor_global}>
