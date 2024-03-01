@@ -1,18 +1,19 @@
-import { useUser } from "@/contexts/UserProvider";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const useGetLibros = () => {
   const [data, setData] = useState([]);
-  const { token } = useUser();
+  const token  = localStorage.getItem('token');
 
   const getLibros = async (params) => {
+    
     try {
       const response = await axios.get(`${process.env.API_URL}/libros`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        params
+        
+        params,
       });
       console.log(response.data);
       setData(response.data);
