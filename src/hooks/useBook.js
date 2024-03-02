@@ -7,6 +7,7 @@ const useBook = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useUser(); // Obtiene el token del contexto
 
+  // Crear un libro
   const createBook = async (data) => {
     setIsLoading(true); // Inicia el estado de carga
     try {
@@ -82,8 +83,35 @@ const useBook = () => {
     }
   };
 
-  // Devuelve las funciones para agregar un libro, obtener todos los libros, buscar un libro, el error y el estado de carga
-  return { createBook, getAllBooks, getBookByID, updateBook, error, isLoading };
+  // Eliminar un libro por su id
+  const deleteBook = async (id) => {
+    setIsLoading(true); // Inicia el estado de carga
+    try {
+      const res = await axios.delete(`${process.env.API_URL}/libros/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return res.data;
+    } catch (error) {
+      setError(true);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Devuelve las funciones, y los estados de error y carga
+  return {
+    createBook,
+    getAllBooks,
+    getBookByID,
+    updateBook,
+    deleteBook,
+    error,
+    isLoading,
+  };
 };
 
 export default useBook;
