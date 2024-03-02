@@ -39,7 +39,7 @@ export default function BackgroundBlogCard() {
         <div className="mb-32">
           <h2 className="text-4xl font-semibold mb-4">Seguir Leyendo</h2>
           <div>
-            <div className="grid gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 ">
+            <div className="grid gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 pb-20 shadow-[0_19px_10px_-19px_rgba(0,0,0,0.3)]">
               {[...Array(6)].map((_, index) => (
                 <div className="flex justify-center">
                   <Link
@@ -72,8 +72,7 @@ export default function BackgroundBlogCard() {
             </div>
           </div>
 
-          {/* Linea de sombreado */}
-          <div className="border-t-2 border-gray-200 my-12"></div>
+          <div className="my-12"></div>
           <h2 className="text-4xl font-semibold mb-4 ">Novedades</h2>
 
           <div className="grid gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
