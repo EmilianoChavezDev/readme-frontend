@@ -62,6 +62,13 @@ const page = () => {
       return;
     }
 
+    if (formData.password.length < 8) {
+      setIsPasswordError(false);
+      setIsError(false);
+      setIsNumeroError(true);
+      return;
+    }
+
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
     formData.fecha_nacimiento = fecha;
