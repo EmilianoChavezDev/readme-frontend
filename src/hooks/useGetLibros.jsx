@@ -1,18 +1,18 @@
+import { useUser } from "@/contexts/UserProvider";
 import axios from "axios";
 import { useState } from "react";
 
 const useGetLibros = () => {
   const [data, setData] = useState([]);
-  const token  = localStorage.getItem('token');
+
+  const { token } = useUser(); // Corregido: llama a useUser como una función para obtener el token
 
   const getLibros = async (params) => {
-    
     try {
       const response = await axios.get(`${process.env.API_URL}/libros`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        
         params,
       });
       console.log(response.data);

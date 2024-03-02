@@ -1,5 +1,6 @@
 "use client";
 
+import { useUser } from "@/contexts/UserProvider";
 import useGetLibros from "@/hooks/useGetLibros";
 import {
   Card,
@@ -7,53 +8,68 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function BackgroundBlogCard() {
-  //const [data, setData] = useState([]);
-  const { getLibros, data: libros } = useGetLibros();
+  const { getLibros, data: libros } = useGetLibros(); // Obtener la función para obtener libros y los datos de libros
+  const { token } = useUser(); // Obtener el token del usuario
+  const [loading, setLoading] = useState(true); // Estado para controlar si se está cargando
 
   useEffect(() => {
-    getLibros({ page: 1 });
-  }, []);
+    // Efecto para cargar libros cuando se monta el componente y se tiene un token
+    if (token) {
+      getLibros({ page: 1 }); // Obtener libros
+      setLoading(false); // Establecer loading en false cuando se obtienen los libros
+    }
+  }, [token]); // Se ejecuta cuando el token cambia
+
+  if (loading) {
+    // Si aún se está cargando, muestra un indicador de carga
+    return <div>Cargando...</div>;
+  }
+
+  // Una vez que se cargan los libros, renderiza el contenido del componente
 
   return (
     <div className="container-fluid px-2 py-12 pb-28 m-28 h-full">
       <div className="mb-32">
         <h2 className="text-5xl font-semibold mb-4">Seguir Leyendo</h2>
-      <div>
-        
-        <div className="flex gap-8 overflow-x-auto">
-          {[...Array(5)].map((_, index) => (
-            <a
-              key={index + 5}
-              href={`/libros/${index + 5}`}
-              className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
-            >
-              <Card
-                shadow={false}
-                className="relative grid h-[28rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center"
+        <div>
+          <div className="flex gap-8 overflow-x-auto">
+            {[...Array(5)].map((_, index) => (
+              <a
+                key={index + 5}
+                href={`/libros/${index + 5}`}
+                className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"
               >
-                <CardHeader
-                  floated={false}
+                <Card
                   shadow={false}
-                  color="transparent"
-                  className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')] bg-cover bg-center"
+                  className="relative grid h-[28rem] w-full max-w-[28rem] items-end justify-center overflow-hidden text-center"
                 >
-                  <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
-                </CardHeader>
-                <CardBody className="relative py-8 px-6 md:px-8"></CardBody>
-              </Card>
-            </a>
-          ))}
+                  <CardHeader
+                    floated={false}
+                    shadow={false}
+                    color="transparent"
+                    className="absolute inset-0 m-0 h-full w-full rounded-none bg-[url('https://www.marytribble.com/wp-content/uploads/2020/12/book-cover-placeholder.png')] bg-cover bg-center"
+                  >
+                    <img
+                      src={
+                        "https://www.marytribble.com/wp-content/uploads/2020/12/book-cover-placeholder.png"
+                      }
+                      className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
+                    />
+                    <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
+                  </CardHeader>
+                </Card>
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
 
-        
-      {/* Linea de sombreado */}
-      <div className="border-t-2 border-gray-200 my-12"></div>
-      <h2 className="text-5xl font-semibold mb-4 ">Novedades</h2>
-      <div className="flex gap-8 overflow-x-auto">
+        {/* Linea de sombreado */}
+        <div className="border-t-2 border-gray-200 my-12"></div>
+        <h2 className="text-5xl font-semibold mb-4 ">Novedades</h2>
+        <div className="flex gap-8 overflow-x-auto">
           {libros?.data?.map((libro) => (
             <a
               key={libro.id}
