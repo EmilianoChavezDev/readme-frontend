@@ -11,7 +11,7 @@ import {
 } from "@material-tailwind/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
+import Image from "next/image";
 export default function BackgroundBlogCard() {
   const { getLibros, data: libros } = useGetLibros(); // Obtener la función para obtener libros y los datos de libros
   const { token } = useUser(); // Obtener el token del usuario
@@ -57,10 +57,12 @@ export default function BackgroundBlogCard() {
                         color="transparent"
                         className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
                       >
-                        <img
+                        <Image
                           src={
-                            "https://www.marytribble.com/wp-content/uploads/2020/12/book-cover-placeholder.png"
+                            "/image/template_libro.png"
                           }
+                          width={250}
+                          height={400}
                           className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
                         />
                         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
@@ -92,13 +94,16 @@ export default function BackgroundBlogCard() {
                       color="transparent"
                       className={`absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center`}
                     >
-                      <img
+                      <Image
                         src={
                           libro?.portada.length
                             ? libro.portada
-                            : "https://www.marytribble.com/wp-content/uploads/2020/12/book-cover-placeholder.png"
+                            : "/image/template_libro.png"
+                            
                         }
                         alt={libro.id}
+                        width={250}
+                        height={400}
                         className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
                       />
                       <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-t from-black/80 via-black/50" />
