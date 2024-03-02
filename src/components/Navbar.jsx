@@ -1,22 +1,19 @@
 "use client";
-import UserProvider, { useUser } from "@/contexts/UserProvider";
+import { useUser } from "@/contexts/UserProvider";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { IoMdArrowDropdown } from "react-icons/io";
 import {
-  FaUserCircle,
-  FaBook,
-  FaPlusCircle,
-  FaBookOpen,
-  FaListUl,
-  FaEdit,
   FaFileAlt,
+  FaListUl,
+  FaPlusCircle,
   FaSignOutAlt,
+  FaUserCircle,
 } from "react-icons/fa";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { IoMdArrowDropdown } from "react-icons/io";
 
-const Layout = () => {
+const Navbar = () => {
   const { username, logout, token, expiration } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEscribir, setIsOpenEscribir] = useState(false);
@@ -221,4 +218,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default Navbar;
