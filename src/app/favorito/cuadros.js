@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "./styles/favoritos.module.css";
 
-const Cuadros = ({ id, imageurl, title, author }) => {
+const Cuadros = ({ id, imageurl, title, author, view, star, comment }) => {
   const [favorito, setFavorito] = useState(true);
 
   const fn_btnFavorite = () => {
@@ -31,6 +31,32 @@ const Cuadros = ({ id, imageurl, title, author }) => {
       </div>
       <div>
         <p className={styles.author}>{author}</p>
+      </div>
+      <div className={styles.group_global}>
+        <div className={styles.group_children}>
+          <div>
+            <img src="/image/img_view.png" alt="imagen ver"></img>
+          </div>
+          <div>
+            <p>{view}</p>
+          </div>
+        </div>
+        <div className={styles.group_children}>
+          <div>
+            <img src="/image/img_star.png" alt="imagen estrella"></img>
+          </div>
+          <div>
+            <p>{star}</p>
+          </div>
+        </div>
+        <div className={styles.group_children}>
+          <div>
+            <img src="/image/img_comment.png" alt="imagen comentar"></img>
+          </div>
+          <div>
+            <p>{comment}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
