@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import NavBar from "@/components/navbar";
+import NavBar from "@/components/NavBar";
 
 
 export default function BackgroundBlogCard() {
