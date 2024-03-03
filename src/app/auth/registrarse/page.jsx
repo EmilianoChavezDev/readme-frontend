@@ -35,6 +35,7 @@ const page = () => {
     register,
     handleSubmit,
     trigger,
+    watch,
     formState: { errors },
   } = useForm({ defaultValues });
 
@@ -88,6 +89,9 @@ const page = () => {
   const handleShowPasswordConfirm = () => {
     setShowPasswordConfirm(!showPasswordConfirm);
   };
+
+  const passwordValue = watch("password", "");
+  const passwordConfirmationValue = watch("password_confirmation", "");
 
   return (
     <div className={styles.content}>
@@ -143,12 +147,15 @@ const page = () => {
                 })}
                 onBlur={() => trigger("password")}
               />
-              <FontAwesomeIcon
-                icon={showPassword ? faEyeSlash : faEye}
-                className={`${styles.eye} fa fa-eye`}
-                aria-hidden="true"
-                onClick={handleShowPassword}
-              />
+
+              {passwordValue && (
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  className={`${styles.eye} fa fa-eye`}
+                  aria-hidden="true"
+                  onClick={handleShowPassword}
+                />
+              )}
             </div>
 
             <div className={styles.input_password}>
@@ -161,12 +168,15 @@ const page = () => {
                 })}
                 onBlur={() => trigger("password_confirmation")}
               />
-              <FontAwesomeIcon
-                icon={showPasswordConfirm ? faEyeSlash : faEye}
-                className={`${styles.eye} fa fa-eye`}
-                aria-hidden="true"
-                onClick={handleShowPasswordConfirm}
-              />
+
+              {passwordConfirmationValue && (
+                <FontAwesomeIcon
+                  icon={showPasswordConfirm ? faEyeSlash : faEye}
+                  className={`${styles.eye} fa fa-eye`}
+                  aria-hidden="true"
+                  onClick={handleShowPasswordConfirm}
+                />
+              )}
             </div>
 
             <div className={styles.content_date}>
