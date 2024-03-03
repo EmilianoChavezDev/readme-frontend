@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "./styles/favorites.module.css";
-import Cuadros from "./squares.jsx";
+import Cuadros from "@/components/squares";
 import useFavoritos from "@/hooks/useFavorites";
 import { useUser } from "@/contexts/UserProvider";
 import NavBar from "@/components/NavBar";
