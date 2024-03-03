@@ -1,11 +1,14 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles/Inicio.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 
 const defaultValues = {
   username: "",
@@ -13,6 +16,8 @@ const defaultValues = {
 };
 
 const page = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const { data, error, loading, login } = useAuth();
   const { login: saveUser } = useUser();
 
@@ -31,6 +36,10 @@ const page = () => {
     if (!data || error) return;
     saveUser(data);
   }, [data]);
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className={styles.content}>
@@ -69,15 +78,22 @@ const page = () => {
                 </div>
               )}
             </div>
-            <div>
+
+            <div className={styles.input_password}>
               <input
+                type={showPassword ? "text" : "password"}
                 className="text-center"
-                type="password"
                 placeholder="contraseña"
                 {...register("password", {
                   required: "Debe ingresar su contraseña",
                 })}
                 onBlur={() => trigger("password")}
+              />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className={`${styles.eye} fa fa-eye`}
+                aria-hidden="true"
+                onClick={handleShowPassword}
               />
               {errors.password && (
                 <div className="text-red-500 text-center">

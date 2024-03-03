@@ -113,12 +113,12 @@
 .content_button a:hover {
   text-decoration: underline;
 }
-.input_contrasenha {
+.input_password {
   position: relative;
   width: 300px;
 }
 
-#contrasenha {
+.password {
   padding-right: 35px;
   width: calc(100% - 35px);
   border: 1px solid #ccc;
@@ -126,15 +126,15 @@
   height: 40px;
 }
 
-#ojo {
+.eye {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   right: 0;
   cursor: pointer;
-  color: #ccc;
+  color: #000;
 }
 
-#ojo:focus {
+.eye:focus {
   color: #000;
 }
