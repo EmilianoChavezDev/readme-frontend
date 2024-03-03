@@ -81,7 +81,7 @@ export default function BackgroundBlogCard() {
             {libros?.data?.map((libro) => (
               <div key={libro.id} className="flex justify-center">
                 <Link
-                  href={`/libros/${libro.id}`}
+                  href={`/books/${libro.id}`}
                   className="flex justify-center w-auto h-auto"
                 >
                   <Card

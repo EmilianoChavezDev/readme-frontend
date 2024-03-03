@@ -23,20 +23,17 @@ module.exports = withMT({
       },
     },
     screens: {
+      // small resolutions
+      '_sm': '640px',
+      '_md': '768px',
+      '_lg': '1024px',
+      '_xl': '1280px',
+      // large resolutions
       'sm': '868px',
-      // => @media (min-width: 640px) { ... }
-
       'md': '1124px',
-      // => @media (min-width: 768px) { ... }
-
       'lg': '1380px',
-      // => @media (min-width: 1024px) { ... }
-
       'xl': '1634px',
-      // => @media (min-width: 1280px) { ... }
-
       '2xl': '1634px',
-      // => @media (min-width: 1536px) { ... }
     }
   },
   plugins: [],
