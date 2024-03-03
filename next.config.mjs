@@ -1,15 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  env: {
-    API_URL: "http://localhost:4000",
-  },
   images: {
     remotePatterns: [
+      // TODO: remove at ticket end
       {
         protocol: "https",
-        hostname: "**",
+        hostname: "m.media-amazon.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
     ],
+  },
+  env: {
+    API_URL: "http://127.0.0.1:4000/",
   },
 };
 
