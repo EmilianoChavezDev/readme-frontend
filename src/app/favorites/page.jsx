@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import styles from "./styles/favorites.module.css";
 import Cuadros from "./squares.jsx";
-import useFavoritos from "./hooks/useFavorites";
+import useFavoritos from "@/hooks/useFavorites";
 import { useUser } from "@/contexts/UserProvider";
+import Navbar from "@/components/navbar";
 
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
@@ -43,6 +44,8 @@ const PageFavoritos = () => {
   }
 
   return (
+    <>
+    <Navbar/>
     <div className={styles.contenedor_global}>
       <div className={styles.contenedor_principal}>
         <div className={styles.barra_principal}>
@@ -80,6 +83,7 @@ const PageFavoritos = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

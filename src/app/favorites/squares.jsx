@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import styles from "./styles/favorites.module.css";
-import updateFavoritos from "./hooks/updateFavorites";
+import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
 import Link from "next/link";
 
@@ -20,8 +20,7 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
           console.log(
             `Se ha ${
               favorito ? "agregado a" : "sacado de"
-            } favoritos el libro ${clickedLibroId}`,
-            favoritos
+            } favoritos el libro ${clickedLibroId}`
           );
         })
         .catch(() => {
@@ -41,59 +40,59 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
   }
 
   return (
-    <Link href={`/libro/${libroId}`}>
-      <div className={styles.contenedor_datos_cuadro}>
-        <div
-          className={styles.botonContainer}
-          onClick={() => fn_btnFavorite(libroId)}
-        >
-          {favorito ? (
-            <button className={styles.btnCorazonLleno}>
-              <img src="/image/img_like.png" alt="Corazón lleno" />
-            </button>
-          ) : (
-            <button className={styles.btnCorazonVacio} onClick={fn_btnFavorite}>
-              <img src="/image/img_dislike.png" alt="Corazón vacio" />
-            </button>
-          )}
-        </div>
+    <div className={styles.contenedor_datos_cuadro}>
+      <div
+        className={styles.botonContainer}
+        onClick={() => fn_btnFavorite(libroId)}
+      >
+        {favorito ? (
+          <button className={styles.btnCorazonLleno}>
+            <img src="/image/img_like.png" alt="Corazón lleno" />
+          </button>
+        ) : (
+          <button className={styles.btnCorazonVacio} onClick={fn_btnFavorite}>
+            <img src="/image/img_dislike.png" alt="Corazón vacio" />
+          </button>
+        )}
+      </div>
+      <Link href={`/libro/${libroId}`}>
         <div>
-          <img src={imageurl}></img>
+          <img src={imageurl} alt="Imagen del libro" />
         </div>
-        <div>
-          <p className={styles.title}>{title}</p>
-        </div>
-        <div>
-          <p className={styles.author}>{author}</p>
-        </div>
-        <div className={styles.group_global}>
-          <div className={styles.group_children}>
-            <div>
-              <img src="/image/img_view.png" alt="imagen ver"></img>
-            </div>
-            <div>
-              <p>{view}</p>
-            </div>
+      </Link>
+      <div>
+        <p className={styles.title}>{title}</p>
+      </div>
+      <div>
+        <p className={styles.author}>{author}</p>
+      </div>
+      <div className={styles.group_global}>
+        <div className={styles.group_children}>
+          <div>
+            <img src="/image/img_view.png" alt="imagen ver"></img>
           </div>
-          <div className={styles.group_children}>
-            <div>
-              <img src="/image/img_star.png" alt="imagen estrella"></img>
-            </div>
-            <div>
-              <p>{star}</p>
-            </div>
+          <div>
+            <p>{view}</p>
           </div>
-          <div className={styles.group_children}>
-            <div>
-              <img src="/image/img_comment.png" alt="imagen comentar"></img>
-            </div>
-            <div>
-              <p>{comment}</p>
-            </div>
+        </div>
+        <div className={styles.group_children}>
+          <div>
+            <img src="/image/img_star.png" alt="imagen estrella"></img>
+          </div>
+          <div>
+            <p>{star}</p>
+          </div>
+        </div>
+        <div className={styles.group_children}>
+          <div>
+            <img src="/image/img_comment.png" alt="imagen comentar"></img>
+          </div>
+          <div>
+            <p>{comment}</p>
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
