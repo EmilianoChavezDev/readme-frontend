@@ -113,3 +113,28 @@
 .content_button a:hover {
   text-decoration: underline;
 }
+.input_contrasenha {
+  position: relative;
+  width: 300px;
+}
+
+#contrasenha {
+  padding-right: 35px;
+  width: calc(100% - 35px);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 40px;
+}
+
+#ojo {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  cursor: pointer;
+  color: #ccc;
+}
+
+#ojo:focus {
+  color: #000;
+}

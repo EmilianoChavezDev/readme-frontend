@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const defaultValues = {
   username: "",
@@ -78,6 +80,12 @@ const page = () => {
     registro(formData);
   };
 
+  const [mostrarContrasenha, setMostrarContraseña] = useState(false);
+
+  const handleMostrarContrasenha = () => {
+    setMostrarContraseña(!mostrarContrasenha);
+  };
+
   return (
     <div className={styles.content}>
       <div className={styles.content_image}>
@@ -122,16 +130,25 @@ const page = () => {
               />
             </div>
 
-            <div>
+            <div className={styles.input_contrasenha}>
               <input
-                type="password"
+                type={mostrarContrasenha ? "text" : "password"}
+                id="contrasenha"
                 placeholder="ej: pass1234"
                 {...register("password", {
                   required: "Debe ingresar su contraseña",
                 })}
                 onBlur={() => trigger("password")}
               />
+              <FontAwesomeIcon
+                icon={mostrarContrasenha ? faEyeSlash : faEye}
+                id="ojo"
+                className="fa fa-eye specific-icon-class"
+                aria-hidden="true"
+                onClick={handleMostrarContrasenha}
+              />
             </div>
+
             <div>
               <input
                 type="password"
