@@ -15,9 +15,7 @@ const useGetLibros = () => {
         },
         params,
       });
-      console.log(response.data);
       setData(response.data);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }

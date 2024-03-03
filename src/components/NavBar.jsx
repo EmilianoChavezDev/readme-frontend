@@ -70,11 +70,15 @@ const NavBar = () => {
     router.push("/page-construction");
   };
 
+  const handleFavoriteClick = () => {
+    router.push("/favorites");
+  };
+
   const handleHomeClick = () => {
     setIsOpenExplorar(false);
     setIsOpen(false);
     setIsOpenEscribir(false);
-    router.push("/auth/prueba");
+    router.push("/");
   };
 
   return (
@@ -142,7 +146,7 @@ const NavBar = () => {
             </div>
             <p
               className="cursor-pointer border-b border-transparent hover:border-white transition-colors duration-300"
-              onClick={() => handlNoPageClick()}
+              onClick={() => handleFavoriteClick()}
             >
               Mis Favoritos
             </p>

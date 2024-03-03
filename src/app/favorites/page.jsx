@@ -5,7 +5,7 @@ import styles from "./styles/favorites.module.css";
 import Cuadros from "./squares.jsx";
 import useFavoritos from "@/hooks/useFavorites";
 import { useUser } from "@/contexts/UserProvider";
-import Navbar from "@/components/navbar";
+import NavBar from "@/components/NavBar";
 
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
@@ -45,7 +45,7 @@ const PageFavoritos = () => {
 
   return (
     <>
-      <Navbar />
+      <NavBar />
       <div className={styles.contenedor_global}>
         <div className={styles.contenedor_principal}>
           <div className={styles.barra_principal}>

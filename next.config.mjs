@@ -1,20 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  env: {
+    API_URL: "https://readme-backend.fly.dev",
+  },
   images: {
     remotePatterns: [
-      // TODO: remove at ticket end
       {
         protocol: "https",
-        hostname: "m.media-amazon.com",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "**",
       },
     ],
-  },
-  env: {
-    API_URL: "http://127.0.0.1:4000/",
   },
 };
 

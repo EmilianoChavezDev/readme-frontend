@@ -1,6 +1,5 @@
 "use client";
 
-import Navbar from "@/components/navbar";
 import { useUser } from "@/contexts/UserProvider";
 import useGetLibros from "@/hooks/useGetLibros";
 import {
@@ -12,6 +11,9 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import NavBar from "@/components/navbar";
+
+
 export default function BackgroundBlogCard() {
   const { getLibros, data: libros } = useGetLibros(); // Obtener la función para obtener libros y los datos de libros
   const { token } = useUser(); // Obtener el token del usuario
@@ -34,7 +36,7 @@ export default function BackgroundBlogCard() {
 
   return (
     <>
-      <Navbar></Navbar>
+      <NavBar />
       <div className="container-fluid p-12 h-full">
         <div className="mb-32">
           <h2 className="text-4xl font-semibold mb-4">Seguir Leyendo</h2>
@@ -58,9 +60,7 @@ export default function BackgroundBlogCard() {
                         className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
                       >
                         <Image
-                          src={
-                            "/image/template_libro.png"
-                          }
+                          src={"/image/template_libro.png"}
                           width={250}
                           height={400}
                           className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
@@ -99,7 +99,6 @@ export default function BackgroundBlogCard() {
                           libro?.portada.length
                             ? libro.portada
                             : "/image/template_libro.png"
-                            
                         }
                         alt={libro.id}
                         width={250}
