@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import RenderImage from "@/app/components/RenderImage";
-import useLibro from "@/hooks/useLibro";
+import RenderImage from "@/components/RenderImage";
+import useBook from "@/hooks/useBook";
 import { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
 
@@ -26,7 +26,7 @@ export default function Libro() {
   const { titulo, sinopsis, categoria, portada, adulto } = info;
 
   //Obtener la funcion para agregar un libro, el error y el estado de carga
-  const { agregarLibro, error, isLoading } = useLibro();
+  const { createBook, error, isLoading } = useBook();
 
   //Manejar cambios en el formulario
   const handleInputChange = (e) => {
@@ -49,11 +49,11 @@ export default function Libro() {
 
     // Validar que los campos no esten vacios
     if (titulo.trim() === "") {
-      newErrors.titulo = "El titulo no puede estar vacio. ";
+      newErrors.titulo = "El título no puede estar vacio. ";
     }
 
     if (sinopsis.trim() === "") {
-      newErrors.sinopsis = "La sinopsis no puede estar vacio. ";
+      newErrors.sinopsis = "La descripción no puede estar vacio. ";
     }
 
     if (categoria.trim() === "") {
@@ -74,7 +74,7 @@ export default function Libro() {
     formData.set("adulto", adulto);
 
     // Enviar la informacion, esperar a que la peticion termine
-    const success = await agregarLibro(formData);
+    const success = await createBook(formData);
 
     // Si la peticion fue exitosa, limpiar el formulario y quitar el error
     if (success) {
@@ -99,15 +99,18 @@ export default function Libro() {
       {/*Layout*/}
       <div className="bg-[#7eafaf] h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg">
         <div className="text-white font-semibold text-lg flex items-center">
-          <Link href={"/home"}>
+          <Link href={"/"}>
             <FaAngleLeft className="text-2xl" />
           </Link>
           <h3 className="px-4">Agregar información del libro</h3>
         </div>
         <div className="flex gap-4">
-          <button className="bg-[#738d90] text-gray-700 py-2 px-5 rounded-lg">
+          <Link
+            href={"/"}
+            className="bg-[#738d90] text-gray-700 py-2 px-5 rounded-lg"
+          >
             Cancelar
-          </button>
+          </Link>
           <button
             onClick={handleSubmit}
             className={`bg-[#167574] text-white py-2 px-7 rounded-lg ${
@@ -131,8 +134,8 @@ export default function Libro() {
       </div>
 
       {/* Portada */}
-      <div className="container mx-auto flex flex-row items-center justify-center">
-        <div className="w-1/4 h-auto flex flex-col items-center justify-center p-8 bg-[#eeeeee]">
+      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center">
+        <div className="w-full md:w-1/4 h-auto flex flex-col items-center justify-center p-8 bg-[#eeeeee]">
           <label className="text-center mb-6">
             <RenderImage
               inputContainerRef={portada}
@@ -157,12 +160,12 @@ export default function Libro() {
         </div>
 
         {/* Formulario */}
-        <div className="w-4/6 bg-white mx-16 my-14">
+        <div className="w-full md:w-4/6 bg-white mx-4 md:mx-16 my-4 md:my-14">
           <div className="w-full p-8 flex flex-col gap-3">
             <h1 className="text-3xl font-bold mb-2 text-gray-900 mx-6">
               Detalle del libro
             </h1>
-            <div className="mb-2 w-full px-16">
+            <div className="mb-2 w-full px-6 md:px-16">
               <label
                 htmlFor="titulo"
                 className="block text-2xl font-semibold mb-2 text-gray-900"
@@ -184,7 +187,7 @@ export default function Libro() {
               )}
             </div>
 
-            <div className="mb-2 w-full px-16">
+            <div className="mb-2 w-full px-6 md:px-16">
               <label
                 htmlFor="sinopsis"
                 className="block text-2xl font-semibold py-2 text-gray-900"
@@ -204,7 +207,7 @@ export default function Libro() {
               )}
             </div>
 
-            <div className="mb-2 w-full flex items-center gap-3 px-16">
+            <div className="mb-2 w-full flex items-center gap-3 px-6 md:px-16">
               <label
                 htmlFor="categoria"
                 className="block font-semibold py-2 text-gray-900 pt-2 text-2xl"
@@ -229,7 +232,7 @@ export default function Libro() {
               )}
             </div>
 
-            <div className="mb-2 w-full flex items-center gap-3 px-16">
+            <div className="mb-2 w-full flex items-center gap-3 px-6 md:px-16">
               <label
                 htmlFor="adulto"
                 className="text-2xl font-semibold text-gray-900 "

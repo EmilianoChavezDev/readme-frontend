@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const defaultValues = {
   username: "",
@@ -18,7 +20,8 @@ const page = () => {
   const [isError, setIsError] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [isNumeroError, setIsNumeroError] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const { data, error, loading, register: registro } = useAuth();
   const { login: saveUser } = useUser();
@@ -32,6 +35,7 @@ const page = () => {
     register,
     handleSubmit,
     trigger,
+    watch,
     formState: { errors },
   } = useForm({ defaultValues });
 
@@ -63,6 +67,13 @@ const page = () => {
       return;
     }
 
+    if (formData.password.length < 8) {
+      setIsPasswordError(false);
+      setIsError(false);
+      setIsNumeroError(true);
+      return;
+    }
+
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
     formData.fecha_nacimiento = fecha;
@@ -71,6 +82,16 @@ const page = () => {
     setIsNumeroError(false);
     registro(formData);
   };
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const handleShowPasswordConfirm = () => {
+    setShowPasswordConfirm(!showPasswordConfirm);
+  };
+
+  const passwordValue = watch("password", "");
+  const passwordConfirmationValue = watch("password_confirmation", "");
 
   return (
     <div className={styles.content}>
@@ -98,9 +119,11 @@ const page = () => {
             )}
 
             {isNumeroError && (
-              <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
-                Contraseña no valida
-              </p>
+              <div className="bg-red-500 p-2 text-white font-bold mb-3 m-0" F>
+                <p>La contraseña debe tener</p>
+                <p>8 caracteres minimo</p>
+                <p>debe contener al menos 1 numero</p>
+              </div>
             )}
 
             <div className={styles.content_title_correo}>
@@ -114,26 +137,48 @@ const page = () => {
               />
             </div>
 
-            <div>
+            <div className={styles.input_password}>
               <input
-                type="password"
-                placeholder="ej: pass1234"
+                type={showPassword ? "text" : "password"}
+                className="password"
+                placeholder="contraseña"
                 {...register("password", {
                   required: "Debe ingresar su contraseña",
                 })}
                 onBlur={() => trigger("password")}
               />
+
+              {passwordValue && (
+                <FontAwesomeIcon
+                  icon={showPassword ? faEyeSlash : faEye}
+                  className={`${styles.eye} fa fa-eye`}
+                  aria-hidden="true"
+                  onClick={handleShowPassword}
+                />
+              )}
             </div>
-            <div>
+
+            <div className={styles.input_password}>
               <input
-                type="password"
+                type={showPasswordConfirm ? "text" : "password"}
+                className="password"
                 placeholder="confirmar la contraseña"
                 {...register("password_confirmation", {
                   required: "Debe ingresar su contraseña",
                 })}
                 onBlur={() => trigger("password_confirmation")}
               />
+
+              {passwordConfirmationValue && (
+                <FontAwesomeIcon
+                  icon={showPasswordConfirm ? faEyeSlash : faEye}
+                  className={`${styles.eye} fa fa-eye`}
+                  aria-hidden="true"
+                  onClick={handleShowPasswordConfirm}
+                />
+              )}
             </div>
+
             <div className={styles.content_date}>
               <input
                 type="date"
