@@ -15,6 +15,7 @@ import NavBar from '@/components/NavBar'
 import { addNumberFormat } from '@/utils'
 import useReview from '@/hooks/useReview'
 import Modal from '@/components/common/modal'
+import useFavorite from '@/hooks/useFavorite'
 import Loader from '@/components/common/loader'
 import { useUser } from '@/contexts/UserProvider'
 import ReviewSelector from '@/components/books/reviewSelector'
@@ -23,11 +24,14 @@ import CommentsSection from '@/components/books/commentsSection'
 export default function BookDetails({ params }) {
 
     const { userId } = useUser()
+
     const { getBookByID, isLoading, error } = useBook()
     const { createOrUpdateReview, getReviewByUserAndBook } = useReview()
+    const { getFavoriteByUserAndBook, createFavorite, updateFavorite } = useFavorite()
 
     const [book, setBook] = useState(null)
     const [resenha, setResenha] = useState(null)
+    const [favorite, setFavorite] = useState(null)
     const [motivoReporte, setMotivoReporte] = useState('')
     const [showReportModal, setShowReportModal] = useState(false)
 
@@ -46,6 +50,18 @@ export default function BookDetails({ params }) {
         setResenha(result?.resenha)
     }
 
+    const getFavorite = async () => {
+        const result = await getFavoriteByUserAndBook({ libro_id: book.id, user_id: userId })
+        setFavorite(result)
+    }
+    
+    const toggleFavorite = async () => {
+        let result = favorite? await updateFavorite(favorite.id, { libro_id: book.id, fav: !favorite.favorito }) 
+        : await createFavorite({ libro_id: book.id, fav: true })
+        setFavorite(result?.favorito)
+        toast.success(result?.favorito?.favorito? 'El libro ha sido añadido a tus favoritos' : 'El libro ha sido quitado de tus favoritos')
+    }
+
     const reportBoot = async () => {
         toast.error('Falta implementar en la API')
         setShowReportModal(false)
@@ -58,6 +74,7 @@ export default function BookDetails({ params }) {
     useEffect(() => {
         if (userId && book?.id) {
             fetchReview()
+            getFavorite()
         }
     }, [book?.id, userId])
 
@@ -119,13 +136,14 @@ export default function BookDetails({ params }) {
                                         </div>
                                     </div>
                                     <div className='flex flex-col gap-3 text-white text-xs'>
-                                        <Link href={`/libros/${params.id}/leer`}>
+                                        <Link href={`/books/${params.id}/read`}>
                                             <button className='h-9 rounded-md bg-colorPrimario w-full'>
                                                 Comenzar a Leer
                                             </button>
                                         </Link>
-                                        <button className='h-9 rounded-md bg-gray-500' onClick={() => toast.error('Implementar en otro ticket')}>
-                                            Añadir a Favoritos
+                                        <button className={favorite?.favorito? 'h-9 rounded-md bg-colorPrimario text-white' : 'h-9 rounded-md bg-gray-500'} 
+                                            onClick={toggleFavorite}>
+                                            {favorite?.favorito? 'Quitar de Favoritos' : 'Añadir a Favoritos' }
                                         </button>
                                         <button className='h-9 rounded-md bg-gray-500' onClick={() => toast.error('Implementar en otro ticket')}>
                                             Descargar
