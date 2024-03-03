@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import styles from "./styles/favorites.module.css";
 import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
-import Link from "next/link";
 
 const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
   const [favorito, setFavorito] = useState(true);
@@ -19,7 +18,7 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
         .then((favoritos) => {
           console.log(
             `Se ha ${
-              favorito ? "agregado a" : "sacado de"
+              favorito ? "sacado de" : "agregado a"
             } favoritos el libro ${clickedLibroId}`
           );
         })
@@ -55,11 +54,11 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
           </button>
         )}
       </div>
-      <Link href={`/libro/${libroId}`}>
-        <div>
-          <img src={imageurl} alt="Imagen del libro" />
-        </div>
-      </Link>
+      {/*<Link href={`/libro/${libroId}`}>*/}
+      <div>
+        <img src={imageurl} alt="Imagen del libro" />
+      </div>
+      {/*</Link>*/}
       <div>
         <p className={styles.title}>{title}</p>
       </div>
