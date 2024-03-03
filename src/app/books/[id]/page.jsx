@@ -6,7 +6,6 @@ import toast from 'react-hot-toast'
 import { LuEye } from 'react-icons/lu'
 import { useEffect, useState } from 'react'
 import { PiStarThin } from 'react-icons/pi'
-import { useRouter } from 'next/navigation'
 import { FaRegImage } from 'react-icons/fa6'
 import { PiWarningBold } from 'react-icons/pi'
 import { GoListUnordered } from 'react-icons/go'
@@ -17,13 +16,11 @@ import { addNumberFormat } from '@/utils'
 import useReview from '@/hooks/useReview'
 import Modal from '@/components/common/modal'
 import Loader from '@/components/common/loader'
+import { useUser } from '@/contexts/UserProvider'
 import ReviewSelector from '@/components/books/reviewSelector'
 import CommentsSection from '@/components/books/commentsSection'
-import { useUser } from '@/contexts/UserProvider'
 
 export default function BookDetails({ params }) {
-
-    const router = useRouter()
 
     const { userId } = useUser()
     const { getBookByID, isLoading, error } = useBook()
@@ -63,10 +60,6 @@ export default function BookDetails({ params }) {
             fetchReview()
         }
     }, [book?.id, userId])
-
-    useEffect(() => {
-        console.log(isLoading)
-    }, [isLoading])
 
     return (
         <>
