@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const defaultValues = {
   username: "",
@@ -18,6 +20,8 @@ const page = () => {
   const [isError, setIsError] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [isNumeroError, setIsNumeroError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const { data, error, loading, register: registro } = useAuth();
   const { login: saveUser } = useUser();
@@ -78,6 +82,13 @@ const page = () => {
     registro(formData);
   };
 
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const handleShowPasswordConfirm = () => {
+    setShowPasswordConfirm(!showPasswordConfirm);
+  };
+
   return (
     <div className={styles.content}>
       <div className={styles.content_image}>
@@ -122,26 +133,42 @@ const page = () => {
               />
             </div>
 
-            <div>
+            <div className={styles.input_password}>
               <input
-                type="password"
-                placeholder="ej: pass1234"
+                type={showPassword ? "text" : "password"}
+                className="password"
+                placeholder="contraseña"
                 {...register("password", {
                   required: "Debe ingresar su contraseña",
                 })}
                 onBlur={() => trigger("password")}
               />
+              <FontAwesomeIcon
+                icon={showPassword ? faEyeSlash : faEye}
+                className={`${styles.eye} fa fa-eye`}
+                aria-hidden="true"
+                onClick={handleShowPassword}
+              />
             </div>
-            <div>
+
+            <div className={styles.input_password}>
               <input
-                type="password"
+                type={showPasswordConfirm ? "text" : "password"}
+                className="password"
                 placeholder="confirmar la contraseña"
                 {...register("password_confirmation", {
                   required: "Debe ingresar su contraseña",
                 })}
                 onBlur={() => trigger("password_confirmation")}
               />
+              <FontAwesomeIcon
+                icon={showPasswordConfirm ? faEyeSlash : faEye}
+                className={`${styles.eye} fa fa-eye`}
+                aria-hidden="true"
+                onClick={handleShowPasswordConfirm}
+              />
             </div>
+
             <div className={styles.content_date}>
               <input
                 type="date"
