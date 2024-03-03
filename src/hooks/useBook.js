@@ -1,117 +1,52 @@
-import { useUser } from "@/contexts/UserProvider"; // Importa el context UserProvider
-import { useState } from "react";
-import axios from "axios";
+'use client'
+
+import axios from 'axios'
+import { useState } from 'react'
 
 const useBook = () => {
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { token } = useUser(); // Obtiene el token del contexto
 
-  // Crear un libro
-  const createBook = async (data) => {
-    setIsLoading(true); // Inicia el estado de carga
-    try {
-      const res = await axios.post(`${process.env.API_URL}/libros`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const BOOK_ENDPOINT = '/libros'
 
-      return res.data;
-    } catch (error) {
-      setError(true);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
+    const [error, setError] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
+    // Create an axios instance with the base URL and token
+    const api = axios.create({ baseURL: process.env.API_URL })
+
+    const handleRequest = async requestFunction => {
+        setIsLoading(true)
+        try {
+            const res = await requestFunction()
+            return res.data
+        } catch (error) {
+            setError(true)
+        } finally {
+            setIsLoading(false)
+        }
     }
-  };
 
-  // Obtener todos los libros
-  const getAllBooks = async () => {
-    setIsLoading(true); // Inicia el estado de carga
-    try {
-      const res = await axios.get(`${process.env.API_URL}/libros`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return res.data;
-    } catch (error) {
-      setError(true);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
+    // Functions to interact with the API
+    const createBook = async params => {
+        return handleRequest(() => api.post(BOOK_ENDPOINT, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
-  };
 
-  // Obtener un libro por su id
-  const getBookByID = async (id) => {
-    setIsLoading(true); // Inicia el estado de carga
-    try {
-      const res = await axios.get(`${process.env.API_URL}/libros/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return res.data;
-    } catch (error) {
-      setError(true);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
+    const getAllBooks = async params => {
+        return handleRequest(() => api.get(BOOK_ENDPOINT, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
-  };
 
-  // Actualizar un libro por su id
-  const updateBook = async (id, data) => {
-    setIsLoading(true); // Inicia el estado de carga
-    try {
-      const res = await axios.put(`${process.env.API_URL}/libros/${id}`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return res.data;
-    } catch (error) {
-      setError(true);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
+    const getBookByID = async id => {
+        return handleRequest(() => api.get(`${BOOK_ENDPOINT}/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
-  };
 
-  // Eliminar un libro por su id
-  const deleteBook = async (id) => {
-    setIsLoading(true); // Inicia el estado de carga
-    try {
-      const res = await axios.delete(`${process.env.API_URL}/libros/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return res.data;
-    } catch (error) {
-      setError(true);
-      setIsLoading(false);
-    } finally {
-      setIsLoading(false);
+    const updateBook = async (id, params) => {
+        return handleRequest(() => api.put(`${BOOK_ENDPOINT}/${id}`, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
-  };
 
-  // Devuelve las funciones, y los estados de error y carga
-  return {
-    createBook,
-    getAllBooks,
-    getBookByID,
-    updateBook,
-    deleteBook,
-    error,
-    isLoading,
-  };
-};
+    const deleteBook = async id => {
+        return handleRequest(() => api.delete(`${BOOK_ENDPOINT}/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
 
-export default useBook;
+    return { createBook, getAllBooks, getBookByID, updateBook, deleteBook, error, isLoading }
+}
+
+export default useBook
