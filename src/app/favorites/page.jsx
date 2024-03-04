@@ -14,7 +14,7 @@ const PageFavoritos = () => {
   const { token, userId } = useUser();
 
   useEffect(() => {
-    const pagina = 1;
+    const pagina = 0;
     if (token) {
       traerFavoritosPorUsuario(userId, pagina, token)
         .then((favoritos) => {
