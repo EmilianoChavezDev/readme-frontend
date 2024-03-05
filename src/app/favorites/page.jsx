@@ -19,6 +19,7 @@ const PageFavoritos = () => {
     if (token) {
       traerFavoritosPorUsuario(userId, pagina, token)
         .then((favoritos) => {
+          console.log("Favoritos: ", favoritos);
           setLibrosFavoritos(favoritos);
         })
         .catch(() => {
@@ -85,7 +86,7 @@ const PageFavoritos = () => {
                     <Cuadros
                       key={id}
                       libroId={id}
-                      imageUrl={portada}
+                      imageurl={portada}
                       title={titulo}
                       author={autorUsername}
                       view={cantidad_lecturas}
