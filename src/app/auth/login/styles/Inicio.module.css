@@ -91,3 +91,29 @@
 .error_msg {
   color: var(--colorError);
 }
+
+.input_password {
+  position: relative;
+  width: 300px;
+}
+
+.password {
+  padding-right: 35px;
+  width: calc(100% - 35px);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 40px;
+}
+
+.eye {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  cursor: pointer;
+  color: #000;
+}
+
+.eye:focus {
+  color: #000;
+}

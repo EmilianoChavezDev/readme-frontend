@@ -70,11 +70,18 @@ const NavBar = () => {
     router.push("/page-construction");
   };
 
+  const handleFavoriteClick = () => {
+    router.push("/favorites");
+  };
+  const handleNewBook = () => {
+    router.push("/books/create");
+  };
+
   const handleHomeClick = () => {
     setIsOpenExplorar(false);
     setIsOpen(false);
     setIsOpenEscribir(false);
-    router.push("/auth/prueba");
+    router.push("/");
   };
 
   return (
@@ -142,7 +149,7 @@ const NavBar = () => {
             </div>
             <p
               className="cursor-pointer border-b border-transparent hover:border-white transition-colors duration-300"
-              onClick={() => handlNoPageClick()}
+              onClick={() => handleFavoriteClick()}
             >
               Mis Favoritos
             </p>
@@ -164,7 +171,7 @@ const NavBar = () => {
                   <ul className="my-2">
                     <li
                       className="mb-3 hover:cursor-pointer hover:font-semibold"
-                      onClick={() => handlNoPageClick()}
+                      onClick={() => handleNewBook()}
                     >
                       <FaPlusCircle className="inline-block mr-2" />
                       Crear nuevo libro

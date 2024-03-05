@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import styles from "./styles/favorites.module.css";
-import Cuadros from "./squares.jsx";
+import Cuadros from "@/components/Squares";
 import useFavoritos from "@/hooks/useFavorites";
 import { useUser } from "@/contexts/UserProvider";
-import Navbar from "@/components/navbar";
+import NavBar from "@/components/NavBar";
+import NotFound from "@/components/SearchFavoritesNotFound";
 
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
@@ -18,6 +19,7 @@ const PageFavoritos = () => {
     if (token) {
       traerFavoritosPorUsuario(userId, pagina, token)
         .then((favoritos) => {
+          console.log("Favoritos: ", favoritos);
           setLibrosFavoritos(favoritos);
         })
         .catch(() => {
@@ -45,7 +47,7 @@ const PageFavoritos = () => {
 
   return (
     <>
-      <Navbar />
+      <NavBar />
       <div className={styles.contenedor_global}>
         <div className={styles.contenedor_principal}>
           <div className={styles.barra_principal}>
@@ -65,34 +67,38 @@ const PageFavoritos = () => {
             </div>
           </div>
           <div className={styles.contenedor_padre_cuadros}>
-            <div className={styles.contenedor_cuadros}>
-              {cuadrosFiltrados?.map(
-                ({
-                  id,
-                  titulo,
-                  autorUsername,
-                  portada,
-                  cantidad_lecturas,
-                  puntuacion_media,
-                  cantidad_comentarios,
-                  token,
-                  userId,
-                }) => (
-                  <Cuadros
-                    key={id}
-                    libroId={id}
-                    imageUrl={portada}
-                    title={titulo}
-                    author={autorUsername}
-                    view={cantidad_lecturas}
-                    star={puntuacion_media}
-                    comment={cantidad_comentarios}
-                    token={token}
-                    userId={userId}
-                  />
-                )
-              )}
-            </div>
+            {cuadrosFiltrados?.length === 0 ? (
+              <NotFound/>
+            ) : (
+              <div className={styles.contenedor_cuadros}>
+                {cuadrosFiltrados?.map(
+                  ({
+                    id,
+                    titulo,
+                    autorUsername,
+                    portada,
+                    cantidad_lecturas,
+                    puntuacion_media,
+                    cantidad_comentarios,
+                    token,
+                    userId,
+                  }) => (
+                    <Cuadros
+                      key={id}
+                      libroId={id}
+                      imageurl={portada}
+                      title={titulo}
+                      author={autorUsername}
+                      view={cantidad_lecturas}
+                      star={puntuacion_media}
+                      comment={cantidad_comentarios}
+                      token={token}
+                      userId={userId}
+                    />
+                  )
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
