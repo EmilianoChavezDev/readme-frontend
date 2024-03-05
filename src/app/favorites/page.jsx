@@ -15,11 +15,10 @@ const PageFavoritos = () => {
   const { token, userId } = useUser();
 
   useEffect(() => {
-    const pagina = 0;
+    const pagina = 1;
     if (token) {
       traerFavoritosPorUsuario(userId, pagina, token)
         .then((favoritos) => {
-          console.log("Favoritos: ", favoritos);
           setLibrosFavoritos(favoritos);
         })
         .catch(() => {

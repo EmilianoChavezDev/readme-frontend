@@ -39,7 +39,6 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
     return <div> CARGANDO... </div>;
   }
 
-  console.log("IMSGR: ",imageurl);
 
   return (
     <div className={styles.contenedor_datos_cuadro}>
