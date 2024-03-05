@@ -6,6 +6,7 @@ import Cuadros from "@/components/Squares";
 import useFavoritos from "@/hooks/useFavorites";
 import { useUser } from "@/contexts/UserProvider";
 import NavBar from "@/components/NavBar";
+import NotFound from "@/components/SearchFavoritesNotFound";
 
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
@@ -65,34 +66,38 @@ const PageFavoritos = () => {
             </div>
           </div>
           <div className={styles.contenedor_padre_cuadros}>
-            <div className={styles.contenedor_cuadros}>
-              {cuadrosFiltrados?.map(
-                ({
-                  id,
-                  titulo,
-                  autorUsername,
-                  portada,
-                  cantidad_lecturas,
-                  puntuacion_media,
-                  cantidad_comentarios,
-                  token,
-                  userId,
-                }) => (
-                  <Cuadros
-                    key={id}
-                    libroId={id}
-                    imageUrl={portada}
-                    title={titulo}
-                    author={autorUsername}
-                    view={cantidad_lecturas}
-                    star={puntuacion_media}
-                    comment={cantidad_comentarios}
-                    token={token}
-                    userId={userId}
-                  />
-                )
-              )}
-            </div>
+            {cuadrosFiltrados?.length === 0 ? (
+              <NotFound/>
+            ) : (
+              <div className={styles.contenedor_cuadros}>
+                {cuadrosFiltrados?.map(
+                  ({
+                    id,
+                    titulo,
+                    autorUsername,
+                    portada,
+                    cantidad_lecturas,
+                    puntuacion_media,
+                    cantidad_comentarios,
+                    token,
+                    userId,
+                  }) => (
+                    <Cuadros
+                      key={id}
+                      libroId={id}
+                      imageUrl={portada}
+                      title={titulo}
+                      author={autorUsername}
+                      view={cantidad_lecturas}
+                      star={puntuacion_media}
+                      comment={cantidad_comentarios}
+                      token={token}
+                      userId={userId}
+                    />
+                  )
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

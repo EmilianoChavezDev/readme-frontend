@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import styles from "../app/favorites/styles/favorites.module.css";
 import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
+import Link from 'next/link';
 
 const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
   const [favorito, setFavorito] = useState(true);
@@ -54,13 +55,13 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
           </button>
         )}
       </div>
-      {/*<Link href={`/libro/${libroId}`}>*/}
+      <Link href={`/books/${libroId}`}>
+        <div>
+          <img src={imageurl} alt="Imagen del libro" />
+        </div>
+      </Link>
       <div>
-        <img src={imageurl} alt="Imagen del libro" />
-      </div>
-      {/*</Link>*/}
-      <div>
-        <p className={styles.title}>{title}</p>
+        <p className={`${styles.title} ${styles.contenedor_title}`}>{title}</p>
       </div>
       <div>
         <p className={styles.author}>{author}</p>
