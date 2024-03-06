@@ -4,6 +4,7 @@ import RenderImage from "@/components/RenderImage";
 import useBook from "@/hooks/useBook";
 import { useState } from "react";
 import { FaAngleLeft } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 export default function Libro() {
   const [info, setInfo] = useState({
@@ -27,6 +28,8 @@ export default function Libro() {
 
   //Obtener la funcion para agregar un libro, el error y el estado de carga
   const { createBook, error, isLoading } = useBook();
+
+  const router = useRouter();
 
   //Manejar cambios en el formulario
   const handleInputChange = (e) => {
@@ -91,6 +94,8 @@ export default function Libro() {
         sinopsis: "",
         categoria: "",
       });
+      // Si la peticion fue exitosa, redirigir al usuario a la pagina de inicio
+      router.replace(`/books/${success.id}`);
     }
   };
 

@@ -73,6 +73,9 @@ const NavBar = () => {
   const handleFavoriteClick = () => {
     router.push("/favorites");
   };
+  const handleNewBook = () => {
+    router.push("/books/create");
+  };
 
   const handleHomeClick = () => {
     setIsOpenExplorar(false);
@@ -193,7 +196,7 @@ const NavBar = () => {
                   <ul className="my-2">
                     <li
                       className="mb-3 hover:cursor-pointer hover:font-semibold"
-                      onClick={() => handlNoPageClick()}
+                      onClick={() => handleNewBook()}
                     >
                       <FaPlusCircle className="inline-block mr-2" />
                       Crear nuevo libro
