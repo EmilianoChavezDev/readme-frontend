@@ -17,7 +17,6 @@ const PageFavoritos = () => {
   const chargeList = async (pagina = 1) =>
     await traerFavoritosPorUsuario(userId, pagina, token)
       .then((favoritos) => {
-        console.log(favoritos);
         setLibrosFavoritos(favoritos);
       })
       .catch(() => {
@@ -71,34 +70,9 @@ const PageFavoritos = () => {
               <NotFound />
             ) : (
               <div className={styles.contenedor_cuadros}>
-                {librosFavoritos
-                  ?.filter(filterCallback)
-                  ?.map(
-                    ({
-                      id,
-                      titulo,
-                      autorUsername,
-                      portada,
-                      cantidad_lecturas,
-                      puntuacion_media,
-                      cantidad_comentarios,
-                      token,
-                      userId,
-                    }) => (
-                      <Cuadros
-                        key={id}
-                        libroId={id}
-                        imageurl={portada}
-                        title={titulo}
-                        author={autorUsername}
-                        view={cantidad_lecturas}
-                        star={puntuacion_media}
-                        comment={cantidad_comentarios}
-                        token={token}
-                        userId={userId}
-                      />
-                    )
-                  )}
+                {librosFavoritos?.filter(filterCallback)?.map((data, index) => (
+                  <Cuadros key={index} data={data} />
+                ))}
               </div>
             )}
           </div>

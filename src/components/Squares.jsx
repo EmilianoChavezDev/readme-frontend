@@ -6,15 +6,24 @@ import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
 import Link from "next/link";
 
-const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
+const Cuadros = ({ data }) => {
   const [favorito, setFavorito] = useState(true);
   const [loading, setLoading] = useState(true);
-  const { actualizarFavoritos, error, isLoading } = updateFavoritos();
-  const { token, userId } = useUser();
+  const { actualizarFavoritos, error } = updateFavoritos();
+  const { token } = useUser();
+  let {
+    id: libroId,
+    portada: imageurl,
+    titulo: title,
+    autorUsername: author,
+    cantidad_lecturas: view,
+    cantidad_resenhas: star,
+    cantidad_comentarios: comment,
+  } = data;
 
   const fn_btnFavorite = (clickedLibroId) => {
     if (token) {
-      actualizarFavoritos(clickedLibroId, userId, !favorito, token)
+      actualizarFavoritos(clickedLibroId, !favorito, token)
         .then(() => {
           setFavorito(!favorito);
         })
@@ -32,11 +41,6 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
 
   if (loading) {
     return <div> CARGANDO... </div>;
-  }
-
-  if (imageurl == "") {
-    imageurl =
-      "http://localhost:3000/_next/image?url=%2Fimage%2Ftemplate_libro.png&w=256&q=75";
   }
 
   return (
@@ -57,7 +61,7 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
       </div>
       <Link href={`/books/${libroId}`}>
         <div>
-          <img src={imageurl} />
+          <img src={imageurl ? imageurl : "/image/template_libro.png"} />
         </div>
       </Link>
       <div>

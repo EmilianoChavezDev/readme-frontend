@@ -7,14 +7,12 @@ const updateFavoritos = () => {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const actualizarFavoritos = async (libro_id, user_id, fav, token) => {
+  const actualizarFavoritos = async (libro_id, fav, token) => {
     try {
-      console.log("TOKEN 2 : ", token);
-      const res = await axios.put(
-        `${process.env.API_URL}/favoritos/${libro_id}`,
+      const res = await axios.post(
+        `${process.env.API_URL}/favoritos`,
         {
           libro_id: libro_id,
-          user_id: user_id,
           fav: fav,
         },
         {
