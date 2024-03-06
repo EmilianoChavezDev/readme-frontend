@@ -100,6 +100,9 @@ const page = () => {
       </div>
       <div className={styles.content_registrarse}>
         <div className={styles.content_detalle}>
+          <div>
+            <h1 className={styles.content_title}>REGISTRARTE!</h1>
+          </div>
           <div className={styles.content_informacion}>
             {isError && (
               <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
@@ -112,7 +115,7 @@ const page = () => {
               </p>
             )}
 
-            {error && (
+            {error && !isPasswordError && !isNumeroError && (
               <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
                 Nombre de usuario en uso
               </p>

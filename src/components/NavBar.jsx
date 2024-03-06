@@ -83,9 +83,17 @@ const NavBar = () => {
 
   return (
     <>
-      <div className="flex justify-between px-10 bg-colorPrimario py-4">
+      <div
+        className="flex justify-between px-10 bg-colorPrimario md:py-4
+        sm:flex sm:px-5 sm:py-2 sm:justify-normal
+      "
+      >
         {/* parte de las opciones */}
-        <div className="flex text-white items-center gap-2">
+        <div
+          className="flex text-white items-center gap-2
+              sm:items-center sm:justify-center 
+        "
+        >
           <div
             className="flex gap-1 mr-2 items-center cursor-pointer"
             onClick={() => handleHomeClick()}
@@ -93,13 +101,15 @@ const NavBar = () => {
             <Image width={55} height={50} alt="logo" src={"/image/logo1.png"} />
             <Image width={20} height={50} alt="logo" src={"/image/logo2.png"} />
           </div>
-          <div className="flex gap-2 text-sm">
+          <div className="flex gap-2 text-sm sm:text-xs">
             <div className="relative">
               <div
-                className="flex items-center border-b border-transparent hover:border-white transition-colors duration-300"
+                className="flex items-center border-b border-transparent hover:border-white transition-colors duration-300
+
+                "
                 onClick={() => toggleDropdownExplorar()}
               >
-                <p className="cursor-pointer text-sm">Explorar</p>
+                <p className="cursor-pointer md:text-sm sm:text-xs">Explorar</p>
                 <button
                   type="button"
                   className="flex items-center justify-center"
@@ -108,7 +118,12 @@ const NavBar = () => {
                 </button>
               </div>
               {isOpenExplorar && (
-                <div className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black w-96">
+                <div
+                  className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black w-96
+                md:text-sm sm:text-xs 
+                
+                "
+                >
                   <ul className="my-2 gap-4 grid grid-cols-4">
                     <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
                       Ficción histórica
@@ -144,18 +159,23 @@ const NavBar = () => {
                 </div>
               )}
             </div>
-            <p
-              className="cursor-pointer border-b border-transparent hover:border-white transition-colors duration-300"
-              onClick={() => handleFavoriteClick()}
-            >
-              Mis Favoritos
-            </p>
+            <div className=" xs:justify-center sm:text-nowrap md:text-sm sm:text-xs">
+              <p
+                className="cursor-pointer border-b border-transparent hover:border-white transition-colors duration-300 
+              "
+                onClick={() => handleFavoriteClick()}
+              >
+                Mis Favoritos
+              </p>
+            </div>
             <div className="relative">
               <div
-                className="flex items-center border-b border-transparent hover:border-white transition-colors duration-300"
+                className="flex items-center border-b border-transparent hover:border-white transition-colors duration-300
+                md:text-sm sm:text-xs
+                "
                 onClick={() => toggleDropdownEscribir()}
               >
-                <p className="cursor-pointer text-sm">Escribe</p>
+                <p className="cursor-pointer ">Escribe</p>
                 <button
                   type="button"
                   className="flex items-center justify-center"
@@ -164,7 +184,12 @@ const NavBar = () => {
                 </button>
               </div>
               {isOpenEscribir && (
-                <div className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black w-48">
+                <div
+                  className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black w-48
+                
+                md:text-sm sm:text-xs
+                "
+                >
                   <ul className="my-2">
                     <li
                       className="mb-3 hover:cursor-pointer hover:font-semibold"
@@ -194,7 +219,7 @@ const NavBar = () => {
           </div>
         </div>
         {/* parte del buscador */}
-        <div className="flex items-center flex-grow mr-96 ml-60">
+        <div className="flex items-center flex-grow mr-96 ml-60 md:ml-16 md:justify-center md:mr-60">
           <input
             type="text"
             placeholder="Buscar Libros por ej.: Nombre, Autor..."

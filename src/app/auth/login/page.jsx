@@ -56,7 +56,7 @@ const Page = () => {
       <div className={styles.content_login}>
         <div className={styles.content_detalle}>
           <div>
-            <h1 className={styles.content_title}>Readme</h1>
+            <h1 className={styles.content_title}>BIENVENIDO!</h1>
           </div>
           {error && (
             <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">

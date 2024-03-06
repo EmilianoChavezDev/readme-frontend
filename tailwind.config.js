@@ -22,6 +22,7 @@ module.exports = withMT({
         colorHoverPrimario: "#0b5755",
       },
     },
+    
     screens: {
       // small resolutions
       '_sm': '640px',
