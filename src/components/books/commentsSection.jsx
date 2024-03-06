@@ -63,7 +63,7 @@ export default function CommentsSection({ bookId }) {
                 onHide={() => setCommentIdToRemove(null)}
                 onSave={removeComment}
                 title='Eliminar Comentario'>
-                <span>Estás seguro de eliminar este comment?</span>
+                <span>¿Estás seguro de eliminar este comentario?</span>
             </Modal>
             <section className='flex flex-wrap'>
                 <div className='w-full _lg:w-1/2 px-9 _lg:px-16 min-w-96 py-4 flex flex-col gap-3'>
