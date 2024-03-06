@@ -14,31 +14,32 @@ const PageFavoritos = () => {
   const { traerFavoritosPorUsuario, error, isLoading } = useFavoritos();
   const { token, userId } = useUser();
 
+  const chargeList = async (pagina = 1) =>
+    await traerFavoritosPorUsuario(userId, pagina, token)
+      .then((favoritos) => {
+        console.log(favoritos);
+        setLibrosFavoritos(favoritos);
+      })
+      .catch(() => {
+        console.error("Error al traer favoritos:", error);
+      });
   useEffect(() => {
     const pagina = 1;
     if (token) {
-      traerFavoritosPorUsuario(userId, pagina, token)
-        .then((favoritos) => {
-          setLibrosFavoritos(favoritos);
-        })
-        .catch(() => {
-          console.error("Error al traer favoritos:", error);
-        });
+      chargeList(pagina);
     }
   }, [token]);
 
-  const cuadrosFiltrados = librosFavoritos?.filter(
-    ({ titulo, autorUsername }) => {
-      const lowerCaseTitulo = titulo ? titulo.toLowerCase() : "";
-      const lowerCaseAutor = autorUsername ? autorUsername.toLowerCase() : "";
-      const lowerCaseFiltro = filtro.toLowerCase();
+  const filterCallback = ({ titulo, autorUsername }) => {
+    const lowerCaseTitulo = titulo ? titulo.toLowerCase() : "";
+    const lowerCaseAutor = autorUsername ? autorUsername.toLowerCase() : "";
+    const lowerCaseFiltro = filtro.toLowerCase();
 
-      return (
-        lowerCaseTitulo.includes(lowerCaseFiltro) ||
-        lowerCaseAutor.includes(lowerCaseFiltro)
-      );
-    }
-  );
+    return (
+      lowerCaseTitulo.includes(lowerCaseFiltro) ||
+      lowerCaseAutor.includes(lowerCaseFiltro)
+    );
+  };
 
   if (isLoading) {
     return <div> CARGANDO... </div>;
@@ -66,36 +67,38 @@ const PageFavoritos = () => {
             </div>
           </div>
           <div className={styles.contenedor_padre_cuadros}>
-            {cuadrosFiltrados?.length === 0 ? (
-              <NotFound/>
+            {librosFavoritos?.filter(filterCallback).length === 0 ? (
+              <NotFound />
             ) : (
               <div className={styles.contenedor_cuadros}>
-                {cuadrosFiltrados?.map(
-                  ({
-                    id,
-                    titulo,
-                    autorUsername,
-                    portada,
-                    cantidad_lecturas,
-                    puntuacion_media,
-                    cantidad_comentarios,
-                    token,
-                    userId,
-                  }) => (
-                    <Cuadros
-                      key={id}
-                      libroId={id}
-                      imageurl={portada}
-                      title={titulo}
-                      author={autorUsername}
-                      view={cantidad_lecturas}
-                      star={puntuacion_media}
-                      comment={cantidad_comentarios}
-                      token={token}
-                      userId={userId}
-                    />
-                  )
-                )}
+                {librosFavoritos
+                  ?.filter(filterCallback)
+                  ?.map(
+                    ({
+                      id,
+                      titulo,
+                      autorUsername,
+                      portada,
+                      cantidad_lecturas,
+                      puntuacion_media,
+                      cantidad_comentarios,
+                      token,
+                      userId,
+                    }) => (
+                      <Cuadros
+                        key={id}
+                        libroId={id}
+                        imageurl={portada}
+                        title={titulo}
+                        author={autorUsername}
+                        view={cantidad_lecturas}
+                        star={puntuacion_media}
+                        comment={cantidad_comentarios}
+                        token={token}
+                        userId={userId}
+                      />
+                    )
+                  )}
               </div>
             )}
           </div>

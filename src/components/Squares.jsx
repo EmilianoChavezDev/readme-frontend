@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import styles from "../app/favorites/styles/favorites.module.css";
 import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
-import Link from 'next/link';
+import Link from "next/link";
 
 const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
   const [favorito, setFavorito] = useState(true);
@@ -14,14 +14,9 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
 
   const fn_btnFavorite = (clickedLibroId) => {
     if (token) {
-      setFavorito(!favorito);
       actualizarFavoritos(clickedLibroId, userId, !favorito, token)
-        .then((favoritos) => {
-          console.log(
-            `Se ha ${
-              favorito ? "sacado de" : "agregado a"
-            } favoritos el libro ${clickedLibroId}`
-          );
+        .then(() => {
+          setFavorito(!favorito);
         })
         .catch(() => {
           console.error("Error al intentar actualizar favoritos:", error);
@@ -39,6 +34,10 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
     return <div> CARGANDO... </div>;
   }
 
+  if (imageurl == "") {
+    imageurl =
+      "http://localhost:3000/_next/image?url=%2Fimage%2Ftemplate_libro.png&w=256&q=75";
+  }
 
   return (
     <div className={styles.contenedor_datos_cuadro}>
@@ -51,14 +50,14 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
             <img src="/image/img_like.png" alt="Corazón lleno" />
           </button>
         ) : (
-          <button className={styles.btnCorazonVacio} onClick={fn_btnFavorite}>
+          <button className={styles.btnCorazonVacio}>
             <img src="/image/img_dislike.png" alt="Corazón vacio" />
           </button>
         )}
       </div>
       <Link href={`/books/${libroId}`}>
         <div>
-          <img src={imageurl} alt="Imagen del libro" />
+          <img src={imageurl} />
         </div>
       </Link>
       <div>

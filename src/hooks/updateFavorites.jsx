@@ -9,6 +9,7 @@ const updateFavoritos = () => {
 
   const actualizarFavoritos = async (libro_id, user_id, fav, token) => {
     try {
+      console.log("TOKEN 2 : ", token);
       const res = await axios.put(
         `${process.env.API_URL}/favoritos/${libro_id}`,
         {
