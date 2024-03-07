@@ -166,7 +166,7 @@ const NavBar = () => {
               <p
                 className="cursor-pointer border-b border-transparent hover:border-white transition-colors duration-300 
               "
-                onClick={() => handleFavoriteClick()}
+                onClick={() => handlNoPageClick()}
               >
                 Mis Favoritos
               </p>
