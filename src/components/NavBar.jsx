@@ -110,7 +110,7 @@ const NavBar = () => {
                 className="flex items-center border-b border-transparent hover:border-white transition-colors duration-300
 
                 "
-                onClick={() => toggleDropdownExplorar()}
+                onClick={() => handlNoPageClick()}
               >
                 <p className="cursor-pointer md:text-sm sm:text-xs">Explorar</p>
                 <button
