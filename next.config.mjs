@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    API_URL: "https://readme-backend.fly.dev",
+    API_URL: "https://readmeapp.fly.dev",
   },
   images: {
     remotePatterns: [
