@@ -12,20 +12,22 @@ const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
   const [librosFavoritos, setLibrosFavoritos] = useState([]);
   const { traerFavoritosPorUsuario, error, isLoading } = useFavoritos();
-  const { token, userId } = useUser();
+  const { token } = useUser();
 
-  const chargeList = async (pagina = 1) =>
-    await traerFavoritosPorUsuario(userId, pagina, token)
+  const chargeList = async (user_id, pagina = 1) =>
+    await traerFavoritosPorUsuario(user_id, pagina, token)
       .then((favoritos) => {
         setLibrosFavoritos(favoritos);
       })
       .catch(() => {
         console.error("Error al traer favoritos:", error);
       });
+
   useEffect(() => {
     const pagina = 1;
     if (token) {
-      chargeList(pagina);
+      let user_id = localStorage.getItem("user_id");
+      chargeList(user_id, pagina);
     }
   }, [token]);
 
