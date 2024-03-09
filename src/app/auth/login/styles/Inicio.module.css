@@ -58,6 +58,7 @@
 }
 
 .content_crear_cuenta a {
+  margin-left: 4px;
   color: var(--colorPrimario);
 }
 
@@ -116,4 +117,10 @@
 
 .eye:focus {
   color: #000;
+}
+
+.content_image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
 }

@@ -8,6 +8,7 @@ import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import Loading from "@/components/common/Loading";
 
 const defaultValues = {
   username: "",
@@ -16,6 +17,7 @@ const defaultValues = {
 
 const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showUsernameLabel, setShowUsernameLabel] = useState(false);
 
   const { data, error, loading, login } = useAuth();
   const { login: saveUser } = useUser();
@@ -42,6 +44,7 @@ const Page = () => {
   };
 
   const passwordValue = watch("password", "");
+  const usernameValue = watch("password", "");
 
   return (
     <div className={styles.content}>
@@ -55,8 +58,13 @@ const Page = () => {
       </div>
       <div className={styles.content_login}>
         <div className={styles.content_detalle}>
-          <div>
-            <h1 className={styles.content_title}>BIENVENIDO!</h1>
+          <div className={styles.content_image}>
+            <Image
+              src="/image/g2.png"
+              alt="imagen de logo"
+              width={250}
+              height={200}
+            />
           </div>
           {error && (
             <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
@@ -68,7 +76,7 @@ const Page = () => {
               <input
                 className="text-center"
                 type="text"
-                placeholder="nombre de usuario"
+                placeholder="Nombre de usuario"
                 {...register("username", {
                   required: "Debe ingresar su nombre de usuario",
                 })}
@@ -85,7 +93,7 @@ const Page = () => {
               <input
                 type={showPassword ? "text" : "password"}
                 className="text-center"
-                placeholder="contraseña"
+                placeholder="Contraseña"
                 {...register("password", {
                   required: "Debe ingresar su contraseña",
                 })}
@@ -113,11 +121,11 @@ const Page = () => {
               disabled={loading}
               onClick={handleSubmit(onSubmit)}
             >
-              {loading ? "Iniciando Sesión..." : "Iniciar Sesión"}
+              {loading ? <Loading /> : "Iniciar Sesión"}
             </button>
             <div className={styles.content_crear_cuenta}>
               <span>No tienes cuenta?</span>{" "}
-              <Link href={"/auth/registrarse"}>Registrate</Link>
+              <Link href={"/auth/registrarse"}>Registrate!</Link>
             </div>
           </div>
         </div>
