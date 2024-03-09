@@ -8,6 +8,7 @@ import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import Loading from "@/components/common/Loading";
 
 const defaultValues = {
   username: "",
@@ -55,8 +56,13 @@ const Page = () => {
       </div>
       <div className={styles.content_login}>
         <div className={styles.content_detalle}>
-          <div>
-            <h1 className={styles.content_title}>Readme</h1>
+          <div className={styles.content_logo}>
+            <Image
+              src={"/image/g2.png"}
+              alt="imagen logo"
+              width={250}
+              height={250}
+            />
           </div>
           {error && (
             <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
@@ -75,9 +81,7 @@ const Page = () => {
                 onBlur={() => trigger("username")}
               />
               {errors.username && (
-                <div className="text-red-500 text-center">
-                  {errors.username.message}
-                </div>
+                <div className={styles.errors}>{errors.username.message}</div>
               )}
             </div>
 
@@ -100,9 +104,7 @@ const Page = () => {
                 />
               )}
               {errors.password && (
-                <div className="text-red-500 text-center">
-                  {errors.password.message}
-                </div>
+                <div className={styles.errors}>{errors.password.message}</div>
               )}
             </div>
           </div>
@@ -113,11 +115,11 @@ const Page = () => {
               disabled={loading}
               onClick={handleSubmit(onSubmit)}
             >
-              {loading ? "Iniciando Sesión..." : "Iniciar Sesión"}
+              {loading ? <Loading /> : "Iniciar Sesión"}
             </button>
             <div className={styles.content_crear_cuenta}>
               <span>No tienes cuenta?</span>{" "}
-              <Link href={"/auth/registrarse"}>Registrate</Link>
+              <Link href={"/auth/registrarse"}>Registrate!</Link>
             </div>
           </div>
         </div>
