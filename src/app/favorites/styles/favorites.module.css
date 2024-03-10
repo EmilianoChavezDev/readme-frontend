@@ -30,8 +30,8 @@
 
 .contenedor_cuadros {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-gap: 50px 10px
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 50px 10px;
 }
 
 .contenedor_padre_cuadros {
@@ -39,10 +39,8 @@
 }
 
 .contenedor_datos_cuadro img {
-  width: 150px;
-  height: 200px;
-  background-repeat: no-repeat;
-  background-size: cover;
+  height: 300px;
+  width: -webkit-fill-available;
 }
 
 .contenedor_datos_cuadro button img {
@@ -69,22 +67,26 @@
 .contenedor_datos_cuadro {
   border-radius: 9px;
   padding: 10px;
-  width: 170px;
 }
 
 .title {
   font-weight: bold;
 }
 
-.contenedor_title{
-  width: auto; 
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
+.contenedor_title {
+  /* width: auto;  */
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .author {
   font-size: 14px;
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .group_global {
@@ -125,7 +127,37 @@
   transform: translate(-50%, -50%);
 }
 
-.notfound > img{
+.notfound > img {
   height: auto;
-  max-width: 400px; 
+  max-width: 400px;
+}
+
+/*Loading*/
+
+.loadingContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.loadingSpinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #167574;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

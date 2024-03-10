@@ -40,8 +40,43 @@ const Cuadros = ({ data }) => {
   }, [token]);
 
   if (loading) {
-    return <div> CARGANDO... </div>;
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner} />
+      </div>
+    );
   }
+
+  const formatNumber = (value) => {
+    const stringValue = String(value);
+    const length = stringValue.length;
+
+    if (length === 4) {
+      return (
+        stringValue.substring(0, 1) + "." + stringValue.substring(1, 2) + "K"
+      );
+    } else if (length === 5) {
+      return stringValue.substring(0, 2) + "K";
+    } else if (length === 6) {
+      return stringValue.substring(0, 3) + "K";
+    } else if (length === 7) {
+      return (
+        stringValue.substring(0, 1) + "." + stringValue.substring(1, 3) + "M"
+      );
+    } else if (length === 8 || length === 9) {
+      return stringValue.substring(0, length - 6) + "M";
+    } else if (length === 10) {
+      return (
+        stringValue.substring(0, 1) + "." + stringValue.substring(1, 3) + "B"
+      );
+    } else if (length >= 11 && length <= 12) {
+      return stringValue.substring(0, length - 9) + "B";
+    } else if (length > 12) {
+      return stringValue.substring(0, 2) + "B+";
+    } else {
+      return stringValue;
+    }
+  };
 
   return (
     <div className={styles.contenedor_datos_cuadro}>
@@ -73,26 +108,26 @@ const Cuadros = ({ data }) => {
       <div className={styles.group_global}>
         <div className={styles.group_children}>
           <div>
-            <img src="/image/img_view.png" alt="imagen ver"></img>
+            <img src="/image/img_view.png" alt="imagen ver" />
           </div>
           <div>
-            <p>{view}</p>
-          </div>
-        </div>
-        <div className={styles.group_children}>
-          <div>
-            <img src="/image/img_star.png" alt="imagen estrella"></img>
-          </div>
-          <div>
-            <p>{star}</p>
+            <p>{formatNumber(view)}</p>
           </div>
         </div>
         <div className={styles.group_children}>
           <div>
-            <img src="/image/img_comment.png" alt="imagen comentar"></img>
+            <img src="/image/img_star.png" alt="imagen estrella" />
           </div>
           <div>
-            <p>{comment}</p>
+            <p>{formatNumber(star)}</p>
+          </div>
+        </div>
+        <div className={styles.group_children}>
+          <div>
+            <img src="/image/img_comment.png" alt="imagen comentar" />
+          </div>
+          <div>
+            <p>{formatNumber(comment)}</p>
           </div>
         </div>
       </div>
