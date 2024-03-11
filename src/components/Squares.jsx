@@ -4,23 +4,28 @@ import { useEffect, useState } from "react";
 import styles from "../app/favorites/styles/favorites.module.css";
 import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
+import Link from "next/link";
 
-const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
+const Cuadros = ({ data }) => {
   const [favorito, setFavorito] = useState(true);
   const [loading, setLoading] = useState(true);
-  const { actualizarFavoritos, error, isLoading } = updateFavoritos();
-  const { token, userId } = useUser();
+  const { actualizarFavoritos, error } = updateFavoritos();
+  const { token } = useUser();
+  let {
+    id: libroId,
+    portada: imageurl,
+    titulo: title,
+    autorUsername: author,
+    cantidad_lecturas: view,
+    cantidad_resenhas: star,
+    cantidad_comentarios: comment,
+  } = data;
 
   const fn_btnFavorite = (clickedLibroId) => {
     if (token) {
-      setFavorito(!favorito);
-      actualizarFavoritos(clickedLibroId, userId, !favorito, token)
-        .then((favoritos) => {
-          console.log(
-            `Se ha ${
-              favorito ? "sacado de" : "agregado a"
-            } favoritos el libro ${clickedLibroId}`
-          );
+      actualizarFavoritos(clickedLibroId, !favorito, token)
+        .then(() => {
+          setFavorito(!favorito);
         })
         .catch(() => {
           console.error("Error al intentar actualizar favoritos:", error);
@@ -35,8 +40,43 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
   }, [token]);
 
   if (loading) {
-    return <div> CARGANDO... </div>;
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner} />
+      </div>
+    );
   }
+
+  const formatNumber = (value) => {
+    const stringValue = String(value);
+    const length = stringValue.length;
+
+    if (length === 4) {
+      return (
+        stringValue.substring(0, 1) + "." + stringValue.substring(1, 2) + "K"
+      );
+    } else if (length === 5) {
+      return stringValue.substring(0, 2) + "K";
+    } else if (length === 6) {
+      return stringValue.substring(0, 3) + "K";
+    } else if (length === 7) {
+      return (
+        stringValue.substring(0, 1) + "." + stringValue.substring(1, 3) + "M"
+      );
+    } else if (length === 8 || length === 9) {
+      return stringValue.substring(0, length - 6) + "M";
+    } else if (length === 10) {
+      return (
+        stringValue.substring(0, 1) + "." + stringValue.substring(1, 3) + "B"
+      );
+    } else if (length >= 11 && length <= 12) {
+      return stringValue.substring(0, length - 9) + "B";
+    } else if (length > 12) {
+      return stringValue.substring(0, 2) + "B+";
+    } else {
+      return stringValue;
+    }
+  };
 
   return (
     <div className={styles.contenedor_datos_cuadro}>
@@ -49,18 +89,18 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
             <img src="/image/img_like.png" alt="Corazón lleno" />
           </button>
         ) : (
-          <button className={styles.btnCorazonVacio} onClick={fn_btnFavorite}>
+          <button className={styles.btnCorazonVacio}>
             <img src="/image/img_dislike.png" alt="Corazón vacio" />
           </button>
         )}
       </div>
-      {/*<Link href={`/libro/${libroId}`}>*/}
+      <Link href={`/books/${libroId}`}>
+        <div>
+          <img src={imageurl ? imageurl : "/image/template_libro.png"} />
+        </div>
+      </Link>
       <div>
-        <img src={imageurl} alt="Imagen del libro" />
-      </div>
-      {/*</Link>*/}
-      <div>
-        <p className={styles.title}>{title}</p>
+        <p className={`${styles.title} ${styles.contenedor_title}`}>{title}</p>
       </div>
       <div>
         <p className={styles.author}>{author}</p>
@@ -68,26 +108,26 @@ const Cuadros = ({ libroId, imageurl, title, author, view, star, comment }) => {
       <div className={styles.group_global}>
         <div className={styles.group_children}>
           <div>
-            <img src="/image/img_view.png" alt="imagen ver"></img>
+            <img src="/image/img_view.png" alt="imagen ver" />
           </div>
           <div>
-            <p>{view}</p>
-          </div>
-        </div>
-        <div className={styles.group_children}>
-          <div>
-            <img src="/image/img_star.png" alt="imagen estrella"></img>
-          </div>
-          <div>
-            <p>{star}</p>
+            <p>{formatNumber(view)}</p>
           </div>
         </div>
         <div className={styles.group_children}>
           <div>
-            <img src="/image/img_comment.png" alt="imagen comentar"></img>
+            <img src="/image/img_star.png" alt="imagen estrella" />
           </div>
           <div>
-            <p>{comment}</p>
+            <p>{formatNumber(star)}</p>
+          </div>
+        </div>
+        <div className={styles.group_children}>
+          <div>
+            <img src="/image/img_comment.png" alt="imagen comentar" />
+          </div>
+          <div>
+            <p>{formatNumber(comment)}</p>
           </div>
         </div>
       </div>
