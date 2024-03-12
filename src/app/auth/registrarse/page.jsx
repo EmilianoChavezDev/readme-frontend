@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./styles/Registrarse.module.css";
+import style from "../login/styles/Inicio.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -10,6 +11,8 @@ import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/common/Loading";
+import UsernameInput from "@/components/common/InputUsername";
+import PasswordInput from "@/components/common/InputPassword";
 
 const defaultValues = {
   username: "",
@@ -23,6 +26,10 @@ const page = () => {
   const [isNumeroError, setIsNumeroError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+  const [isFocusedPasswordConfirm, setIsFocusedPasswordConfirm] =
+    useState(false);
 
   const { data, error, loading, register: registro } = useAuth();
   const { login: saveUser } = useUser();
@@ -91,14 +98,41 @@ const page = () => {
     setShowPasswordConfirm(!showPasswordConfirm);
   };
 
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+  const handleFocusPassword = () => {
+    setIsFocusedPassword(true);
+  };
+
+  const handleBlurPassword = () => {
+    setIsFocusedPassword(false);
+  };
+  const handleFocusPasswordConfirm = () => {
+    setIsFocusedPasswordConfirm(true);
+  };
+
+  const handleBlurPasswordConfirm = () => {
+    setIsFocusedPasswordConfirm(false);
+  };
+
   const passwordValue = watch("password", "");
   const passwordConfirmationValue = watch("password_confirmation", "");
-  const usuarioValue = watch("username", "");
+  const usernameValue = watch("username", "");
 
   return (
     <div className={styles.content}>
       <div className={styles.content_image}>
-        <Image src="/image/img_inicio.png" width={400} height={200} />
+        <Image
+          src="/image/img_inicio.png"
+          width={400}
+          height={200}
+          alt="imagen presentacion"
+        />
       </div>
       <div className={styles.content_registrarse}>
         <div className={styles.content_detalle}>
@@ -135,68 +169,65 @@ const page = () => {
                 <p>debe contener al menos 1 numero</p>
               </div>
             )}
-
-            <div className={styles.content_title_correo}>
-              <input
-                type="text"
-                placeholder="nombre de usuario"
-                {...register("username", {
-                  required: "Debe ingresar su nombre de usuario",
-                })}
-                onBlur={() => trigger("username")}
-              />
-            </div>
-
-            <div className={styles.input_password}>
-              <input
-                type={showPassword ? "text" : "password"}
-                className="password"
-                placeholder="contraseña"
-                {...register("password", {
-                  required: "Debe ingresar su contraseña",
-                })}
-                onBlur={() => trigger("password")}
-              />
-
-              {passwordValue && (
-                <FontAwesomeIcon
-                  icon={showPassword ? faEyeSlash : faEye}
-                  className={`${styles.eye} fa fa-eye`}
-                  aria-hidden="true"
-                  onClick={handleShowPassword}
+            <div className="gap-y-2">
+              <div>
+                <UsernameInput
+                  isFocused={isFocused}
+                  usernameValue={usernameValue}
+                  styles={style}
+                  register={register}
+                  trigger={trigger}
+                  handleBlur={handleBlur}
+                  handleFocus={handleFocus}
+                  errors={errors}
+                  placeholder={"*Nombre de usuario"}
+                  date={"username"}
                 />
-              )}
-            </div>
+              </div>
 
-            <div className={styles.input_password}>
-              <input
-                type={showPasswordConfirm ? "text" : "password"}
-                className="password"
-                placeholder="confirmar la contraseña"
-                {...register("password_confirmation", {
-                  required: "Debe ingresar su contraseña",
-                })}
-                onBlur={() => trigger("password_confirmation")}
-              />
-
-              {passwordConfirmationValue && (
-                <FontAwesomeIcon
-                  icon={showPasswordConfirm ? faEyeSlash : faEye}
-                  className={`${styles.eye} fa fa-eye`}
-                  aria-hidden="true"
-                  onClick={handleShowPasswordConfirm}
+              <div>
+                <PasswordInput
+                  isFocusedPassword={isFocusedPassword}
+                  passwordValue={passwordValue}
+                  showPassword={showPassword}
+                  errors={errors}
+                  handleBlurPassword={handleBlurPassword}
+                  handleFocusPassword={handleFocusPassword}
+                  handleShowPassword={handleShowPassword}
+                  register={register}
+                  trigger={trigger}
+                  styles={style}
+                  placeholder={"*Contraseña"}
+                  date={"password"}
                 />
-              )}
-            </div>
+              </div>
 
-            <div className={styles.content_date}>
-              <input
-                type="date"
-                {...register("fecha_nacimiento", {
-                  required: "Debe ingresar su contraseña",
-                })}
-                onBlur={() => trigger("fecha_nacimiento")}
-              />
+              <div className="mt-4 mb-2">
+                <PasswordInput
+                  isFocusedPassword={isFocusedPasswordConfirm}
+                  passwordValue={passwordConfirmationValue}
+                  showPassword={showPasswordConfirm}
+                  errors={errors}
+                  handleBlurPassword={handleBlurPasswordConfirm}
+                  handleFocusPassword={handleFocusPasswordConfirm}
+                  handleShowPassword={handleShowPasswordConfirm}
+                  register={register}
+                  trigger={trigger}
+                  styles={style}
+                  placeholder={"*Repetir contraseña"}
+                  date={"password_confirmation"}
+                />
+              </div>
+
+              <div className={styles.content_date}>
+                <input
+                  type="date"
+                  {...register("fecha_nacimiento", {
+                    required: "*Ingrese su fecha de nacimiento",
+                  })}
+                  onBlur={() => trigger("fecha_nacimiento")}
+                />
+              </div>
             </div>
           </div>
           <div className={styles.content_button_submit}>

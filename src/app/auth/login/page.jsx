@@ -9,6 +9,8 @@ import { useUser } from "@/contexts/UserProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/common/Loading";
+import PasswordInput from "@/components/common/InputPassword";
+import UsernameInput from "@/components/common/InputUsername";
 
 const defaultValues = {
   username: "",
@@ -88,73 +90,36 @@ const Page = () => {
             </p>
           )}
           <div>
-            <div
-              className={`${styles.content_title_correo} ${
-                isFocused || usernameValue ? styles.active : styles.noactive
-              }`}
-            >
-              <label
-                className={`${isFocused || usernameValue ? styles.active : ""}`}
-              >
-                Nombre de usuario
-              </label>
-
-              <input
-                type="text"
-                placeholder={`${!isFocused ? "Nombre de usuario" : ""}`}
-                {...register("username", {
-                  required: "Debe ingresar su nombre de usuario",
-                })}
-                onBlur={() => {
-                  trigger("username"), handleBlur();
-                }}
-                onFocus={() => handleFocus()}
-              />
-              {errors.username && (
-                <div className={styles.errors}>{errors.username.message}</div>
-              )}
-            </div>
+            <UsernameInput
+              isFocused={isFocused}
+              usernameValue={usernameValue}
+              styles={styles}
+              register={register}
+              trigger={trigger}
+              handleBlur={handleBlur}
+              handleFocus={handleFocus}
+              errors={errors}
+              date={"username"}
+              placeholder={"Nombre de usuario"}
+              message={"*Debe ingresar su nombre de usuario"}
+            />
 
             {/*parte del password */}
-            <div
-              className={`${styles.content_password} ${
-                isFocusedPassword || passwordValue
-                  ? styles.active
-                  : styles.noactive
-              }`}
-            >
-              <label
-                className={`${
-                  isFocusedPassword || passwordValue ? styles.active : ""
-                }`}
-              >
-                Contraseña
-              </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Contraseña"
-                {...register("password", {
-                  required: "Debe ingresar su contraseña",
-                })}
-                onBlur={() => {
-                  trigger("password"), handleBlurPassword();
-                }}
-                onFocus={() => handleFocusPassword()}
-              />
-              {passwordValue && (
-                <FontAwesomeIcon
-                  icon={showPassword ? faEyeSlash : faEye}
-                  className={`${
-                    errors.password ? styles.eyes : styles.eye
-                  }   fa fa-eye`}
-                  aria-hidden="true"
-                  onClick={handleShowPassword}
-                />
-              )}
-              {errors.password && (
-                <div className={styles.errors}>{errors.password.message}</div>
-              )}
-            </div>
+            <PasswordInput
+              isFocusedPassword={isFocusedPassword}
+              passwordValue={passwordValue}
+              showPassword={showPassword}
+              errors={errors}
+              handleBlurPassword={handleBlurPassword}
+              handleFocusPassword={handleFocusPassword}
+              handleShowPassword={handleShowPassword}
+              register={register}
+              trigger={trigger}
+              styles={styles}
+              date={"password"}
+              message={"*Debe ingresar su contraseña"}
+              placeholder={"Contraseña"}
+            />
           </div>
           <div className={styles.content_button}>
             <button
