@@ -74,7 +74,7 @@ const NavBar = () => {
     setIsOpenExplorar(false);
     setIsOpen(false);
     setIsOpenEscribir(false);
-    router.push("/auth/prueba");
+    router.push("/");
   };
 
   return (
