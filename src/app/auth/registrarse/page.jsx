@@ -8,11 +8,10 @@ import { useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
 import moment from "moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/common/Loading";
 import UsernameInput from "@/components/common/InputUsername";
 import PasswordInput from "@/components/common/InputPassword";
+import DateInput from "@/components/common/DateInput";
 
 const defaultValues = {
   username: "",
@@ -27,6 +26,7 @@ const page = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [isFocusedDate, setIsFocusedDate] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [isFocusedPasswordConfirm, setIsFocusedPasswordConfirm] =
     useState(false);
@@ -119,10 +119,18 @@ const page = () => {
   const handleBlurPasswordConfirm = () => {
     setIsFocusedPasswordConfirm(false);
   };
+  const handleFocusDate = () => {
+    setIsFocusedDate(true);
+  };
+
+  const handleBlurDate = () => {
+    setIsFocusedDate(false);
+  };
 
   const passwordValue = watch("password", "");
   const passwordConfirmationValue = watch("password_confirmation", "");
   const usernameValue = watch("username", "");
+  const dateValue = watch("fecha_nacimiento", "");
 
   return (
     <div className={styles.content}>
@@ -145,31 +153,33 @@ const page = () => {
             />
           </div>
           <div className={styles.content_informacion}>
-            {isError && (
-              <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
-                Por favor complete todos los campos
-              </p>
-            )}
-            {isPasswordError && (
-              <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
-                Las contraseñas no coinciden
-              </p>
-            )}
+            <div className={styles.content_errores}>
+              {isError && (
+                <p className="bg-red-500 p-2 text-white font-bold mb-4 m-0">
+                  Por favor complete todos los campos
+                </p>
+              )}
+              {isPasswordError && (
+                <p className="bg-red-500 p-2 text-white font-bold mb-4 m-0">
+                  Las contraseñas no coinciden
+                </p>
+              )}
 
-            {error && (
-              <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
-                Nombre de usuario en uso
-              </p>
-            )}
+              {error && (
+                <p className="bg-red-500 p-2 text-white font-bold mb-4 m-0">
+                  Nombre de usuario en uso
+                </p>
+              )}
 
-            {isNumeroError && (
-              <div className="bg-red-500 p-2 text-white font-bold mb-3 m-0" F>
-                <p>La contraseña debe tener</p>
-                <p>8 caracteres minimo</p>
-                <p>debe contener al menos 1 numero</p>
-              </div>
-            )}
-            <div className="gap-y-2">
+              {isNumeroError && (
+                <div className="bg-red-500 p-2 text-white font-bold mb-4 m-0" F>
+                  <p>La contraseña debe tener</p>
+                  <p>8 caracteres minimo</p>
+                  <p>debe contener al menos 1 numero</p>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col gap-y-1">
               <div>
                 <UsernameInput
                   isFocused={isFocused}
@@ -214,20 +224,18 @@ const page = () => {
                   register={register}
                   trigger={trigger}
                   styles={style}
-                  placeholder={"*Repetir contraseña"}
+                  placeholder={"*Confirmar contraseña"}
                   date={"password_confirmation"}
                 />
               </div>
-
-              <div className={styles.content_date}>
-                <input
-                  type="date"
-                  {...register("fecha_nacimiento", {
-                    required: "*Ingrese su fecha de nacimiento",
-                  })}
-                  onBlur={() => trigger("fecha_nacimiento")}
-                />
-              </div>
+              <DateInput
+                register={register}
+                styles={styles}
+                isFocusedDate={isFocusedDate}
+                dateValue={dateValue}
+                handleFocusDate={handleFocusDate}
+                handleBlurDate={handleBlurDate}
+              />
             </div>
           </div>
           <div className={styles.content_button_submit}>
