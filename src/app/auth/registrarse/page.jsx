@@ -9,6 +9,7 @@ import { useUser } from "@/contexts/UserProvider";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import Loading from "@/components/common/Loading";
 
 const defaultValues = {
   username: "",
@@ -92,6 +93,7 @@ const page = () => {
 
   const passwordValue = watch("password", "");
   const passwordConfirmationValue = watch("password_confirmation", "");
+  const usuarioValue = watch("username", "");
 
   return (
     <div className={styles.content}>
@@ -100,6 +102,14 @@ const page = () => {
       </div>
       <div className={styles.content_registrarse}>
         <div className={styles.content_detalle}>
+          <div className={styles.content_logo}>
+            <Image
+              src={"/image/g2.png"}
+              alt="imagen logo"
+              width={250}
+              height={250}
+            />
+          </div>
           <div className={styles.content_informacion}>
             {isError && (
               <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
@@ -196,7 +206,7 @@ const page = () => {
               onClick={handleSubmit(onSubmit)}
               disabled={loading}
             >
-              {loading ? "Registrandosé..." : "Registrarte"}
+              {loading ? <Loading /> : "Registrarte"}
             </button>
           </div>
 
@@ -205,7 +215,7 @@ const page = () => {
             <div>
               <p>¿Tienes una cuenta?</p>
             </div>
-            <div>
+            <div className={styles.content_link}>
               <Link href={"/auth/login "}>Iniciar Sesion</Link>
             </div>
           </div>

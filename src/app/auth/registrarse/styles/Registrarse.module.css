@@ -138,3 +138,17 @@
 .eye:focus {
   color: #000;
 }
+
+.content_logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.content_link {
+  margin-left: 4px;
+}
+.content_link a {
+  font-weight: 600;
+}

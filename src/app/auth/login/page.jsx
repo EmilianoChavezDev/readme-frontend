@@ -17,6 +17,8 @@ const defaultValues = {
 
 const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
 
   const { data, error, loading, login } = useAuth();
   const { login: saveUser } = useUser();
@@ -42,7 +44,23 @@ const Page = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+  const handleFocusPassword = () => {
+    setIsFocusedPassword(true);
+  };
+
+  const handleBlurPassword = () => {
+    setIsFocusedPassword(false);
+  };
+
   const passwordValue = watch("password", "");
+  const usernameValue = watch("username", "");
 
   return (
     <div className={styles.content}>
@@ -70,35 +88,65 @@ const Page = () => {
             </p>
           )}
           <div>
-            <div className={styles.content_title_correo}>
+            <div
+              className={`${styles.content_title_correo} ${
+                isFocused || usernameValue ? styles.active : styles.noactive
+              }`}
+            >
+              <label
+                className={`${isFocused || usernameValue ? styles.active : ""}`}
+              >
+                Nombre de usuario
+              </label>
+
               <input
-                className="text-center"
                 type="text"
-                placeholder="nombre de usuario"
+                placeholder={`${!isFocused ? "Nombre de usuario" : ""}`}
                 {...register("username", {
                   required: "Debe ingresar su nombre de usuario",
                 })}
-                onBlur={() => trigger("username")}
+                onBlur={() => {
+                  trigger("username"), handleBlur();
+                }}
+                onFocus={() => handleFocus()}
               />
               {errors.username && (
                 <div className={styles.errors}>{errors.username.message}</div>
               )}
             </div>
 
-            <div className={styles.input_password}>
+            {/*parte del password */}
+            <div
+              className={`${styles.content_password} ${
+                isFocusedPassword || passwordValue
+                  ? styles.active
+                  : styles.noactive
+              }`}
+            >
+              <label
+                className={`${
+                  isFocusedPassword || passwordValue ? styles.active : ""
+                }`}
+              >
+                Contraseña
+              </label>
               <input
                 type={showPassword ? "text" : "password"}
-                className="text-center"
-                placeholder="contraseña"
+                placeholder="Contraseña"
                 {...register("password", {
                   required: "Debe ingresar su contraseña",
                 })}
-                onBlur={() => trigger("password")}
+                onBlur={() => {
+                  trigger("password"), handleBlurPassword();
+                }}
+                onFocus={() => handleFocusPassword()}
               />
               {passwordValue && (
                 <FontAwesomeIcon
                   icon={showPassword ? faEyeSlash : faEye}
-                  className={`${styles.eye} fa fa-eye`}
+                  className={`${
+                    errors.password ? styles.eyes : styles.eye
+                  }   fa fa-eye`}
                   aria-hidden="true"
                   onClick={handleShowPassword}
                 />
