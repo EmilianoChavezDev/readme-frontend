@@ -20,6 +20,7 @@ module.exports = withMT({
       colors: {
         colorPrimario: "#167574",
         colorHoverPrimario: "#0b5755",
+        ChaptearHeader: "#7EAFAF"
       },
     },
     
