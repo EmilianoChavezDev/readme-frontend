@@ -12,11 +12,10 @@ const UserOptions = ({ username, logout }) => {
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
-   
   };
 
   return (
-    <div className="flex items-center border-b border-transparent text-white">
+    <div className="md:flex items-center border-b border-transparent text-white hidden">
       <div className="h-8 w-8 flex items-center justify-center bg-blue-500 text-white rounded-full mr-2">
         {initials}
       </div>
@@ -35,7 +34,7 @@ const UserOptions = ({ username, logout }) => {
           <div className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 mt-2 -right-2 top-full text-black w-40">
             <ul className="my-2">
               <li
-                className="mb-4 hover:cursor-pointer hover:font-semibold border-b border-gray-200 pb-2"
+                className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
                 onClick={() => handlNoPageClick()}
               >
                 <FaUserCircle className="inline-block mr-2" />
@@ -43,7 +42,7 @@ const UserOptions = ({ username, logout }) => {
               </li>
 
               <li
-                className="hover:cursor-pointer hover:font-semibold"
+                className="hover:cursor-pointer hover:font-bold transition-all duration-300"
                 onClick={() => logout()}
               >
                 <FaSignOutAlt className="inline-block mr-2" />

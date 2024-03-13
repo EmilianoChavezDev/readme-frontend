@@ -40,12 +40,12 @@ const Options = () => {
 
   return (
     <div
-      className="flex text-white items-center gap-2
+      className="md:flex text-white md:items-center md:gap-2
         sm:items-center sm:justify-center 
   "
     >
       <div
-        className="flex gap-1 mr-2 items-center cursor-pointer"
+        className="lg:flex md:gap-1 md:items-center cursor-pointer hidden lg:w-auto md:w-20 lg:mr-2"
         onClick={() => handleHomeClick()}
       >
         <Image
@@ -57,62 +57,53 @@ const Options = () => {
           style={{ width: "100px", height: "20px" }}
         />
       </div>
-      <div className="flex gap-2 text-sm sm:text-xs">
+      {/**Comienzo del padre */}
+      <div className="md:flex gap-2 lg:text-sm sm:text-xs sm:text-nowrap hidden md:items-center">
         <div className="relative">
           <div
-            className="flex items-center border-b border-transparent hover:border-white transition-colors duration-300
+            className="flex items-center 
 
           "
             onClick={() => toggleDropdownExplorar()}
           >
-            <p className="cursor-pointer md:text-sm sm:text-xs">Explorar</p>
-            <button type="button" className="flex items-center justify-center">
+            <p className="hover:cursor-pointer hover:font-bold transition-all duration-300">
+              Explorar
+            </p>
+            <button
+              type="button"
+              className={`flex items-center justify-center transition-all duration-200 transform ${
+                isOpenExplorar ? "rotate-180" : "rotate-0"
+              }`}
+              style={{ transition: "transform 0.3s" }}
+            >
               <IoMdArrowDropdown size={18} />
             </button>
           </div>
           {isOpenExplorar && (
             <div
-              className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black w-96
-          md:text-sm sm:text-xs 
+              className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black lg:w-96 md:w-60
           
           "
             >
-              <ul className="my-2 gap-4 grid grid-cols-4">
-                <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
+              <ul className="md:my-2 md:gap-4 lg:gap-x-4 md:grid lg:grid-cols-3 md:grid-cols-2 col-span-1">
+                <li className="hover:cursor-pointer hover:font-bold transition-all duration-300">
                   Ficción histórica
                 </li>
-                <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                  Novela negra
+                <li className="hover:cursor-pointer hover:font-bold transition-all duration-300">
+                  Ficción histórica
                 </li>
-                <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                  Ciencia ficción
+                <li className="hover:cursor-pointer hover:font-bold transition-all duration-300">
+                  Ficción histórica
                 </li>
-                <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                  Biografías y memorias
-                </li>
-                <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                  Literatura clásica
-                </li>
-                <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                  Literatura fantástica
-                </li>
-                <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                  Poesía
-                </li>
-                <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                  Literatura infantil
-                </li>
-                <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                  Autoayuda y desarrollo personal
-                </li>
-                <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                  Ensayos
+                <li className="hover:cursor-pointer hover:font-bold transition-all duration-300">
+                  Ficción histórica
                 </li>
               </ul>
             </div>
           )}
         </div>
-        <div className=" xs:justify-center sm:text-nowrap md:text-sm sm:text-xs">
+
+        <div>
           <Link
             className="cursor-pointer border-b border-transparent hover:font-semibold transition-colors duration-300 
         "
@@ -121,12 +112,13 @@ const Options = () => {
             Mis Favoritos
           </Link>
         </div>
-        <div className="relative">
+
+        <div className="md:relative">
           <div
-            className="group cursor-pointer flex items-center border-b border-transparent hover:font-semibold transition-all duration-200 md:text-sm sm:text-xs"
+            className="group cursor-pointer flex items-center border-b border-transparent hover:font-semibold transition-all duration-200"
             onClick={() => toggleDropdownEscribir()}
           >
-            <p className="font-normal">Escribe</p>
+            <p>Escribe</p>
             <button
               type="button"
               className={`flex items-center justify-center transition-all duration-200 transform ${
@@ -139,28 +131,26 @@ const Options = () => {
           </div>
           {isOpenEscribir && (
             <div
-              className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black w-48
-          
-          md:text-sm sm:text-xs
+              className="md:absolute md:z-10 md:bg-white border md:border-gray-200 md:shadow-lg md:p-2 md:top-full text-black md:w-48
           "
             >
               <ul className="my-2">
                 <li
-                  className="mb-3 hover:cursor-pointer hover:font-semibold"
+                  className="mb-3 hover:cursor-pointer hover:font-bold transition-all duration-300"
                   onClick={() => handleNewBook()}
                 >
                   <FaPlusCircle className="inline-block mr-2" />
                   Crear nuevo libro
                 </li>
                 <li
-                  className="mb-3 hover:cursor-pointer hover:font-semibold"
+                  className="mb-3 hover:cursor-pointer hover:font-bold transition-all duration-300"
                   onClick={() => handlNoPageClick()}
                 >
                   <FaListUl className="inline-block mr-2" />
                   Mis libros
                 </li>
                 <li
-                  className="hover:cursor-pointer hover:font-semibold"
+                  className="hover:cursor-pointer hover:font-bold transition-all duration-300"
                   onClick={() => handlNoPageClick()}
                 >
                   <FaFileAlt className="inline-block mr-2" />
