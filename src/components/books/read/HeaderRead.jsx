@@ -45,14 +45,20 @@ const HeaderRead = ({ titulo, capitulo }) => {
             {showMenuCap && <CapMenu />}
           </div>
           <div>
-            <div className="w-8 h-10 transition-transform duration-200 transform hover:scale-110 relative hover:cursor-pointer">
-              <IoTextOutline className="w-full h-full absolute top-0 left-0" />
-              <IoText className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
-            </div>
+            <button>
+              <div className="w-8 h-10 transition-transform duration-200 transform hover:scale-110 relative hover:cursor-pointer">
+                <IoTextOutline className="w-full h-full absolute top-0 left-0" />
+                <IoText className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
+              </div>
+            </button>
           </div>
-          <div className="w-8 h-5 transition-transform duration-200 transform hover:scale-110 relative mt-2 hover:cursor-pointer">
-            <IoTextOutline className="w-full h-full absolute top-0 left-0" />
-            <IoText className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
+          <div>
+            <button>
+              <div className="w-8 h-5 transition-transform duration-200 transform hover:scale-110 relative mt-2 hover:cursor-pointer">
+                <IoTextOutline className="w-full h-full absolute top-0 left-0" />
+                <IoText className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
+              </div>
+            </button>
           </div>
         </div>
       </div>
