@@ -4,21 +4,19 @@ import TextRead from "./TextRead";
 
 const BodyRead = () => {
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center">
-      <div className="flex justify-center items-center w-4/6 h-full">
-        <div className="sticky top-0">
-          <button className="bg-gray-200 p-2 rounded-full">
-            <CiCircleChevLeft size={36} />
-          </button>
-        </div>
-        <div>
-          <TextRead />
-        </div>
-        <div className="sticky top-0">
-          <button className="bg-gray-200 p-2 rounded-full">
-            <CiCircleChevRight size={36} />
-          </button>
-        </div>
+    <div className=" w-4/6 h-full">
+      <div style={{ position: "fixed", left: "12%", top: "50%" }}>
+        <button className="p-2 rounded-full hover:scale-110 transform transition-all duration-200 ">
+          <CiCircleChevLeft size={42} />
+        </button>
+      </div>
+      <div>
+        <TextRead />
+      </div>
+      <div style={{ position: "fixed", right: "12%", top: "50%" }}>
+        <button className="p-2 rounded-full hover:scale-110 transform transition-all duration-200">
+          <CiCircleChevRight size={42} />
+        </button>
       </div>
     </div>
   );
