@@ -4,6 +4,7 @@ import HeaderRead from "@/components/books/read/HeaderRead";
 import ProgressBar from "@/components/books/read/ProgressBar";
 
 export default function ReadBook({ params }) {
+  console.log(params);
   return (
     <>
       <div className="hidden">
@@ -11,7 +12,7 @@ export default function ReadBook({ params }) {
       </div>
       {/**HEADER */}
       <div className="sticky top-0 bg-white z-10 p-2">
-        <HeaderRead />
+        <HeaderRead id={params.id} />
       </div>
       {/**cuerpo */}
       <div className="flex justify-center mt-10 my-24">
