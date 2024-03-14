@@ -1,10 +1,12 @@
 const { useUser } = require("@/contexts/UserProvider");
 const { useState, useEffect } = require("react");
 import axios from "axios";
+import { set } from "react-hook-form";
 
 const useReadBooks = () => {
   const [data, setData] = useState([]);
   const [chapterData, setChapterData] = useState([]);
+  const [contentChapter, setContentChapter] = useState("");
 
   // Trae todos los capitulos del libro
   const getBookById = async (id) => {
@@ -47,12 +49,27 @@ const useReadBooks = () => {
     }
   };
 
-  const getContentChapter = async () => {
-    const token = localStorage.getItem("token");
-    
+  const getContentChapter = async (contenido) => {
+    console.log(contenido);
+    try {
+      const response = await axios(contenido);
+      setChapterData(response.data.text);
+    } catch (error) {
+      console.log(
+        "error al obtener el contenido del capitulo",
+        error.response ? error.response.data : error.message
+      );
+    }
   };
 
-  return { getBookById, data, getNowChapter, chapterData };
+  return {
+    getBookById,
+    data,
+    getNowChapter,
+    chapterData,
+    getContentChapter,
+    contentChapter,
+  };
 };
 
 export default useReadBooks;

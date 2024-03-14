@@ -1,26 +1,20 @@
+import useReadBooks from "@/hooks/useReadBook";
 import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const TextRead = ({ contenido }) => {
+const TextRead = ({ urlContenido }) => {
+  const { getContentChapter, contentChapter } = useReadBooks();
   const [text, setText] = useState("");
   const [baseFontSize, setBaseFontSize] = useState(16); // Tamaño de letra base
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(contenido);
-        const data = await response.text();
-        setText(data);
-      } catch (error) {
-        console.error("Error fetching content:", error);
-      }
-    };
+    getContentChapter(urlContenido);
+  }, [urlContenido]);
 
-    if (contenido) {
-      fetchData();
-    }
-  }, [contenido]);
+  useEffect(() => {
+    setText(contentChapter);
+  }, [contentChapter]);
 
   const increaseFontSize = () => {
     setBaseFontSize((prevFontSize) => prevFontSize + 1);

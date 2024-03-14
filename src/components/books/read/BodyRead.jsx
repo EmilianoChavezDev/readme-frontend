@@ -11,7 +11,7 @@ const BodyRead = ({ contenido }) => {
         </button>
       </div>
       <div>
-        <TextRead contenido={contenido} />
+        <TextRead urlContenido={contenido} />
       </div>
       <div style={{ position: "fixed", right: "12%", top: "50%" }}>
         <button className="p-2 rounded-full hover:scale-110 transform transition-all duration-200">
