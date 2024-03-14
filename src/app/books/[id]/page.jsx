@@ -136,7 +136,7 @@ export default function BookDetails({ params }) {
                                         </div>
                                     </div>
                                     <div className='flex flex-col gap-3 text-white text-xs'>
-                                        <Link href={`/books/${params    .id}/read`}>
+                                        <Link href={`/books/${params.id}/read`}>
                                             <button className='h-9 rounded-md bg-colorPrimario w-full'>
                                                 Comenzar a Leer
                                             </button>

@@ -1,44 +1,28 @@
-import React from "react";
+"use client";
 
-const CapMenu = () => {
+import { useEffect, useState } from "react";
+
+const CapMenu = ({ capitulo }) => {
+  const [capMapp, setCapMap] = useState(capitulo);
+
   return (
     <div
-      className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black w-60 overflow-y-auto max-h-60
+      className="absolute z-10 bg-white border border-gray-200 rounded-md shadow-lg p-2 top-full text-black w-60 overflow-y-auto max-h-60
   md:text-sm sm:text-xs 
   
   "
     >
       <ul className="my-2 flex flex-col gap-y-4">
-        <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-          Capitulo 1
-        </li>
-        <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-          Capitulo 2
-        </li>
-        <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-          Capitulo 3
-        </li>
-        <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-          Capitulo 4
-        </li>
-        <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-          Capitulo 5
-        </li>
-        <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-          Capitulo 6
-        </li>
-        <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-          Capitulo 7
-        </li>
-        <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-          Capitulo 8
-        </li>
-        <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-          Capitulo 9
-        </li>
-        <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-          Capitulo 10
-        </li>
+        {capMapp?.map((capitulo, index) => (
+          <li
+            key={capitulo?.id}
+            className={`col-span-1 hover:font-semibold hover:cursor-pointer ${
+              index === capMapp.length - 1 ? "" : "border-b-2 pb-2"
+            }`}
+          >
+            {capitulo?.titulo}
+          </li>
+        ))}
       </ul>
     </div>
   );

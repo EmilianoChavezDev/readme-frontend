@@ -5,12 +5,13 @@ import { IoText } from "react-icons/io5";
 import { IoTextOutline } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
 import { IoChevronForward, IoArrowBackOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CapMenu from "./CapMenu";
 import { useRouter } from "next/navigation";
 
 const HeaderRead = ({ titulo, capitulo, id }) => {
   const router = useRouter();
+  const menuRef = useRef();
   const [showMenuCap, setShowMenuCap] = useState(false);
 
   const handleShowMenuCap = () => {
@@ -20,6 +21,19 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
   const previousPage = () => {
     router.push(`/books/${id}`);
   };
+
+  //Compruebo si se clickeo fuera del menu
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenuCap(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="w-2/3 mx-auto">
@@ -39,7 +53,7 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
         </div>
         <div className="text-center">
           <h1 className="text-3xl text-colorPrimario text-center font-semibold">
-            título capítulo
+            {titulo}
           </h1>
         </div>
         <div className="flex justify-center items-center">
@@ -50,7 +64,11 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
                 <FaList className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
               </div>
             </button>
-            {showMenuCap && <CapMenu />}
+            {showMenuCap && (
+              <div ref={menuRef}>
+                <CapMenu capitulo={capitulo} />
+              </div>
+            )}
           </div>
           <div>
             <button>
