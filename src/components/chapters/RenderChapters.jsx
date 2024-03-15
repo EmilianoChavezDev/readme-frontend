@@ -1,7 +1,8 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import Link from "next/link";
 
-export default function RenderCapitules({ cap }) {
+export default function RenderCapitules({ cap, bookId }) {
   //Obtenemos los atributos, listeners, setNodeRef, transform y transition
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -24,7 +25,9 @@ export default function RenderCapitules({ cap }) {
       {...listeners}
       style={style}
     >
-      <p className="text-sm font-semibold">{cap.titulo}</p>
+      <Link href={`/books/${bookId}/chapters/write/${cap.id}`}>
+        <p className="text-sm font-semibold">{cap.titulo}</p>
+      </Link>
       <BsThreeDotsVertical />
       <hr className="w-full border-gray-400 absolute bottom-0 left-0" />
     </div>

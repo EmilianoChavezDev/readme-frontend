@@ -47,9 +47,11 @@ export default function Chapters({ bookId }) {
   const handleAddNewChapter = () => {
     //Al darle click a este boton, redirijimos a la pagina de creacion de capitulos
     router.push(`/books/${bookId}/chapters/write`);
+  };
 
+  const handleGoToChapter = (chapterID) => {
     //Redirigir al seguir escribiendo
-    router.push(`/books/${bookId}/chapters/write/${bookId}`);
+    router.push(`/books/${bookId}/chapters/write/${chapterID}`);
   };
 
   //Obtenemos los capitulos de ese libro y los guardamos en el estado capitules
@@ -71,8 +73,13 @@ export default function Chapters({ bookId }) {
             items={chapters}
             strategy={verticalListSortingStrategy}
           >
-            {chapters.map((cap) => (
-              <RenderCapitules key={cap.id} cap={cap} />
+            {chapters?.map((cap) => (
+              <RenderCapitules
+                bookId={bookId}
+                handleGoToChapter={handleGoToChapter}
+                key={cap.id}
+                cap={cap}
+              />
             ))}
           </SortableContext>
         </div>
