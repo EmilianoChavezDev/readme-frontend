@@ -7,10 +7,12 @@ const useReadBooks = () => {
   const [data, setData] = useState([]);
   const [chapterData, setChapterData] = useState([]);
   const [contentChapter, setContentChapter] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // Trae todos los capitulos del libro
   const getBookById = async (id) => {
     const token = localStorage.getItem("token");
+    setIsLoading(true);
     try {
       const url = `${process.env.API_URL}/capitulos/libro/${id}`;
       const response = await axios.get(url, {
@@ -24,11 +26,14 @@ const useReadBooks = () => {
         "Error al obtener el libro:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // Obtiene el capitulo actual del libro
   const getNowChapter = async (id) => {
+    setIsLoading(true);
     const token = localStorage.getItem("token");
     try {
       const url = `${process.env.API_URL}/capitulo_actual`;
@@ -46,19 +51,23 @@ const useReadBooks = () => {
         "Error al obtener el capitulo:",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const getContentChapter = async (contenido) => {
-    console.log(contenido);
+    setIsLoading(true);
     try {
-      const response = await axios(contenido);
-      setChapterData(response.data.text);
+      const response = await axios.get(contenido);
+      setContentChapter(response.data);
     } catch (error) {
       console.log(
         "error al obtener el contenido del capitulo",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -69,6 +78,7 @@ const useReadBooks = () => {
     chapterData,
     getContentChapter,
     contentChapter,
+    isLoading,
   };
 };
 
