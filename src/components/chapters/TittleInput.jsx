@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useRef } from 'react';
+=======
+import React, { useRef } from "react";
+>>>>>>> SCRUM-35-Componente-Crear-Organizar-Capitulos
 
 const TittleInput = ({ ...props }) => {
   const inputRef = useRef(null);
@@ -8,7 +12,11 @@ const TittleInput = ({ ...props }) => {
   };
 
   return (
+<<<<<<< HEAD
     <div className='flex justify-center w-full'>
+=======
+    <div className="flex justify-center w-full">
+>>>>>>> SCRUM-35-Componente-Crear-Organizar-Capitulos
       <input
         ref={inputRef}
         type="text"

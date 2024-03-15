@@ -20,23 +20,30 @@ module.exports = withMT({
       colors: {
         colorPrimario: "#167574",
         colorHoverPrimario: "#0b5755",
+<<<<<<< HEAD
         ChaptearHeader: "#7EAFAF"
+=======
+        ChaptearHeader: "#7EAFAF",
+        BooksCreateSeguirButton: "#167574",
+        BooksCreateCancelarButton: "#738d90",
+        BooksCreateImageBackground: "#eeeeee",
+>>>>>>> SCRUM-35-Componente-Crear-Organizar-Capitulos
       },
     },
-    
+
     screens: {
       // small resolutions
-      '_sm': '640px',
-      '_md': '768px',
-      '_lg': '1024px',
-      '_xl': '1280px',
+      _sm: "640px",
+      _md: "768px",
+      _lg: "1024px",
+      _xl: "1280px",
       // large resolutions
-      'sm': '868px',
-      'md': '1124px',
-      'lg': '1380px',
-      'xl': '1634px',
-      '2xl': '1634px',
-    }
+      sm: "868px",
+      md: "1124px",
+      lg: "1380px",
+      xl: "1634px",
+      "2xl": "1634px",
+    },
   },
   plugins: [],
 });

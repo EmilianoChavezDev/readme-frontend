@@ -94,15 +94,15 @@ export default function Libro() {
         sinopsis: "",
         categoria: "",
       });
-      // Si la peticion fue exitosa, redirigir al usuario a la pagina de inicio
-      router.replace(`/books/${success.id}`);
+      // Si la peticion fue exitosa, redirigir a books/id/chapters/write
+      router.push(`/books/${success.id}/chapters/write`);
     }
   };
 
   return (
     <div className="flex flex-col bg-white">
       {/*Layout*/}
-      <div className="bg-[#7eafaf] h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg">
+      <div className="bg-ChaptearHeader h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg">
         <div className="text-white font-semibold text-lg flex items-center">
           <Link href={"/"}>
             <FaAngleLeft className="text-2xl" />
@@ -112,13 +112,13 @@ export default function Libro() {
         <div className="flex gap-4">
           <Link
             href={"/"}
-            className="bg-[#738d90] text-gray-700 py-2 px-5 rounded-lg"
+            className="bg-BooksCreateCancelarButton text-gray-700 py-2 px-5 rounded-lg"
           >
             Cancelar
           </Link>
           <button
             onClick={handleSubmit}
-            className={`bg-[#167574] text-white py-2 px-7 rounded-lg ${
+            className={`bg-BooksCreateSeguirButton text-white py-2 px-7 rounded-lg ${
               isLoading || loadingPortada ? "opacity-50 cursor-wait " : ""
             }`}
             disabled={isLoading || loadingPortada}
@@ -140,7 +140,7 @@ export default function Libro() {
 
       {/* Portada */}
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-center">
-        <div className="w-full md:w-1/4 h-auto flex flex-col items-center justify-center p-8 bg-[#eeeeee]">
+        <div className="w-full md:w-1/4 h-auto flex flex-col items-center justify-center p-8 bg-BooksCreateImageBackground">
           <label className="text-center mb-6">
             <RenderImage
               inputContainerRef={portada}
