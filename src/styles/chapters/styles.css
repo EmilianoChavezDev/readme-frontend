@@ -1,26 +1,4 @@
 .editor-container .ql-toolbar {
-<<<<<<< HEAD
-    position: sticky;
-    top: 5rem;
-    background-color: #fff;
-    display: flex;
-    flex-wrap: wrap;
-    z-index: 50; 
-    justify-content: center;
-  }
-  
-.editor-container .ql-toolbar .ql-formats{
-    display: flex;
-    justify-content: center;
-}
-.editor-container .ql-toolbar .ql-formats button {
-    margin: 0 5px; 
-}
-
-.editor-container .ql-container {
-    height: 32rem;
-}
-=======
   position: sticky;
   top: 5rem;
   background-color: #fff;
@@ -41,4 +19,3 @@
 .editor-container .ql-container {
   height: 32rem;
 }
->>>>>>> SCRUM-35-Componente-Crear-Organizar-Capitulos
