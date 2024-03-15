@@ -1,11 +1,13 @@
 "use client";
 
+import { UseRead } from "@/contexts/ReadProvider";
 import { useEffect, useState } from "react";
 
 const CapMenu = ({ capitulo }) => {
+  const { getCurrentChapter } = UseRead();
   const [capMapp, setCapMap] = useState(capitulo);
 
-  console.log(capitulo);
+
 
   return (
     <div
@@ -18,6 +20,9 @@ const CapMenu = ({ capitulo }) => {
         {capMapp?.map((capitulo, index) => (
           <li
             key={capitulo?.id}
+            onClick={() =>
+              getCurrentChapter(capitulo?.id, capitulo.libro_id, false)
+            }
             className={`col-span-1 hover:font-semibold hover:cursor-pointer ${
               index === capMapp.length - 1 ? "" : "border-b-2 pb-2"
             }`}

@@ -6,6 +6,7 @@ const useReadBooks = () => {
   const [chapterData, setChapterData] = useState([]);
   const [contentChapter, setContentChapter] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [newChapterData, setNewChapterData] = useState([]);
 
   // Trae todos los capitulos del libro
   const getBookById = async (id) => {
@@ -69,6 +70,32 @@ const useReadBooks = () => {
     }
   };
 
+  const postCurrentChapter = (idChapter, idBook, end) => {
+    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    try {
+      const url = `${process.env.API_URL}/lecturas`;
+      const response = axios.post(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          libro_id: idBook,
+          capitulo_id: idChapter,
+          terminado: end,
+        },
+      });
+      setNewChapterData(response.data);
+    } catch (error) {
+      console.log(
+        "error al obtener el contenido nuevo",
+        error.response ? error.response.data : error.message
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     getBookById,
     data,
@@ -77,6 +104,8 @@ const useReadBooks = () => {
     getContentChapter,
     contentChapter,
     isLoading,
+    postCurrentChapter,
+    newChapterData,
   };
 };
 

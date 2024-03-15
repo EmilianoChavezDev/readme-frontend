@@ -22,7 +22,7 @@ const BodyRead = ({ capitulo }) => {
       </div>
       <div
         style={{ position: "fixed", right: "12%", top: "50%" }}
-        className={`${!capitulo?.previous_capitulo_id ? "hidden" : ""}`}
+        className={`${!capitulo?.next_capitulo_id ? "hidden" : ""}`}
       >
         {capitulo?.next_capitulo_id && (
           <button className="p-2 rounded-full hover:scale-110 transform transition-all duration-200">
