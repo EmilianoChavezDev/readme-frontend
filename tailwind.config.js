@@ -20,14 +20,10 @@ module.exports = withMT({
       colors: {
         colorPrimario: "#167574",
         colorHoverPrimario: "#0b5755",
-<<<<<<< HEAD
-        ChaptearHeader: "#7EAFAF"
-=======
         ChaptearHeader: "#7EAFAF",
         BooksCreateSeguirButton: "#167574",
         BooksCreateCancelarButton: "#738d90",
         BooksCreateImageBackground: "#eeeeee",
->>>>>>> SCRUM-35-Componente-Crear-Organizar-Capitulos
       },
     },
 
