@@ -3,19 +3,14 @@ import NavBar from "@/components/NavBar";
 import BodyRead from "@/components/books/read/BodyRead";
 import HeaderRead from "@/components/books/read/HeaderRead";
 import ProgressBar from "@/components/books/read/ProgressBar";
-import useReadBooks from "@/hooks/useReadBook";
-import { useEffect, useState } from "react";
+import { UseRead } from "@/contexts/ReadProvider";
+import { useEffect } from "react";
 
 export default function ReadBook({ params }) {
-  const { getBookById, data, getNowChapter, chapterData, isLoading } =
-    useReadBooks();
+  const { getAll, data, chapterData, isLoading } = UseRead();
 
   useEffect(() => {
-    getBookById(params.id);
-  }, []);
-
-  useEffect(() => {
-    getNowChapter(params.id);
+    getAll(params.id);
   }, []);
 
   return (
@@ -37,7 +32,7 @@ export default function ReadBook({ params }) {
           </div>
           {/**cuerpo */}
           <div className="flex justify-center mt-10 my-24">
-            <BodyRead contenido={chapterData.capitulo_actual?.contenido} />
+            <BodyRead capitulo={chapterData.capitulo_actual} />
           </div>
           {/**footer */}
           <div className="fixed bottom-0 bg-white z-10 p-4 w-full">

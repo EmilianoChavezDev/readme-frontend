@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 const CapMenu = ({ capitulo }) => {
   const [capMapp, setCapMap] = useState(capitulo);
 
+  console.log(capitulo);
+
   return (
     <div
       className="absolute z-10 bg-white border border-gray-200 rounded-md shadow-lg p-2 top-full text-black w-60 overflow-y-auto max-h-60

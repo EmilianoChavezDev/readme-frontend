@@ -1,15 +1,17 @@
 "use client";
 import { FaArrowLeft } from "react-icons/fa";
-import { CiCircleChevLeft, CiCircleChevRight, CiBoxList } from "react-icons/ci";
+import { CiBoxList } from "react-icons/ci";
 import { IoText } from "react-icons/io5";
 import { IoTextOutline } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
-import { IoChevronForward, IoArrowBackOutline } from "react-icons/io5";
+import { IoArrowBackOutline } from "react-icons/io5";
 import { useEffect, useRef, useState } from "react";
 import CapMenu from "./CapMenu";
 import { useRouter } from "next/navigation";
+import { UseRead } from "@/contexts/ReadProvider";
 
 const HeaderRead = ({ titulo, capitulo, id }) => {
+  const { handleUnZoom, handleZoom } = UseRead();
   const router = useRouter();
   const menuRef = useRef();
   const [showMenuCap, setShowMenuCap] = useState(false);
@@ -22,7 +24,6 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
     router.push(`/books/${id}`);
   };
 
-  //Compruebo si se clickeo fuera del menu
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -71,7 +72,7 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
             )}
           </div>
           <div>
-            <button>
+            <button onClick={handleZoom}>
               <div className="w-8 h-10 transition-transform duration-200 transform hover:scale-110 relative hover:cursor-pointer">
                 <IoTextOutline className="w-full h-full absolute top-0 left-0" />
                 <IoText className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
@@ -79,7 +80,7 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
             </button>
           </div>
           <div>
-            <button>
+            <button onClick={handleUnZoom}>
               <div className="w-8 h-5 transition-transform duration-200 transform hover:scale-110 relative mt-2 hover:cursor-pointer">
                 <IoTextOutline className="w-full h-full absolute top-0 left-0" />
                 <IoText className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
