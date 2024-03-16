@@ -6,8 +6,9 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import Loading from "@/components/common/Loading";
+import PasswordInput from "@/components/common/InputPassword";
+import UsernameInput from "@/components/common/InputUsername";
 
 const defaultValues = {
   username: "",
@@ -16,6 +17,8 @@ const defaultValues = {
 
 const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
 
   const { data, error, loading, login } = useAuth();
   const { login: saveUser } = useUser();
@@ -41,7 +44,23 @@ const Page = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+  const handleFocusPassword = () => {
+    setIsFocusedPassword(true);
+  };
+
+  const handleBlurPassword = () => {
+    setIsFocusedPassword(false);
+  };
+
   const passwordValue = watch("password", "");
+  const usernameValue = watch("username", "");
 
   return (
     <div className={styles.content}>
@@ -55,8 +74,13 @@ const Page = () => {
       </div>
       <div className={styles.content_login}>
         <div className={styles.content_detalle}>
-          <div>
-            <h1 className={styles.content_title}>BIENVENIDO!</h1>
+          <div className={styles.content_logo}>
+            <Image
+              src={"/image/g2.png"}
+              alt="imagen logo"
+              width={250}
+              height={250}
+            />
           </div>
           {error && (
             <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
@@ -64,47 +88,36 @@ const Page = () => {
             </p>
           )}
           <div>
-            <div className={styles.content_title_correo}>
-              <input
-                className="text-center"
-                type="text"
-                placeholder="nombre de usuario"
-                {...register("username", {
-                  required: "Debe ingresar su nombre de usuario",
-                })}
-                onBlur={() => trigger("username")}
-              />
-              {errors.username && (
-                <div className="text-red-500 text-center">
-                  {errors.username.message}
-                </div>
-              )}
-            </div>
+            <UsernameInput
+              isFocused={isFocused}
+              usernameValue={usernameValue}
+              styles={styles}
+              register={register}
+              trigger={trigger}
+              handleBlur={handleBlur}
+              handleFocus={handleFocus}
+              errors={errors}
+              date={"username"}
+              placeholder={"Nombre de usuario"}
+              message={"*Debe ingresar su nombre de usuario"}
+            />
 
-            <div className={styles.input_password}>
-              <input
-                type={showPassword ? "text" : "password"}
-                className="text-center"
-                placeholder="contraseña"
-                {...register("password", {
-                  required: "Debe ingresar su contraseña",
-                })}
-                onBlur={() => trigger("password")}
-              />
-              {passwordValue && (
-                <FontAwesomeIcon
-                  icon={showPassword ? faEyeSlash : faEye}
-                  className={`${styles.eye} fa fa-eye`}
-                  aria-hidden="true"
-                  onClick={handleShowPassword}
-                />
-              )}
-              {errors.password && (
-                <div className="text-red-500 text-center">
-                  {errors.password.message}
-                </div>
-              )}
-            </div>
+            {/*parte del password */}
+            <PasswordInput
+              isFocusedPassword={isFocusedPassword}
+              passwordValue={passwordValue}
+              showPassword={showPassword}
+              errors={errors}
+              handleBlurPassword={handleBlurPassword}
+              handleFocusPassword={handleFocusPassword}
+              handleShowPassword={handleShowPassword}
+              register={register}
+              trigger={trigger}
+              styles={styles}
+              date={"password"}
+              message={"*Debe ingresar su contraseña"}
+              placeholder={"Contraseña"}
+            />
           </div>
           <div className={styles.content_button}>
             <button
@@ -113,11 +126,11 @@ const Page = () => {
               disabled={loading}
               onClick={handleSubmit(onSubmit)}
             >
-              {loading ? "Iniciando Sesión..." : "Iniciar Sesión"}
+              {loading ? <Loading /> : "Iniciar Sesión"}
             </button>
             <div className={styles.content_crear_cuenta}>
               <span>No tienes cuenta?</span>{" "}
-              <Link href={"/auth/registrarse"}>Registrate</Link>
+              <Link href={"/auth/registrarse"}>Registrate!</Link>
             </div>
           </div>
         </div>

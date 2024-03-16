@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import NavBar from "@/components/NavBar";
 
-
 export default function BackgroundBlogCard() {
   const { getLibros, data: libros } = useGetLibros(); // Obtener la función para obtener libros y los datos de libros
   const { token } = useUser(); // Obtener el token del usuario
