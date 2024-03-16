@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FaAngleLeft, FaChevronDown } from "react-icons/fa6";
+import { useState } from "react";
 import Chapters from "./Chapters";
 
 const ChapterEditorHeader = ({
@@ -9,15 +10,26 @@ const ChapterEditorHeader = ({
   onPublish,
   chapterTitle,
 }) => {
+  const [showChapters, setShowChapters] = useState(false);
+
   return (
     <div className="bg-ChaptearHeader h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg sticky top-0 z-50">
-      <div className="text-white font-semibold text-lg flex items-center">
+      <div className="text-white font-semibold text-lg flex items-center relative">
         <Link href={`/books/${bookId}`}>
           <FaAngleLeft className="text-2xl" />
         </Link>
-        <Chapters bookId={bookId} />
         <h3 className="px-4 truncate max-w-96">{chapterTitle}</h3>
-        <FaChevronDown className="text-2xl hover:cursor-pointer" />
+        <div className="relative">
+          <FaChevronDown
+            className="text-2xl hover:cursor-pointer"
+            onClick={() => setShowChapters(!showChapters)}
+          />
+          {showChapters && (
+            <div className="absolute left-0 mt-1 w-full z-50 text-black min-w-72 bg-white">
+              <Chapters bookId={bookId} />
+            </div>
+          )}
+        </div>
       </div>
       <div className="flex gap-4">
         <button
