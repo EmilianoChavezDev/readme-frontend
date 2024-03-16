@@ -40,17 +40,6 @@ export default function BackgroundBlogCard() {
     <>
       <NavBar />
       <div className="container-fluid p-12 h-full">
-        <style>
-          {`
-            .w-customWidth {
-              width: 250px; /* Ancho personalizado */
-            }
-
-            .h-customHeight {
-              height: 350px; /* Altura personalizada */
-            }
-          `}
-        </style>
         <div className="mb-32">
           <h2 className="text-4xl font-semibold mb-4">Seguir Leyendo</h2>
           <div>

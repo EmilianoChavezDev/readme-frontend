@@ -21,6 +21,13 @@ module.exports = withMT({
         colorPrimario: "#167574",
         colorHoverPrimario: "#0b5755",
       },
+      
+      width: {
+        customWidth: '250px', // Ancho personalizado
+      },
+      height: {
+        customHeight: '350px', // Altura personalizada
+      },
     },
     
     screens: {
