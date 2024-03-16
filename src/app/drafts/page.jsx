@@ -6,6 +6,7 @@ import NavBar from "@/components/NavBar";
 import DraftsContainer from "@/components/DraftsContainer";
 import useDraft from "@/hooks/useDrafts";
 import Loader from "@/components/common/loader";
+import Link from "next/link";
 
 const PageDrafts = () => {
   const { getDraftsUser, error, isLoading } = useDraft();
@@ -34,9 +35,9 @@ const PageDrafts = () => {
             <p className={styles.title_drafts}>Mis borradores</p>
           </div>
           <div>
-            <button className={styles.btn_new_book} disabled>
+            <Link className={styles.btn_new_book} href="/books/create">
               + Nuevo Libro
-            </button>
+            </Link>
           </div>
         </div>
         <div className={styles.drafts_container}>

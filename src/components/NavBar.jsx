@@ -77,6 +77,10 @@ const NavBar = () => {
     router.push("/books/create");
   };
 
+  const handleDraft = () => {
+    router.push("/drafts");
+  };
+
   const handleHomeClick = () => {
     setIsOpenExplorar(false);
     setIsOpen(false);
@@ -210,7 +214,7 @@ const NavBar = () => {
                     </li>
                     <li
                       className="hover:cursor-pointer hover:font-semibold"
-                      onClick={() => handlNoPageClick()}
+                      onClick={() => handleDraft()}
                     >
                       <FaFileAlt className="inline-block mr-2" />
                       Mis borradores

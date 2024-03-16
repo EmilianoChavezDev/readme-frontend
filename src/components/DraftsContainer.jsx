@@ -4,67 +4,23 @@ import React from "react";
 import styles from "@/app/drafts/styles/drafts.module.css";
 import Image from "next/image";
 import moment from "moment";
-import toast from "react-hot-toast";
+import formatNumber from "@/utils/formatNumber";
+import Link from "next/link";
 
 const DraftsContainer = ({ data }) => {
   const { libro, ultimo_capitulo_no_publicado } = data;
 
   const {
+    id: libroId,
     titulo,
-    sinopsis,
     portada,
-    adulto,
     cantidad_lecturas,
-    cantidad_resenhas,
     puntuacion_media,
     cantidad_comentarios,
-    categoria,
-    user_id,
-    autorUsername,
   } = libro;
 
-  const {
-    id: capituloId,
-    indice,
-    titulo: capituloTitulo,
-    contenido,
-    next_capitulo_id,
-    previous_capitulo_id,
-    publicado,
-    progreso,
-    updated_at,
-  } = ultimo_capitulo_no_publicado;
+  const { id: capituloId, indice, updated_at } = ultimo_capitulo_no_publicado;
 
-  const formatNumber = (value) => {
-    const stringValue = String(value);
-    const length = stringValue.length;
-
-    if (length === 4) {
-      return (
-        stringValue.substring(0, 1) + "." + stringValue.substring(1, 2) + "K"
-      );
-    } else if (length === 5) {
-      return stringValue.substring(0, 2) + "K";
-    } else if (length === 6) {
-      return stringValue.substring(0, 3) + "K";
-    } else if (length === 7) {
-      return (
-        stringValue.substring(0, 1) + "." + stringValue.substring(1, 3) + "M"
-      );
-    } else if (length === 8 || length === 9) {
-      return stringValue.substring(0, length - 6) + "M";
-    } else if (length === 10) {
-      return (
-        stringValue.substring(0, 1) + "." + stringValue.substring(1, 3) + "B"
-      );
-    } else if (length >= 11 && length <= 12) {
-      return stringValue.substring(0, length - 9) + "B";
-    } else if (length > 12) {
-      return stringValue.substring(0, 2) + "B+";
-    } else {
-      return stringValue;
-    }
-  };
   return (
     <>
       <div className={styles.container_drafts}>
@@ -95,7 +51,7 @@ const DraftsContainer = ({ data }) => {
                 priority={true}
               />
               <p className={styles.puntuation}>
-                {formatNumber(cantidad_lecturas)}
+                {formatNumber({ value: cantidad_lecturas })}
               </p>
             </div>
             <div className={styles.dataFCV_container}>
@@ -107,7 +63,7 @@ const DraftsContainer = ({ data }) => {
                 priority={true}
               />
               <p className={styles.puntuation}>
-                {formatNumber(puntuacion_media)}
+                {formatNumber({ value: puntuacion_media })}
               </p>
             </div>
             <div className={styles.dataFCV_container}>
@@ -119,20 +75,18 @@ const DraftsContainer = ({ data }) => {
                 priority={true}
               />
               <p className={styles.puntuation}>
-                {formatNumber(cantidad_comentarios)}
+                {formatNumber({ value: cantidad_comentarios })}
               </p>
             </div>
           </div>
         </div>
         <div className={styles.writting_container}>
-          <button
+          <Link
             className={styles.btn_continue_writting}
-            onClick={() => {
-              toast.error("Pagina Pendiente");
-            }}
+            href={`/books/${libroId}/chapters/write/${capituloId}`}
           >
             Seguir escribiendo
-          </button>
+          </Link>
         </div>
       </div>
     </>
