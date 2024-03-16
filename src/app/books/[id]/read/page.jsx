@@ -5,7 +5,7 @@ import HeaderRead from "@/components/books/read/HeaderRead";
 import ProgressBar from "@/components/books/read/ProgressBar";
 import Loader from "@/components/common/loader";
 import { UseRead } from "@/contexts/ReadProvider";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function ReadBook({ params }) {
   const { getAll, data, chapterData, isLoading, getChapter } = UseRead();
@@ -42,7 +42,7 @@ export default function ReadBook({ params }) {
           </div>
           {/**footer */}
           <div className="fixed bottom-0 bg-white z-10 p-4 w-full">
-            <ProgressBar percentage={chapterData?.progreso} />
+            <ProgressBar percentage={chapterData?.progreso * 100} />
           </div>
         </div>
       )}

@@ -45,7 +45,7 @@ const useReadBooks = () => {
         },
       });
 
-      // si esto se cuMple significa que se abrio el libro por primera vez
+      // si esto se cumple significa que se abrio el libro por primera
       if (response.data.error) {
         console.log("entro");
         setChapterData(data[0]);
