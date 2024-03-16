@@ -14,7 +14,6 @@ const ReadProvider = ({ children }) => {
     getNowChapter,
     chapterData,
     isLoading,
-    getCurrentChapter,
     currentChapterData, // este es nuevo dato cuando elijo otro capitulo
     postCurrentChapter,
   } = useReadBooks();
