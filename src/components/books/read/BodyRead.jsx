@@ -5,6 +5,7 @@ import { UseRead } from "@/contexts/ReadProvider";
 import { LuBookOpenCheck } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useSwipeable } from "react-swipeable";
 
 const BodyRead = () => {
   const { chapterData, getCurrentChapterById, data } = UseRead();
@@ -15,15 +16,50 @@ const BodyRead = () => {
   const shouldSendTruePreviousChapter =
     chapterData?.previous_capitulo_id === null ? true : false;
 
+  const handleSwipeLeft = () => {
+    if (chapterData?.next_capitulo_id) {
+      getCurrentChapterById(
+        chapterData.libro_id,
+        chapterData.next_capitulo_id,
+        shouldSendTrueNextChapter
+      );
+    } else {
+      getCurrentChapterById(
+        chapterData.libro_id,
+        data[0].id,
+        shouldSendTrueNextChapter
+      );
+      router.push(`/books/${chapterData.libro_id}`);
+      toast.success("¡Felicidades! Has terminado este libro");
+    }
+  };
+
+  const handleSwipeRight = () => {
+    if (chapterData?.previous_capitulo_id) {
+      getCurrentChapterById(
+        chapterData.libro_id,
+        chapterData.previous_capitulo_id,
+        shouldSendTruePreviousChapter
+      );
+    }
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: handleSwipeLeft,
+    onSwipedRight: handleSwipeRight,
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  });
+
   return (
-    <div className=" w-4/6 h-full">
+    <div className="_sm:w-4/6 w-full mx-auto relative" {...swipeHandlers}>
       <div
-        style={{ position: "fixed", left: "12%", top: "50%" }}
-        className={`${!chapterData?.previous_capitulo_id ? "hidden" : ""}`}
+        className="hidden _sm:block"
+        style={{ position: "fixed", left: "10%", top: "50%" }}
       >
-        {chapterData?.previous_capitulo_id && (
+        {!chapterData?.previous_capitulo_id ? null : (
           <button
-            className="p-2 rounded-full hover:scale-110 transform transition-all duration-200 "
+            className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
             onClick={() =>
               getCurrentChapterById(
                 chapterData.libro_id,
@@ -40,7 +76,11 @@ const BodyRead = () => {
       <div>
         <TextRead urlContenido={chapterData?.contenido} />
       </div>
-      <div style={{ position: "fixed", right: "12%", top: "50%" }}>
+
+      <div
+        className="hidden _sm:block"
+        style={{ position: "fixed", right: "10%", top: "50%" }}
+      >
         {chapterData?.next_capitulo_id ? (
           <button
             className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
@@ -64,7 +104,7 @@ const BodyRead = () => {
                 shouldSendTrueNextChapter
               );
               router.push(`/books/${chapterData.libro_id}`);
-              toast.success("Felicidades! Has terminado este libro");
+              toast.success("¡Felicidades! Has terminado este libro");
             }}
           >
             <LuBookOpenCheck size={40} />

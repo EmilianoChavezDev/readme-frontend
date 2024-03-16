@@ -37,23 +37,23 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
   }, []);
 
   return (
-    <div className="w-2/3 mx-auto">
+    <div className="sm:w-2/3 mx-auto w-full">
       <div className="flex justify-between sticky top-0 bg-white z-10">
         <div className="flex items-center justify-center">
           <button onClick={() => previousPage()}>
             <div className="flex justify-center items-center gap-2">
-              <div className="w-8 h-10 relative transition-all duration-200 transform hover:scale-110 group hover:cursor-pointer">
-                <IoArrowBackOutline className="w-full h-full absolute top-0 left-0 group-hover:opacity-0" />
-                <FaArrowLeft className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
+              <div className="sm:w-8 sm:h-10 w-3 h-3 relative transition-all duration-200 transform hover:scale-110 group hover:cursor-pointer">
+                <IoArrowBackOutline className="sm:w-full sm:h-full absolute top-0 left-0 group-hover:opacity-0" />
+                <FaArrowLeft className="sm:w-full sm:h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
               </div>
               <div>
-                <p className="font-bold">Volver</p>
+                <p className="sm:font-bold font-semibold">Volver</p>
               </div>
             </div>
           </button>
         </div>
-        <div className="text-center">
-          <h1 className="text-3xl text-colorPrimario text-center font-semibold">
+        <div className="flex text-center items-center">
+          <h1 className="_md:text-3xl text-colorPrimario text-center font-semibold text-lg">
             {titulo}
           </h1>
         </div>
