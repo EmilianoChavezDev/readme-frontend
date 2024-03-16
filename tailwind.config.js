@@ -25,6 +25,13 @@ module.exports = withMT({
         BooksCreateCancelarButton: "#738d90",
         BooksCreateImageBackground: "#eeeeee",
       },
+      
+      width: {
+        customWidth: '250px', // Ancho personalizado
+      },
+      height: {
+        customHeight: '350px', // Altura personalizada
+      },
     },
 
     screens: {
