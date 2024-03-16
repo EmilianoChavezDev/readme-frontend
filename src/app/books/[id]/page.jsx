@@ -18,8 +18,8 @@ import Modal from '@/components/common/modal'
 import useFavorite from '@/hooks/useFavorite'
 import Loader from '@/components/common/loader'
 import { useUser } from '@/contexts/UserProvider'
-import ReviewSelector from '@/components/books/reviewSelector'
-import CommentsSection from '@/components/books/commentsSection'
+import ReviewSelector from '@/components/books/ReviewSelector'
+import CommentsSection from '@/components/books/CommentsSection'
 
 export default function BookDetails({ params }) {
 
