@@ -45,7 +45,7 @@ const useReadBooks = () => {
         },
       });
 
-      // si esto se cuple es el primer capitulo
+      // si esto se cuMple significa que se abrio el libro por primera vez
       if (response.data.error) {
         console.log("entro");
         setChapterData(data[0]);
@@ -65,7 +65,6 @@ const useReadBooks = () => {
 
   // para descargar el contenido del capitulo
   const getContentChapter = async (contenido) => {
-    console.log(contenido);
     setIsLoading(true);
     try {
       const response = await axios.get(contenido);
@@ -105,21 +104,26 @@ const useReadBooks = () => {
 
   // Cambia el capitulo actual leido del libro
   const postCurrentChapter = async (idChapter, idBook, state) => {
+    console.log(idChapter);
+    console.log(idBook);
     setIsLoading(true);
     const token = localStorage.getItem("token");
     console.log(token);
     try {
       const url = `${process.env.API_URL}/lecturas`;
-      const response = await axios.post(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        data: {
+      const response = await axios.post(
+        url,
+        {
           libro_id: idBook,
           capitulo_id: idChapter,
           terminado: state,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(response.data);
     } catch (error) {
       console.log(
