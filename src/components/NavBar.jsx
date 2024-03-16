@@ -1,31 +1,15 @@
 "use client";
 import { useUser } from "@/contexts/UserProvider";
 import { useEffect, useState } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
-import { IoMdArrowDropdown } from "react-icons/io";
-import {
-  FaUserCircle,
-  FaPlusCircle,
-  FaListUl,
-  FaFileAlt,
-  FaSignOutAlt,
-} from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import InputSearch from "./navbar/InputSearch";
+import Options from "./navbar/Options";
+import UserOptions from "./navbar/UserOptions";
 
 const NavBar = () => {
   const { username, logout, token, expiration } = useUser();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpenEscribir, setIsOpenEscribir] = useState(false);
-  const [isOpenExplorar, setIsOpenExplorar] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
-
-  const initials = username
-    ?.split(" ")
-    ?.map((word) => word[0])
-    ?.join("")
-    ?.toUpperCase();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -50,232 +34,63 @@ const NavBar = () => {
     }
   }, [username, expiration, token, router]);
 
-  const toggleDropdown = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
     setIsOpen(!isOpen);
-    setIsOpenEscribir(false);
-    setIsOpenExplorar(false);
-  };
-  const toggleDropdownEscribir = () => {
-    setIsOpenEscribir(!isOpenEscribir);
-    setIsOpen(false);
-    setIsOpenExplorar(false);
-  };
-  const toggleDropdownExplorar = () => {
-    setIsOpenExplorar(!isOpenExplorar);
-    setIsOpen(false);
-    setIsOpenEscribir(false);
-  };
-
-  const handlNoPageClick = () => {
-    router.push("/page-construction");
-  };
-
-  const handleFavoriteClick = () => {
-    router.push("/favorites");
-  };
-  const handleNewBook = () => {
-    router.push("/books/create");
-  };
-
-  const handleHomeClick = () => {
-    setIsOpenExplorar(false);
-    setIsOpen(false);
-    setIsOpenEscribir(false);
-    router.push("/");
   };
 
   return (
     <>
-      <div
-        className="flex justify-between px-10 bg-colorPrimario md:py-4
-        sm:flex sm:px-5 sm:py-2 sm:justify-normal
-      "
-      >
-        {/* parte de las opciones */}
-        <div
-          className="flex text-white items-center gap-2
-              sm:items-center sm:justify-center 
-        "
-        >
-          <div
-            className="flex gap-1 mr-2 items-center cursor-pointer"
-            onClick={() => handleHomeClick()}
-          >
-            <Image width={55} height={50} alt="logo" src={"/image/logo1.png"} />
-            <Image width={20} height={50} alt="logo" src={"/image/logo2.png"} />
-          </div>
-          <div className="flex gap-2 text-sm sm:text-xs">
-            <div className="relative">
-              <div
-                className="flex items-center border-b border-transparent hover:border-white transition-colors duration-300
-
-                "
-                onClick={() => toggleDropdownExplorar()}
-              >
-                <p className="cursor-pointer md:text-sm sm:text-xs">Explorar</p>
-                <button
-                  type="button"
-                  className="flex items-center justify-center"
-                >
-                  <IoMdArrowDropdown size={18} />
-                </button>
-              </div>
-              {isOpenExplorar && (
-                <div
-                  className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black w-96
-                md:text-sm sm:text-xs 
-                
-                "
-                >
-                  <ul className="my-2 gap-4 grid grid-cols-4">
-                    <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                      Ficción histórica
-                    </li>
-                    <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                      Novela negra
-                    </li>
-                    <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                      Ciencia ficción
-                    </li>
-                    <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                      Biografías y memorias
-                    </li>
-                    <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                      Literatura clásica
-                    </li>
-                    <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                      Literatura fantástica
-                    </li>
-                    <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                      Poesía
-                    </li>
-                    <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                      Literatura infantil
-                    </li>
-                    <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                      Autoayuda y desarrollo personal
-                    </li>
-                    <li className="col-span-1 hover:font-semibold hover:cursor-pointer">
-                      Ensayos
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
-            <div className=" xs:justify-center sm:text-nowrap md:text-sm sm:text-xs">
-              <p
-                className="cursor-pointer border-b border-transparent hover:border-white transition-colors duration-300 
-              "
-                onClick={() => handleFavoriteClick()}
-              >
-                Mis Favoritos
-              </p>
-            </div>
-            <div className="relative">
-              <div
-                className="flex items-center border-b border-transparent hover:border-white transition-colors duration-300
-                md:text-sm sm:text-xs
-                "
-                onClick={() => toggleDropdownEscribir()}
-              >
-                <p className="cursor-pointer ">Escribe</p>
-                <button
-                  type="button"
-                  className="flex items-center justify-center"
-                >
-                  <IoMdArrowDropdown size={18} />
-                </button>
-              </div>
-              {isOpenEscribir && (
-                <div
-                  className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black w-48
-                
-                md:text-sm sm:text-xs
-                "
-                >
-                  <ul className="my-2">
-                    <li
-                      className="mb-3 hover:cursor-pointer hover:font-semibold"
-                      onClick={() => handleNewBook()}
-                    >
-                      <FaPlusCircle className="inline-block mr-2" />
-                      Crear nuevo libro
-                    </li>
-                    <li
-                      className="mb-3 hover:cursor-pointer hover:font-semibold"
-                      onClick={() => handlNoPageClick()}
-                    >
-                      <FaListUl className="inline-block mr-2" />
-                      Mis libros
-                    </li>
-                    <li
-                      className="hover:cursor-pointer hover:font-semibold"
-                      onClick={() => handlNoPageClick()}
-                    >
-                      <FaFileAlt className="inline-block mr-2" />
-                      Mis borradores
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
+      <nav>
+        {/* Contenido para dispositivos no móviles */}
+        <div className="justify-between px-10 bg-colorPrimario lg:py-4 md:px-5 md:py-2 md:justify-normal md:flex hidden">
+          {/* parte de las opciones */}
+          <Options />
+          {/* parte del buscador */}
+          <InputSearch />
+          {/* parte del usuario */}
+          <UserOptions username={username} logout={logout} />
         </div>
-        {/* parte del buscador */}
-        <div className="flex items-center flex-grow mr-96 ml-60 md:ml-16 md:justify-center md:mr-60">
-          <input
-            type="text"
-            placeholder="Buscar Libros por ej.: Nombre, Autor..."
-            className="border border-gray-300 px-3 py-1 rounded-md focus:outline-none focus:border-blue-500 w-full"
-          />
+
+        {/* Icono del menú hamburguesa para dispositivos móviles */}
+        <div className="md:hidden">
           <button
+            onClick={toggleMenu}
             type="button"
-            className="bg-transparent p-2 rounded-md hover:text-white"
+            className="text-colorPrimario hover:text-colorHoverPrimario focus:outline-none focus:text-colorHoverPrimario"
           >
-            <AiOutlineSearch size={24} />
+            {/* Icono de hamburguesa */}
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
           </button>
         </div>
-        {/* parte del usuario */}
+      </nav>
 
-        <div className="flex items-center border-b border-transparent text-white">
-          <div className="h-8 w-8 flex items-center justify-center bg-blue-500 text-white rounded-full mr-2">
-            {initials}
-          </div>
-          <div className="relative">
-            <div className="flex items-center gap-1">
-              <p className="cursor-pointer text-sm">{username}</p>
-              <button
-                type="button"
-                className="flex items-center justify-center"
-                onClick={toggleDropdown}
-              >
-                <IoMdArrowDropdown size={18} />
-              </button>
-            </div>
-            {isOpen && (
-              <div className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 mt-2 -right-2 top-full text-black w-40">
-                <ul className="my-2">
-                  <li
-                    className="mb-4 hover:cursor-pointer hover:font-semibold border-b border-gray-200 pb-2"
-                    onClick={() => handlNoPageClick()}
-                  >
-                    <FaUserCircle className="inline-block mr-2" />
-                    Mi cuenta
-                  </li>
-
-                  <li
-                    className="hover:cursor-pointer hover:font-semibold"
-                    onClick={() => logout()}
-                  >
-                    <FaSignOutAlt className="inline-block mr-2" />
-                    Cerrar sesión
-                  </li>
-                </ul>
-              </div>
-            )}
+      {/* Menú desplegable para dispositivos móviles */}
+      {isOpen && (
+        <div className="md:hidden bg-colorPrimario">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {/* Opciones de navegación */}
+            <Options />
+            {/* Buscador */}
+            <InputSearch />
+            {/* Usuario */}
+            <UserOptions username={username} logout={logout} />
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
