@@ -1,6 +1,7 @@
 "use client";
 import NavBar from "@/components/NavBar";
 import BodyRead from "@/components/books/read/BodyRead";
+import ChapterNotExist from "@/components/books/read/ChapterNotExist";
 import HeaderRead from "@/components/books/read/HeaderRead";
 import ProgressBar from "@/components/books/read/ProgressBar";
 import Loader from "@/components/common/loader";
@@ -26,7 +27,7 @@ export default function ReadBook({ params }) {
       </div>
       {isLoading ? (
         <Loader />
-      ) : (
+      ) : data.length > 0 ? (
         <div>
           {/**Header */}
           <div className="sticky top-0 bg-white z-10 p-2">
@@ -45,6 +46,8 @@ export default function ReadBook({ params }) {
             <ProgressBar percentage={chapterData?.progreso * 100} />
           </div>
         </div>
+      ) : (
+        <ChapterNotExist />
       )}
     </>
   );
