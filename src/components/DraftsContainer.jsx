@@ -3,6 +3,8 @@ import React from "react";
 
 import styles from "@/app/drafts/styles/drafts.module.css";
 import Image from "next/image";
+import moment from "moment";
+import toast from "react-hot-toast";
 
 const DraftsContainer = ({ data }) => {
   const { libro, ultimo_capitulo_no_publicado } = data;
@@ -79,9 +81,12 @@ const DraftsContainer = ({ data }) => {
         <div className={styles.books_data_container}>
           <p className={styles.title_book}>{titulo}</p>
           <p className={styles.txt_public_parts}>{indice} partes publicadas</p>
-          <p className={styles.txt_actualization}>Actualizado {updated_at}</p>
+          <p className={styles.txt_actualization}>
+            Actualizado{" "}
+            {moment(new Date(updated_at)).format("MMMM, Do YYYY h:mm a")}
+          </p>
           <div className={styles.data_FCV}>
-            <div class={styles.dataFCV_container}>
+            <div className={styles.dataFCV_container}>
               <Image
                 src={"/image/img_view.png"}
                 width={15}
@@ -93,7 +98,7 @@ const DraftsContainer = ({ data }) => {
                 {formatNumber(cantidad_lecturas)}
               </p>
             </div>
-            <div class={styles.dataFCV_container}>
+            <div className={styles.dataFCV_container}>
               <Image
                 src={"/image/img_star.png"}
                 width={15}
@@ -105,7 +110,7 @@ const DraftsContainer = ({ data }) => {
                 {formatNumber(puntuacion_media)}
               </p>
             </div>
-            <div class={styles.dataFCV_container}>
+            <div className={styles.dataFCV_container}>
               <Image
                 src={"/image/img_comment.png"}
                 width={15}
@@ -120,7 +125,12 @@ const DraftsContainer = ({ data }) => {
           </div>
         </div>
         <div className={styles.writting_container}>
-          <button className={styles.btn_continue_writting}>
+          <button
+            className={styles.btn_continue_writting}
+            onClick={() => {
+              toast.error("Pagina Pendiente");
+            }}
+          >
             Seguir escribiendo
           </button>
         </div>

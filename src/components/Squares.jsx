@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "../app/favorites/styles/favorites.module.css";
 import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
@@ -8,7 +8,6 @@ import Link from "next/link";
 
 const Cuadros = ({ data }) => {
   const [favorito, setFavorito] = useState(true);
-  const [loading, setLoading] = useState(true);
   const { actualizarFavoritos, error } = updateFavoritos();
   const { token } = useUser();
   let {
@@ -32,20 +31,6 @@ const Cuadros = ({ data }) => {
         });
     }
   };
-
-  useEffect(() => {
-    if (token) {
-      setLoading(false);
-    }
-  }, [token]);
-
-  if (loading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.loadingSpinner} />
-      </div>
-    );
-  }
 
   const formatNumber = (value) => {
     const stringValue = String(value);

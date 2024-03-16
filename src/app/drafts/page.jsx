@@ -5,6 +5,7 @@ import styles from "./styles/drafts.module.css";
 import NavBar from "@/components/NavBar";
 import DraftsContainer from "@/components/DraftsContainer";
 import useDraft from "@/hooks/useDrafts";
+import Loader from "@/components/common/loader";
 
 const PageDrafts = () => {
   const { getDraftsUser, error, isLoading } = useDraft();
@@ -20,14 +21,12 @@ const PageDrafts = () => {
         console.error("Error al traer los borradores:", error);
       }
     };
-
-    if (isLoading) {
-      chargeList();
-    }
+    isLoading && chargeList();
   }, [getDraftsUser, isLoading]);
 
   return (
     <>
+      {isLoading && <Loader />}
       <NavBar />
       <div className={styles.global_container}>
         <div className={styles.title_drafts_container}>
@@ -35,7 +34,9 @@ const PageDrafts = () => {
             <p className={styles.title_drafts}>Mis borradores</p>
           </div>
           <div>
-            <button className={styles.btn_new_book} disabled>+ Nuevo Libro</button>
+            <button className={styles.btn_new_book} disabled>
+              + Nuevo Libro
+            </button>
           </div>
         </div>
         <div className={styles.drafts_container}>

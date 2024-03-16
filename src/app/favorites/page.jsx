@@ -7,6 +7,7 @@ import useFavoritos from "@/hooks/useFavorites";
 import { useUser } from "@/contexts/UserProvider";
 import NavBar from "@/components/NavBar";
 import NotFound from "@/components/SearchFavoritesNotFound";
+import Loader from "@/components/common/loader";
 
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
@@ -44,6 +45,7 @@ const PageFavoritos = () => {
 
   return (
     <>
+      {isLoading && <Loader />}
       <NavBar />
       <div className={styles.contenedor_global}>
         <div className={styles.contenedor_principal}>
@@ -69,21 +71,19 @@ const PageFavoritos = () => {
                 <div className={styles.loadingSpinner} />
               </div>
             )}
-            {!isLoading && (
-              <div>
-                {librosFavoritos?.filter(filterCallback).length === 0 ? (
-                  <NotFound />
-                ) : (
-                  <div className={styles.contenedor_cuadros}>
-                    {librosFavoritos
-                      ?.filter(filterCallback)
-                      ?.map((data, index) => (
-                        <Cuadros key={index} data={data} />
-                      ))}
-                  </div>
-                )}
-              </div>
-            )}
+            <div>
+              {librosFavoritos?.filter(filterCallback).length === 0 ? (
+                <NotFound />
+              ) : (
+                <div className={styles.contenedor_cuadros}>
+                  {librosFavoritos
+                    ?.filter(filterCallback)
+                    ?.map((data, index) => (
+                      <Cuadros key={index} data={data} />
+                    ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
