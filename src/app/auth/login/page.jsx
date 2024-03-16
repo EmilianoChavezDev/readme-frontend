@@ -6,8 +6,6 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import Loading from "@/components/common/Loading";
 import PasswordInput from "@/components/common/InputPassword";
 import UsernameInput from "@/components/common/InputUsername";

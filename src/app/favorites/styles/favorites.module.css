@@ -1,0 +1,163 @@
+.contenedor_global {
+  margin: 30px;
+  margin-right: 150px;
+  margin-left: 150px;
+}
+
+.barra_principal {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buscador {
+  border: 1px solid #dee2e6;
+  border-radius: 9px;
+  padding: 9px;
+}
+
+.buscador::placeholder {
+  font-size: 12px;
+  color: #adb5bd;
+  padding-left: 5px;
+}
+
+.titulo_favorito {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.contenedor_cuadros {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 50px 10px;
+}
+
+.contenedor_padre_cuadros {
+  margin-top: 50px;
+}
+
+.contenedor_datos_cuadro img {
+  height: 300px;
+  width: -webkit-fill-available;
+}
+
+.contenedor_datos_cuadro button img {
+  width: 35px;
+  height: 35px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.contenedor_datos_cuadro {
+  position: relative;
+}
+
+.imagenContainer {
+  position: relative;
+}
+
+.botonContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.contenedor_datos_cuadro {
+  border-radius: 9px;
+  padding: 10px;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.contenedor_title {
+  /* width: auto;  */
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.author {
+  font-size: 14px;
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.group_global {
+  display: flex;
+  align-items: center;
+}
+
+.group_global > div {
+  margin-top: 20px;
+  margin-right: 10px;
+}
+
+.group_children img {
+  height: 15px;
+  width: auto;
+  margin-right: 5px;
+  object-fit: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.group_children {
+  display: flex;
+  margin-right: 5px;
+}
+
+.group_children p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/*NOT FOUND*/
+
+.notfound {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.notfound > img {
+  height: auto;
+  max-width: 400px;
+}
+
+/*Loading*/
+
+.loadingContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.loadingSpinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #167574;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

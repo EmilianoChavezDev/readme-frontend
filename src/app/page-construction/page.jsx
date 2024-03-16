@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 const PageUnderConstruction = () => {
   const router = useRouter();
 
-  const handleInicioClick = () => {
-    router.push("/auth/prueba");
+  const handleHomeClick = () => {
+    router.push("/");
   };
 
   return (
@@ -27,7 +27,7 @@ const PageUnderConstruction = () => {
         />
         <button
           className="bg-colorPrimario hover:bg-colorHoverPrimario text-white font-bold py-2 px-4 rounded"
-          onClick={() => handleInicioClick()}
+          onClick={() => handleHomeClick()}
         >
           Volver a Inicio
         </button>
