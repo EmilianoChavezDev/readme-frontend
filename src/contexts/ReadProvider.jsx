@@ -6,6 +6,7 @@ const ReadContext = createContext();
 
 const ReadProvider = ({ children }) => {
   const [zoom, setZoom] = useState(1);
+  const [isChangeChapter, setIsChangeChapter] = useState(false);
 
   const {
     getBookById,
@@ -13,8 +14,9 @@ const ReadProvider = ({ children }) => {
     getNowChapter,
     chapterData,
     isLoading,
+    getCurrentChapter,
+    currentChapterData, // este es nuevo dato cuando elijo otro capitulo
     postCurrentChapter,
-    newChapterData,
   } = useReadBooks();
 
   const handleZoom = () => {
@@ -25,18 +27,24 @@ const ReadProvider = ({ children }) => {
     setZoom((prevZoom) => prevZoom - 0.1);
   };
 
+  // consulto todo lo que se necesita antes de cargar la pantalla
   const getAll = (id) => {
     getBookById(id);
-    getNowChapter(id);
   };
 
-  const getCurrentChapter = (id, idBook, end) => {
-    postCurrentChapter(id, idBook, end);
+  const getChapter = (id, data) => {
+    getNowChapter(id, data);
   };
 
-  useEffect(() => {
-    console.log(newChapterData);
-  }, [newChapterData]);
+  const getCurrentChapterById = (idBook, idChapter, state) => {
+    setIsChangeChapter(true);
+    // getCurrentChapter(id);
+    postCurrentChapter(idChapter, idBook, state);
+
+    setTimeout(() => {
+      setIsChangeChapter(false);
+    }, 3000);
+  };
 
   return (
     <ReadContext.Provider
@@ -48,7 +56,10 @@ const ReadProvider = ({ children }) => {
         chapterData,
         isLoading,
         getAll,
-        getCurrentChapter,
+        getCurrentChapterById,
+        isChangeChapter,
+        currentChapterData,
+        getChapter,
       }}
     >
       {children}

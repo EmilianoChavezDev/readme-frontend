@@ -7,7 +7,9 @@ import { UseRead } from "@/contexts/ReadProvider";
 
 const TextRead = ({ urlContenido }) => {
   const { zoom } = UseRead();
-  const { getContentChapter, contentChapter } = useReadBooks();
+  const { getContentChapter, contentChapter, isChangeChapter } =
+    useReadBooks();
+
   const [text, setText] = useState("");
   const quillRef = useRef();
 

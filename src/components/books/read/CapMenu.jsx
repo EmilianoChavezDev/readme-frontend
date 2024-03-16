@@ -4,10 +4,8 @@ import { UseRead } from "@/contexts/ReadProvider";
 import { useEffect, useState } from "react";
 
 const CapMenu = ({ capitulo }) => {
-  const { getCurrentChapter } = UseRead();
+  const { getCurrentChapterById } = UseRead();
   const [capMapp, setCapMap] = useState(capitulo);
-
-
 
   return (
     <div
@@ -21,7 +19,7 @@ const CapMenu = ({ capitulo }) => {
           <li
             key={capitulo?.id}
             onClick={() =>
-              getCurrentChapter(capitulo?.id, capitulo.libro_id, false)
+              getCurrentChapterById(capitulo?.libro_id, capitulo?.id, false)
             }
             className={`col-span-1 hover:font-semibold hover:cursor-pointer ${
               index === capMapp.length - 1 ? "" : "border-b-2 pb-2"
