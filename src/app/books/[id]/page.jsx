@@ -132,7 +132,7 @@ export default function BookDetails({ params }) {
                                                 <GoListUnordered />
                                                 <span className='text-sm'>Partes</span>
                                             </div>
-                                            <span className='font-semibold'>0</span>
+                                            <span className='font-semibold'>{book?.cantidad_capitulos ?? 0}</span>
                                         </div>
                                     </div>
                                     <div className='flex flex-col gap-3 text-white text-xs'>
