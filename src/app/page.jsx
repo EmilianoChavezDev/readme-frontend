@@ -40,11 +40,22 @@ export default function BackgroundBlogCard() {
     <>
       <NavBar />
       <div className="container-fluid p-12 h-full">
+        <style>
+          {`
+            .w-customWidth {
+              width: 250px; /* Ancho personalizado */
+            }
+
+            .h-customHeight {
+              height: 350px; /* Altura personalizada */
+            }
+          `}
+        </style>
         <div className="mb-32">
           <h2 className="text-4xl font-semibold mb-4">Seguir Leyendo</h2>
           <div>
             <div className="grid gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 pb-20 shadow-[0_19px_10px_-19px_rgba(0,0,0,0.3)]">
-              {librosLeidos.slice(0, 6).map((libro) => ( // Mostrar solo los primeros 6 libros leídos
+              {librosLeidos.slice(0, 6).map((libro) => (
                 <div key={libro.id} className="flex justify-center">
                   <Link
                     href={`/books/${libro.id}`}
@@ -52,7 +63,7 @@ export default function BackgroundBlogCard() {
                   >
                     <Card
                       shadow={false}
-                      className="relative grid w-[250px] h-[350px] items-end justify-center overflow-hidden text-center"
+                      className="relative grid w-customWidth h-customHeight items-end justify-center overflow-hidden text-center"
                     >
                       <CardHeader
                         floated={false}
@@ -66,7 +77,7 @@ export default function BackgroundBlogCard() {
                               ? libro.portada
                               : "/image/template_libro.png"
                           }
-                          alt={libro.id}
+                          alt={`Portada del libro "${libro.titulo}"`}
                           width={250}
                           height={350}
                           className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
@@ -93,7 +104,7 @@ export default function BackgroundBlogCard() {
           <h2 className="text-4xl font-semibold mb-4 ">Novedades</h2>
 
           <div className="grid gap-8 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {libros?.data?.slice(0, 6).map((libro) => ( // Mostrar solo los primeros 6 libros
+            {libros?.data?.slice(0, 6).map((libro) => (
               <div key={libro.id} className="flex justify-center">
                 <Link
                   href={`/books/${libro.id}`}
@@ -101,7 +112,7 @@ export default function BackgroundBlogCard() {
                 >
                   <Card
                     shadow={false}
-                    className="relative grid w-[250px] h-[350px] items-end justify-center overflow-hidden text-center"
+                    className="relative grid w-customWidth h-customHeight items-end justify-center overflow-hidden text-center"
                   >
                     <CardHeader
                       floated={false}
@@ -115,7 +126,7 @@ export default function BackgroundBlogCard() {
                             ? libro.portada
                             : "/image/template_libro.png"
                         }
-                        alt={libro.id}
+                        alt={`Portada del libro "${libro.titulo}"`}
                         width={200}
                         height={350}
                         className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
@@ -141,4 +152,3 @@ export default function BackgroundBlogCard() {
     </>
   );
 }
-
