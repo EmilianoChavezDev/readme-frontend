@@ -7,9 +7,10 @@ import UserOptions from "./navbar/UserOptions";
 import MobileMenu from "./navbar/MobileMenu";
 
 const NavBar = () => {
-  const { username, logout, token, expiration } = useUser();
+  const { username, logout, expiration } = useUser();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isToken, setIsToken] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -33,10 +34,9 @@ const NavBar = () => {
 
     if (expirationDate < new Date()) {
       router.push("/auth/login");
+      return;
     }
-  }, [username, expiration, isToken, router]);
-
-  const [isOpen, setIsOpen] = useState(false);
+  }, [expiration, router]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
