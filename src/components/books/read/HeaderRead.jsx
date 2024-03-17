@@ -8,6 +8,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { useEffect, useRef, useState } from "react";
 import CapMenu from "./CapMenu";
 import { useRouter } from "next/navigation";
+import { Tooltip } from "@material-tailwind/react";
 import { UseRead } from "@/contexts/ReadProvider";
 
 const HeaderRead = ({ titulo, capitulo, id }) => {
@@ -59,12 +60,14 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
         </div>
         <div className="flex justify-center items-center">
           <div className="relative">
-            <button onClick={() => handleShowMenuCap()}>
-              <div className="group w-8 h-10 transition-all duration-200 transform hover:scale-110 relative mr-4 hover:cursor-pointer">
-                <CiBoxList className="w-full h-full absolute top-0 left-0 group-hover:opacity-0" />
-                <FaList className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
-              </div>
-            </button>
+            <Tooltip content="lista de capitulos">
+              <button onClick={() => handleShowMenuCap()}>
+                <div className="group w-8 h-10 transition-all duration-200 transform hover:scale-110 relative mr-4 hover:cursor-pointer">
+                  <CiBoxList className="w-full h-full absolute top-0 left-0 group-hover:opacity-0" />
+                  <FaList className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
+                </div>
+              </button>
+            </Tooltip>
             {showMenuCap && (
               <div ref={menuRef}>
                 <CapMenu capitulo={capitulo} />
@@ -72,20 +75,24 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
             )}
           </div>
           <div>
-            <button onClick={handleZoom}>
-              <div className="w-8 h-10 transition-transform duration-200 transform hover:scale-110 relative hover:cursor-pointer">
-                <IoTextOutline className="w-full h-full absolute top-0 left-0" />
-                <IoText className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
-              </div>
-            </button>
+            <Tooltip content="aumentar tamaño">
+              <button onClick={handleZoom}>
+                <div className="w-8 h-10 transition-transform duration-200 transform hover:scale-110 relative hover:cursor-pointer">
+                  <IoTextOutline className="w-full h-full absolute top-0 left-0" />
+                  <IoText className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
+                </div>
+              </button>
+            </Tooltip>
           </div>
           <div>
-            <button onClick={handleUnZoom}>
-              <div className="w-8 h-5 transition-transform duration-200 transform hover:scale-110 relative mt-2 hover:cursor-pointer">
-                <IoTextOutline className="w-full h-full absolute top-0 left-0" />
-                <IoText className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
-              </div>
-            </button>
+            <Tooltip content="disminuir tamaño">
+              <button onClick={handleUnZoom}>
+                <div className="w-8 h-5 transition-transform duration-200 transform hover:scale-110 relative mt-2 hover:cursor-pointer">
+                  <IoTextOutline className="w-full h-full absolute top-0 left-0" />
+                  <IoText className="w-full h-full absolute top-0 left-0 opacity-0 hover:opacity-100" />
+                </div>
+              </button>
+            </Tooltip>
           </div>
         </div>
       </div>
