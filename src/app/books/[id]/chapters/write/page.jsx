@@ -15,7 +15,7 @@ export default function WriteChapter({ params }) {
         const createdChapter = await createChapter(values)
         if (createdChapter) {
             toast.success('El capítulo de tu libro ha sido guardado')
-            router.push(`/books/${params.id}`)
+            router.push('/drafts')
         } else {
             toast.error('El capítulo de tu libro no se pudo guardar')
         }
