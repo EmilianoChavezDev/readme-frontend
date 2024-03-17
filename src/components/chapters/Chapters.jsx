@@ -1,5 +1,5 @@
 "use client";
-import useChapters from "@/hooks/useChapters";
+import useChapter from "@/hooks/useChapter";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 export default function Chapters({ bookId }) {
   const [chapters, setChapters] = useState([]);
 
-  const { getChapterByBook, swapChapter } = useChapters();
+  const { getChapterByBook, swapChapter } = useChapter();
 
   const fetchChapters = async () => {
     const result = await getChapterByBook(bookId);

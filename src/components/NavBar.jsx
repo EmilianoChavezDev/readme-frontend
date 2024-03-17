@@ -1,10 +1,12 @@
-"use client";
 import { useUser } from "@/contexts/UserProvider";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import InputSearch from "./navbar/InputSearch";
 import Options from "./navbar/Options";
 import UserOptions from "./navbar/UserOptions";
+import { FaHome, FaHeart, FaPen, FaCompass } from "react-icons/fa";
+import { FaUser } from "react-icons/fa6";
+import MobileMenu from "./navbar/MobileMenu";
 
 const NavBar = () => {
   const { username, logout, token, expiration } = useUser();
@@ -42,7 +44,7 @@ const NavBar = () => {
 
   return (
     <>
-      <nav>
+      <nav className="relative">
         {/* Contenido para dispositivos no móviles */}
         <div className="justify-between px-10 bg-colorPrimario lg:py-4 md:px-5 md:py-2 md:justify-normal md:flex hidden">
           {/* parte de las opciones */}
@@ -54,15 +56,15 @@ const NavBar = () => {
         </div>
 
         {/* Icono del menú hamburguesa para dispositivos móviles */}
-        <div className="md:hidden">
+        <div className="flex justify-between items-center _lg:hidden bg-colorPrimario">
           <button
             onClick={toggleMenu}
             type="button"
-            className="text-colorPrimario hover:text-colorHoverPrimario focus:outline-none focus:text-colorHoverPrimario"
+            className="text-white hover:text-white focus:outline-none focus:text-white transform transition-all hover:scale-110 duration-200"
           >
             {/* Icono de hamburguesa */}
             <svg
-              className="h-6 w-6"
+              className="h-8 w-8"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -75,22 +77,14 @@ const NavBar = () => {
               />
             </svg>
           </button>
-        </div>
-      </nav>
-
-      {/* Menú desplegable para dispositivos móviles */}
-      {isOpen && (
-        <div className="md:hidden bg-colorPrimario">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {/* Opciones de navegación */}
-            <Options />
-            {/* Buscador */}
+          <div className="mx-auto">
             <InputSearch />
-            {/* Usuario */}
-            <UserOptions username={username} logout={logout} />
           </div>
         </div>
-      )}
+
+        {/**menu hamburugesa */}
+        <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+      </nav>
     </>
   );
 };

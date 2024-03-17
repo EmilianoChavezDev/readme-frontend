@@ -1,56 +1,69 @@
-"use client";
-import ChapterEditorHeader from "@/components/chapters/ChapterEditorHeader";
-import Editor from "@/components/chapters/Editor";
-import TittleInput from "@/components/chapters/TittleInput";
-import { useState } from "react";
+'use client'
 
-const defaultChapterName = "Ingrese el titulo del capítulo...";
-export default function WriteLibro({ params }) {
-  const [chapterTitle, setChapterTitle] = useState(defaultChapterName);
-  const [chapterContent, setChapterContent] = useState("");
-  const [headerTittle, setHeaderTittle] = useState(defaultChapterName);
+import toast from 'react-hot-toast'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
-  const handleChapterWrite = (value) => {
-    setChapterContent(value);
-  };
+import useChapter from '@/hooks/useChapter'
+import Loader from '@/components/common/loader'
+import ChapterForm from '@/components/chapters/ChapterForm'
 
-  const handleTittleBlur = (e) => {
-    if (!e.target.value) {
-      setChapterTitle(defaultChapterName);
-      setHeaderTittle(defaultChapterName);
-      return;
+export default function UpdateChapter({ params }) {
+
+    const router = useRouter()
+    const { getChapterByID, updateChapter, publishChapter, isLoading, error } = useChapter()
+
+    const [chapter, setChapter] = useState()
+
+    const fetchChapter = async () => {
+        const result = await getChapterByID(params.chapterId)
+        if (!result) {
+            toast.error('Capítulo no encontrado')
+        } else {
+            setChapter(result)
+        }
     }
-    setHeaderTittle(chapterTitle);
-  };
 
-  const handleSave = () => {};
+    const handleSave = async values => {
+        const createdChapter = await updateChapter(params.chapterId, values)
+        if (createdChapter) {
+            toast.success('El capítulo de tu libro ha sido guardado')
+            router.push(`/books/${params.id}`)
+        } else {
+            toast.error('El capítulo de tu libro no se pudo guardar')
+        }
+    }
 
-  const handlePublish = () => {};
+    const handlePublish = async values => {
+        const createdChapter = await updateChapter(params.chapterId, values)
+        if (createdChapter) {
+            const publishedChapter = await publishChapter(createdChapter?.id)
+            if (publishedChapter) {
+                toast.success('El capítulo de tu libro ha sido publicado')
+            } else {
+                toast.error('El capítulo se ha guardado pero no pudo ser publicado')
+            }
+            router.push(`/books/${params.id}`)
+        } else {
+            toast.error('El capítulo de tu libro no se pudo guardar')
+        }
+    }
 
-  return (
-    <>
-      <div className="flex flex-col bg-white">
-        <ChapterEditorHeader
-          bookId={params.id}
-          chapterTitle={headerTittle}
-          onSave={handleSave}
-          onPublish={handlePublish}
-        />
+    useEffect(() => {
+        fetchChapter()
+    }, [])
 
-        <div className="flex flex-col justify-center lg:py-6">
-          <div className="d-flex justify-center w-full">
-            <TittleInput
-              value={chapterTitle}
-              onChange={(e) => setChapterTitle(e.target.value)}
-              onBlur={handleTittleBlur}
-            />
-          </div>
-          <Editor
-            chapterContent={chapterContent}
-            onChange={handleChapterWrite}
-          />
-        </div>
-      </div>
-    </>
-  );
+    return (
+        <>
+            {error?
+                <div className='flex justify-center items-center'>
+                    <h1>El capítulo de este libro no fue encontrado</h1>
+                </div> :
+                <>
+                    {isLoading && <Loader />}
+                    <ChapterForm bookId={params.id} chapter={chapter} onSave={handleSave} onPublish={handlePublish} />
+                </>
+            }
+        </>
+    )
 }
