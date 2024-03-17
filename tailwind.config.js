@@ -25,6 +25,7 @@ module.exports = withMT({
         BooksCreateCancelarButton: "#738d90",
         BooksCreateImageBackground: "#eeeeee",
         lineColorBorder: "#C7C7C7",
+        buttonColorGray: "#E9ECEF",
       },
     },
 

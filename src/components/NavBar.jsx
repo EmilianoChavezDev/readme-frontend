@@ -44,7 +44,7 @@ const NavBar = () => {
   return (
     <>
       <nav className="relative">
-        <div className="justify-between px-10 bg-colorPrimario lg:py-4 md:px-5 md:py-2 md:justify-normal md:flex hidden">
+        <div className="_lg:justify-between _md:px-5 bg-colorPrimario _md:py-4  _lg:flex hidden">
           {/* parte de las opciones */}
           <Options />
           {/* parte del buscador */}

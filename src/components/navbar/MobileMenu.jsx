@@ -25,7 +25,7 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
         isOpen ? "" : "-translate-x-full"
       } transition-transform duration-500 overflow-y-hidden`}
     >
-      <div className="flex flex-col text-white gap-y-3 textsml mx-4 _md:mx-8 mt-16">
+      <div className="flex flex-col text-white gap-y-3 textsml mx-6 _md:mx-8 mt-16">
         <button
           className="flex items-center gap-x-2 py-2 border-b border-lineColorBorder transform transition-all duration-300 hover:scale-105"
           onClick={() => handleMenuClick("/")}
