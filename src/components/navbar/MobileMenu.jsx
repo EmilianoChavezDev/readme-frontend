@@ -6,6 +6,7 @@ import {
   FaCompass,
   FaUser,
   FaTimes,
+  FaFileAlt,
 } from "react-icons/fa";
 import UserOptions from "./UserOptions";
 import { useUser } from "@/contexts/UserProvider";
@@ -43,6 +44,13 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
           onClick={() => handleMenuClick("/favorites")}
         >
           <FaHeart /> Mis Favoritos
+        </button>
+        <button
+          className="flex items-center gap-x-2 py-2 border-b border-lineColorBorder transform transition-all duration-300 hover:scale-105"
+          onClick={() => handleMenuClick("/drafts")}
+        >
+          <FaFileAlt />
+          Mis Borradores
         </button>
         <button
           className="flex items-center gap-x-2 py-2 border-b border-lineColorBorder transform transition-all duration-300 hover:scale-105"
