@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { Tooltip } from "@material-tailwind/react";
 
 const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,9 +34,11 @@ const UserOptions = ({ username, logout }) => {
           <IoMdArrowDropdown size={18} />
         </button>
         <div className="ml-4 items-center _lg:hidden transform transition-all hover:scale-110 duration-200">
-          <button>
-            <FaSignOutAlt size={25} onClick={() => logout()} />
-          </button>
+          <Tooltip content="Cerrar sesion">
+            <button>
+              <FaSignOutAlt size={25} onClick={() => logout()} />
+            </button>
+          </Tooltip>
         </div>
       </div>
 

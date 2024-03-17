@@ -84,16 +84,7 @@ const Options = () => {
             >
               <ul className="md:my-2 md:gap-4 lg:gap-x-4 md:grid lg:grid-cols-3 md:grid-cols-2 col-span-1">
                 <li className="hover:cursor-pointer hover:font-bold transition-all duration-300">
-                  Ficción histórica
-                </li>
-                <li className="hover:cursor-pointer hover:font-bold transition-all duration-300">
-                  Ficción histórica
-                </li>
-                <li className="hover:cursor-pointer hover:font-bold transition-all duration-300">
-                  Ficción histórica
-                </li>
-                <li className="hover:cursor-pointer hover:font-bold transition-all duration-300">
-                  Ficción histórica
+                  Proximamente
                 </li>
               </ul>
             </div>
@@ -133,21 +124,22 @@ const Options = () => {
             >
               <ul className="my-2">
                 <li
-                  className="mb-3 hover:cursor-pointer hover:font-bold transition-all duration-300"
+                  className=" mb-4 pb-2 border-b border-gray-200 hover:cursor-pointer hover:font-bold transition-all duration-300"
                   onClick={() => handleNewBook()}
                 >
                   <FaPlusCircle className="inline-block mr-2" />
                   Crear nuevo libro
                 </li>
                 <li
-                  className="mb-3 hover:cursor-pointer hover:font-bold transition-all duration-300"
+                  className="
+                  mb-4 pb-2 border-b border-gray-200 hover:cursor-pointer hover:font-bold transition-all duration-300"
                   onClick={() => handlNoPageClick()}
                 >
                   <FaListUl className="inline-block mr-2" />
                   Mis libros
                 </li>
                 <li
-                  className="hover:cursor-pointer hover:font-bold transition-all duration-300"
+                  className=" mb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
                   onClick={() => handlNoPageClick()}
                 >
                   <FaFileAlt className="inline-block mr-2" />
