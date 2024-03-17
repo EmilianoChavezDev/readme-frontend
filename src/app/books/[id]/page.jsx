@@ -55,7 +55,7 @@ export default function BookDetails({ params }) {
     }
 
     const getCurrentChapter = async () => {
-        const result = await getNowChapter(book.id)
+        await getNowChapter(book.id)
     }
     
     const toggleFavorite = async () => {
