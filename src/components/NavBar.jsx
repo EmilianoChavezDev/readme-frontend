@@ -9,21 +9,20 @@ import MobileMenu from "./navbar/MobileMenu";
 const NavBar = () => {
   const { username, logout, expiration } = useUser();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isToken, setIsToken] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     setIsLoaded(true);
-    setIsToken(localStorage.getItem("token"));
   }, []);
 
   useEffect(() => {
     if (!isLoaded) return;
-    if (!isToken) router.push("/auth/login");
-  }, [isToken, isLoaded]);
+    if (!localStorage.getItem("token")) router.push("/auth/login");
+  }, [isLoaded, router]);
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) return;
     const storedExpiration = localStorage.getItem("expiration");
     const expirationDate = new Date(storedExpiration);
 
