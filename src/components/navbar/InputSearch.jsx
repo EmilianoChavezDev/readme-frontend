@@ -2,7 +2,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 
 const InputSearch = () => {
   return (
-    <div className="md:flex items-center lg:flex-grow lg:mr-72 lg:ml-24 md:justify-center md:ml-4  md:mr-8 md:w-96 lg:w-auto hidden">
+    <div className="flex items-center lg:flex-grow _lg:mr-72 _lg:ml-24 md:justify-center _md:w-96 _lg:w-auto w-80 py-2 _lg:py-0">
       <input
         type="text"
         placeholder="Buscar Libros por ej.: Nombre, Autor..."
