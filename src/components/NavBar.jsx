@@ -6,6 +6,7 @@ import Options from "./navbar/Options";
 import UserOptions from "./navbar/UserOptions";
 import { FaHome, FaHeart, FaPen, FaCompass } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
+import MobileMenu from "./navbar/MobileMenu";
 
 const NavBar = () => {
   const { username, logout, token, expiration } = useUser();
@@ -82,58 +83,7 @@ const NavBar = () => {
         </div>
 
         {/**menu hamburugesa */}
-        <div
-          className={`_lg:hidden absolute left-0 w-1/2 _md:w-4/12 h-screen z-50 bg-colorPrimario transform ${
-            isOpen ? "translate-x-0 shadow-md" : "-translate-x-full"
-          } transition-transform duration-500`}
-        >
-          <div className="flex flex-col text-white gap-y-3 textsml mx-4 gap-x-1 text-left">
-            <button
-              className="flex items-center gap-x-2 py-2 border-b border-lineColorBorder transform transition-all duration-300 hover:scale-105"
-              onClick={() => {
-                router.push("/"), setIsOpen(false);
-              }}
-            >
-              <FaHome /> Inicio
-            </button>
-            <button
-              className="flex items-center gap-x-2 py-2 border-b border-lineColorBorder transform transition-all duration-300 hover:scale-105"
-              onClick={() => {
-                router.push("/books/create"), setIsOpen(false);
-              }}
-            >
-              <FaPen /> Escribir
-            </button>
-            <button
-              className="flex items-center gap-x-2 py-2 border-b border-lineColorBorder transform transition-all duration-300 hover:scale-105"
-              onClick={() => {
-                router.push("/favorites"), setIsOpen(false);
-              }}
-            >
-              <FaHeart /> Mis Favoritos
-            </button>
-            <button
-              className="flex items-center gap-x-2 py-2 border-b border-lineColorBorder transform transition-all duration-300 hover:scale-105"
-              onClick={() => {
-                router.push("/page-construction"), setIsOpen(false);
-              }}
-            >
-              <FaCompass /> Explorar
-            </button>
-            <button
-              className="flex items-center gap-x-2 py-2 border-b border-lineColorBorder transform transition-all duration-300 hover:scale-105"
-              onClick={() => {
-                router.push("/page-construction"), setIsOpen(false);
-              }}
-            >
-              <FaUser /> Mi cuenta
-            </button>
-          </div>
-
-          <div className="absolute bottom-16 mx-4 w-full">
-            <UserOptions username={username} logout={logout} />
-          </div>
-        </div>
+        <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} />
       </nav>
     </>
   );
