@@ -16,24 +16,23 @@ import { addNumberFormat } from '@/utils'
 import useReview from '@/hooks/useReview'
 import Modal from '@/components/common/modal'
 import useFavorite from '@/hooks/useFavorite'
+import useReadBooks from '@/hooks/useReadBook'
 import Loader from '@/components/common/loader'
-import { useUser } from '@/contexts/UserProvider'
 import ReviewSelector from '@/components/books/ReviewSelector'
 import CommentsSection from '@/components/books/CommentsSection'
 
 export default function BookDetails({ params }) {
 
-    const { userId } = useUser()
-
+    const { chapterData, getNowChapter } = useReadBooks()
     const { getBookByID, isLoading, error } = useBook()
     const { createOrUpdateReview, getReviewByUserAndBook } = useReview()
     const { getFavoriteByUserAndBook, createFavorite, updateFavorite } = useFavorite()
 
     const [book, setBook] = useState(null)
-    const [resenha, setResenha] = useState(null)
+    const [review, setReview] = useState(null)
     const [favorite, setFavorite] = useState(null)
-    const [motivoReporte, setMotivoReporte] = useState('')
     const [showReportModal, setShowReportModal] = useState(false)
+    const [reasonForReporting, setReasonForReporting] = useState('')
 
     const fetchBook = async () => {
         const result = await getBookByID(params.id)
@@ -41,18 +40,22 @@ export default function BookDetails({ params }) {
     }
 
     const fetchReview = async () => {
-        const result = await getReviewByUserAndBook({ libro_id: book.id, user_id: userId })
-        setResenha(result)
+        const result = await getReviewByUserAndBook({ libro_id: book.id, user_id: localStorage.getItem('user_id') })
+        setReview(result)
     }
 
     const updateReview = async puntuacion => {
         const result = await createOrUpdateReview({ libro_id: book.id, puntuacion})
-        setResenha(result?.resenha)
+        setReview(result?.resenha)
     }
 
     const getFavorite = async () => {
-        const result = await getFavoriteByUserAndBook({ libro_id: book.id, user_id: userId })
+        const result = await getFavoriteByUserAndBook({ libro_id: book.id, user_id: localStorage.getItem('user_id') })
         setFavorite(result)
+    }
+
+    const getCurrentChapter = async () => {
+        await getNowChapter(book.id)
     }
     
     const toggleFavorite = async () => {
@@ -72,11 +75,12 @@ export default function BookDetails({ params }) {
     }, [params.id])
     
     useEffect(() => {
-        if (userId && book?.id) {
+        if (book?.id) {
             fetchReview()
             getFavorite()
+            getCurrentChapter()
         }
-    }, [book?.id, userId])
+    }, [book?.id])
 
     return (
         <>
@@ -88,8 +92,8 @@ export default function BookDetails({ params }) {
                 <div className='flex flex-col gap-2'>
                     <span>Indícanos el motivo de tu reporte</span>
                     <textarea className='text-xs border rounded-lg p-3 flex-grow border-gray-400 outline-none' 
-                        value={motivoReporte} 
-                        onChange={event => setMotivoReporte(event.target.value)} 
+                        value={reasonForReporting}
+                        onChange={event => setReasonForReporting(event.target.value)} 
                         rows={2} />
                 </div>
             </Modal>
@@ -138,7 +142,7 @@ export default function BookDetails({ params }) {
                                     <div className='flex flex-col gap-3 text-white text-xs'>
                                         <Link href={`/books/${params.id}/read`}>
                                             <button className='h-9 rounded-md bg-colorPrimario w-full'>
-                                                Comenzar a Leer
+                                                {chapterData?.id? 'Continuar Leyendo' : 'Comenzar a Leer'}
                                             </button>
                                         </Link>
                                         <button className={favorite?.favorito? 'h-9 rounded-md bg-colorPrimario text-white' : 'h-9 rounded-md bg-gray-500'} 
@@ -168,7 +172,7 @@ export default function BookDetails({ params }) {
                                 </span>
                             </button>
                             <div className='absolute top-10 right-10'>
-                                <ReviewSelector currentPoint={resenha?.puntuacion ?? 0} onSelect={updateReview}/>
+                                <ReviewSelector currentPoint={review?.puntuacion ?? 0} onSelect={updateReview}/>
                             </div>
                         </div>
                     </section>
