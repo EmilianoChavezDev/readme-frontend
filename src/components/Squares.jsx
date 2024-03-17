@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "../app/favorites/styles/favorites.module.css";
 import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
 import Link from "next/link";
+import formatNumber from "@/utils/formatNumber";
 
 const Cuadros = ({ data }) => {
   const [favorito, setFavorito] = useState(true);
-  const [loading, setLoading] = useState(true);
   const { actualizarFavoritos, error } = updateFavoritos();
   const { token } = useUser();
   let {
@@ -30,51 +30,6 @@ const Cuadros = ({ data }) => {
         .catch(() => {
           console.error("Error al intentar actualizar favoritos:", error);
         });
-    }
-  };
-
-  useEffect(() => {
-    if (token) {
-      setLoading(false);
-    }
-  }, [token]);
-
-  if (loading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <div className={styles.loadingSpinner} />
-      </div>
-    );
-  }
-
-  const formatNumber = (value) => {
-    const stringValue = String(value);
-    const length = stringValue.length;
-
-    if (length === 4) {
-      return (
-        stringValue.substring(0, 1) + "." + stringValue.substring(1, 2) + "K"
-      );
-    } else if (length === 5) {
-      return stringValue.substring(0, 2) + "K";
-    } else if (length === 6) {
-      return stringValue.substring(0, 3) + "K";
-    } else if (length === 7) {
-      return (
-        stringValue.substring(0, 1) + "." + stringValue.substring(1, 3) + "M"
-      );
-    } else if (length === 8 || length === 9) {
-      return stringValue.substring(0, length - 6) + "M";
-    } else if (length === 10) {
-      return (
-        stringValue.substring(0, 1) + "." + stringValue.substring(1, 3) + "B"
-      );
-    } else if (length >= 11 && length <= 12) {
-      return stringValue.substring(0, length - 9) + "B";
-    } else if (length > 12) {
-      return stringValue.substring(0, 2) + "B+";
-    } else {
-      return stringValue;
     }
   };
 
@@ -111,7 +66,7 @@ const Cuadros = ({ data }) => {
             <img src="/image/img_view.png" alt="imagen ver" />
           </div>
           <div>
-            <p>{formatNumber(view)}</p>
+            <p>{formatNumber({ value: view })}</p>
           </div>
         </div>
         <div className={styles.group_children}>
@@ -119,7 +74,7 @@ const Cuadros = ({ data }) => {
             <img src="/image/img_star.png" alt="imagen estrella" />
           </div>
           <div>
-            <p>{formatNumber(star)}</p>
+            <p>{formatNumber({ value: star })}</p>
           </div>
         </div>
         <div className={styles.group_children}>
@@ -127,7 +82,7 @@ const Cuadros = ({ data }) => {
             <img src="/image/img_comment.png" alt="imagen comentar" />
           </div>
           <div>
-            <p>{formatNumber(comment)}</p>
+            <p>{formatNumber({ value: comment })}</p>
           </div>
         </div>
       </div>
