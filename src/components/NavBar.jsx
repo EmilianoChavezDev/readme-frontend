@@ -4,23 +4,23 @@ import { useRouter } from "next/navigation";
 import InputSearch from "./navbar/InputSearch";
 import Options from "./navbar/Options";
 import UserOptions from "./navbar/UserOptions";
-import { FaHome, FaHeart, FaPen, FaCompass } from "react-icons/fa";
-import { FaUser } from "react-icons/fa6";
 import MobileMenu from "./navbar/MobileMenu";
 
 const NavBar = () => {
   const { username, logout, token, expiration } = useUser();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isToken, setIsToken] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     setIsLoaded(true);
+    setIsToken(localStorage.getItem("token"));
   }, []);
 
   useEffect(() => {
     if (!isLoaded) return;
-    if (!token) router.push("/auth/login");
-  }, [token, isLoaded]);
+    if (!isToken) router.push("/auth/login");
+  }, [isToken, isLoaded]);
 
   useEffect(() => {
     const storedExpiration = localStorage.getItem("expiration");
@@ -34,7 +34,7 @@ const NavBar = () => {
     if (expirationDate < new Date()) {
       router.push("/auth/login");
     }
-  }, [username, expiration, token, router]);
+  }, [username, expiration, isToken, router]);
 
   const [isOpen, setIsOpen] = useState(false);
 

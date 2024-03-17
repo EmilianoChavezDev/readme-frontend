@@ -13,6 +13,8 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
     setIsOpen(false);
   };
 
+
+
   return (
     <div
       className={`_lg:hidden absolute left-0 w-1/2 _md:w-4/12 h-screen z-50 bg-colorPrimario transform ${
