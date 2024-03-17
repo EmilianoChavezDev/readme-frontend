@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { Tooltip } from "@material-tailwind/react";
 
 const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,11 @@ const UserOptions = ({ username, logout }) => {
   };
 
   return (
-    <div className="flex items-center border-b border-transparent text-white">
+    <div
+      className="flex items-center border-b border-transparent text-white _lg:transition-all _lg:duration-100 _lg:hover:scale-105
+    _lg:hover:cursor-pointer
+  "
+    >
       <div className="h-8 w-8 flex items-center justify-center bg-blue-500 text-white rounded-full mr-2">
         {initials}
       </div>
@@ -27,15 +32,21 @@ const UserOptions = ({ username, logout }) => {
         <p className="cursor-pointer _lg:text-sm text-lg">{username}</p>
         <button
           type="button"
-          className="_lg:flex items-center justify-center hidden"
+          className={`_lg:flex items-center justify-center hidden 
+          transition-all duration-200 transform ${
+            isOpen ? "rotate-180" : "rotate-0"
+          }
+          `}
           onClick={toggleDropdown}
         >
           <IoMdArrowDropdown size={18} />
         </button>
         <div className="ml-4 items-center _lg:hidden transform transition-all hover:scale-110 duration-200">
-          <button>
-            <FaSignOutAlt size={25} onClick={() => logout()} />
-          </button>
+          <Tooltip content="Cerrar sesion">
+            <button>
+              <FaSignOutAlt size={25} onClick={() => logout()} />
+            </button>
+          </Tooltip>
         </div>
       </div>
 
