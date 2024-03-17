@@ -14,24 +14,34 @@ const UserOptions = ({ username, logout }) => {
     setIsOpen(!isOpen);
   };
 
+  const handlNoPageClick = () => {
+    router.push("/page-construction");
+  };
+
   return (
-    <div className="md:flex items-center border-b border-transparent text-white hidden">
+    <div className="flex items-center border-b border-transparent text-white">
       <div className="h-8 w-8 flex items-center justify-center bg-blue-500 text-white rounded-full mr-2">
         {initials}
       </div>
-      <div className="relative">
-        <div className="flex items-center gap-1">
-          <p className="cursor-pointer text-sm">{username}</p>
-          <button
-            type="button"
-            className="flex items-center justify-center"
-            onClick={toggleDropdown}
-          >
-            <IoMdArrowDropdown size={18} />
+      <div className="flex items-center gap-x-1">
+        <p className="cursor-pointer _lg:text-sm text-lg">{username}</p>
+        <button
+          type="button"
+          className="_lg:flex items-center justify-center hidden"
+          onClick={toggleDropdown}
+        >
+          <IoMdArrowDropdown size={18} />
+        </button>
+        <div className="ml-4 items-center _lg:hidden transform transition-all hover:scale-110 duration-200">
+          <button>
+            <FaSignOutAlt size={25} onClick={() => logout()} />
           </button>
         </div>
+      </div>
+
+      <div className="relative">
         {isOpen && (
-          <div className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 mt-2 -right-2 top-full text-black w-40">
+          <div className="_lg:absolute z-10 bg-white border border-gray-200 shadow-lg p-2 mt-2 -right-2 top-7 text-black w-40 ">
             <ul className="my-2">
               <li
                 className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"

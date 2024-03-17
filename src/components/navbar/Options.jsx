@@ -25,9 +25,6 @@ const Options = () => {
     router.push("/page-construction");
   };
 
-  const handleFavoriteClick = () => {
-    router.push("/favorites");
-  };
   const handleNewBook = () => {
     router.push("/books/create");
   };
@@ -81,7 +78,7 @@ const Options = () => {
           </div>
           {isOpenExplorar && (
             <div
-              className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-full text-black lg:w-96 md:w-60
+              className="absolute z-10 bg-white border border-gray-200 shadow-lg p-2 top-11 text-black lg:w-96 md:w-60
           
           "
             >
@@ -131,7 +128,7 @@ const Options = () => {
           </div>
           {isOpenEscribir && (
             <div
-              className="md:absolute md:z-10 md:bg-white border md:border-gray-200 md:shadow-lg md:p-2 md:top-full text-black md:w-48
+              className="md:absolute md:z-10 md:bg-white border md:border-gray-200 md:shadow-lg md:p-2 md:top-11 text-black md:w-48
           "
             >
               <ul className="my-2">
