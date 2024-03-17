@@ -13,19 +13,6 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
     setIsOpen(false);
   };
 
-  useEffect(() => {
-    if (!token) router.push("/auth/login");
-  }, [token]);
-
-  useEffect(() => {
-    const storedExpiration = localStorage.getItem("expiration");
-    const expirationDate = new Date(storedExpiration);
-
-    if (!expirationDate || expirationDate < new Date()) {
-      router.push("/auth/login");
-    }
-  }, [username, token]);
-
   return (
     <div
       className={`_lg:hidden absolute left-0 w-1/2 _md:w-4/12 h-screen z-50 bg-colorPrimario transform ${
