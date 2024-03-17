@@ -6,6 +6,7 @@ import { LuBookOpenCheck } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useSwipeable } from "react-swipeable";
+import { Tooltip } from "@material-tailwind/react";
 
 const BodyRead = () => {
   const { chapterData, getCurrentChapterById, data } = UseRead();
@@ -58,18 +59,20 @@ const BodyRead = () => {
         style={{ position: "fixed", left: "10%", top: "50%" }}
       >
         {!chapterData?.previous_capitulo_id ? null : (
-          <button
-            className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
-            onClick={() =>
-              getCurrentChapterById(
-                chapterData.libro_id,
-                chapterData?.previous_capitulo_id,
-                shouldSendTruePreviousChapter
-              )
-            }
-          >
-            <CiCircleChevLeft size={42} />
-          </button>
+          <Tooltip content="capitulo anterior">
+            <button
+              className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
+              onClick={() =>
+                getCurrentChapterById(
+                  chapterData.libro_id,
+                  chapterData?.previous_capitulo_id,
+                  shouldSendTruePreviousChapter
+                )
+              }
+            >
+              <CiCircleChevLeft size={42} />
+            </button>
+          </Tooltip>
         )}
       </div>
 
@@ -82,33 +85,37 @@ const BodyRead = () => {
         style={{ position: "fixed", right: "10%", top: "50%" }}
       >
         {chapterData?.next_capitulo_id ? (
-          <button
-            className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
-            onClick={() =>
-              getCurrentChapterById(
-                chapterData.libro_id,
-                chapterData?.next_capitulo_id,
-                shouldSendTrueNextChapter
-              )
-            }
-          >
-            <CiCircleChevRight size={42} />
-          </button>
+          <Tooltip content="siguiente capitulo">
+            <button
+              className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
+              onClick={() =>
+                getCurrentChapterById(
+                  chapterData.libro_id,
+                  chapterData?.next_capitulo_id,
+                  shouldSendTrueNextChapter
+                )
+              }
+            >
+              <CiCircleChevRight size={42} />
+            </button>
+          </Tooltip>
         ) : (
-          <button
-            className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
-            onClick={() => {
-              getCurrentChapterById(
-                chapterData.libro_id,
-                data[0].id,
-                shouldSendTrueNextChapter
-              );
-              router.push(`/books/${chapterData.libro_id}`);
-              toast.success("¡Felicidades! Has terminado este libro");
-            }}
-          >
-            <LuBookOpenCheck size={40} />
-          </button>
+          <Tooltip content="terminar libro">
+            <button
+              className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
+              onClick={() => {
+                getCurrentChapterById(
+                  chapterData.libro_id,
+                  data[0].id,
+                  shouldSendTrueNextChapter
+                );
+                router.push(`/books/${chapterData.libro_id}`);
+                toast.success("¡Felicidades! Has terminado este libro");
+              }}
+            >
+              <LuBookOpenCheck size={40} />
+            </button>
+          </Tooltip>
         )}
       </div>
     </div>
