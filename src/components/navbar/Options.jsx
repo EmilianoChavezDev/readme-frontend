@@ -29,6 +29,10 @@ const Options = () => {
     router.push("/books/create");
   };
 
+  const handleDraft = () => {
+    router.push("/drafts");
+  };
+
   const handleHomeClick = () => {
     setIsOpenExplorar(false);
     setIsOpenEscribir(false);
@@ -148,8 +152,8 @@ const Options = () => {
                   Mis libros
                 </li>
                 <li
-                  className=" mb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                  onClick={() => handlNoPageClick()}
+                 className=" mb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
+                  onClick={() => handleDraft()}
                 >
                   <FaFileAlt className="inline-block mr-2" />
                   Mis borradores
