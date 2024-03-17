@@ -18,8 +18,8 @@ import Modal from '@/components/common/modal'
 import useFavorite from '@/hooks/useFavorite'
 import Loader from '@/components/common/loader'
 import { useUser } from '@/contexts/UserProvider'
-import ReviewSelector from '@/components/books/reviewSelector'
-import CommentsSection from '@/components/books/commentsSection'
+import ReviewSelector from '@/components/books/ReviewSelector'
+import CommentsSection from '@/components/books/CommentsSection'
 
 export default function BookDetails({ params }) {
 
@@ -132,7 +132,7 @@ export default function BookDetails({ params }) {
                                                 <GoListUnordered />
                                                 <span className='text-sm'>Partes</span>
                                             </div>
-                                            <span className='font-semibold'>0</span>
+                                            <span className='font-semibold'>{book?.cantidad_capitulos ?? 0}</span>
                                         </div>
                                     </div>
                                     <div className='flex flex-col gap-3 text-white text-xs'>
