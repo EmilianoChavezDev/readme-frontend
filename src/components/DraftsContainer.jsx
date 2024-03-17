@@ -6,9 +6,11 @@ import Image from "next/image";
 import moment from "moment";
 import formatNumber from "@/utils/formatNumber";
 import Link from "next/link";
+import 'moment/locale/es'
 
 const DraftsContainer = ({ data }) => {
   const { libro, ultimo_capitulo_no_publicado } = data;
+  moment.locale('es');
 
   const {
     id: libroId,
@@ -36,10 +38,10 @@ const DraftsContainer = ({ data }) => {
         </div>
         <div className={styles.books_data_container}>
           <p className={styles.title_book}>{titulo}</p>
-          <p className={styles.txt_public_parts}>{indice} partes publicadas</p>
+          <p className={styles.txt_public_parts}>{Number(indice) === 1 ? `${indice} parte publicada` : `${indice} partes publicadas`} </p>
           <p className={styles.txt_actualization}>
-            Actualizado{" "}
-            {moment(new Date(updated_at)).format("MMMM, Do YYYY h:mm a")}
+            Actualizado  el{" "}
+            {moment(new Date(updated_at)).format('LLL')}
           </p>
           <div className={styles.data_FCV}>
             <div className={styles.dataFCV_container}>

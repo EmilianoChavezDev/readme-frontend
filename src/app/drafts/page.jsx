@@ -17,7 +17,6 @@ const PageDrafts = () => {
       try {
         const drafts = await getDraftsUser();
         setDataDrafts(drafts);
-        console.log(drafts);
       } catch {
         console.error("Error al traer los borradores:", error);
       }
