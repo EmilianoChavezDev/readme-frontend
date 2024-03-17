@@ -12,7 +12,7 @@ const InputSearch = () => {
       <Tooltip content="buscar">
         <button
           type="button"
-          className="bg-transparent p-2 rounded-md _lg:hover:text-white text-white hover:cursor-pointer hover:font-bold transition-all duration-300"
+          className="bg-transparent p-2 rounded-md _lg:text-black _lg:hover:text-white text-white hover:cursor-pointer hover:font-bold transition-all duration-300 hover:scale-110"
         >
           <AiOutlineSearch size={24} />
         </button>
