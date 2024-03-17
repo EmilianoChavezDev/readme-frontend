@@ -1,19 +1,16 @@
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FaHome, FaPen, FaHeart, FaCompass, FaUser } from "react-icons/fa";
 import UserOptions from "./UserOptions";
 import { useUser } from "@/contexts/UserProvider";
 
 const MobileMenu = ({ isOpen, setIsOpen }) => {
-  const { username, logout, token } = useUser();
+  const { username, logout } = useUser();
   const router = useRouter();
 
   const handleMenuClick = (route) => {
     router.push(route);
     setIsOpen(false);
   };
-
-
 
   return (
     <div
