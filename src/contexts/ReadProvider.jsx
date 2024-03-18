@@ -7,6 +7,7 @@ const ReadContext = createContext();
 const ReadProvider = ({ children }) => {
   const [zoom, setZoom] = useState(1);
   const [isChangeChapter, setIsChangeChapter] = useState(false);
+  const [isNext, setIsNext] = useState(false);
 
   const {
     getBookById,
@@ -14,8 +15,8 @@ const ReadProvider = ({ children }) => {
     getNowChapter,
     chapterData,
     isLoading,
-    currentChapterData, // este es nuevo dato cuando elijo otro capitulo
     postCurrentChapter,
+    currentNextChapterData,
   } = useReadBooks();
 
   const handleZoom = () => {
@@ -45,6 +46,11 @@ const ReadProvider = ({ children }) => {
     }, 3000);
   };
 
+  const verifyCurrentChapter = () => {
+    console.log(data);
+    
+  };
+
   return (
     <ReadContext.Provider
       value={{
@@ -57,8 +63,10 @@ const ReadProvider = ({ children }) => {
         getAll,
         getCurrentChapterById,
         isChangeChapter,
-        currentChapterData,
         getChapter,
+        verifyCurrentChapter,
+        currentNextChapterData,
+        isNext,
       }}
     >
       {children}
