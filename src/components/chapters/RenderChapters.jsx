@@ -1,6 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Link from "next/link";
+import { Tooltip } from "@material-tailwind/react";
 
 export default function RenderCapitules({ cap, bookId }) {
   //Obtenemos los atributos, listeners, setNodeRef, transform y transition
@@ -25,11 +26,12 @@ export default function RenderCapitules({ cap, bookId }) {
       {...listeners}
       style={style}
     >
-      <Link href={`/books/${bookId}/chapters/write/${cap.id}`}>
-        <div className="overflow-x-scroll">
+      {/* Mostramos el titulo, si es muy largo se muestra con el Tooltip */}
+      <Tooltip content={cap.titulo}>
+        <Link href={`/books/${bookId}/chapters/write/${cap.id}`}>
           <p className="text-sm font-semibold w-24 truncate">{cap.titulo}</p>
-        </div>
-      </Link>
+        </Link>
+      </Tooltip>
 
       {/* Agregamos un check si esta publicado */}
       {cap.publicado ? (
