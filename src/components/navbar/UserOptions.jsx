@@ -21,7 +21,7 @@ const UserOptions = ({ username, logout }) => {
 
   return (
     <div
-      className="flex items-center border-b border-transparent text-white _lg:transition-all _lg:duration-100 _lg:hover:scale-105
+      className="flex items-center border-b border-transparent text-white
     _lg:hover:cursor-pointer
   "
     >
