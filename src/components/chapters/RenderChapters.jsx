@@ -26,8 +26,24 @@ export default function RenderCapitules({ cap, bookId }) {
       style={style}
     >
       <Link href={`/books/${bookId}/chapters/write/${cap.id}`}>
-        <p className="text-sm font-semibold">{cap.titulo}</p>
+        <div className="overflow-x-scroll">
+          <p className="text-sm font-semibold w-24 truncate">{cap.titulo}</p>
+        </div>
       </Link>
+
+      {/* Agregamos un check si esta publicado */}
+      {cap.publicado ? (
+        <div className="flex items-center pr-4">
+          <div className="bg-green-400 h-3 w-3 rounded-full"></div>
+          <p className="text-xs ml-2">Publicado</p>
+        </div>
+      ) : (
+        <div className="flex items-center">
+          <div className="bg-red-400 h-3 w-3 rounded-full"></div>
+          <p className="text-xs ml-2">No publicado</p>
+        </div>
+      )}
+
       <BsThreeDotsVertical />
       <hr className="w-full border-gray-400 absolute bottom-0 left-0" />
     </div>

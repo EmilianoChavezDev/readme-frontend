@@ -49,11 +49,6 @@ export default function Chapters({ bookId }) {
     router.push(`/books/${bookId}/chapters/write`);
   };
 
-  const handleGoToChapter = (chapterID) => {
-    //Redirigir al seguir escribiendo
-    router.push(`/books/${bookId}/chapters/write/${chapterID}`);
-  };
-
   //Obtenemos los capitulos de ese libro y los guardamos en el estado capitules
   useEffect(() => {
     fetchChapters();
@@ -74,12 +69,7 @@ export default function Chapters({ bookId }) {
             strategy={verticalListSortingStrategy}
           >
             {chapters?.map((cap) => (
-              <RenderCapitules
-                bookId={bookId}
-                handleGoToChapter={handleGoToChapter}
-                key={cap.id}
-                cap={cap}
-              />
+              <RenderCapitules bookId={bookId} key={cap.id} cap={cap} />
             ))}
           </SortableContext>
         </div>
