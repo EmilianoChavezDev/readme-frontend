@@ -7,6 +7,7 @@ const useReadBooks = () => {
   const [contentChapter, setContentChapter] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [currentChapterData, setCurrentChapterData] = useState([]);
+  const [bookInfo, setBookInfo] = useState();
 
   // Trae todos los capitulos del libro
   const getBookById = async (id) => {
@@ -44,8 +45,6 @@ const useReadBooks = () => {
           libro_id: idBook,
         },
       });
-
-      // si esto se cumple significa que se abrio el libro por primera
       if (response.data.error) {
         setChapterData(data[0]);
         postCurrentChapter(data[0].id, idBook, false);
@@ -53,10 +52,6 @@ const useReadBooks = () => {
         setChapterData(response.data.capitulo_actual);
       }
     } catch (error) {
-      console.error(
-        "Error al obtener el capitulo:",
-        error.response ? error.response.data : error.message
-      );
     } finally {
       setIsLoading(false);
     }
@@ -69,16 +64,12 @@ const useReadBooks = () => {
       const response = await axios.get(contenido);
       setContentChapter(response.data);
     } catch (error) {
-      console.log(
-        "error al obtener el contenido del capitulo",
-        error.response ? error.response.data : error.message
-      );
     } finally {
       setIsLoading(false);
     }
   };
 
-  // para obtener el capitulo segun el id
+  // para obtener el capitulo segun el id del capitulo
   const getCurrentChapter = async (idChapter) => {
     setIsLoading(true);
     const token = localStorage.getItem("token");
@@ -95,6 +86,27 @@ const useReadBooks = () => {
         "error al obtener el contenido nuevo",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // para obtener si el libro fue finalizado
+  const changeBookEnd = async (idBook) => {
+    console.log(idBook);
+    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    try {
+      const url = `${process.env.API_URL}/lecturas/${idBook}`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log(response.data);
+      setBookInfo(response.data.terminado);
+    } catch (error) {
     } finally {
       setIsLoading(false);
     }
@@ -140,6 +152,7 @@ const useReadBooks = () => {
     getCurrentChapter,
     currentChapterData,
     postCurrentChapter,
+    changeBookEnd,
   };
 };
 

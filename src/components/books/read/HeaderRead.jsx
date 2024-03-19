@@ -60,7 +60,7 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
         </div>
         <div className="flex justify-center items-center">
           <div className="relative">
-            <Tooltip content="lista de capitulos">
+            <Tooltip content="lista de capitulos" className="hidden _lg:block">
               <button onClick={() => handleShowMenuCap()}>
                 <div className="group w-8 h-10 transition-all duration-200 transform hover:scale-110 relative mr-4 hover:cursor-pointer">
                   <CiBoxList className="w-full h-full absolute top-0 left-0 group-hover:opacity-0" />
@@ -75,7 +75,7 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
             )}
           </div>
           <div>
-            <Tooltip content="aumentar tamaño">
+            <Tooltip content="aumentar tamaño" className="hidden _lg:block">
               <button onClick={handleZoom}>
                 <div className="w-8 h-10 transition-transform duration-200 transform hover:scale-110 relative hover:cursor-pointer">
                   <IoTextOutline className="w-full h-full absolute top-0 left-0" />
@@ -85,7 +85,7 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
             </Tooltip>
           </div>
           <div>
-            <Tooltip content="disminuir tamaño">
+            <Tooltip content="disminuir tamaño" className="hidden _lg:block">
               <button onClick={handleUnZoom}>
                 <div className="w-8 h-5 transition-transform duration-200 transform hover:scale-110 relative mt-2 hover:cursor-pointer">
                   <IoTextOutline className="w-full h-full absolute top-0 left-0" />
