@@ -1,13 +1,12 @@
 "use client";
 import useReadBooks from "@/hooks/useReadBook";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const ReadContext = createContext();
 
 const ReadProvider = ({ children }) => {
   const [zoom, setZoom] = useState(1);
   const [isChangeChapter, setIsChangeChapter] = useState(false);
-  const [isNext, setIsNext] = useState(false);
 
   const {
     getBookById,
@@ -17,6 +16,8 @@ const ReadProvider = ({ children }) => {
     isLoading,
     postCurrentChapter,
     currentNextChapterData,
+    changeBookEnd,
+    bookInfo,
   } = useReadBooks();
 
   const handleZoom = () => {
@@ -46,9 +47,8 @@ const ReadProvider = ({ children }) => {
     }, 3000);
   };
 
-  const verifyCurrentChapter = () => {
-    console.log(data);
-    
+  const verifyCurrentChapter = async () => {
+    await changeBookEnd(chapterData.libro_id);
   };
 
   return (
@@ -66,7 +66,7 @@ const ReadProvider = ({ children }) => {
         getChapter,
         verifyCurrentChapter,
         currentNextChapterData,
-        isNext,
+        bookInfo,
       }}
     >
       {children}

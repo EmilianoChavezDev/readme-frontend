@@ -9,12 +9,18 @@ import { useSwipeable } from "react-swipeable";
 import { Tooltip } from "@material-tailwind/react";
 
 const BodyRead = () => {
-  const { chapterData, getCurrentChapterById, data, verifyCurrentChapter } =
-    UseRead();
+  const {
+    chapterData,
+    getCurrentChapterById,
+    data,
+    verifyCurrentChapter,
+    bookInfo,
+  } = UseRead();
   const router = useRouter();
+  const [stop, setStop] = useState(false);
 
   useEffect(() => {
-    verifyCurrentChapter();
+    //verifyCurrentChapter();
   }, []);
 
   const shouldSendTrueNextChapter =
