@@ -32,11 +32,10 @@ module.exports = withMT({
       },
 
       width: {
-        customWidth: "233px", // Ancho personalizado
+        customWidth: "250px", // Ancho personalizado
       },
       height: {
-        customHeight: "333px", // Altura personalizada
-=
+        customHeight: "350px", // Altura personalizada
       },
     },
 
