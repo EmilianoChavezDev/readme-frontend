@@ -85,12 +85,7 @@ const BodyRead = () => {
         style={{ position: "fixed", right: "10%", top: "50%" }}
       >
         {chapterData?.next_capitulo_id ? (
-          <Tooltip
-            content="siguiente capitulo"
-            className={`hidden _lg:block ${
-              chapterData?.next_capitulo_id ? "hidden" : "block"
-            }`}
-          >
+          <Tooltip content="siguiente capitulo" className={`hidden _lg:block`}>
             <button
               className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
               onClick={() =>
