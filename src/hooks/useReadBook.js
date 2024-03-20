@@ -50,6 +50,7 @@ const useReadBooks = () => {
         postCurrentChapter(data[0].id, idBook, false);
       } else {
         setChapterData(response.data.capitulo_actual);
+        postCurrentChapter(response.data.capitulo_actual.id, idBook, false);
       }
     } catch (error) {
     } finally {
