@@ -97,14 +97,15 @@ const useReadBooks = () => {
     setIsLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const url = `${process.env.API_URL}/lecturas/${idBook}`;
+      const url = `${process.env.API_URL}/lecturas_libro_id/?libro_id=${idBook}`;
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.terminado;
+      return response.data;
     } catch (error) {
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -116,7 +117,7 @@ const useReadBooks = () => {
     const token = localStorage.getItem("token");
     try {
       const url = `${process.env.API_URL}/lecturas`;
-      await axios.post(
+      const response = await axios.post(
         url,
         {
           libro_id: idBook,
@@ -130,6 +131,7 @@ const useReadBooks = () => {
         }
       );
       await changeNowChapter(idBook);
+      return response.data;
     } catch (error) {
       console.log(
         "error al cambiar el capitulo",
