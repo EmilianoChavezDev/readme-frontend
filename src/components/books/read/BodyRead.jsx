@@ -12,7 +12,6 @@ const BodyRead = () => {
   const { chapterData, getCurrentChapterById, data } = UseRead();
   const router = useRouter();
 
-  console.log(chapterData);
   const shouldSendTrueNextChapter =
     chapterData?.next_capitulo_id === null ? true : false;
   const shouldSendTruePreviousChapter =
