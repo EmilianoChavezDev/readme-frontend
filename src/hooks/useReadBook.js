@@ -8,6 +8,20 @@ const useReadBooks = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentChapterData, setCurrentChapterData] = useState([]);
 
+  const getReadBook = async params => {
+    const token = localStorage.getItem('token')
+    setIsLoading(true)
+    try {
+      const url = `${process.env.API_URL}/lecturas_libro_id`
+      const response = await axios.get(url, { params, headers: { Authorization: `Bearer ${token}` }})
+      return response.data
+    } catch (error) {
+      return null
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   // Trae todos los capitulos del libro
   const getBookById = async (id) => {
     const token = localStorage.getItem("token");
@@ -175,6 +189,7 @@ const useReadBooks = () => {
     currentChapterData,
     postCurrentChapter,
     changeBookEnd,
+    getReadBook
   };
 };
 
