@@ -9,19 +9,8 @@ import { useSwipeable } from "react-swipeable";
 import { Tooltip } from "@material-tailwind/react";
 
 const BodyRead = () => {
-  const {
-    chapterData,
-    getCurrentChapterById,
-    data,
-    verifyCurrentChapter,
-    bookInfo,
-  } = UseRead();
+  const { chapterData, getCurrentChapterById, data } = UseRead();
   const router = useRouter();
-  const [stop, setStop] = useState(false);
-
-  useEffect(() => {
-    //verifyCurrentChapter();
-  }, []);
 
   const shouldSendTrueNextChapter =
     chapterData?.next_capitulo_id === null ? true : false;
@@ -96,7 +85,12 @@ const BodyRead = () => {
         style={{ position: "fixed", right: "10%", top: "50%" }}
       >
         {chapterData?.next_capitulo_id ? (
-          <Tooltip content="siguiente capitulo" className="hidden _lg:block">
+          <Tooltip
+            content="siguiente capitulo"
+            className={`hidden _lg:block ${
+              chapterData?.next_capitulo_id ? "hidden" : "block"
+            }`}
+          >
             <button
               className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
               onClick={() =>
@@ -115,11 +109,14 @@ const BodyRead = () => {
             <button
               className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
               onClick={() => {
-                getCurrentChapterById(
-                  chapterData.libro_id,
-                  data[0].id,
-                  shouldSendTrueNextChapter
-                );
+                {
+                  getCurrentChapterById(
+                    chapterData.libro_id,
+                    data[0].id,
+                    shouldSendTrueNextChapter
+                  ),
+                    console.log(shouldSendTrueNextChapter);
+                }
                 router.push(`/books/${chapterData.libro_id}`);
                 toast.success("¡Felicidades! Has terminado este libro");
               }}

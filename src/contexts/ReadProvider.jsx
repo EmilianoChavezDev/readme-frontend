@@ -39,8 +39,8 @@ const ReadProvider = ({ children }) => {
 
   const getCurrentChapterById = async (idBook, idChapter, state) => {
     setIsChangeChapter(true);
-    await postCurrentChapter(idChapter, idBook, state);
-    getNowChapter(idBook, data);
+    postCurrentChapter(idChapter, idBook, state);
+   // getNowChapter(idBook, data);
 
     setTimeout(() => {
       setIsChangeChapter(false);
