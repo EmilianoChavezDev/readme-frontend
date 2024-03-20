@@ -21,28 +21,28 @@ module.exports = withMT({
         colorPrimario: "#167574",
         colorHoverPrimario: "#0b5755",
       },
-      
+
       width: {
-        customWidth: '250px', // Ancho personalizado
+        customWidth: "233px", // Ancho personalizado
       },
       height: {
-        customHeight: '350px', // Altura personalizada
+        customHeight: "333px", // Altura personalizada
       },
     },
-    
+
     screens: {
       // small resolutions
-      '_sm': '640px',
-      '_md': '768px',
-      '_lg': '1024px',
-      '_xl': '1280px',
+      _sm: "640px",
+      _md: "768px",
+      _lg: "1024px",
+      _xl: "1280px",
       // large resolutions
-      'sm': '868px',
-      'md': '1124px',
-      'lg': '1380px',
-      'xl': '1634px',
-      '2xl': '1634px',
-    }
+      sm: "868px",
+      md: "1124px",
+      lg: "1380px",
+      xl: "1634px",
+      "2xl": "1634px",
+    },
   },
   plugins: [],
 });
