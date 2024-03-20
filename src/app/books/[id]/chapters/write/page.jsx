@@ -4,12 +4,13 @@ import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 
 import useChapter from '@/hooks/useChapter'
+import Loader from '@/components/common/loader'
 import ChapterForm from '@/components/chapters/ChapterForm'
 
 export default function WriteChapter({ params }) {
 
     const router = useRouter()
-    const { createChapter, publishChapter } = useChapter()
+    const { createChapter, publishChapter, isLoading } = useChapter()
 
     const handleSave = async values => {
         const createdChapter = await createChapter(values)
@@ -37,6 +38,9 @@ export default function WriteChapter({ params }) {
     }
 
     return (
-        <ChapterForm bookId={params.id} onSave={handleSave} onPublish={handlePublish} />
+        <>
+            {isLoading && <Loader />}
+            <ChapterForm bookId={params.id} onSave={handleSave} onPublish={handlePublish} isLoading={isLoading} />
+        </>
     )
 }

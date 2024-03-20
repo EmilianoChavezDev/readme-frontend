@@ -11,7 +11,7 @@ import { useUser } from '@/contexts/UserProvider'
 import TitleInput from '@/components/chapters/TitleInput'
 import ChapterEditorHeader from '@/components/chapters/ChapterEditorHeader'
 
-export default function ChapterForm ({ bookId, chapter, onSave, onPublish }) {
+export default function ChapterForm ({ bookId, chapter, onSave, onPublish, isLoading }) {
 
     const router = useRouter()
     const { userId } = useUser()
@@ -90,7 +90,7 @@ export default function ChapterForm ({ bookId, chapter, onSave, onPublish }) {
                 </div> :
                 <div className='flex flex-col bg-white'>
                     {isBookLoading && <Loader />}
-                    <ChapterEditorHeader bookId={bookId} chapterTitle={chapter? 'Editar capítulo' : 'Añadir un nuevo capítulo'} onSave={handleSave} onPublish={handlePublish} />
+                    <ChapterEditorHeader bookId={bookId} chapterTitle={chapter? 'Editar capítulo' : 'Añadir un nuevo capítulo'} onSave={handleSave} onPublish={handlePublish} disableButtons={isLoading} />
                     <div className='flex flex-col justify-center lg:py-6'>
                         <div className='d-flex justify-center w-full'>
                             <TitleInput value={chapterTitle} onChange={(e) => setChapterTitle(e.target.value)} />
