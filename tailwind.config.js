@@ -27,6 +27,8 @@ module.exports = withMT({
         lineColorBorder: "#C7C7C7",
         buttonColorGray: "#E9ECEF",
         textColorGray: "#717171",
+        textHeaderColorGray: "#484848",
+        textInformationColor: "#222222",
       },
 
       width: {

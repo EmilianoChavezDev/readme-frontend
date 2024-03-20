@@ -9,7 +9,7 @@ const page = ({ params }) => {
         <NavBar />
       </div>
       <div className="flex flex-col">
-        <div className="m-5 font-bold _lg:text-2xl _lg:my-8 _lg:ml-20">
+        <div className="m-5 font-bold _lg:text-2xl _lg:my-8 _lg:ml-20 text-textHeaderColorGray">
           Mi cuenta
         </div>
         <div>
@@ -24,8 +24,10 @@ const page = ({ params }) => {
                 <FaUser size={20} className="_lg:size-10" />
               </div>
               <div>
-                <p className="font-semibold">Información personal</p>
-                <span className="text-textColorGray">
+                <p className="font-semibold text-textInformationColor">
+                  Información personal
+                </p>
+                <span className="text-textColorGray text-sm">
                   Proporcionar o cambiar datos personales, actualiza tu
                   contraseña
                 </span>
@@ -42,8 +44,10 @@ const page = ({ params }) => {
                 <FaChartBar size={20} className="_lg:size-10" />
               </div>
               <div>
-                <p className="font-semibold">Estadísticas</p>
-                <span className="text-textColorGray ">
+                <p className="font-semibold text-textInformationColor">
+                  Estadísticas
+                </p>
+                <span className="text-textColorGray  text-sm">
                   Obtener un informe de las interacciones de los usuarios con
                   los libros publicados
                 </span>
