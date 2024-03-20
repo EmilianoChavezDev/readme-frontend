@@ -115,7 +115,7 @@ const useReadBooks = () => {
     const token = localStorage.getItem("token");
     try {
       const url = `${process.env.API_URL}/lecturas`;
-      const response = await axios.post(
+      await axios.post(
         url,
         {
           libro_id: idBook,
@@ -128,7 +128,6 @@ const useReadBooks = () => {
           },
         }
       );
-      console.log(response.data);
       await changeNowChapter(idBook);
     } catch (error) {
       console.log(
