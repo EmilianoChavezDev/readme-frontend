@@ -23,7 +23,7 @@ import CommentsSection from '@/components/books/CommentsSection'
 
 export default function BookDetails({ params }) {
 
-    const { chapterData, getNowChapter } = useReadBooks()
+    const { getReadBook } = useReadBooks()
     const { getBookByID, isLoading, error } = useBook()
     const { createOrUpdateReview, getReviewByUserAndBook } = useReview()
     const { getFavoriteByUserAndBook, createFavorite, updateFavorite } = useFavorite()
@@ -31,6 +31,7 @@ export default function BookDetails({ params }) {
     const [book, setBook] = useState(null)
     const [review, setReview] = useState(null)
     const [favorite, setFavorite] = useState(null)
+    const [readBook, setReadBook] = useState(null)
     const [showReportModal, setShowReportModal] = useState(false)
     const [reasonForReporting, setReasonForReporting] = useState('')
 
@@ -54,8 +55,9 @@ export default function BookDetails({ params }) {
         setFavorite(result)
     }
 
-    const getCurrentChapter = async () => {
-        await getNowChapter(book.id)
+    const getCurrentReadBook = async () => {
+        const result = await getReadBook({ libro_id: book.id, user_id: localStorage.getItem('user_id')})
+        setReadBook(result)
     }
     
     const toggleFavorite = async () => {
@@ -78,7 +80,7 @@ export default function BookDetails({ params }) {
         if (book?.id) {
             fetchReview()
             getFavorite()
-            getCurrentChapter()
+            getCurrentReadBook()
         }
     }, [book?.id])
 
@@ -136,13 +138,13 @@ export default function BookDetails({ params }) {
                                                 <GoListUnordered />
                                                 <span className='text-sm'>Partes</span>
                                             </div>
-                                            <span className='font-semibold'>{book?.cantidad_capitulos ?? 0}</span>
+                                            <span className='font-semibold'>{book?.cantidad_capitulos_publicados ?? 0}</span>
                                         </div>
                                     </div>
                                     <div className='flex flex-col gap-3 text-white text-xs'>
                                         <Link href={`/books/${params.id}/read`}>
                                             <button className='h-9 rounded-md bg-colorPrimario w-full'>
-                                                {chapterData?.id? 'Continuar Leyendo' : 'Comenzar a Leer'}
+                                                {readBook?.terminado? 'Volver a leer' : readBook? 'Continuar Leyendo' : 'Comenzar a Leer'}
                                             </button>
                                         </Link>
                                         <button className={favorite?.favorito? 'h-9 rounded-md bg-colorPrimario text-white' : 'h-9 rounded-md bg-gray-500'} 
