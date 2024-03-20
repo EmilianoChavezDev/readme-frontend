@@ -26,13 +26,14 @@ module.exports = withMT({
         BooksCreateImageBackground: "#eeeeee",
         lineColorBorder: "#C7C7C7",
         buttonColorGray: "#E9ECEF",
+        textColorGray: "#717171",
       },
-      
+
       width: {
-        customWidth: '250px', // Ancho personalizado
+        customWidth: "250px", // Ancho personalizado
       },
       height: {
-        customHeight: '350px', // Altura personalizada
+        customHeight: "350px", // Altura personalizada
       },
     },
 
