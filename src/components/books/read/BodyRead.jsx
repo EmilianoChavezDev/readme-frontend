@@ -109,14 +109,11 @@ const BodyRead = () => {
             <button
               className="p-2 rounded-full hover:scale-110 transform transition-all duration-200"
               onClick={() => {
-                {
-                  getCurrentChapterById(
-                    chapterData.libro_id,
-                    data[0].id,
-                    shouldSendTrueNextChapter
-                  ),
-                    console.log(shouldSendTrueNextChapter);
-                }
+                getCurrentChapterById(
+                  chapterData.libro_id,
+                  data[0].id,
+                  shouldSendTrueNextChapter
+                );
                 router.push(`/books/${chapterData.libro_id}`);
                 toast.success("¡Felicidades! Has terminado este libro");
               }}
