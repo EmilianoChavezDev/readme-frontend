@@ -10,7 +10,6 @@ const useReadBooks = () => {
 
   // Trae todos los capitulos del libro
   const getBookById = async (id) => {
-    await changeBookEnd(id);
     const token = localStorage.getItem("token");
     setIsLoading(true);
     try {
@@ -33,6 +32,7 @@ const useReadBooks = () => {
 
   // Obtiene el capitulo actual del libro
   const getNowChapter = async (idBook, data) => {
+    const isEnd = await changeBookEnd(idBook);
     setIsLoading(true);
     const token = localStorage.getItem("token");
     try {
@@ -45,8 +45,7 @@ const useReadBooks = () => {
           libro_id: idBook,
         },
       });
-
-      if (response.data.error) {
+      if (response.data.error || isEnd) {
         setChapterData(data[0]);
         postCurrentChapter(data[0].id, idBook, false);
       } else {
@@ -103,7 +102,7 @@ const useReadBooks = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data.terminado);
+      return response.data.terminado;
     } catch (error) {
     } finally {
       setIsLoading(false);
