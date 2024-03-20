@@ -143,15 +143,15 @@ export default function BookDetails({ params }) {
                                     </div>
                                     <div className='flex flex-col gap-3 text-white text-xs'>
                                         <Link href={`/books/${params.id}/read`}>
-                                            <button className='h-9 rounded-md bg-colorPrimario w-full'>
+                                            <button className='h-9 rounded-md bg-colorPrimario w-full hover:bg-colorHoverPrimario'>
                                                 {readBook?.terminado? 'Volver a leer' : readBook? 'Continuar Leyendo' : 'Comenzar a Leer'}
                                             </button>
                                         </Link>
-                                        <button className={favorite?.favorito? 'h-9 rounded-md bg-colorPrimario text-white' : 'h-9 rounded-md bg-gray-500'} 
+                                        <button className={favorite?.favorito? 'h-9 rounded-md bg-colorPrimario text-white hover:bg-colorHoverPrimario' : 'h-9 rounded-md bg-gray-500 hover:brightness-90'} 
                                             onClick={toggleFavorite}>
                                             {favorite?.favorito? 'Quitar de Favoritos' : 'Añadir a Favoritos' }
                                         </button>
-                                        <button className='h-9 rounded-md bg-gray-500' onClick={() => toast.error('Implementar en otro ticket')}>
+                                        <button className='h-9 rounded-md bg-gray-500 hover:brightness-90' onClick={() => toast.error('Implementar en otro ticket')}>
                                             Descargar
                                         </button>
                                     </div>
