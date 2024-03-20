@@ -20,6 +20,15 @@ module.exports = withMT({
       colors: {
         colorPrimario: "#167574",
         colorHoverPrimario: "#0b5755",
+        ChaptearHeader: "#7EAFAF",
+        BooksCreateSeguirButton: "#167574",
+        BooksCreateCancelarButton: "#738d90",
+        BooksCreateImageBackground: "#eeeeee",
+        lineColorBorder: "#C7C7C7",
+        buttonColorGray: "#E9ECEF",
+        textColorGray: "#717171",
+        textHeaderColorGray: "#484848",
+        textInformationColor: "#222222",
       },
 
       width: {
@@ -27,6 +36,7 @@ module.exports = withMT({
       },
       height: {
         customHeight: "333px", // Altura personalizada
+=
       },
     },
 
