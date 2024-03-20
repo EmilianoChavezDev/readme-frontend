@@ -46,7 +46,7 @@ export default function BackgroundBlogCard() {
                   <h2 className="text-3xl text-center pt-8 px-8 _sm:text-left font-bold mb-4">
                     Seguir Leyendo
                   </h2>
-                  <div className="grid gap-8 grid-cols-1 _sm:grid-cols-2 _md:grid-cols-3 _lg:grid-cols-4 _xl:grid-cols-5 px-8 pb-20 shadow-[0_19px_10px_-19px_rgba(0,0,0,0.3)]">
+                  <div className="grid gap-8 grid-cols-1 _sm:grid-cols-2 _md:grid-cols-3 _lg:grid-cols-4 _xl:grid-cols-5 px-8 pb-20 shadow-lg">
                     {librosLeidos.map((libro) => (
                       <div key={libro.id} className="flex justify-center">
                         <Link
