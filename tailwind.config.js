@@ -36,7 +36,6 @@ module.exports = withMT({
       },
       height: {
         customHeight: "333px", // Altura personalizada
-=
       },
     },
 
