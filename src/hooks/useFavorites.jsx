@@ -30,16 +30,7 @@ const useFavoritos = () => {
       });
       return res.data;
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error === "Favoritos no encontrados") {
-        // Hacer algo si los favoritos no son encontrados
-        console.log("Favoritos no encontrados");
-        // Por ejemplo, lanzar una alerta
-        alert("No se encontraron favoritos.");
-      } else {
-        // Manejar otros errores
-        console.error("Error al traer favoritos:", error);
-      }
-      throw error;
+      setError(true);
     } finally {
       setIsLoading(false);
     }

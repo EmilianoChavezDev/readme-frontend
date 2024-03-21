@@ -21,14 +21,13 @@ const PageFavoritos = () => {
         setLibrosFavoritos(favoritos);
       })
       .catch(() => {
-        console.log("ERROR");
-        //console.error("Error al traer favoritos:", error);
+        console.error("Error al traer favoritos:", error);
       });
 
   useEffect(() => {
     const pagina = 1;
-    const busqueda = filtro; 
     if (token) {
+      let busqueda = filtro;
       let user_id = localStorage.getItem("user_id");
       chargeList(user_id, pagina, busqueda);
     }
