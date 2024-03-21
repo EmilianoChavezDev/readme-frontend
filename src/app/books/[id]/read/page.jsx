@@ -1,7 +1,7 @@
 "use client";
 import NavBar from "@/components/NavBar";
 import BodyRead from "@/components/books/read/BodyRead";
-import NotExist from "@/components/books/read/NotExist";
+import NotExist from "@/components/common/NotExist";
 import HeaderRead from "@/components/books/read/HeaderRead";
 import ProgressBar from "@/components/books/read/ProgressBar";
 import Loader from "@/components/common/loader";
