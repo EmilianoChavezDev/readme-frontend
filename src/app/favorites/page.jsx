@@ -6,7 +6,7 @@ import Cuadros from "@/components/Squares";
 import useFavoritos from "@/hooks/useFavorites";
 import { useUser } from "@/contexts/UserProvider";
 import NavBar from "@/components/NavBar";
-import NotFound from "@/components/SearchFavoritesNotFound";
+import NotFound from "@/components/common/NotFound";
 import Loader from "@/components/common/loader";
 
 const PageFavoritos = () => {
@@ -67,21 +67,25 @@ const PageFavoritos = () => {
             </div>
           </div>
           <div className={styles.contenedor_padre_cuadros}>
-            {isLoading && (
-              <div className={styles.loadingContainer}>
-                <div className={styles.loadingSpinner} />
-              </div>
-            )}
             <div>
-              {librosFavoritos?.filter(filterCallback).length === 0 ? (
-                <NotFound />
-              ) : (
+              {librosFavoritos && librosFavoritos.length > 0 ? (
                 <div className={styles.contenedor_cuadros}>
                   {librosFavoritos
                     ?.filter(filterCallback)
                     ?.map((data, index) => (
                       <Cuadros key={index} data={data} />
                     ))}
+                </div>
+              ) : (
+                <div>
+                  <NotFound
+                    message={
+                      " ¡Vaya! Parece que no se encuentra ningún libro favorito."
+                    }
+                    butMessage={
+                      " Pero no te preocupes, puedes seguir navegando a través de la página y encontrar algo que te guste. "
+                    }
+                  />
                 </div>
               )}
             </div>
