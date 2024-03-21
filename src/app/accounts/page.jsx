@@ -1,8 +1,13 @@
 "use client";
 import NavBar from "@/components/NavBar";
+import { useUser } from "@/contexts/UserProvider";
 import { FaUser, FaChartBar } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const page = ({ params }) => {
+  const { username } = useUser();
+  const router = useRouter();
   return (
     <>
       <div>
@@ -20,18 +25,20 @@ const page = ({ params }) => {
             
             "
             >
-              <div>
-                <FaUser size={20} className="_lg:size-10" />
-              </div>
-              <div>
-                <p className="font-semibold text-textInformationColor">
-                  Información personal
-                </p>
-                <span className="text-textColorGray text-sm">
-                  Proporcionar o cambiar datos personales, actualiza tu
-                  contraseña
-                </span>
-              </div>
+              <Link href={`/edit/${username}`}>
+                <div>
+                  <FaUser size={20} className="_lg:size-10" />
+                </div>
+                <div>
+                  <p className="font-semibold text-textInformationColor">
+                    Información personal
+                  </p>
+                  <span className="text-textColorGray text-sm">
+                    Proporcionar o cambiar datos personales, actualiza tu
+                    contraseña
+                  </span>
+                </div>
+              </Link>
             </li>
 
             <li

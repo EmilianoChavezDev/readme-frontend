@@ -54,7 +54,7 @@ const UserOptions = ({ username, logout }) => {
             <ul className="my-2">
               <li
                 className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                onClick={() => router.push("/accounts")}
+                onClick={() => router.push(`/accounts`)}
               >
                 <FaUserCircle className="inline-block mr-2" />
                 Mi cuenta
