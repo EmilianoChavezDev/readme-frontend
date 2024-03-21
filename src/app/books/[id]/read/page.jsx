@@ -1,7 +1,7 @@
 "use client";
 import NavBar from "@/components/NavBar";
 import BodyRead from "@/components/books/read/BodyRead";
-import ChapterNotExist from "@/components/books/read/ChapterNotExist";
+import NotExist from "@/components/books/read/NotExist";
 import HeaderRead from "@/components/books/read/HeaderRead";
 import ProgressBar from "@/components/books/read/ProgressBar";
 import Loader from "@/components/common/loader";
@@ -47,7 +47,14 @@ export default function ReadBook({ params }) {
           </div>
         </div>
       ) : (
-        <ChapterNotExist />
+        <NotExist
+          message={
+            " ¡Vaya! Parece que este libro aún no tiene ningún capítulo."
+          }
+          butMessage={
+            " Pero no te preocupes, tenemos muchos otros libros interesantes para ti. "
+          }
+        />
       )}
     </>
   );
