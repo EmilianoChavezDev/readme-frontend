@@ -8,6 +8,7 @@ import { useUser } from "@/contexts/UserProvider";
 import NavBar from "@/components/NavBar";
 import NotFound from "@/components/common/NotFound";
 import Loader from "@/components/common/loader";
+import Image from "next/image";
 
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
@@ -27,21 +28,16 @@ const PageFavoritos = () => {
   useEffect(() => {
     const pagina = 1;
     if (token) {
-      let busqueda = filtro;
       let user_id = localStorage.getItem("user_id");
-      chargeList(user_id, pagina, busqueda);
+      chargeList(user_id, pagina);
     }
   }, [token, filtro]);
 
-  const filterCallback = ({ titulo, autorUsername }) => {
-    const lowerCaseTitulo = titulo ? titulo.toLowerCase() : "";
-    const lowerCaseAutor = autorUsername ? autorUsername.toLowerCase() : "";
-    const lowerCaseFiltro = filtro.toLowerCase();
-
-    return (
-      lowerCaseTitulo.includes(lowerCaseFiltro) ||
-      lowerCaseAutor.includes(lowerCaseFiltro)
-    );
+  const handleSearch = () => {
+    if (token) {
+      let user_id = localStorage.getItem("user_id");
+      chargeList(user_id, 1, filtro);
+    }
   };
 
   return (
@@ -55,14 +51,28 @@ const PageFavoritos = () => {
               <h1 className={styles.titulo_favorito}>Mis Favoritos</h1>
             </div>
             <div>
-              <div>
-                <input
-                  className={styles.buscador}
-                  type="text"
-                  placeholder="Buscar en Favoritos"
-                  value={filtro}
-                  onChange={(e) => setFiltro(e.target.value)}
-                />
+              <div className={styles.container_search}>
+                <div>
+                  <input
+                    className={styles.buscador}
+                    type="text"
+                    placeholder="Buscar en Favoritos"
+                    value={filtro}
+                    onChange={(e) => setFiltro(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <button className={styles.btn_search} onClick={handleSearch}>
+                    <Image
+                      src="/image/lupa.png"
+                      width={35}
+                      height={35}
+                      className={styles.image_port}
+                      alt="search"
+                      priority={true}
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -70,11 +80,9 @@ const PageFavoritos = () => {
             <div>
               {librosFavoritos && librosFavoritos.length > 0 ? (
                 <div className={styles.contenedor_cuadros}>
-                  {librosFavoritos
-                    ?.filter(filterCallback)
-                    ?.map((data, index) => (
-                      <Cuadros key={index} data={data} />
-                    ))}
+                  {librosFavoritos?.map((data, index) => (
+                    <Cuadros key={index} data={data} />
+                  ))}
                 </div>
               ) : (
                 <div>

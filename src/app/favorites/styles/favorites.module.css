@@ -17,8 +17,8 @@
 
 .buscador {
   border: 1px solid #dee2e6;
-  border-radius: 9px;
-  padding: 9px;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }
 
 .buscador::placeholder {
@@ -121,8 +121,6 @@
   font-size: 13px;
 }
 
-/*NOT FOUND*/
-
 .notfound {
   position: absolute;
   top: 50%;
@@ -133,4 +131,24 @@
 .notfound > img {
   height: auto;
   max-width: 400px;
+}
+
+.container_search {
+  display: flex;
+  align-items: center;
+}
+
+.btn_search {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.btn_search:hover .image_port {
+  content: url("/image/lupa2.png");
+}
+
+.btn_search:hover {
+  transform: scale(1.1);
 }
