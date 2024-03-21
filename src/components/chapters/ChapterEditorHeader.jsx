@@ -9,6 +9,7 @@ const ChapterEditorHeader = ({
   onSave,
   onPublish,
   chapterTitle,
+  disableButtons
 }) => {
   const [showChapters, setShowChapters] = useState(false);
 
@@ -32,21 +33,21 @@ const ChapterEditorHeader = ({
         </div>
       </div>
       <div className="flex gap-4">
-        <button
+        <button disabled={disableButtons}
           onClick={onSubmitPDF}
-          className={`bg-gray-600 text-white py-2 px-7 rounded-lg`}
+          className={`bg-gray-600 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed`}
         >
           Subir PDF
         </button>
-        <button
+        <button disabled={disableButtons}
           onClick={onSave}
-          className={`bg-gray-600 text-white py-2 px-7 rounded-lg `}
+          className={`bg-gray-600 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed`}
         >
           Guardar
         </button>
-        <button
+        <button disabled={disableButtons}
           onClick={onPublish}
-          className={`bg-cyan-800 text-white py-2 px-7 rounded-lg`}
+          className={`bg-cyan-800 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed`}
         >
           Publicar
         </button>

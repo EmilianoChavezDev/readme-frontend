@@ -2,9 +2,11 @@ import { useState } from "react";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
+import { useRouter } from "next/navigation";
 
 const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
   const initials = username
     ?.split(" ")
     ?.map((word) => word[0])
@@ -15,13 +17,9 @@ const UserOptions = ({ username, logout }) => {
     setIsOpen(!isOpen);
   };
 
-  const handlNoPageClick = () => {
-    router.push("/page-construction");
-  };
-
   return (
     <div
-      className="flex items-center border-b border-transparent text-white _lg:transition-all _lg:duration-100 _lg:hover:scale-105
+      className="flex items-center border-b border-transparent text-white
     _lg:hover:cursor-pointer
   "
     >
@@ -56,7 +54,7 @@ const UserOptions = ({ username, logout }) => {
             <ul className="my-2">
               <li
                 className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                onClick={() => handlNoPageClick()}
+                onClick={() => router.push("/accounts")}
               >
                 <FaUserCircle className="inline-block mr-2" />
                 Mi cuenta

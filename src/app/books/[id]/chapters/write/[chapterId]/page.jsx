@@ -61,7 +61,7 @@ export default function UpdateChapter({ params }) {
                 </div> :
                 <>
                     {isLoading && <Loader />}
-                    <ChapterForm bookId={params.id} chapter={chapter} onSave={handleSave} onPublish={handlePublish} />
+                    <ChapterForm bookId={params.id} chapter={chapter} onSave={handleSave} onPublish={handlePublish} isLoading={isLoading} />
                 </>
             }
         </>

@@ -8,6 +8,20 @@ const useReadBooks = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentChapterData, setCurrentChapterData] = useState([]);
 
+  const getReadBook = async params => {
+    const token = localStorage.getItem('token')
+    setIsLoading(true)
+    try {
+      const url = `${process.env.API_URL}/lecturas_libro_id`
+      const response = await axios.get(url, { params, headers: { Authorization: `Bearer ${token}` }})
+      return response.data
+    } catch (error) {
+      return null
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   // Trae todos los capitulos del libro
   const getBookById = async (id) => {
     const token = localStorage.getItem("token");
@@ -32,6 +46,7 @@ const useReadBooks = () => {
 
   // Obtiene el capitulo actual del libro
   const getNowChapter = async (idBook, data) => {
+    const isEnd = await changeBookEnd(idBook);
     setIsLoading(true);
     const token = localStorage.getItem("token");
     try {
@@ -44,19 +59,14 @@ const useReadBooks = () => {
           libro_id: idBook,
         },
       });
-
-      // si esto se cumple significa que se abrio el libro por primera
-      if (response.data.error) {
+      if (response.data.error || isEnd) {
         setChapterData(data[0]);
         postCurrentChapter(data[0].id, idBook, false);
       } else {
         setChapterData(response.data.capitulo_actual);
+        postCurrentChapter(response.data.capitulo_actual.id, idBook, false);
       }
     } catch (error) {
-      console.error(
-        "Error al obtener el capitulo:",
-        error.response ? error.response.data : error.message
-      );
     } finally {
       setIsLoading(false);
     }
@@ -69,16 +79,12 @@ const useReadBooks = () => {
       const response = await axios.get(contenido);
       setContentChapter(response.data);
     } catch (error) {
-      console.log(
-        "error al obtener el contenido del capitulo",
-        error.response ? error.response.data : error.message
-      );
     } finally {
       setIsLoading(false);
     }
   };
 
-  // para obtener el capitulo segun el id
+  // para obtener el capitulo segun el id del capitulo
   const getCurrentChapter = async (idChapter) => {
     setIsLoading(true);
     const token = localStorage.getItem("token");
@@ -95,6 +101,25 @@ const useReadBooks = () => {
         "error al obtener el contenido nuevo",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // para obtener si el libro fue finalizado
+  const changeBookEnd = async (idBook) => {
+    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    try {
+      const url = `${process.env.API_URL}/lecturas_libro_id/?libro_id=${idBook}`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -119,11 +144,34 @@ const useReadBooks = () => {
           },
         }
       );
+      await changeNowChapter(idBook);
+      return response.data;
     } catch (error) {
       console.log(
         "error al cambiar el capitulo",
         error.response ? error.response.data : error.message
       );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Obtiene el capitulo actual del libro
+  const changeNowChapter = async (idBook) => {
+    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    try {
+      const url = `${process.env.API_URL}/capitulo_actual`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          libro_id: idBook,
+        },
+      });
+      setChapterData(response.data.capitulo_actual);
+    } catch (error) {
     } finally {
       setIsLoading(false);
     }
@@ -140,6 +188,8 @@ const useReadBooks = () => {
     getCurrentChapter,
     currentChapterData,
     postCurrentChapter,
+    changeBookEnd,
+    getReadBook
   };
 };
 
