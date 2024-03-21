@@ -16,14 +16,19 @@ const PageFavoritos = () => {
   const { traerFavoritosPorUsuario, error, isLoading } = useFavoritos();
   const { token } = useUser();
 
-  const chargeList = async (user_id, pagina = 1, busqueda) =>
-    await traerFavoritosPorUsuario(user_id, pagina, token, busqueda)
-      .then((favoritos) => {
-        setLibrosFavoritos(favoritos);
-      })
-      .catch(() => {
-        console.error("Error al traer favoritos:", error);
-      });
+  const chargeList = async (user_id, pagina = 1, busqueda) => {
+    try {
+      const favoritos = await traerFavoritosPorUsuario(
+        user_id,
+        pagina,
+        token,
+        busqueda
+      );
+      setLibrosFavoritos(favoritos);
+    } catch (error) {
+      console.error("Error al traer favoritos:", error);
+    }
+  };
 
   useEffect(() => {
     const pagina = 1;
@@ -57,8 +62,7 @@ const PageFavoritos = () => {
                     className={styles.buscador}
                     type="text"
                     placeholder="Buscar en Favoritos"
-                    value={filtro}
-                    onChange={(e) => setFiltro(e.target.value)}
+                    onBlur={(e) => setFiltro(e.target.value)}
                   />
                 </div>
                 <div>
