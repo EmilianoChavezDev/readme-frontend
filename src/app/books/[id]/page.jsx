@@ -25,7 +25,7 @@ export default function BookDetails({ params }) {
 
     const { getReadBook } = useReadBooks()
     const { getBookByID, isLoading, error } = useBook()
-    const { createOrUpdateReview, getReviewByUserAndBook } = useReview()
+    const { createOrUpdateReview, getReviewByUserAndBook, deleteReview } = useReview()
     const { getFavoriteByUserAndBook, createFavorite, updateFavorite } = useFavorite()
 
     const [book, setBook] = useState(null)
@@ -46,7 +46,13 @@ export default function BookDetails({ params }) {
     }
 
     const updateReview = async puntuacion => {
-        const result = await createOrUpdateReview({ libro_id: book.id, puntuacion})
+        let result = null
+        if (puntuacion) {
+            result = await createOrUpdateReview({ libro_id: book.id, puntuacion})
+        } else {
+            result = await deleteReview(review.id)
+        }
+        fetchBook()
         setReview(result?.resenha)
     }
 
