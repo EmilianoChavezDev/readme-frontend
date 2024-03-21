@@ -1,13 +1,17 @@
 .global_container {
   margin: 30px;
-  margin-right: 150px;
-  margin-left: 150px;
 }
 
 .title_drafts_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.title_drafts_container > div {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
 }
 
 .title_drafts {

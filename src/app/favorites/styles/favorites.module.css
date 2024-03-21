@@ -1,7 +1,5 @@
 .contenedor_global {
   margin: 30px;
-  margin-right: 150px;
-  margin-left: 150px;
 }
 
 .barra_principal {
@@ -9,6 +7,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.barra_principal > div {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
 }
 
 .buscador {
