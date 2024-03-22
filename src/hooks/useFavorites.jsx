@@ -1,31 +1,52 @@
 "use client";
-
 import { useState } from "react";
 import axios from "axios";
 
 const useFavoritos = () => {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSearchEmpty, setIsSearchEmpty] = useState(false);
+  const [favoritos, setFavoritos] = useState([]);
 
-  const traerFavoritosPorUsuario = async (user_id, page, token) => {
+  const traerFavoritosPorUsuario = async (page, busqueda = null) => {
+    setIsSearchEmpty(false);
+    const token = localStorage.getItem("token");
+    const user_id = localStorage.getItem("user_id");
     try {
-      const res = await axios.get(`${process.env.API_URL}/favoritos/user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          user_id: user_id,
-          page: page,
-        },
-      });
-      return res.data;
+      const params = {
+        user_id: user_id,
+        page: page,
+      };
+
+      if (busqueda) {
+        params.busqueda = busqueda;
+      }
+
+      const response = await axios.get(
+        `${process.env.API_URL}/favoritos/user`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: params,
+        }
+      );
+      setFavoritos(response.data);
     } catch (error) {
-      setError(true);
+      if (busqueda != null) {
+        setIsSearchEmpty(true);
+      }
     } finally {
       setIsLoading(false);
     }
   };
-  return { traerFavoritosPorUsuario, error, isLoading };
+  return {
+    traerFavoritosPorUsuario,
+    error,
+    isLoading,
+    favoritos,
+    isSearchEmpty,
+  };
 };
 
 export default useFavoritos;

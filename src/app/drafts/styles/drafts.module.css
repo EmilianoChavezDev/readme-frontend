@@ -1,13 +1,17 @@
 .global_container {
   margin: 30px;
-  margin-right: 150px;
-  margin-left: 150px;
 }
 
 .title_drafts_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.title_drafts_container > div {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
 }
 
 .title_drafts {
@@ -78,7 +82,7 @@
   font-size: 0.8rem;
 }
 
-.puntuation{
+.puntuation {
   font-weight: bold;
   font-size: 0.8rem;
 }
@@ -122,7 +126,7 @@
 
 .btn_continue_writting {
   position: relative;
-  background-color: #167574; 
+  background-color: #167574;
   color: white;
   padding: 0.2rem;
   padding-right: 1rem;
@@ -130,13 +134,13 @@
   font-weight: bold;
   font-size: 0.8rem;
   border-radius: 0.3rem;
-  transition: background-color 0.3s ease; 
+  transition: background-color 0.3s ease;
   display: inline-block;
   text-decoration: none;
 }
 
 .btn_continue_writting:hover {
-  background-color: #125e55; 
+  background-color: #125e55;
 }
 
 .btn_continue_writting::before {
@@ -146,10 +150,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.2); 
+  background-color: rgba(0, 0, 0, 0.2);
   opacity: 0;
-  transition: opacity 0.3s ease; 
-  border-radius: 0.3rem; 
+  transition: opacity 0.3s ease;
+  border-radius: 0.3rem;
 }
 
 .btn_continue_writting:hover::before {
