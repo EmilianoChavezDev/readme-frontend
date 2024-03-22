@@ -82,6 +82,7 @@
 }
 
 .content_crear_cuenta a {
+  margin-left: 4px;
   color: var(--colorPrimario);
   margin-left: 4px;
 }
@@ -163,4 +164,4 @@
   justify-content: center;
   font-size: small;
   color: #ff0000;
-}
+

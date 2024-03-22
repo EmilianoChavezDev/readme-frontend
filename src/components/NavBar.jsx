@@ -43,6 +43,7 @@ const NavBar = () => {
 
   return (
     <>
+
       <nav className="relative">
         <div className="_lg:justify-between _md:px-5 bg-colorPrimario _md:py-4  _lg:flex hidden">
           {/* parte de las opciones */}
@@ -51,6 +52,7 @@ const NavBar = () => {
           <InputSearch />
           {/* parte del usuario */}
           <UserOptions username={username} logout={logout} />
+
         </div>
 
         <div className="sticky top-0 z-50">
