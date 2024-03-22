@@ -6,45 +6,46 @@ import Cuadros from "@/components/Squares";
 import useFavoritos from "@/hooks/useFavorites";
 import { useUser } from "@/contexts/UserProvider";
 import NavBar from "@/components/NavBar";
+import NotFound from "@/components/SearchFavoritesNotFound";
+import Loader from "@/components/common/loader";
 
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
   const [librosFavoritos, setLibrosFavoritos] = useState([]);
   const { traerFavoritosPorUsuario, error, isLoading } = useFavoritos();
-  const { token, userId } = useUser();
+  const { token } = useUser();
+
+  const chargeList = async (user_id, pagina = 1) =>
+    await traerFavoritosPorUsuario(user_id, pagina, token)
+      .then((favoritos) => {
+        setLibrosFavoritos(favoritos);
+      })
+      .catch(() => {
+        console.error("Error al traer favoritos:", error);
+      });
 
   useEffect(() => {
     const pagina = 1;
     if (token) {
-      traerFavoritosPorUsuario(userId, pagina, token)
-        .then((favoritos) => {
-          setLibrosFavoritos(favoritos);
-        })
-        .catch(() => {
-          console.error("Error al traer favoritos:", error);
-        });
+      let user_id = localStorage.getItem("user_id");
+      chargeList(user_id, pagina);
     }
   }, [token]);
 
-  const cuadrosFiltrados = librosFavoritos?.filter(
-    ({ titulo, autorUsername }) => {
-      const lowerCaseTitulo = titulo ? titulo.toLowerCase() : "";
-      const lowerCaseAutor = autorUsername ? autorUsername.toLowerCase() : "";
-      const lowerCaseFiltro = filtro.toLowerCase();
+  const filterCallback = ({ titulo, autorUsername }) => {
+    const lowerCaseTitulo = titulo ? titulo.toLowerCase() : "";
+    const lowerCaseAutor = autorUsername ? autorUsername.toLowerCase() : "";
+    const lowerCaseFiltro = filtro.toLowerCase();
 
-      return (
-        lowerCaseTitulo.includes(lowerCaseFiltro) ||
-        lowerCaseAutor.includes(lowerCaseFiltro)
-      );
-    }
-  );
-
-  if (isLoading) {
-    return <div> CARGANDO... </div>;
-  }
+    return (
+      lowerCaseTitulo.includes(lowerCaseFiltro) ||
+      lowerCaseAutor.includes(lowerCaseFiltro)
+    );
+  };
 
   return (
     <>
+      {isLoading && <Loader />}
       <NavBar />
       <div className={styles.contenedor_global}>
         <div className={styles.contenedor_principal}>
@@ -65,32 +66,22 @@ const PageFavoritos = () => {
             </div>
           </div>
           <div className={styles.contenedor_padre_cuadros}>
-            <div className={styles.contenedor_cuadros}>
-              {cuadrosFiltrados?.map(
-                ({
-                  id,
-                  titulo,
-                  autorUsername,
-                  portada,
-                  cantidad_lecturas,
-                  puntuacion_media,
-                  cantidad_comentarios,
-                  token,
-                  userId,
-                }) => (
-                  <Cuadros
-                    key={id}
-                    libroId={id}
-                    imageUrl={portada}
-                    title={titulo}
-                    author={autorUsername}
-                    view={cantidad_lecturas}
-                    star={puntuacion_media}
-                    comment={cantidad_comentarios}
-                    token={token}
-                    userId={userId}
-                  />
-                )
+            {isLoading && (
+              <div className={styles.loadingContainer}>
+                <div className={styles.loadingSpinner} />
+              </div>
+            )}
+            <div>
+              {librosFavoritos?.filter(filterCallback).length === 0 ? (
+                <NotFound />
+              ) : (
+                <div className={styles.contenedor_cuadros}>
+                  {librosFavoritos
+                    ?.filter(filterCallback)
+                    ?.map((data, index) => (
+                      <Cuadros key={index} data={data} />
+                    ))}
+                </div>
               )}
             </div>
           </div>

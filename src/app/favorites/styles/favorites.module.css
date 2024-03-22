@@ -1,7 +1,7 @@
 .contenedor_global {
   margin: 30px;
-  margin-right: 100px;
-  margin-left: 100px;
+  margin-right: 150px;
+  margin-left: 150px;
 }
 
 .barra_principal {
@@ -30,8 +30,8 @@
 
 .contenedor_cuadros {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 50px 10px;
 }
 
 .contenedor_padre_cuadros {
@@ -39,10 +39,8 @@
 }
 
 .contenedor_datos_cuadro img {
-  width: 150px;
-  height: 200px;
-  background-repeat: no-repeat;
-  background-size: cover;
+  height: 300px;
+  width: -webkit-fill-available;
 }
 
 .contenedor_datos_cuadro button img {
@@ -68,17 +66,26 @@
 
 .contenedor_datos_cuadro {
   border-radius: 9px;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
   padding: 10px;
-  width: 170px;
 }
 
 .title {
   font-weight: bold;
 }
 
+.contenedor_title {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .author {
   font-size: 14px;
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .group_global {
@@ -108,4 +115,18 @@
 .group_children p {
   margin: 0;
   font-size: 13px;
+}
+
+/*NOT FOUND*/
+
+.notfound {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.notfound > img {
+  height: auto;
+  max-width: 400px;
 }
