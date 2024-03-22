@@ -28,7 +28,7 @@ const PageFavoritos = () => {
 
   useEffect(() => {
     setLibrosFavoritos(favoritos);
-  }, [favoritos]);
+  }, [favoritos, isSearchEmpty]);
 
   // para hacer la busqueda de favoritos
   const chargeList = (pagina, busqueda = null) => {
