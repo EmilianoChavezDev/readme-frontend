@@ -4,51 +4,46 @@ import { useEffect, useState } from "react";
 import styles from "./styles/favorites.module.css";
 import Cuadros from "@/components/Squares";
 import useFavoritos from "@/hooks/useFavorites";
-import { useUser } from "@/contexts/UserProvider";
 import NavBar from "@/components/NavBar";
 import NotFound from "@/components/common/NotFound";
 import Loader from "@/components/common/loader";
-import Image from "next/image";
+import { CiSearch } from "react-icons/ci";
+import BookNotFound from "@/components/favorites/BookNotFound";
 
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
   const [librosFavoritos, setLibrosFavoritos] = useState([]);
-  const { traerFavoritosPorUsuario, error, isLoading } = useFavoritos();
-  const { token } = useUser();
+  const {
+    traerFavoritosPorUsuario,
+    isLoading,
+    favoritos,
+    error,
+    isSearchEmpty,
+  } = useFavoritos();
 
-  const chargeList = async (user_id, pagina = 1, busqueda) => {
-    try {
-      const favoritos = await traerFavoritosPorUsuario(
-        user_id,
-        pagina,
-        token,
-        busqueda
-      );
-      setLibrosFavoritos(favoritos);
-    } catch (error) {
-      console.error("Error al traer favoritos:", error);
-    }
-  };
+  // traemos todos los favoritos de la primera pagina del usuario
+  useEffect(() => {
+    traerFavoritosPorUsuario(1, "");
+  }, []);
 
   useEffect(() => {
-    const pagina = 1;
-    if (token) {
-      let user_id = localStorage.getItem("user_id");
-      chargeList(user_id, pagina);
-    }
-  }, [token, filtro]);
+    setLibrosFavoritos(favoritos);
+  }, [favoritos, isSearchEmpty]);
+
+  // para hacer la busqueda de favoritos
+  const chargeList = (pagina, busqueda = null) => {
+    traerFavoritosPorUsuario(pagina, busqueda);
+  };
 
   const handleSearch = () => {
-    if (token) {
-      let user_id = localStorage.getItem("user_id");
-      chargeList(user_id, 1, filtro);
-    }
+    chargeList(1, filtro);
   };
 
   return (
     <>
       {isLoading && <Loader />}
       <NavBar />
+
       <div className={styles.contenedor_global}>
         <div className={styles.contenedor_principal}>
           <div className={styles.barra_principal}>
@@ -66,14 +61,13 @@ const PageFavoritos = () => {
                   />
                 </div>
                 <div>
-                  <button className={styles.btn_search} onClick={handleSearch}>
-                    <Image
-                      src="/image/lupa.png"
-                      width={35}
-                      height={35}
-                      className={styles.image_port}
-                      alt="search"
-                      priority={true}
+                  <button
+                    className={styles.btn_search}
+                    onClick={() => handleSearch()}
+                  >
+                    <CiSearch
+                      size={25}
+                      className="hover:text-colorHoverPrimario ml-2"
                     />
                   </button>
                 </div>
@@ -83,19 +77,25 @@ const PageFavoritos = () => {
           <div className={styles.contenedor_padre_cuadros}>
             <div>
               {librosFavoritos && librosFavoritos.length > 0 ? (
-                <div className={styles.contenedor_cuadros}>
-                  {librosFavoritos?.map((data, index) => (
-                    <Cuadros key={index} data={data} />
-                  ))}
-                </div>
+                isSearchEmpty ? (
+                  <BookNotFound />
+                ) : (
+                  <div className={styles.contenedor_cuadros}>
+                    {librosFavoritos?.map((data) => (
+                      <>
+                        <Cuadros key={data.id} data={data} />
+                      </>
+                    ))}
+                  </div>
+                )
               ) : (
                 <div>
                   <NotFound
                     message={
-                      " ¡Vaya! Parece que no se encuentra ningún libro favorito."
+                      "Parece que tu lista de favoritos está vacía por ahora. "
                     }
                     butMessage={
-                      " Pero no te preocupes, puedes seguir navegando a través de la página y encontrar algo que te guste. "
+                      "No te preocupes, sigue explorando nuestra página y descubre algo que te encante."
                     }
                   />
                 </div>
