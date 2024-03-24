@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from "react";
 import styles from "./styles/favorites.module.css";
-import Cuadros from "@/components/Squares";
+import Cuadros from "@/components/favorites/Squares";
 import useFavoritos from "@/hooks/useFavorites";
 import NavBar from "@/components/NavBar";
 import NotFound from "@/components/common/NotFound";
 import Loader from "@/components/common/loader";
 import { CiSearch } from "react-icons/ci";
 import BookNotFound from "@/components/favorites/BookNotFound";
-
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
   const [librosFavoritos, setLibrosFavoritos] = useState([]);
