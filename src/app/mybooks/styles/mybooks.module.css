@@ -1,0 +1,263 @@
+.global_container {
+  margin: 30px;
+}
+
+.title_drafts_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.title_drafts_container > div {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.title_drafts {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+/*For Dratfs Container*/
+.container_drafts {
+  background-color: #e9ecef;
+  box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.144);
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+}
+
+.image_book_container {
+  margin-left: 1rem;
+}
+
+.books_data_container {
+  margin-left: 1rem;
+  flex: 1;
+}
+
+.data_FCV {
+  display: flex;
+}
+
+.data_FCV > div {
+  margin-right: 1rem;
+}
+
+.title_book {
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.writting_container {
+  display: flex;
+  align-items: end;
+}
+
+.image_port {
+  height: 11rem;
+}
+
+.dataFCV_container {
+  display: flex;
+  align-items: center;
+}
+
+.dataFCV_container img {
+  margin-right: 10px;
+}
+
+.txt_public_parts {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.txt_actualization {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.puntuation {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.btn_new_book {
+  position: relative;
+  background-color: #1675736c;
+  color: white;
+  padding: 0.2rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  font-weight: bold;
+  font-size: 0.8rem;
+  border-radius: 0.3rem;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn_new_book:hover {
+  background-color: #125e55;
+}
+
+.btn_new_book::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0.3rem;
+}
+
+.btn_new_book:hover::before {
+  opacity: 1;
+}
+
+.btn_continue_writting {
+  position: relative;
+  background-color: #167574;
+  color: white;
+  padding: 0.2rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  font-weight: bold;
+  font-size: 0.8rem;
+  border-radius: 0.3rem;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn_continue_writting:hover {
+  background-color: #125e55;
+}
+
+.btn_continue_writting::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0.3rem;
+}
+
+.btn_continue_writting:hover::before {
+  opacity: 1;
+}
+
+.writting_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.menu_container {
+  display: flex;
+  align-self: flex-end;
+  margin-top: 10px;
+}
+
+.btn_continue_writting {
+  align-self: center;
+  margin-top: auto;
+}
+
+.btn_menu {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.btn_menu:hover .image_port {
+  content: url("/image/mas2.png");
+}
+
+.btn_menu:hover {
+  transform: scale(1.1);
+}
+
+/*My Books Options*/
+.menu_container_options {
+  width: 8rem;
+  background-color: white;
+  padding: 0.5rem;
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+  border-radius: 0.3rem;
+  box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.144);
+}
+
+.container_option {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.btn_edition_option,
+.btn_delete_option {
+  font-size: 14px;
+  padding: 0.4rem 0.4rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+.btn_edition_option:hover,
+.btn_delete_option:hover {
+  transform: scale(1);
+  font-weight: bold;
+}
+
+/*Media Screen*/
+@media screen and (max-width: 800px) {
+  .title_book {
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+
+  .btn_continue_writting {
+    width: 100px;
+    padding-left: 1rem;
+  }
+  .container_btn_options {
+    display: none;
+  }
+  .menu_container_options {
+    width: auto;
+  }
+  .container_option {
+    display: block;
+  }
+  .btn_continue_writting {
+    font-size: 0.6rem;
+    padding-right: 0.2rem;
+    padding-left: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .image_port {
+    display: none;
+  }
+}
