@@ -70,10 +70,18 @@ const page = ({ params }) => {
                     trigger={trigger}
                     register={register}
                     date={"username"}
+                    type={"text"}
                   />
                 </div>
                 <div>
-                  <InputAccount placeholder={"Nueva contraseña"} />
+                  <InputAccount
+                    placeholder={"Nueva contraseña"}
+                    value={""}
+                    trigger={trigger}
+                    register={register}
+                    date={"username"}
+                    type={"text"}
+                  />
                 </div>
                 <div>
                   <InputAccount placeholder={"Contraseña anterior"} />
