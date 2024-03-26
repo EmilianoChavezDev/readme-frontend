@@ -14,6 +14,7 @@ import { useUser } from "@/contexts/UserProvider";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import AccordionField from "@/components/accounts/Accordion";
+import Image from "next/image";
 
 const defaultValues = {
   username: "",
@@ -29,32 +30,73 @@ const page = ({ params }) => {
     updateUsername,
     currentData,
     updatePassword,
-    error,
+    isError,
+    isTrue,
     message,
+    updateProfile,
+    isImageChange,
   } = useUserInfo();
   const router = useRouter();
   const { login } = useUser();
   const [date, setDate] = useState(null);
+  const [changeImage, setChangeImage] = useState(false);
+
+  const [profileImage, setProfileImage] = useState(null);
+
+  const initials = data?.username
+    ?.split(" ")
+    ?.map((word) => word[0])
+    ?.join("")
+    ?.toUpperCase();
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfileImage(e.target.result);
+        setChangeImage(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const {
     register,
     handleSubmit,
     trigger,
     reset,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues,
   });
 
   useEffect(() => {
+    getUserInformation(params.id);
+  }, []);
+
+  useEffect(() => {
+    if (data?.profile) {
+      setProfileImage(data?.profile);
+    }
+  }, [data?.profile]);
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isTrue) {
+      toast.success(message);
+    }
+    if (isImageChange) {
+      toast.success("Foto de perfil actualizado!!");
+    }
+  }, [isError, isTrue, isImageChange]);
+
+  useEffect(() => {
     if (!currentData) return;
     login(currentData);
   }, [currentData]);
-
-  useEffect(() => {
-    getUserInformation(params.id);
-  }, []);
 
   useEffect(() => {
     if (!data) return;
@@ -74,16 +116,11 @@ const page = ({ params }) => {
   };
 
   const onSubmit = (formData) => {
-    // Verificar si el nombre de usuario cambio
-    if (formData.username !== usernameValue) {
+    if (formData.username !== data.username) {
       updateUsername(formData.username, formData.oldPassword);
-      toast.success("Se ha actualizado tu nombre de usuario");
-      console.log("username");
     }
 
-    // Verificar si la contraseña cambio
-    if (formData.newPassword !== oldPasswordValue) {
-      // Verificar si la nueva contraseña coincide con la confirmación
+    if (formData.newPassword && formData.newPassword !== formData.oldPassword) {
       if (formData.newPassword === formData.confirmNewPassword) {
         if (
           /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(formData.newPassword)
@@ -93,7 +130,6 @@ const page = ({ params }) => {
             formData.newPassword,
             formData.confirmNewPassword
           );
-          toast.success("Tu contraseña ha sido actualizada!");
         } else {
           toast.error(
             "La nueva contraseña debe tener al menos 8 caracteres y al menos un número."
@@ -102,13 +138,10 @@ const page = ({ params }) => {
       } else {
         toast.error("Las contraseñas no coinciden");
       }
-    } else {
-      if (error) {
-        console.log(error);
-        toast.error(
-          "La contraseña actual es incorrecta. Por favor, inténtalo de nuevo."
-        );
-      }
+    }
+
+    if (changeImage) {
+      updateProfile(profileImage);
     }
 
     reset({
@@ -120,8 +153,6 @@ const page = ({ params }) => {
     });
   };
 
-  const oldPasswordValue = watch("oldPassword", "");
-  const usernameValue = watch("username", "");
   return (
     <>
       {loading ? (
@@ -130,26 +161,29 @@ const page = ({ params }) => {
         <>
           <NavBar />
           <div className="flex flex-col">
-            <div className="flex _lg:mx-auto _lg:w-5/6 w-full _lg:px-4 _lg:mt-14 _lg:justify-between items-center">
+            <div
+              className="flex _md:mx-auto _md:w-5/6 w-full _lg:px-4 _md:mt-14 _sm:justify-between _md:items-center
+            mt-8 flex-col _sm:flex-row
+            "
+            >
               <div className="flex flex-col">
-                <h1 className="text-textHeaderColorGray _lg:text-2xl font-bold">
+                <h1 className="text-textHeaderColorGray text-2xl font-bold text-nowrap text-center">
                   Información Personal
                 </h1>
-                <div className="flex flex-col _lg:ml-36 _lg:mt-28">
-                  <div>
-                    <ProfileImageUploader
-                      username={params.id}
-                      profile={data?.profile}
-                    />
-                  </div>
-                  <div className="_lg:mt-72 text-center text-colorPrimario font-semibold">
+                <div className="flex flex-col _xl:ml-36 _xl:mt-28 _sm:mt-10 items-center">
+                  <ProfileImageUploader
+                    initials={initials}
+                    profileImage={profileImage}
+                    handleImageChange={handleImageChange}
+                  />
+                  <div className="mt-72  text-center text-colorPrimario font-semibold">
                     <span className="font-normal mr-1">Nombre de usuario:</span>
                     <span>{params.id}</span>
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col  _lg:justify-start _lg:items-start _lg:mr-96 _lg:gap-y-8">
-                <div className="w-72">
+              <div className="flex mt-10 _sm:mt-0 flex-col items-center _lg:justify-start _sm:items-start _xl:mr-56 xl:mr-96 _sm:gap-y-8 gap-y-4">
+                <div>
                   <InputField
                     label={"Nombre de usuario"}
                     type={"text"}
@@ -160,7 +194,7 @@ const page = ({ params }) => {
                   />
                 </div>
 
-                <div className="w-72">
+                <div>
                   <InputField
                     label={"*Contraseña"}
                     type={"password"}
@@ -171,7 +205,7 @@ const page = ({ params }) => {
                   />
                 </div>
 
-                <div className="w-72">
+                <div>
                   <DateField
                     label={"Fecha de nacimiento"}
                     value={formatDate(date || data?.fecha_de_nacimiento)}
@@ -180,7 +214,7 @@ const page = ({ params }) => {
                   />
                 </div>
 
-                <div className="w-72">
+                <div>
                   <AccordionField>
                     <div className="w-72 mb-2 mt-2">
                       <InputField
@@ -192,7 +226,7 @@ const page = ({ params }) => {
                         required={false}
                       />
                     </div>
-                    <div className="w-72">
+                    <div>
                       <InputField
                         label={"Confirmar Nueva Contraseña"}
                         type={"password"}
@@ -206,8 +240,7 @@ const page = ({ params }) => {
                 </div>
               </div>
             </div>
-
-            <div className="_lg:mt-16 flex justify-center _lg:ml-96  _lg:items-end _lg:gap-x-3">
+            <div className="_sm:mt-16 mt-10 flex justify-center _sm:ml-96  _sm:items-end gap-x-3">
               <button
                 className="bg-textColorGray p-2 text-white rounded-lg hover:bg-textHeaderColorGray ml-52"
                 onClick={() => router.push("/accounts")}
@@ -216,7 +249,7 @@ const page = ({ params }) => {
               </button>
               <button
                 type="submit"
-                className="bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario "
+                className="bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario text-nowrap mr-48 _lg:mr-0 "
                 disabled={loading}
                 onClick={handleSubmit(onSubmit)}
               >

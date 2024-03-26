@@ -9,7 +9,7 @@ import { es } from "date-fns/locale";
 
 const DateField = ({ label, value, selected, onSelect }) => {
   return (
-    <div className="_lg:w-72">
+    <div className="w-72">
       <Popover placement="bottom">
         <PopoverHandler>
           <Input label={label} value={value} readOnly />

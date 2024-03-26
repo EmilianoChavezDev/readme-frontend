@@ -9,7 +9,7 @@ import {
 const AccordionField = ({ children }) => {
   return (
     <>
-      <Accordion className="_lg:w-full" allowMultiple>
+      <Accordion className="w-72" allowMultiple>
         <AccordionItem className="border-b border-gray-200 py-1 dark:!border-white/10">
           <h2>
             <AccordionButton className="flex justify-between">

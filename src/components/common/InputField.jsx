@@ -3,7 +3,7 @@ import { Input } from "@material-tailwind/react";
 
 const InputField = ({ label, type, onBlur, register, name, required }) => {
   return (
-    <div className="_lg:w-72">
+    <div className="w-72">
       <Input
         label={label}
         type={type}

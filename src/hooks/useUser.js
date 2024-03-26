@@ -6,7 +6,9 @@ const useUserInfo = () => {
   const [currentData, setCurrentData] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isTrue, setIsTrue] = useState(false);
+  const [isImageChange, setIsImageChange] = useState(false);
 
   const getUserInformation = async (username) => {
     setLoading(true);
@@ -21,9 +23,8 @@ const useUserInfo = () => {
 
       const data = await response.data;
       setData(data);
-      setError(false);
     } catch (error) {
-      setError(true);
+      setIsError(true);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -47,12 +48,14 @@ const useUserInfo = () => {
           },
         }
       );
-      console.log(response.data);
+      setIsTrue(true);
       setCurrentData(response.data.user);
+      setMessage(response.data.message);
     } catch (error) {
+      setIsError(true);
       console.log(error);
-      setError(true);
-      setLoading(false);
+      setMessage(error.response.data.username[0]);
+      console.log(isError);
     } finally {
       setLoading(false);
     }
@@ -80,12 +83,36 @@ const useUserInfo = () => {
           },
         }
       );
-      console.log(response.data.message);
+      setIsTrue(true);
       setMessage(response.data.message);
     } catch (error) {
+      setIsError(true);
       setMessage(error.response.data.error);
-      setError(true);
+    } finally {
       setLoading(false);
+    }
+  };
+
+  const updateProfile = async (file) => {
+    setLoading(true);
+    const url = `${process.env.API_URL}/users/profile`;
+    const token = localStorage.getItem("token");
+
+    // Crear un objeto FormData
+    const formData = new FormData();
+    formData.append("profile", file);
+
+    try {
+      const response = await axios.put(url, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // Especificar el tipo de contenido como multipart/form-data
+        },
+      });
+      setIsImageChange(true);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsError(true);
     } finally {
       setLoading(false);
     }
@@ -94,12 +121,15 @@ const useUserInfo = () => {
   return {
     data,
     loading,
-    error,
+    isError,
     getUserInformation,
     updateUsername,
     currentData,
     updatePassword,
     message,
+    isTrue,
+    updateProfile,
+    isImageChange,
   };
 };
 
