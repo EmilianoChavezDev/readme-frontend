@@ -3,7 +3,6 @@ import NavBar from "@/components/NavBar";
 import { useUser } from "@/contexts/UserProvider";
 import { FaUser, FaChartBar } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 const page = () => {
   const { username } = useUser();
@@ -20,8 +19,8 @@ const page = () => {
         <div>
           <ul className="flex flex-col _lg:flex-row _lg:justify-around _lg:mx-16 mx-7 gap-y-4 _lg:gap-x-0">
             <li className="hover:cursor-pointer rounded-lg hover:shadow-lg transition-all transform duration-300 hover:scale-105">
-              <Link
-                href={`/accounts/edit/${username}`}
+              <button
+                onClick={() => router.push(`/accounts/edit/${username}`)}
                 className="flex items-center gap-x-3  py-4 px-2  _lg:py-6 _lg:flex-col _lg:text-left _lg:items-start _lg:gap-y-4 _lg:px-4"
               >
                 <div>
@@ -36,11 +35,11 @@ const page = () => {
                     contraseña
                   </span>
                 </div>
-              </Link>
+              </button>
             </li>
 
             <li className="hover:cursor-pointer rounded-lg hover:shadow-lg transition-all transform duration-300 hover:scale-105">
-              <Link
+              <button
                 href={"#"}
                 className="flex items-center gap-x-3  py-4 px-2  _lg:py-6 _lg:flex-col _lg:text-left _lg:items-start _lg:gap-y-4 _lg:px-4"
               >
@@ -51,12 +50,12 @@ const page = () => {
                   <p className="font-semibold text-textInformationColor">
                     Estadísticas
                   </p>
-                  <span className="text-textColorGray  text-sm">
+                  <span className="text-textColorGray text-sm">
                     Obtener un informe de las interacciones de los usuarios con
                     los libros publicados
                   </span>
                 </div>
-              </Link>
+              </button>
             </li>
           </ul>
         </div>

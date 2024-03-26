@@ -13,11 +13,7 @@ const AccordionField = ({ children }) => {
         <AccordionItem className="border-b border-gray-200 py-1 dark:!border-white/10">
           <h2>
             <AccordionButton className="flex justify-between">
-              <span
-                className="text-left text-sm dark:text-white"
-                flex="1"
-                textAlign="left"
-              >
+              <span className="text-left text-sm dark:text-white" flex="1">
                 Deseas cambiar tu Contraseña?
               </span>
               <AccordionIcon className="text-left  dark:!text-white" />
