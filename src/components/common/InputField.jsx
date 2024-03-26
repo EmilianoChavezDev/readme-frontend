@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "@material-tailwind/react";
 
 const InputField = ({ label, type, onBlur, register, name, required }) => {

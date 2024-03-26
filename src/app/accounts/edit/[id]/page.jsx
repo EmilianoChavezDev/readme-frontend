@@ -14,11 +14,10 @@ import { useUser } from "@/contexts/UserProvider";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import AccordionField from "@/components/accounts/Accordion";
-import Image from "next/image";
 
 const defaultValues = {
   username: "",
-  password: "",
+  oldPassword: "",
   fecha_nacimiento: null,
 };
 
@@ -115,6 +114,7 @@ const page = ({ params }) => {
     trigger("fecha_nacimiento");
   };
 
+  //validaciones
   const onSubmit = (formData) => {
     if (formData.username !== data.username) {
       updateUsername(formData.username, formData.oldPassword);
@@ -140,8 +140,10 @@ const page = ({ params }) => {
       }
     }
 
-    if (changeImage) {
+    if (changeImage && formData.oldPassword != "") {
       updateProfile(profileImage);
+    } else {
+      toast.error("Ingrese su contraseña para el cambio");
     }
 
     reset({

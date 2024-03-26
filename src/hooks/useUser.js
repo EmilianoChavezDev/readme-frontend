@@ -54,7 +54,7 @@ const useUserInfo = () => {
     } catch (error) {
       setIsError(true);
       console.log(error);
-      setMessage(error.response.data.username[0]);
+      setMessage(error.response.data.error);
       console.log(isError);
     } finally {
       setLoading(false);
