@@ -3,10 +3,12 @@ import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const storedProfile = localStorage.getItem("profile");
   const initials = username
     ?.split(" ")
     ?.map((word) => word[0])
@@ -23,9 +25,19 @@ const UserOptions = ({ username, logout }) => {
     _lg:hover:cursor-pointer
   "
     >
-      <div className="h-8 w-8 flex items-center justify-center bg-blue-500 text-white rounded-full mr-2">
-        {initials}
-      </div>
+      {storedProfile ? (
+        <Image
+          src={storedProfile}
+          alt="User"
+          className="h-8 w-8 rounded-full mr-2"
+          width={200}
+          height={200}
+        />
+      ) : (
+        <div className="h-8 w-8 flex items-center justify-center bg-blue-500 text-white rounded-full mr-2">
+          {initials}
+        </div>
+      )}
       <div className="flex items-center gap-x-1">
         <p className="cursor-pointer _lg:text-sm text-lg">{username}</p>
         <button
