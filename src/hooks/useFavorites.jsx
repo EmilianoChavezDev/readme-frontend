@@ -31,7 +31,6 @@ const useFavoritos = () => {
           params: params,
         }
       );
-      console.log(response.data);
       if (
         busqueda != null &&
         Array.isArray(response.data) &&

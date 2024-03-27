@@ -121,6 +121,10 @@
   font-size: 13px;
 }
 
+.group_children > div {
+  margin-right: 0.2rem;
+}
+
 .notfound {
   position: absolute;
   top: 50%;
@@ -143,10 +147,6 @@
   border: none;
   cursor: pointer;
   transition: transform 0.3s ease;
-}
-
-.btn_search:hover .image_port {
-  content: url("/image/lupa2.png");
 }
 
 .btn_search:hover {

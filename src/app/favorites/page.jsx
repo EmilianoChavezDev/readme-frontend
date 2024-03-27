@@ -19,7 +19,6 @@ const PageFavoritos = () => {
     error,
     isSearchEmpty,
   } = useFavoritos();
-
   // traemos todos los favoritos de la primera pagina del usuario
   useEffect(() => {
     traerFavoritosPorUsuario(1, "");
@@ -77,7 +76,11 @@ const PageFavoritos = () => {
             <div>
               {librosFavoritos && librosFavoritos.length > 0 ? (
                 isSearchEmpty ? (
-                  <BookNotFound />
+                  <BookNotFound
+                    message={
+                      "Lo sentimos, el libro que buscas no está en tus favoritos"
+                    }
+                  />
                 ) : (
                   <div className={styles.contenedor_cuadros}>
                     {librosFavoritos?.map((data) => (
