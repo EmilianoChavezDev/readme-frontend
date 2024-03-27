@@ -1,13 +1,26 @@
 "use client";
+
 import Link from "next/link";
-import RenderImage from "@/components/RenderImage";
-import useBook from "@/hooks/useBook";
+import { FaImage } from "react-icons/fa";
+import { HiXMark } from "react-icons/hi2";
 import { useEffect, useState } from "react";
-import { FaAngleLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { FaAngleLeft } from "react-icons/fa6";
+import { Tooltip } from "@material-tailwind/react";
+
+import useBook from "@/hooks/useBook";
 
 export default function BookForm({ book }) {
+  const router = useRouter();
+  const { createBook, updateBook, error, isLoading } = useBook();
+
+  const [image, setImage] = useState({});
+  const [loadingPortada, setLoadingPortada] = useState(false);
+  const [errors, setErrors] = useState({
+    titulo: "",
+    sinopsis: "",
+    categoria: "",
+  });
   const [info, setInfo] = useState({
     titulo: "",
     sinopsis: "",
@@ -16,51 +29,31 @@ export default function BookForm({ book }) {
     adulto: false,
   });
 
-  const [errors, setErrors] = useState({
-    titulo: "",
-    sinopsis: "",
-    categoria: "",
-  });
-
-  const [loadingPortada, setLoadingPortada] = useState(false);
-
-  //Destructuring de los valores del formulario
   const { titulo, sinopsis, categoria, portada, adulto } = info;
 
-  //Obtener la funcion para agregar un libro, el error y el estado de carga
-  const { createBook, updateBook, error, isLoading } = useBook();
-
-  const router = useRouter();
-
-  //Manejar cambios en el formulario
-  const handleInputChange = (e) => {
-    const { id, value, files, checked } = e.target;
-
-    // Si el input es el checkbox "adulto", obtener el estado checked, si es el input "portada" obtener el ,archivo si no obtener el valor del input
-    const newValue =
-      id === "adulto" ? checked : id === "portada" ? files[0] : value;
-
-    // Actualizar el estado del formulario
-    setInfo({
-      ...info,
-      [id]: newValue,
-    });
+  const handleInputChange = (event) => {
+    const { id, value, checked } = event.target;
+    const newValue = id === "adulto" ? checked : value;
+    setInfo({ ...info, [id]: newValue });
   };
 
-  //Manejar el envio del formulario
+  const handleAddImage = async (file) => {
+    setImage({ current: "", preview: URL.createObjectURL(file), file });
+  };
+
+  const handleRemoveImage = async () => {
+    setImage({});
+  };
+
   const handleSubmit = async () => {
     const newErrors = {};
-
-    // Validar que los campos no esten vacios
-    if (titulo.trim() === "") {
+    if (!titulo.trim().length) {
       newErrors.titulo = "El título no puede estar vacio. ";
     }
-
-    if (sinopsis.trim() === "") {
+    if (!sinopsis.trim().length) {
       newErrors.sinopsis = "La descripción no puede estar vacio. ";
     }
-
-    if (categoria.trim() === "") {
+    if (!categoria.trim().length) {
       newErrors.categoria = "Debes seleccionar una categoría. ";
     }
 
@@ -68,20 +61,18 @@ export default function BookForm({ book }) {
       setErrors(newErrors);
       return;
     }
-
-    // Crear un FormData para enviar la informacion
     const formData = new FormData();
     formData.set("titulo", titulo);
     formData.set("sinopsis", sinopsis);
     formData.set("categoria", categoria);
-    formData.set("portada", portada);
+    if (image.preview !== image.current) {
+      formData.set("portada", image.file);
+    }
     formData.set("adulto", adulto);
 
-    // Enviar la informacion, esperar a que la peticion termine
     const success = book
       ? await updateBook(book.id, formData)
       : await createBook(formData);
-    // Si la peticion fue exitosa, limpiar el formulario y quitar el error
     if (success) {
       setInfo({
         titulo: "",
@@ -96,12 +87,9 @@ export default function BookForm({ book }) {
         sinopsis: "",
         categoria: "",
       });
-      // se actualiza el libro, redirigir a books/id
       book
         ? router.push(`/books/${book.id}`)
-        : // Si la peticion fue exitosa, redirigir a books/id/chapters/write cuando se
-          router.push(`/books/${success.id}/chapters/write`);
-      //router.push(`/books/edit/${success.id}`)
+        : router.push(`/books/${success.id}/chapters/write`);
     }
   };
 
@@ -112,24 +100,23 @@ export default function BookForm({ book }) {
         titulo: book.titulo,
         sinopsis: book.sinopsis,
         categoria: book.categoria,
-        portada: book.portada,
         adulto: book.adulto,
       });
+      setImage({ current: book.portada });
     }
   }, [book]);
   return (
     <div className="flex flex-col bg-white">
-      {/*Layout*/}
       <div className="bg-ChaptearHeader h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg">
         <div className="text-white font-semibold text-lg flex items-center">
-          <Link href={"/"}>
+          <Link href="/">
             <FaAngleLeft className="text-2xl" />
           </Link>
           <h3 className="px-4">Agregar información del libro</h3>
         </div>
         <div className="flex gap-4">
           <Link
-            href={"/"}
+            href="/"
             className="bg-BooksCreateCancelarButton text-gray-700 py-2 px-5 rounded-lg"
           >
             Cancelar
@@ -146,7 +133,6 @@ export default function BookForm({ book }) {
         </div>
       </div>
 
-      {/*Error del formulario*/}
       <div className="text-center py-5">
         {error && (
           <p className="text-red-500 font-semibold text-xl">
@@ -156,44 +142,49 @@ export default function BookForm({ book }) {
         )}
       </div>
 
-      {/* Portada */}
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-center">
-        <div className="w-full md:w-1/4 h-auto flex flex-col items-center justify-center p-8 bg-BooksCreateImageBackground">
-          <label className="text-center mb-6">
-            {book && book.portada ? (
-              <Image
-                id="gifImage"
-                src={book.portada}
-                alt="Imagen del libro"
-                width={400}
-                height={0}
-                className="max-h-96"
-              />
-            ) : (
-              <RenderImage
-                inputContainerRef={portada}
-                setLoadingPortada={setLoadingPortada}
-              />
-            )}
-            <label
-              htmlFor="portada"
-              className="block text-lg font-semibold mb-2 text-gray-900 my-11"
-            >
-              {!portada ? "Añadir una portada" : "Cambiar portada"}
-            </label>
-            <input
-              id="portada"
-              type="file"
-              accept="image/*"
-              key={portada ? portada.name : "reset"} //Resetamos el input por si se ingresan dos veces la misma imagen
-              onChange={handleInputChange}
-              className="text-gray-900 sr-only"
-              disabled={isLoading}
+        <form encType="multipart/form-data" className="group relative">
+          {image.current || image.preview ? (
+            <img
+              className="object-cover w-72 h-96 rounded-md"
+              src={image.preview ?? image.current}
+              alt="Portada de Libro"
             />
+          ) : (
+            <label className="bg-ChaptearHeader text-BooksCreateImageBackground w-72 h-96 flex justify-center items-center rounded-md cursor-pointer">
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden cursor-pointer"
+                multiple={false}
+                onChange={(event) => {
+                  event.target.blur();
+                  handleAddImage(event.target.files[0]);
+                }}
+              />
+              <Tooltip content="Subir Imagen" placement="top">
+                <FaImage size={45} />
+              </Tooltip>
+            </label>
+          )}
+          {(image.current || image.preview) && (
+            <Tooltip content="Eliminar Imagen">
+              <div
+                className="absolute -top-1 -right-1 bg-colorPrimario text-white w-8 h-8 hidden group-hover:flex justify-center items-center rounded-full cursor-pointer"
+                onClick={handleRemoveImage}
+              >
+                <HiXMark size={36} />
+              </div>
+            </Tooltip>
+          )}
+          <label
+            htmlFor="portada"
+            className="block text-lg font-semibold mb-2 text-gray-900 my-11"
+          >
+            {portada ? "Añadir una portada" : "Cambiar portada"}
           </label>
-        </div>
+        </form>
 
-        {/* Formulario */}
         <div className="w-full md:w-4/6 bg-white mx-4 md:mx-16 my-4 md:my-14">
           <div className="w-full p-8 flex flex-col gap-3">
             <h1 className="text-3xl font-bold mb-2 text-gray-900 mx-6">
@@ -210,7 +201,7 @@ export default function BookForm({ book }) {
                 id="titulo"
                 type="text"
                 className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900"
-                value={titulo}
+                value={info.titulo}
                 onChange={handleInputChange}
                 disabled={isLoading}
               />
@@ -228,14 +219,13 @@ export default function BookForm({ book }) {
               >
                 Descripción
               </label>
-
               <textarea
                 id="sinopsis"
                 className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900 h-44 "
                 value={sinopsis}
                 onChange={handleInputChange}
                 disabled={isLoading}
-              ></textarea>
+              />
               {errors.sinopsis && (
                 <p className="text-red-500 font-semibold">{errors.sinopsis}</p>
               )}
@@ -269,7 +259,7 @@ export default function BookForm({ book }) {
             <div className="mb-2 w-full flex items-center gap-3 px-6 md:px-16">
               <label
                 htmlFor="adulto"
-                className="text-2xl font-semibold text-gray-900 "
+                className="text-2xl font-semibold text-gray-900"
               >
                 ¿Es para adultos?
               </label>

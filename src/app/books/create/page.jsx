@@ -1,6 +1,6 @@
 "use client";
 
-import BookForm from "@/components/books/bookForm";
+import BookForm from "@/components/books/BookForm";
 
 export default function Page() {
   return <BookForm />;

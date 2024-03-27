@@ -1,6 +1,6 @@
 "use client";
 
-import BookForm from "@/components/books/bookForm";
+import BookForm from "@/components/books/BookForm";
 import useBook from "@/hooks/useBook";
 import { useEffect, useState } from "react";
 
