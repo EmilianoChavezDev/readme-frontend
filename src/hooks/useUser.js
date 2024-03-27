@@ -106,7 +106,7 @@ const useUserInfo = () => {
       const response = await axios.put(url, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data", // Especificar el tipo de contenido como multipart/form-data
+          "Content-Type": "multipart/form-data",
         },
       });
       setIsImageChange(true);
