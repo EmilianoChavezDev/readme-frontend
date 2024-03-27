@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaAngleLeft } from "react-icons/fa6";
 import { Tooltip } from "@material-tailwind/react";
-
 import useBook from "@/hooks/useBook";
 
 export default function BookForm({ book }) {
@@ -142,6 +141,7 @@ export default function BookForm({ book }) {
         )}
       </div>
 
+      {/* Portada */}
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-center">
         <form encType="multipart/form-data" className="group relative">
           {image.current || image.preview ? (
@@ -167,6 +167,12 @@ export default function BookForm({ book }) {
               </Tooltip>
             </label>
           )}
+          <label
+            htmlFor="portada"
+            className="block text-lg font-semibold mb-2 text-gray-900 my-11 text-center"
+          >
+            {book ? "Actualizar portada" : "Añadir una portada"}
+          </label>
           {(image.current || image.preview) && (
             <Tooltip content="Eliminar Imagen">
               <div
@@ -177,12 +183,6 @@ export default function BookForm({ book }) {
               </div>
             </Tooltip>
           )}
-          <label
-            htmlFor="portada"
-            className="block text-lg font-semibold mb-2 text-gray-900 my-11"
-          >
-            {portada ? "Añadir una portada" : "Cambiar portada"}
-          </label>
         </form>
 
         <div className="w-full md:w-4/6 bg-white mx-4 md:mx-16 my-4 md:my-14">
