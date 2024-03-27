@@ -14,6 +14,8 @@ import { useUser } from "@/contexts/UserProvider";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import AccordionField from "@/components/accounts/Accordion";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { IoInformationCircleOutline } from "react-icons/io5";
 
 const defaultValues = {
   username: "",
@@ -39,8 +41,10 @@ const page = ({ params }) => {
   const { login } = useUser();
   const [date, setDate] = useState(null);
   const [changeImage, setChangeImage] = useState(false);
-
   const [profileImage, setProfileImage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
   const initials = data?.username
     ?.split(" ")
@@ -70,16 +74,19 @@ const page = ({ params }) => {
     defaultValues,
   });
 
+  // trae la informacion del usuario
   useEffect(() => {
     getUserInformation(params.id);
   }, []);
 
+  // cuando se trae la foto la coloco en pantalla
   useEffect(() => {
     if (data?.profile) {
       setProfileImage(data?.profile);
     }
   }, [data?.profile]);
 
+  // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
     if (isError) {
       toast.error(message);
@@ -92,11 +99,13 @@ const page = ({ params }) => {
     }
   }, [isError, isTrue, isImageChange]);
 
+  // si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
   useEffect(() => {
     if (!currentData) return;
     login(currentData);
   }, [currentData]);
 
+  // traer los datos del usuario
   useEffect(() => {
     if (!data) return;
     reset({
@@ -197,14 +206,32 @@ const page = ({ params }) => {
                 </div>
 
                 <div>
-                  <InputField
-                    label={"*Contraseña"}
-                    type={"password"}
-                    onBlur={() => trigger("oldPassword")}
-                    register={register}
-                    name={"oldPassword"}
-                    required={true}
-                  />
+                  <div className="relative">
+                    <InputField
+                      label={"*Contraseña"}
+                      type={showPassword ? "text" : "password"}
+                      onBlur={() => trigger("oldPassword")}
+                      register={register}
+                      name={"oldPassword"}
+                      required={true}
+                    />
+                    <button
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                  {errors?.oldPassword && (
+                    <div
+                      className={`flex items-center text-sm text-red-500 duration-200 transform transition-all ${
+                        errors?.oldPassword ? "opactity-100" : "opacity-0"
+                      }`}
+                    >
+                      <IoInformationCircleOutline size={18} />
+                      <span>Este campo es obligatorio</span>
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -219,30 +246,48 @@ const page = ({ params }) => {
                 <div>
                   <AccordionField>
                     <div className="w-72 mb-2 mt-2">
-                      <InputField
-                        label={"Nueva Contraseña"}
-                        type={"password"}
-                        onBlur={() => trigger("newPassword")}
-                        register={register}
-                        name={"newPassword"}
-                        required={false}
-                      />
+                      <div className="relative">
+                        <InputField
+                          label={"Nueva Contraseña"}
+                          type={showNewPassword ? "text" : "password"}
+                          onBlur={() => trigger("newPassword")}
+                          register={register}
+                          name={"newPassword"}
+                          required={false}
+                        />
+                        <button
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                          onClick={() => setShowNewPassword(!showNewPassword)}
+                        >
+                          {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                      </div>
                     </div>
                     <div>
-                      <InputField
-                        label={"Confirmar Nueva Contraseña"}
-                        type={"password"}
-                        onBlur={() => trigger("confirmNewPassword")}
-                        register={register}
-                        name={"confirmNewPassword"}
-                        required={false}
-                      />
+                      <div className="relative">
+                        <InputField
+                          label={"Confirmar Nueva Contraseña"}
+                          type={showConfirmNewPassword ? "text" : "password"}
+                          onBlur={() => trigger("confirmNewPassword")}
+                          register={register}
+                          name={"confirmNewPassword"}
+                          required={false}
+                        />
+                        <button
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                          onClick={() =>
+                            setShowConfirmNewPassword(!showConfirmNewPassword)
+                          }
+                        >
+                          {showConfirmNewPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                      </div>
                     </div>
                   </AccordionField>
                 </div>
               </div>
             </div>
-            <div className="_sm:mt-16 mt-10 flex justify-center _sm:ml-96  _sm:items-end gap-x-3">
+            <div className="_sm:mt-16 mt-10 flex justify-center _sm:justify-end   _lg:mr-20 _xl:mr-80 gap-x-3">
               <button
                 className="bg-textColorGray p-2 text-white rounded-lg hover:bg-textHeaderColorGray ml-52"
                 onClick={() => router.push("/accounts")}
@@ -251,7 +296,7 @@ const page = ({ params }) => {
               </button>
               <button
                 type="submit"
-                className="bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario text-nowrap mr-48 _lg:mr-0 "
+                className="bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario text-nowrap mr-48 _lg:mr-0  _sm:mr-14"
                 disabled={loading}
                 onClick={handleSubmit(onSubmit)}
               >
