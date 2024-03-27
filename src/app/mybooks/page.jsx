@@ -3,27 +3,58 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles/mybooks.module.css";
 import NavBar from "@/components/NavBar";
-import MyBooksContainer from "@/components/mybooks/BooksContainer";
-import useDraft from "@/hooks/useDrafts";
+import MyBooksContainer from "@/components/books/mybooks/BooksContainer";
 import Loader from "@/components/common/loader";
 import Link from "next/link";
 import NotFound from "@/components/common/NotFound";
+import useBook from "@/hooks/useBook";
+import { CiSearch } from "react-icons/ci";
+import BookNotFound from "@/components/favorites/BookNotFound";
 
 const PageMyBooks = () => {
-  const { getDraftsUser, error, isLoading } = useDraft();
-  const [dataDrafts, setDataDrafts] = useState([]);
+  const { getAllBooks, isLoading } = useBook();
+  const [dataBooks, setDataBooks] = useState([]);
+  const [filter, setFilter] = useState("");
+
+  // para cargar la lista
+  const chargeList = async (page, titulo = null, categoria = null) => {
+    const params = {
+      page: page,
+      titulo: titulo,
+      categoria: categoria,
+    };
+    const bookData = await getAllBooks(params);
+    setDataBooks(bookData.data);
+  };
 
   useEffect(() => {
-    const chargeList = async () => {
-      try {
-        const drafts = await getDraftsUser();
-        setDataDrafts(drafts);
-      } catch {
-        console.error("Error al traer los borradores:", error);
-      }
-    };
-    isLoading && chargeList();
-  }, [getDraftsUser, isLoading]);
+    chargeList(1, null, null);
+  }, []);
+
+  // Extraer categorías únicas utilizando un conjunto (Set)
+  const uniqueCategories = [
+    ...new Set(dataBooks.map((book) => book.categoria)),
+  ];
+
+  // Crear opciones para el select basadas en las categorías únicas
+  const selectOptions = uniqueCategories.map((category) => (
+    <option key={category} value={category}>
+      {category}
+    </option>
+  ));
+
+  const handleCategoryChange = (event) => {
+    const selectedCategory = event.target.value;
+    if (selectedCategory == "") {
+      chargeList(1, filter, null);
+    } else {
+      chargeList(1, null, selectedCategory);
+    }
+  };
+
+  const handleSearch = () => {
+    chargeList(1, filter, null);
+  };
 
   return (
     <>
@@ -40,19 +71,55 @@ const PageMyBooks = () => {
             </Link>
           </div>
         </div>
-        {dataDrafts && dataDrafts.length > 0 ? (
+        <div className={styles.filters_container}>
+          <div className={styles.select_container}>
+            <select
+              id="category"
+              onChange={handleCategoryChange}
+              className={styles.select_category}
+            >
+              <option value="">Categoria</option>
+              <option value="">Todos</option>
+              {selectOptions}
+            </select>
+          </div>
+          <div>
+            <input
+              className={styles.search}
+              type="text"
+              placeholder="Buscar por Titulo"
+              onBlur={(e) => setFilter(e.target.value)}
+            />
+          </div>
+          <div>
+            <button
+              className={styles.btn_search}
+              onClick={() => handleSearch()}
+            >
+              <CiSearch
+                size={25}
+                className="hover:text-colorHoverPrimario ml-2"
+              />
+            </button>
+          </div>
+        </div>
+        {dataBooks && dataBooks.length > 0 ? (
           <div className={styles.drafts_container}>
-            {dataDrafts.map((data, index) => (
-              <MyBooksContainer key={index} data={data} />
+            {dataBooks.map((data, index) => (
+              <MyBooksContainer key={index} libroData={data} />
             ))}
           </div>
+        ) : filter !== "" ? (
+          <BookNotFound message={'Lo sentimos, el libro que estas buscando no se encuentra dentro de tus libros'}/>
         ) : (
-          <NotFound
-            message={"¡Vaya! Parece que no tienes ningún libro."}
-            butMessage={
-              "Pero no te preocupes, puedes seguir navegando a través de la página."
-            }
-          />
+          <div>
+            <NotFound
+              message={"¡Vaya! Parece que no tienes ningún libro."}
+              butMessage={
+                "Pero no te preocupes, puedes seguir navegando a través de la página."
+              }
+            />
+          </div>
         )}
       </div>
     </>

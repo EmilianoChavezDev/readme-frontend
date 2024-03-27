@@ -39,6 +39,7 @@
 
 .data_FCV {
   display: flex;
+  padding-top: 0.5rem;
 }
 
 .data_FCV > div {
@@ -68,8 +69,8 @@
   align-items: center;
 }
 
-.dataFCV_container img {
-  margin-right: 10px;
+.img_icons {
+  margin-right: 0.5rem;
 }
 
 .txt_public_parts {
@@ -184,14 +185,106 @@
   transition: transform 0.3s ease;
 }
 
-.btn_menu:hover .image_port {
-  content: url("/image/mas2.png");
-}
-
 .btn_menu:hover {
   transform: scale(1.1);
 }
 
+.filters_container {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+}
+
+.select_category {
+  background-color: #ffffff;
+  color: #00000057;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  border: 1px solid rgba(0, 0, 0, 0.192);
+}
+
+.select_container {
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+}
+
+.search {
+  border: 1px solid rgba(0, 0, 0, 0.192);
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+}
+
+.btn_search {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.btn_search:hover {
+  transform: scale(1.1);
+}
+
+.txt_category {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+/*Modal Delete*/
+.modal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.modal_content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.option_content_delete {
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn_confirm_delete {
+  color: white;
+  background-color: #125e55;
+  border-radius: 0.5rem;
+  padding: 0.4rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn_cancel_delete {
+  color: white;
+  background-color: #b4b4b4;
+  border-radius: 0.5rem;
+  padding: 0.4rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn_confirm_delete:hover {
+  background-color: #0c463f;
+}
+
+.btn_cancel_delete:hover {
+  background-color: #858585;
+}
 /*My Books Options*/
 .menu_container_options {
   width: 8rem;
