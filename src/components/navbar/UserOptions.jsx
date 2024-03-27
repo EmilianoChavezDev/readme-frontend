@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
@@ -7,8 +7,8 @@ import Image from "next/image";
 
 const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [storageProfile, setStorageProfile] = useState(null);
   const router = useRouter();
-  const storedProfile = localStorage.getItem("profile");
   const initials = username
     ?.split(" ")
     ?.map((word) => word[0])
@@ -19,15 +19,19 @@ const UserOptions = ({ username, logout }) => {
     setIsOpen(!isOpen);
   };
 
+  useEffect(() => {
+    setStorageProfile(localStorage.getItem("profile"));
+  }, []);
+
   return (
     <div
       className="flex items-center border-b border-transparent text-white
     _lg:hover:cursor-pointer
   "
     >
-      {storedProfile ? (
+      {storageProfile ? (
         <Image
-          src={storedProfile}
+          src={storageProfile}
           alt="User"
           className="h-8 w-8 rounded-full mr-2"
           width={200}
