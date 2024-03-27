@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaAngleLeft } from "react-icons/fa6";
 import { Tooltip } from "@material-tailwind/react";
+
 import useBook from "@/hooks/useBook";
 
 export default function BookForm({ book }) {
@@ -47,7 +48,7 @@ export default function BookForm({ book }) {
   const handleSubmit = async () => {
     const newErrors = {};
     if (!titulo.trim().length) {
-      newErrors.titulo = "El título no puede estar vacio. ";
+      newErrors.titulo = "Hola mundo. ";
     }
     if (!sinopsis.trim().length) {
       newErrors.sinopsis = "La descripción no puede estar vacio. ";
@@ -64,7 +65,7 @@ export default function BookForm({ book }) {
     formData.set("titulo", titulo);
     formData.set("sinopsis", sinopsis);
     formData.set("categoria", categoria);
-    if (image.preview !== image.current) {
+    if (image.preview !== image.current && image.file) {
       formData.set("portada", image.file);
     }
     formData.set("adulto", adulto);
@@ -141,7 +142,6 @@ export default function BookForm({ book }) {
         )}
       </div>
 
-      {/* Portada */}
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-center">
         <form encType="multipart/form-data" className="group relative">
           {image.current || image.preview ? (
@@ -163,7 +163,9 @@ export default function BookForm({ book }) {
                 }}
               />
               <Tooltip content="Subir Imagen" placement="top">
-                <FaImage size={45} />
+                <span>
+                  <FaImage size={45} />
+                </span>
               </Tooltip>
             </label>
           )}
