@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import styles from "../app/favorites/styles/favorites.module.css";
+import styles from "@/app/favorites/styles/favorites.module.css";
 import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
 import Link from "next/link";
 import formatNumber from "@/utils/formatNumber";
+import { FaStar, FaEye, FaComment, FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Cuadros = ({ data }) => {
   const [favorito, setFavorito] = useState(true);
@@ -40,12 +41,12 @@ const Cuadros = ({ data }) => {
         onClick={() => fn_btnFavorite(libroId)}
       >
         {favorito ? (
-          <button className={styles.btnCorazonLleno}>
-            <img src="/image/img_like.png" alt="Corazón lleno" />
+          <button>
+            <FaHeart size={35} color="#CB2B2B" />
           </button>
         ) : (
-          <button className={styles.btnCorazonVacio}>
-            <img src="/image/img_dislike.png" alt="Corazón vacio" />
+          <button>
+            <FaRegHeart size={35} color="#CB2B2B" />
           </button>
         )}
       </div>
@@ -63,7 +64,7 @@ const Cuadros = ({ data }) => {
       <div className={styles.group_global}>
         <div className={styles.group_children}>
           <div>
-            <img src="/image/img_view.png" alt="imagen ver" />
+            <FaEye size={15} color="black" className={styles.img_icons} />
           </div>
           <div>
             <p>{formatNumber({ value: view })}</p>
@@ -71,7 +72,7 @@ const Cuadros = ({ data }) => {
         </div>
         <div className={styles.group_children}>
           <div>
-            <img src="/image/img_star.png" alt="imagen estrella" />
+            <FaStar size={15} color="black" className={styles.img_icons} />
           </div>
           <div>
             <p>{formatNumber({ value: star })}</p>
@@ -79,7 +80,7 @@ const Cuadros = ({ data }) => {
         </div>
         <div className={styles.group_children}>
           <div>
-            <img src="/image/img_comment.png" alt="imagen comentar" />
+            <FaComment size={15} color="black" className={styles.img_icons} />
           </div>
           <div>
             <p>{formatNumber({ value: comment })}</p>

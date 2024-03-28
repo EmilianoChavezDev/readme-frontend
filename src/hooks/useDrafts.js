@@ -1,27 +1,35 @@
-import { useState } from "react";
-import axios from "axios";
-import { useUser } from "@/contexts/UserProvider";
+'use client'
+
+import axios from 'axios';
+import { useState } from 'react';
 
 const useDraft = () => {
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const { token } = useUser(); 
+    const DRAFTS_ENDPOINT = '/libros_con_capitulos_no_publicados';
 
-  const getDraftsUser = async () => {
-    try {
-      const res = await axios.get(`${process.env.API_URL}/libros_con_capitulos_no_publicados`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return res.data;
-    } catch (error) {
-      setError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  return { getDraftsUser, error, isLoading };
+    const [error, setError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Crear una instancia de axios con la URL base y el token
+    const api = axios.create({ baseURL: process.env.API_URL });
+
+    const handleRequest = async requestFunction => {
+        setIsLoading(true);
+        try {
+            const res = await requestFunction();
+            return res.data;
+        } catch (error) {
+            setError(true);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Función para obtener borradores
+    const getDrafts = async () => {
+        return handleRequest(() => api.get(DRAFTS_ENDPOINT, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }));
+    };
+
+    return { getDrafts, error, isLoading };
 };
 
 export default useDraft;

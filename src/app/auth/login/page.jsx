@@ -10,6 +10,7 @@ import Loading from "@/components/common/Loading";
 import PasswordInput from "@/components/common/InputPassword";
 import UsernameInput from "@/components/common/InputUsername";
 
+
 const defaultValues = {
   username: "",
   password: "",
@@ -17,8 +18,10 @@ const defaultValues = {
 
 const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
+
   const [isFocused, setIsFocused] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+
 
   const { data, error, loading, login } = useAuth();
   const { login: saveUser } = useUser();
@@ -60,7 +63,9 @@ const Page = () => {
   };
 
   const passwordValue = watch("password", "");
+
   const usernameValue = watch("username", "");
+
 
   return (
     <div className={styles.content}>
@@ -74,12 +79,14 @@ const Page = () => {
       </div>
       <div className={styles.content_login}>
         <div className={styles.content_detalle}>
+
           <div className={styles.content_logo}>
             <Image
               src={"/image/g2.png"}
               alt="imagen logo"
               width={250}
               height={250}
+
             />
           </div>
           {error && (
@@ -88,6 +95,7 @@ const Page = () => {
             </p>
           )}
           <div>
+
             <UsernameInput
               isFocused={isFocused}
               usernameValue={usernameValue}

@@ -1,16 +1,15 @@
 "use client";
-import React from "react";
-
-import styles from "@/app/drafts/styles/drafts.module.css";
+import React, { useState } from "react";
+import styles from "@/app/mybooks/styles/mybooks.module.css";
 import Image from "next/image";
-import moment from "moment";
 import formatNumber from "@/utils/formatNumber";
 import Link from "next/link";
-import "moment/locale/es";
+import { MdMoreVert } from "react-icons/md";
+import { FaStar, FaEye, FaComment } from "react-icons/fa";
+import OptionBooks from "@/components/books/mybooks/OptionsMenuBooks";
 
-const DraftsContainer = ({ data }) => {
-  const { libro, ultimo_capitulo_no_publicado } = data;
-  moment.locale("es");
+const MyBooksContainer = ({ libroData }) => {
+  const [showOptionMenu, setShowOptionMenu] = useState(false);
 
   const {
     id: libroId,
@@ -20,9 +19,12 @@ const DraftsContainer = ({ data }) => {
     cantidad_lecturas,
     puntuacion_media,
     cantidad_comentarios,
-  } = libro;
+    categoria,
+  } = libroData;
 
-  const { id: capituloId, updated_at } = ultimo_capitulo_no_publicado;
+  const toggleOptionBooks = () => {
+    setShowOptionMenu(!showOptionMenu);
+  };
 
   return (
     <>
@@ -44,42 +46,22 @@ const DraftsContainer = ({ data }) => {
               ? `${publicados} parte publicada`
               : `${publicados} partes publicadas`}{" "}
           </p>
-          <p className={styles.txt_actualization}>
-            Actualizado el {moment(new Date(updated_at)).format("LLL")}
-          </p>
+          <p className={styles.txt_category}>Categoria: {categoria}</p>
           <div className={styles.data_FCV}>
             <div className={styles.dataFCV_container}>
-              <Image
-                src={"/image/img_view.png"}
-                width={15}
-                height={15}
-                alt="Imagen de Vista"
-                priority={true}
-              />
+              <FaEye size={15} color="black" className={styles.img_icons} />
               <p className={styles.puntuation}>
                 {formatNumber({ value: cantidad_lecturas })}
               </p>
             </div>
             <div className={styles.dataFCV_container}>
-              <Image
-                src={"/image/img_star.png"}
-                width={15}
-                height={15}
-                alt="Imagen de Favorito"
-                priority={true}
-              />
+              <FaStar size={15} color="black" className={styles.img_icons} />
               <p className={styles.puntuation}>
                 {formatNumber({ value: puntuacion_media })}
               </p>
             </div>
             <div className={styles.dataFCV_container}>
-              <Image
-                src={"/image/img_comment.png"}
-                width={15}
-                height={15}
-                alt="Imagen de Comentario"
-                priority={true}
-              />
+              <FaComment size={15} color="black" className={styles.img_icons} />
               <p className={styles.puntuation}>
                 {formatNumber({ value: cantidad_comentarios })}
               </p>
@@ -87,16 +69,29 @@ const DraftsContainer = ({ data }) => {
           </div>
         </div>
         <div className={styles.writting_container}>
-          <Link
-            className={styles.btn_continue_writting}
-            href={`/books/${libroId}/chapters/write/${capituloId}`}
-          >
-            <span>Seguir escribiendo</span>
-          </Link>
+          <div className={styles.menu_container}>
+            <div>{showOptionMenu && <OptionBooks libroId={libroId} />}</div>
+            <div>
+              <button className={styles.btn_menu} onClick={toggleOptionBooks}>
+                <MdMoreVert
+                  size={25}
+                  className="hover:text-colorHoverPrimario"
+                />
+              </button>
+            </div>
+          </div>
+          <div>
+            <Link
+              className={styles.btn_continue_writting}
+              href={`/books/${libroId}/chapters/write`}
+            >
+              <span>Seguir escribiendo</span>
+            </Link>
+          </div>
         </div>
       </div>
     </>
   );
 };
 
-export default DraftsContainer;
+export default MyBooksContainer;
