@@ -13,11 +13,6 @@ import { useRouter } from "next/navigation";
 import AccordionField from "@/components/accounts/Accordion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
-import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { esES } from "@mui/x-date-pickers/locales";
 
 const defaultValues = {
   username: "",
@@ -122,8 +117,6 @@ const page = ({ params }) => {
 
   //validaciones
   const onSubmit = (formData) => {
-    console.log(formData);
-
     if (formData.username !== data.username) {
       updateUsername(formData.username, formData.oldPassword);
     }
@@ -174,15 +167,15 @@ const page = ({ params }) => {
           <NavBar />
           <div className="flex flex-col">
             <div
-              className="flex _md:mx-auto _md:w-5/6 w-full _lg:px-4 _md:mt-14 _sm:justify-between _md:items-center
-            mt-8 flex-col _sm:flex-row
+              className="flex _md:mx-auto _md:w-5/6 w-full _lg:px-4 _md:mt-14 _md:justify-between _md:items-center
+            mt-8 flex-col _md:flex-row
             "
             >
               <div className="flex flex-col">
                 <h1 className="text-textHeaderColorGray text-2xl font-bold text-nowrap text-center">
                   Información Personal
                 </h1>
-                <div className="flex flex-col _xl:ml-36 _xl:mt-28 _sm:mt-10 items-center">
+                <div className="flex flex-col _xl:ml-36 _xl:mt-28 _md:mt-10 items-center">
                   <ProfileImageUploader
                     initials={initials}
                     profileImage={profileImage}
@@ -194,7 +187,7 @@ const page = ({ params }) => {
                   </div>
                 </div>
               </div>
-              <div className="flex mt-10 _sm:mt-0 flex-col items-center _lg:justify-start _sm:items-start _xl:mr-56 xl:mr-96 _sm:gap-y-8 gap-y-4">
+              <div className="flex mt-10 _md:mt-0 flex-col items-center _lg:justify-start _md:items-start _xl:mr-56 xl:mr-96 _md:gap-y-8 gap-y-4">
                 <div>
                   <InputField
                     label={"Nombre de usuario"}
@@ -289,7 +282,7 @@ const page = ({ params }) => {
                 </div>
               </div>
             </div>
-            <div className="_sm:mt-16 mt-10 flex justify-center _sm:justify-end   _lg:mr-20 _xl:mr-80 gap-x-3">
+            <div className="_sm:mt-16 mt-10 flex justify-center _md:justify-end   _lg:mr-20 _xl:mr-80 gap-x-3 mb-10 _sm:mb-0">
               <button
                 className="bg-textColorGray p-2 text-white rounded-lg hover:bg-textHeaderColorGray ml-52"
                 onClick={() => router.push("/accounts")}
@@ -298,7 +291,7 @@ const page = ({ params }) => {
               </button>
               <button
                 type="submit"
-                className="bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario text-nowrap mr-48 _lg:mr-0  _sm:mr-14"
+                className="bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario text-nowrap mr-48 _lg:mr-0  _md:mr-14"
                 disabled={loading}
                 onClick={handleSubmit(onSubmit)}
               >
