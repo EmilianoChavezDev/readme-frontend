@@ -4,49 +4,46 @@ import { useEffect, useState } from "react";
 import styles from "./styles/favorites.module.css";
 import Cuadros from "@/components/Squares";
 import useFavoritos from "@/hooks/useFavorites";
-import { useUser } from "@/contexts/UserProvider";
 import NavBar from "@/components/NavBar";
-import NotFound from "@/components/SearchFavoritesNotFound";
+import NotFound from "@/components/common/NotFound";
 import Loader from "@/components/common/loader";
+import { CiSearch } from "react-icons/ci";
+import BookNotFound from "@/components/favorites/BookNotFound";
 
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
   const [librosFavoritos, setLibrosFavoritos] = useState([]);
-  const { traerFavoritosPorUsuario, error, isLoading } = useFavoritos();
-  const { token } = useUser();
+  const {
+    traerFavoritosPorUsuario,
+    isLoading,
+    favoritos,
+    error,
+    isSearchEmpty,
+  } = useFavoritos();
 
-  const chargeList = async (user_id, pagina = 1) =>
-    await traerFavoritosPorUsuario(user_id, pagina, token)
-      .then((favoritos) => {
-        setLibrosFavoritos(favoritos);
-      })
-      .catch(() => {
-        console.error("Error al traer favoritos:", error);
-      });
+  // traemos todos los favoritos de la primera pagina del usuario
+  useEffect(() => {
+    traerFavoritosPorUsuario(1, "");
+  }, []);
 
   useEffect(() => {
-    const pagina = 1;
-    if (token) {
-      let user_id = localStorage.getItem("user_id");
-      chargeList(user_id, pagina);
-    }
-  }, [token]);
+    setLibrosFavoritos(favoritos);
+  }, [favoritos]);
 
-  const filterCallback = ({ titulo, autorUsername }) => {
-    const lowerCaseTitulo = titulo ? titulo.toLowerCase() : "";
-    const lowerCaseAutor = autorUsername ? autorUsername.toLowerCase() : "";
-    const lowerCaseFiltro = filtro.toLowerCase();
+  // para hacer la busqueda de favoritos
+  const chargeList = (pagina, busqueda = null) => {
+    traerFavoritosPorUsuario(pagina, busqueda);
+  };
 
-    return (
-      lowerCaseTitulo.includes(lowerCaseFiltro) ||
-      lowerCaseAutor.includes(lowerCaseFiltro)
-    );
+  const handleSearch = () => {
+    chargeList(1, filtro);
   };
 
   return (
     <>
       {isLoading && <Loader />}
       <NavBar />
+
       <div className={styles.contenedor_global}>
         <div className={styles.contenedor_principal}>
           <div className={styles.barra_principal}>
@@ -54,33 +51,53 @@ const PageFavoritos = () => {
               <h1 className={styles.titulo_favorito}>Mis Favoritos</h1>
             </div>
             <div>
-              <div>
-                <input
-                  className={styles.buscador}
-                  type="text"
-                  placeholder="Buscar en Favoritos"
-                  value={filtro}
-                  onChange={(e) => setFiltro(e.target.value)}
-                />
+              <div className={styles.container_search}>
+                <div>
+                  <input
+                    className={styles.buscador}
+                    type="text"
+                    placeholder="Buscar en Favoritos"
+                    onBlur={(e) => setFiltro(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <button
+                    className={styles.btn_search}
+                    onClick={() => handleSearch()}
+                  >
+                    <CiSearch
+                      size={25}
+                      className="hover:text-colorHoverPrimario ml-2"
+                    />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
           <div className={styles.contenedor_padre_cuadros}>
-            {isLoading && (
-              <div className={styles.loadingContainer}>
-                <div className={styles.loadingSpinner} />
-              </div>
-            )}
             <div>
-              {librosFavoritos?.filter(filterCallback).length === 0 ? (
-                <NotFound />
-              ) : (
-                <div className={styles.contenedor_cuadros}>
-                  {librosFavoritos
-                    ?.filter(filterCallback)
-                    ?.map((data, index) => (
-                      <Cuadros key={index} data={data} />
+              {librosFavoritos && librosFavoritos.length > 0 ? (
+                isSearchEmpty ? (
+                  <BookNotFound />
+                ) : (
+                  <div className={styles.contenedor_cuadros}>
+                    {librosFavoritos?.map((data) => (
+                      <>
+                        <Cuadros key={data.id} data={data} />
+                      </>
                     ))}
+                  </div>
+                )
+              ) : (
+                <div>
+                  <NotFound
+                    message={
+                      "Parece que tu lista de favoritos está vacía por ahora. "
+                    }
+                    butMessage={
+                      "No te preocupes, sigue explorando nuestra página y descubre algo que te encante."
+                    }
+                  />
                 </div>
               )}
             </div>

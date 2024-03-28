@@ -7,6 +7,7 @@ import DraftsContainer from "@/components/DraftsContainer";
 import useDraft from "@/hooks/useDrafts";
 import Loader from "@/components/common/loader";
 import Link from "next/link";
+import NotFound from "@/components/common/NotFound";
 
 const PageDrafts = () => {
   const { getDraftsUser, error, isLoading } = useDraft();
@@ -39,11 +40,20 @@ const PageDrafts = () => {
             </Link>
           </div>
         </div>
-        <div className={styles.drafts_container}>
-          {dataDrafts?.map((data, index) => (
-            <DraftsContainer key={index} data={data} />
-          ))}
-        </div>
+        {dataDrafts && dataDrafts.length > 0 ? (
+          <div className={styles.drafts_container}>
+            {dataDrafts.map((data, index) => (
+              <DraftsContainer key={index} data={data} />
+            ))}
+          </div>
+        ) : (
+          <NotFound
+            message={"¡Vaya! Parece que no tienes ningún borrador."}
+            butMessage={
+              "Pero no te preocupes, puedes seguir navegando a través de la página."
+            }
+          />
+        )}
       </div>
     </>
   );

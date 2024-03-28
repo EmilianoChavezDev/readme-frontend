@@ -1,4 +1,3 @@
-import { useUser } from "@/contexts/UserProvider";
 import axios from "axios";
 import { useState } from "react";
 

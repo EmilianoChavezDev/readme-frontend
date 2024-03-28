@@ -6,14 +6,15 @@ import Image from "next/image";
 import moment from "moment";
 import formatNumber from "@/utils/formatNumber";
 import Link from "next/link";
-import 'moment/locale/es'
+import "moment/locale/es";
 
 const DraftsContainer = ({ data }) => {
   const { libro, ultimo_capitulo_no_publicado } = data;
-  moment.locale('es');
+  moment.locale("es");
 
   const {
     id: libroId,
+    cantidad_capitulos_publicados: publicados,
     titulo,
     portada,
     cantidad_lecturas,
@@ -21,7 +22,7 @@ const DraftsContainer = ({ data }) => {
     cantidad_comentarios,
   } = libro;
 
-  const { id: capituloId, indice, updated_at } = ultimo_capitulo_no_publicado;
+  const { id: capituloId, updated_at } = ultimo_capitulo_no_publicado;
 
   return (
     <>
@@ -38,10 +39,13 @@ const DraftsContainer = ({ data }) => {
         </div>
         <div className={styles.books_data_container}>
           <p className={styles.title_book}>{titulo}</p>
-          <p className={styles.txt_public_parts}>{Number(indice) === 1 ? `${indice} parte publicada` : `${indice} partes publicadas`} </p>
+          <p className={styles.txt_public_parts}>
+            {Number(publicados) === 1
+              ? `${publicados} parte publicada`
+              : `${publicados} partes publicadas`}{" "}
+          </p>
           <p className={styles.txt_actualization}>
-            Actualizado  el{" "}
-            {moment(new Date(updated_at)).format('LLL')}
+            Actualizado el {moment(new Date(updated_at)).format("LLL")}
           </p>
           <div className={styles.data_FCV}>
             <div className={styles.dataFCV_container}>
@@ -87,7 +91,7 @@ const DraftsContainer = ({ data }) => {
             className={styles.btn_continue_writting}
             href={`/books/${libroId}/chapters/write/${capituloId}`}
           >
-            Seguir escribiendo
+            <span>Seguir escribiendo</span>
           </Link>
         </div>
       </div>
