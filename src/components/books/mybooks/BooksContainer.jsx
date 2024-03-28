@@ -2,17 +2,14 @@
 import React, { useState } from "react";
 import styles from "@/app/mybooks/styles/mybooks.module.css";
 import Image from "next/image";
-import moment from "moment";
 import formatNumber from "@/utils/formatNumber";
 import Link from "next/link";
 import { MdMoreVert } from "react-icons/md";
 import { FaStar, FaEye, FaComment } from "react-icons/fa";
-import "moment/locale/es";
 import OptionBooks from "@/components/books/mybooks/OptionsMenuBooks";
 
 const MyBooksContainer = ({ libroData }) => {
   const [showOptionMenu, setShowOptionMenu] = useState(false);
-  moment.locale("es");
 
   const {
     id: libroId,

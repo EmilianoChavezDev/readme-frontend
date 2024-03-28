@@ -10,13 +10,16 @@ import NotFound from "@/components/common/NotFound";
 import useBook from "@/hooks/useBook";
 import { CiSearch } from "react-icons/ci";
 import BookNotFound from "@/components/favorites/BookNotFound";
+import Pagination from "@/components/common/Pagination";
 
 const PageMyBooks = () => {
   const { getAllBooks, isLoading } = useBook();
   const [dataBooks, setDataBooks] = useState([]);
   const [filter, setFilter] = useState("");
+  const [totalPage, setTotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // para cargar la lista
+  //Para cargar la lista
   const chargeList = async (page, titulo = null, categoria = null) => {
     const params = {
       page: page,
@@ -25,18 +28,19 @@ const PageMyBooks = () => {
     };
     const bookData = await getAllBooks(params);
     setDataBooks(bookData.data);
+    setTotalPage(bookData.total_pages);
   };
 
   useEffect(() => {
     chargeList(1, null, null);
   }, []);
 
-  // Extraer categorías únicas utilizando un conjunto (Set)
+  //Extraer categorías únicas utilizando un conjunto (Set)
   const uniqueCategories = [
     ...new Set(dataBooks.map((book) => book.categoria)),
   ];
 
-  // Crear opciones para el select basadas en las categorías únicas
+  //Crear opciones para el select basadas en las categorías únicas
   const selectOptions = uniqueCategories.map((category) => (
     <option key={category} value={category}>
       {category}
@@ -52,8 +56,16 @@ const PageMyBooks = () => {
     }
   };
 
+  //Accion al dar click al boton buscar
   const handleSearch = () => {
+    document.getElementById("category").selectedIndex = 0;
     chargeList(1, filter, null);
+  };
+
+  //Paginacion
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    chargeList(currentPage, filter, null);
   };
 
   return (
@@ -104,13 +116,26 @@ const PageMyBooks = () => {
           </div>
         </div>
         {dataBooks && dataBooks.length > 0 ? (
-          <div className={styles.drafts_container}>
-            {dataBooks.map((data, index) => (
-              <MyBooksContainer key={index} libroData={data} />
-            ))}
+          <div>
+            <div className={styles.drafts_container}>
+              {dataBooks.map((data, index) => (
+                <MyBooksContainer key={index} libroData={data} />
+              ))}
+            </div>
+            <div className={styles.pagination}>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
           </div>
         ) : filter !== "" ? (
-          <BookNotFound message={'Lo sentimos, el libro que estas buscando no se encuentra dentro de tus libros'}/>
+          <BookNotFound
+            message={
+              "Lo sentimos, el libro que estas buscando no se encuentra dentro de tus libros"
+            }
+          />
         ) : (
           <div>
             <NotFound
