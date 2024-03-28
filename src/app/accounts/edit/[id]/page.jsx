@@ -3,12 +3,9 @@
 import NavBar from "@/components/NavBar";
 import ProfileImageUploader from "@/components/accounts/ProfileImage";
 import Loader from "@/components/common/loader";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import InputField from "@/components/common/InputField";
-import DateField from "@/components/common/DateField";
 import useUserInfo from "@/hooks/useUser";
 import { useUser } from "@/contexts/UserProvider";
 import toast from "react-hot-toast";
@@ -16,6 +13,11 @@ import { useRouter } from "next/navigation";
 import AccordionField from "@/components/accounts/Accordion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
+import DatePickerValue from "@/components/common/DatePickerValue";
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const defaultValues = {
   username: "",
@@ -39,7 +41,7 @@ const page = ({ params }) => {
   } = useUserInfo();
   const router = useRouter();
   const { login } = useUser();
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(dayjs("02/10/2000"));
   const [changeImage, setChangeImage] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -110,21 +112,22 @@ const page = ({ params }) => {
     if (!data) return;
     reset({
       username: data?.username,
-      fecha_nacimiento: data?.fecha_de_nacimiento || null,
+      fecha_nacimiento: dayjs(data?.fecha_de_nacimiento),
     });
+    setDate(dayjs(data?.fecha_de_nacimiento));
   }, [data]);
 
-  const formatDate = (date) => {
-    return date ? format(date, "dd-MMM-yyyy", { locale: es }) : "";
-  };
-
   const handleDateChange = (newDate) => {
-    setDate(newDate);
+    const formattedDate = dayjs(newDate).format("DD/MM/YYYY");
+    setDate(dayjs(formattedDate));
     trigger("fecha_nacimiento");
   };
 
   //validaciones
   const onSubmit = (formData) => {
+    const formattedDate = dayjs(formData.fecha_nacimiento).format("YYYY-MM-DD");
+    formData.fecha_nacimiento = formattedDate;
+
     if (formData.username !== data.username) {
       updateUsername(formData.username, formData.oldPassword);
     }
@@ -149,10 +152,8 @@ const page = ({ params }) => {
       }
     }
 
-    if (changeImage && formData.oldPassword != "") {
+    if (changeImage) {
       updateProfile(profileImage);
-    } else {
-      toast.error("Ingrese su contraseña para el cambio");
     }
 
     reset({
@@ -233,35 +234,17 @@ const page = ({ params }) => {
                     </div>
                   )}
                 </div>
-
-                <div class="relative max-w-sm">
-                  <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                    <svg
-                      class="w-4 h-4 text-gray-500 dark:text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                    </svg>
-                  </div>
-                  <input
-                    datepicker
-                    type="text"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Select date"
-                  />
-                </div>
                 <div>
-                  <DateField
-                    label={"Fecha de nacimiento"}
-                    value={formatDate(date || data?.fecha_de_nacimiento)}
-                    selected={date}
-                    onSelect={handleDateChange}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label={"Fecha de nacimiento"}
+                      value={date}
+                      onChange={handleDateChange}
+                      onClose={() => trigger("fecha_nacimiento")}
+                      className="w-72"
+                    />
+                  </LocalizationProvider>
                 </div>
-
                 <div>
                   <AccordionField>
                     <div className="w-72 mb-2 mt-2">
