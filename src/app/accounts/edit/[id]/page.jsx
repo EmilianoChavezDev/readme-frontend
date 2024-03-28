@@ -13,11 +13,11 @@ import { useRouter } from "next/navigation";
 import AccordionField from "@/components/accounts/Accordion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
-import DatePickerValue from "@/components/common/DatePickerValue";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { esES } from "@mui/x-date-pickers/locales";
 
 const defaultValues = {
   username: "",
@@ -38,10 +38,11 @@ const page = ({ params }) => {
     message,
     updateProfile,
     isImageChange,
+    updateBirthday,
+    isTrueBirthay,
   } = useUserInfo();
   const router = useRouter();
   const { login } = useUser();
-  const [date, setDate] = useState(dayjs("02/10/2000"));
   const [changeImage, setChangeImage] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -99,7 +100,10 @@ const page = ({ params }) => {
     if (isImageChange) {
       toast.success("Foto de perfil actualizado!!");
     }
-  }, [isError, isTrue, isImageChange]);
+    if (isTrueBirthay) {
+      toast.success("Fecha de cumpleaños actualizada!!");
+    }
+  }, [isError, isTrue, isImageChange, isTrueBirthay]);
 
   // si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
   useEffect(() => {
@@ -112,21 +116,13 @@ const page = ({ params }) => {
     if (!data) return;
     reset({
       username: data?.username,
-      fecha_nacimiento: dayjs(data?.fecha_de_nacimiento),
+      fecha_nacimiento: data?.fecha_de_nacimiento,
     });
-    setDate(dayjs(data?.fecha_de_nacimiento));
   }, [data]);
-
-  const handleDateChange = (newDate) => {
-    const formattedDate = dayjs(newDate).format("DD/MM/YYYY");
-    setDate(dayjs(formattedDate));
-    trigger("fecha_nacimiento");
-  };
 
   //validaciones
   const onSubmit = (formData) => {
-    const formattedDate = dayjs(formData.fecha_nacimiento).format("YYYY-MM-DD");
-    formData.fecha_nacimiento = formattedDate;
+    console.log(formData);
 
     if (formData.username !== data.username) {
       updateUsername(formData.username, formData.oldPassword);
@@ -152,6 +148,10 @@ const page = ({ params }) => {
       }
     }
 
+    if (formData.fecha_nacimiento != data?.fecha_de_nacimiento) {
+      updateBirthday(formData.username, formData.fecha_nacimiento);
+    }
+
     if (changeImage) {
       updateProfile(profileImage);
     }
@@ -161,7 +161,7 @@ const page = ({ params }) => {
       oldPassword: "",
       newPassword: "",
       confirmNewPassword: "",
-      fecha_nacimiento: data?.fecha_de_nacimiento || null,
+      fecha_nacimiento: data?.fecha_de_nacimiento,
     });
   };
 
@@ -207,6 +207,17 @@ const page = ({ params }) => {
                 </div>
 
                 <div>
+                  <InputField
+                    label={"Fecha de nacimiento"}
+                    type={"date"}
+                    onBlur={() => trigger("fecha_nacimiento")}
+                    register={register}
+                    name={"fecha_nacimiento"}
+                    required={true}
+                  />
+                </div>
+
+                <div>
                   <div className="relative">
                     <InputField
                       label={"*Contraseña"}
@@ -233,17 +244,6 @@ const page = ({ params }) => {
                       <span>Este campo es obligatorio</span>
                     </div>
                   )}
-                </div>
-                <div>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label={"Fecha de nacimiento"}
-                      value={date}
-                      onChange={handleDateChange}
-                      onClose={() => trigger("fecha_nacimiento")}
-                      className="w-72"
-                    />
-                  </LocalizationProvider>
                 </div>
                 <div>
                   <AccordionField>
