@@ -8,6 +8,7 @@ const useUserInfo = () => {
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isTrue, setIsTrue] = useState(false);
+  const [isTrueBirthay, setIsTrueBirthay] = useState(false);
   const [isImageChange, setIsImageChange] = useState(false);
 
   const getUserInformation = async (username) => {
@@ -118,6 +119,34 @@ const useUserInfo = () => {
     }
   };
 
+  const updateBirthday = async (username, newBirthday) => {
+    console.log(newBirthday);
+    setLoading(true);
+    const url = `${process.env.API_URL}/users/birthday`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        url,
+        {
+          username: username,
+          fecha_de_nacimiento: newBirthday,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrueBirthay(true);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     data,
     loading,
@@ -130,6 +159,8 @@ const useUserInfo = () => {
     isTrue,
     updateProfile,
     isImageChange,
+    updateBirthday,
+    isTrueBirthay,
   };
 };
 
