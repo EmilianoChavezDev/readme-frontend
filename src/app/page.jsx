@@ -2,7 +2,6 @@
 
 import NavBar from "@/components/NavBar";
 import Loader from "@/components/common/loader";
-import { useUser } from "@/contexts/UserProvider";
 import useGetLibros from "@/hooks/useGetLibros";
 import useGetLibrosLeidos from "@/hooks/useGetLibrosLeidos";
 import {
@@ -16,29 +15,23 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 export default function BackgroundBlogCard() {
-  const { getLibros, data: libros, isLoading } = useGetLibros(); // Obtener la función para obtener libros y los datos de libros
+  const { getLibros, data: libros, loading } = useGetLibros(); // Obtener la función para obtener libros y los datos de libros
   const { getLibrosLeidos, data: librosLeidos } = useGetLibrosLeidos(); // Obtener la función para obtener libros leidos y los datos de libros leidos
-  const { token } = useUser(); // Obtener el token del usuario
 
   useEffect(() => {
-    // Efecto para cargar libros cuando se monta el componente y se tiene un token
-    if (token) {
-      getLibrosLeidos({ page: 1 }); // Obtener libros leidos
-      getLibros({ page: 1 }); // Obtener libros
-    }
-  }, [token]); // Se ejecuta cuando el token cambia
-
-  // Una vez que se cargan los libros, renderiza el contenido del componente
+    getLibrosLeidos({ page: 1 }); // Obtener libros leidos
+    getLibros({ page: 1 }); // Obtener libros
+  }, []);
 
   return (
     <>
-      {isLoading ? (
+      <div className="sticky top-0 z-50">
+        <NavBar />
+      </div>
+      {loading ? (
         <Loader />
       ) : (
         <>
-          <div className="sticky top-0 z-50">
-            <NavBar />
-          </div>
           <div className="container-fluid h-full">
             <div className="mb-32">
               {librosLeidos.length > 0 && (

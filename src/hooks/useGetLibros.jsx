@@ -1,15 +1,13 @@
-import { useUser } from "@/contexts/UserProvider";
 import axios from "axios";
 import { useState } from "react";
 
 const useGetLibros = () => {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { token } = useUser(); // Corregido: llama a useUser como una función para obtener el token
+  const [loading, setLoading] = useState(true);
 
   const getLibros = async (params) => {
-    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    setLoading(true);
     try {
       const response = await axios.get(`${process.env.API_URL}/libros`, {
         headers: {
@@ -21,11 +19,11 @@ const useGetLibros = () => {
     } catch (error) {
       console.error(error);
     } finally {
-      setIsLoading(true);
+      setLoading(false);
     }
   };
 
-  return { getLibros, data };
+  return { getLibros, data, loading };
 };
 
 export default useGetLibros;
