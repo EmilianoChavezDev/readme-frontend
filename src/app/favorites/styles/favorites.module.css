@@ -152,3 +152,29 @@
 .btn_search:hover {
   transform: scale(1.1);
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+/*Responsive*/
+@media screen and (max-width: 470px) {
+  .contenedor_datos_cuadro img {
+    height: auto;
+  }
+  .contenedor_title {
+    font-size: 1.8rem;
+  }
+  .author {
+    font-size: 1.2rem;
+  }
+  .group_children p {
+    font-size: 1rem;
+  }
+  .img_icons {
+    width: 1.3rem;
+    height: auto;
+  }
+}

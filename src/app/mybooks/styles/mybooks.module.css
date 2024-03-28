@@ -231,6 +231,12 @@
   font-weight: bold;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
 /*Modal Delete*/
 .modal_overlay {
   position: fixed;
@@ -285,6 +291,7 @@
 .btn_cancel_delete:hover {
   background-color: #858585;
 }
+
 /*My Books Options*/
 .menu_container_options {
   width: 8rem;
