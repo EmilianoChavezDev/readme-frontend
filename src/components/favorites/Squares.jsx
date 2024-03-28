@@ -6,8 +6,7 @@ import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
 import Link from "next/link";
 import formatNumber from "@/utils/formatNumber";
-import { FaStar, FaEye, FaComment } from "react-icons/fa";
-import Image from "next/image";
+import { FaStar, FaEye, FaComment, FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Cuadros = ({ data }) => {
   const [favorito, setFavorito] = useState(true);
@@ -42,22 +41,12 @@ const Cuadros = ({ data }) => {
         onClick={() => fn_btnFavorite(libroId)}
       >
         {favorito ? (
-          <button className={styles.btnCorazonLleno}>
-            <Image
-              src="/image/img_like.png"
-              alt="Corazón lleno"
-              width={120}
-              height={160}
-            />
+          <button>
+            <FaHeart size={35} color="#CB2B2B" />
           </button>
         ) : (
-          <button className={styles.btnCorazonVacio}>
-            <Image
-              src="/image/img_dislike.png"
-              alt="Corazón vacio"
-              width={120}
-              height={160}
-            />
+          <button>
+            <FaRegHeart size={35} color="#CB2B2B" />
           </button>
         )}
       </div>
