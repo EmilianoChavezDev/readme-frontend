@@ -26,8 +26,8 @@ const page = () => {
                 <div>
                   <FaUser size={20} className="_lg:size-10" />
                 </div>
-                <div>
-                  <p className="font-semibold text-textInformationColor">
+                <div className="text-left">
+                  <p className="font-semibold text-textInformationColor ">
                     Información personal
                   </p>
                   <span className="text-textColorGray text-sm">
@@ -46,7 +46,7 @@ const page = () => {
                 <div>
                   <FaChartBar size={20} className="_lg:size-10" />
                 </div>
-                <div>
+                <div className="text-left">
                   <p className="font-semibold text-textInformationColor">
                     Estadísticas
                   </p>

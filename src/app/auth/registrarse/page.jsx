@@ -21,6 +21,7 @@ const defaultValues = {
 
 const page = () => {
   const [isError, setIsError] = useState(false);
+  const [isErrorFecha, setIsErrorFecha] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [isNumeroError, setIsNumeroError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -82,12 +83,18 @@ const page = () => {
       return;
     }
 
+    if (!validarFechaNacimiento(formData.fecha_nacimiento)) {
+      setIsErrorFecha(true);
+      return;
+    }
+
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
     formData.fecha_nacimiento = fecha;
     setIsPasswordError(false);
     setIsError(false);
     setIsNumeroError(false);
+    setIsErrorFecha(false);
     registro(formData);
   };
 
@@ -127,6 +134,20 @@ const page = () => {
     setIsFocusedDate(false);
   };
 
+  const validarFechaNacimiento = (fechaNacimiento) => {
+    const currentDate = new Date();
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 15);
+    const fechaNacimientoDate = new Date(fechaNacimiento);
+
+    // Calcular la diferencia de años entre la fecha de nacimiento y la fecha actual
+    const diferenciaAnhos =
+      (currentDate - fechaNacimientoDate) / (1000 * 60 * 60 * 24 * 365);
+
+    // Retorna true si la diferencia de años es mayor o igual a 15, false de lo contrario
+    return diferenciaAnhos >= 15;
+  };
+
   const passwordValue = watch("password", "");
   const passwordConfirmationValue = watch("password_confirmation", "");
   const usernameValue = watch("username", "");
@@ -155,27 +176,33 @@ const page = () => {
           <div className={styles.content_informacion}>
             <div className={styles.content_errores}>
               {isError && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-4 m-0">
+                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
                   Por favor complete todos los campos
                 </p>
               )}
               {isPasswordError && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-4 m-0">
+                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
                   Las contraseñas no coinciden
                 </p>
               )}
 
               {error && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-4 m-0">
+                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
                   Nombre de usuario en uso
                 </p>
               )}
 
               {isNumeroError && (
-                <div className="bg-red-500 p-2 text-white font-bold mb-4 m-0" F>
+                <div className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
                   <p>La contraseña debe tener</p>
                   <p>8 caracteres minimo</p>
                   <p>debe contener al menos 1 numero</p>
+                </div>
+              )}
+              {isErrorFecha && (
+                <div className="bg-red-500 p-2 text-white font-bold mb-5 mx-0 text-center">
+                  <p>Debes tener 15 o mas para</p>
+                  <p>registrarte</p>
                 </div>
               )}
             </div>

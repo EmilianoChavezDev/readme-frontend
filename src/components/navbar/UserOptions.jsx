@@ -4,10 +4,13 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import useUserInfo from "@/hooks/useUser";
+import { useUser } from "@/contexts/UserProvider";
 
 const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [storageProfile, setStorageProfile] = useState(null);
+  const { getUserInformation, data } = useUserInfo();
   const router = useRouter();
   const initials = username
     ?.split(" ")
@@ -20,8 +23,15 @@ const UserOptions = ({ username, logout }) => {
   };
 
   useEffect(() => {
-    setStorageProfile(localStorage.getItem("profile"));
-  }, []);
+    if (!username) return;
+    getUserInformation(username);
+  }, [username]);
+
+  useEffect(() => {
+    if (data) {
+      setStorageProfile(data?.profile);
+    }
+  }, [data]);
 
   return (
     <div
