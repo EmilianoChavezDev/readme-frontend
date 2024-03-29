@@ -1,15 +1,14 @@
-import { useUser } from "@/contexts/UserProvider";
 import axios from "axios";
 import { useState } from "react";
 
 const useGetLibros = () => {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [dataContinueReading, setDataContinueReading] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const { token } = useUser(); // Corregido: llama a useUser como una función para obtener el token
-
-  const getLibros = async (params) => {
-    setIsLoading(true);
+  const getBooks = async (params) => {
+    const token = localStorage.getItem("token");
+    setLoading(true);
     try {
       const response = await axios.get(`${process.env.API_URL}/libros`, {
         headers: {
@@ -21,11 +20,30 @@ const useGetLibros = () => {
     } catch (error) {
       console.error(error);
     } finally {
-      setIsLoading(true);
+      setLoading(false);
     }
   };
 
-  return { getLibros, data };
+  const getContinueReading = async (page) => {
+    const token = localStorage.getItem("token");
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${process.env.API_URL}/libros_en_progreso`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setDataContinueReading(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return { getBooks, getContinueReading, dataContinueReading, data, loading };
 };
 
 export default useGetLibros;

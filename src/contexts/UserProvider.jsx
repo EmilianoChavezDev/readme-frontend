@@ -9,9 +9,11 @@ export const UserProvider = ({ children }) => {
 
   const [token, setToken] = useState(null);
   const [expiration, setExpiration] = useState(null);
+  const [fecha_nacimiento, setFecha_nacimiento] = useState(null);
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [profile, setProfile] = useState(null);
 
   const login = (data) => {
     setToken(data.token);
@@ -19,9 +21,26 @@ export const UserProvider = ({ children }) => {
     setUsername(data.username);
     setRole(data.role);
     setUserId(data.userId);
+    setProfile(data.profile);
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
     router.push("/");
+  };
+
+  const refresh = (data) => {
+    localStorage.removeItem("profile");
+    localStorage.removeItem("fecha_de_nacimiento");
+
+    setToken(data.token);
+    setExpiration(data.expiration);
+    setUsername(data.username);
+    setRole(data.role);
+    setUserId(data.userId);
+    setProfile(data.profile);
+    setFecha_nacimiento(data.fecha_de_nacimiento);
+
+    Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
+    router.push(`/accounts/edit/${data.username}`);
   };
 
   const logout = () => {
@@ -30,6 +49,7 @@ export const UserProvider = ({ children }) => {
     localStorage.removeItem("username");
     localStorage.removeItem("role");
     localStorage.removeItem("user_id");
+    localStorage.removeItem("profile");
 
     router.push("/auth/login");
   };
@@ -59,6 +79,11 @@ export const UserProvider = ({ children }) => {
     if (storedUserId) {
       setUserId(storedUserId);
     }
+
+    const storedProfile = localStorage.getItem("profile");
+    if (storedProfile) {
+      setProfile(storedProfile);
+    }
   }, []);
 
   return (
@@ -71,6 +96,8 @@ export const UserProvider = ({ children }) => {
         userId,
         logout,
         login,
+        refresh,
+        profile,
       }}
     >
       {children}
