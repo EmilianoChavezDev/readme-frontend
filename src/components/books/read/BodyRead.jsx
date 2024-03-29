@@ -28,8 +28,10 @@ const BodyRead = () => {
       getCurrentChapterById(
         chapterData.libro_id,
         data[0].id,
-        shouldSendTrueNextChapter
+        shouldSendTrueNextChapter,
+        true
       );
+      console.log("entro aqui");
       router.push(`/books/${chapterData.libro_id}`);
       toast.success("¡Felicidades! Has terminado este libro");
     }

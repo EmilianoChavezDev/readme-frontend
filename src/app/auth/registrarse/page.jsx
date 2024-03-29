@@ -94,6 +94,7 @@ const page = () => {
     setIsPasswordError(false);
     setIsError(false);
     setIsNumeroError(false);
+    setIsErrorFecha(false);
     registro(formData);
   };
 
