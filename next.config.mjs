@@ -4,9 +4,6 @@ const nextConfig = {
   env: {
     API_URL: "https://readmeapp.fly.dev",
   },
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
   images: {
     remotePatterns: [
       {
