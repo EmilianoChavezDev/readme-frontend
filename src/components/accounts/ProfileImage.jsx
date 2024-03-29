@@ -57,7 +57,7 @@ const ProfileImageUploader = ({
           <button
             onClick={handleDeleteProfile}
             className={`absolute top-0 right-0 mt-2 mr-2 p-2 rounded-full bg-red-500 text-white hover:bg-red-600`}
-            style={{ zIndex: 0 }}
+            style={{ zIndex: 50 }}
           >
             Borrar perfil
           </button>
