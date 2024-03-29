@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   env: {
-    API_URL: "https://test--readme-test.netlify.app",
+    API_URL: "https://readme-backend.fly.dev",
   },
   experimental: {
     missingSuspenseWithCSRBailout: false,
