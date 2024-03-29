@@ -4,7 +4,7 @@ import NavBar from "@/components/NavBar";
 import ProfileImageUploader from "@/components/accounts/ProfileImage";
 import Loader from "@/components/common/loader";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import InputField from "@/components/common/InputField";
 import useUserInfo from "@/hooks/useUser";
 import { useUser } from "@/contexts/UserProvider";
@@ -35,32 +35,16 @@ const page = ({ params }) => {
     isImageChange,
     updateBirthday,
     isTrueBirthay,
+    deleteProfile,
   } = useUserInfo();
   const router = useRouter();
-  const { login } = useUser();
+  const { refresh } = useUser();
   const [changeImage, setChangeImage] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+  const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
-
-  const initials = data?.username
-    ?.split(" ")
-    ?.map((word) => word[0])
-    ?.join("")
-    ?.toUpperCase();
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setProfileImage(e.target.result);
-        setChangeImage(true);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const {
     register,
@@ -72,10 +56,34 @@ const page = ({ params }) => {
     defaultValues,
   });
 
+  const initials = data?.username
+    ?.split(" ")
+    ?.map((word) => word[0])
+    ?.join("")
+    ?.toUpperCase();
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setIsDeleteProfile(false);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfileImage(e.target.result);
+        setChangeImage(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDeleteProfile = () => {
+    setIsDeleteProfile(true);
+  };
+
   // trae la informacion del usuario
   useEffect(() => {
+    if (!params.id) return;
     getUserInformation(params.id);
-  }, []);
+  }, [params.id]);
 
   // cuando se trae la foto la coloco en pantalla
   useEffect(() => {
@@ -86,37 +94,41 @@ const page = ({ params }) => {
 
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
-    if (isError) {
+    if (isError && !isTrue) {
       toast.error(message);
+      return;
     }
-    if (isTrue) {
+    if (isTrue && !isError) {
       toast.success(message);
+      return;
     }
-    if (isImageChange) {
-      toast.success("Foto de perfil actualizado!!");
-    }
-    if (isTrueBirthay) {
-      toast.success("Fecha de cumpleaños actualizada!!");
-    }
-  }, [isError, isTrue, isImageChange, isTrueBirthay]);
+  }, [isError, isTrue, isImageChange, isTrueBirthay, isDeleteProfile]);
 
   // si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
   useEffect(() => {
     if (!currentData) return;
-    login(currentData);
+    refresh(currentData);
   }, [currentData]);
 
   // traer los datos del usuario
   useEffect(() => {
-    if (!data) return;
+    if (!data && !currentData) return;
     reset({
       username: data?.username,
-      fecha_nacimiento: data?.fecha_de_nacimiento,
+      fecha_nacimiento:
+        currentData?.fecha_de_nacimiento || data?.fecha_de_nacimiento,
     });
-  }, [data]);
+  }, [data, currentData]);
 
   //validaciones
   const onSubmit = (formData) => {
+    const currentDate = new Date();
+
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 15);
+
+    const fechaNacimiento = new Date(formData.fecha_nacimiento);
+
     if (formData.username !== data.username) {
       updateUsername(formData.username, formData.oldPassword);
     }
@@ -135,18 +147,29 @@ const page = ({ params }) => {
           toast.error(
             "La nueva contraseña debe tener al menos 8 caracteres y al menos un número."
           );
+          return;
         }
       } else {
         toast.error("Las contraseñas no coinciden");
+        return;
       }
     }
 
-    if (formData.fecha_nacimiento != data?.fecha_de_nacimiento) {
-      updateBirthday(formData.username, formData.fecha_nacimiento);
+    if ((currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365) > 15) {
+      if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento) {
+        updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
+      }
+    } else {
+      toast.error("Debes ser mayor a 15 años!");
+      return;
     }
 
     if (changeImage) {
-      updateProfile(profileImage);
+      updateProfile(profileImage, formData.oldPassword);
+    }
+
+    if (isDeleteProfile) {
+      deleteProfile(formData.oldPassword);
     }
 
     reset({
@@ -180,6 +203,8 @@ const page = ({ params }) => {
                     initials={initials}
                     profileImage={profileImage}
                     handleImageChange={handleImageChange}
+                    handleDeleteProfile={handleDeleteProfile}
+                    isDeleteProfile={isDeleteProfile}
                   />
                   <div className="mt-72  text-center text-colorPrimario font-semibold">
                     <span className="font-normal mr-1">Nombre de usuario:</span>
@@ -282,7 +307,7 @@ const page = ({ params }) => {
                 </div>
               </div>
             </div>
-            <div className="_sm:mt-16 mt-10 flex justify-center _md:justify-end   _lg:mr-20 _xl:mr-80 gap-x-3 mb-10 _sm:mb-0">
+            <div className="_sm:mt-16 mt-10 flex justify-center _md:justify-end   _lg:mr-20 _xl:mr-80 gap-x-4 mb-10 _sm:mb-0">
               <button
                 className="bg-textColorGray p-2 text-white rounded-lg hover:bg-textHeaderColorGray ml-52"
                 onClick={() => router.push("/accounts")}
@@ -291,8 +316,7 @@ const page = ({ params }) => {
               </button>
               <button
                 type="submit"
-                className="bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario text-nowrap mr-48 _lg:mr-0  _md:mr-14"
-                disabled={loading}
+                className={`bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario text-nowrap mr-48 _lg:mr-0  _md:mr-14 `}
                 onClick={handleSubmit(onSubmit)}
               >
                 Guardar cambios

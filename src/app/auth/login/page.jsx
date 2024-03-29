@@ -83,7 +83,7 @@ const Page = () => {
             />
           </div>
           {error && (
-            <p className="bg-red-500 p-2 text-white font-bold mb-3 m-0">
+            <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
               Usuario o contraseña no valido
             </p>
           )}

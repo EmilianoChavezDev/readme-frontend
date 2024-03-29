@@ -3,7 +3,6 @@
 import NavBar from "@/components/NavBar";
 import Loader from "@/components/common/loader";
 import useGetLibros from "@/hooks/useGetLibros";
-import useGetLibrosLeidos from "@/hooks/useGetLibrosLeidos";
 import {
   Card,
   CardBody,
@@ -15,12 +14,17 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 export default function BackgroundBlogCard() {
-  const { getLibros, data: libros, loading } = useGetLibros(); // Obtener la función para obtener libros y los datos de libros
-  const { getLibrosLeidos, data: librosLeidos } = useGetLibrosLeidos(); // Obtener la función para obtener libros leidos y los datos de libros leidos
+  const {
+    getBooks,
+    data: libros,
+    loading,
+    getContinueReading,
+    dataContinueReading,
+  } = useGetLibros();
 
   useEffect(() => {
-    getLibrosLeidos({ page: 1 }); // Obtener libros leidos
-    getLibros({ page: 1 }); // Obtener libros
+    getContinueReading({ page: 1 });
+    getBooks({ page: 1 });
   }, []);
 
   return (
@@ -34,13 +38,13 @@ export default function BackgroundBlogCard() {
         <>
           <div className="container-fluid h-full">
             <div className="mb-32">
-              {librosLeidos.length > 0 && (
+              {dataContinueReading?.libros?.length > 0 && (
                 <>
                   <h2 className="text-3xl text-center pt-8 px-8 _sm:text-left font-bold mb-4">
                     Seguir Leyendo
                   </h2>
                   <div className="grid gap-8 grid-cols-1 _sm:grid-cols-2 _md:grid-cols-3 _lg:grid-cols-4 _xl:grid-cols-5 px-8 pb-20 shadow-lg">
-                    {librosLeidos.map((libro) => (
+                    {dataContinueReading.libros.map((libro) => (
                       <div key={libro.id} className="flex justify-center">
                         <Link
                           href={`/books/${libro.id}`}
