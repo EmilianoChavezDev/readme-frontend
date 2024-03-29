@@ -8,19 +8,22 @@ const useReadBooks = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentChapterData, setCurrentChapterData] = useState([]);
 
-  const getReadBook = async params => {
-    const token = localStorage.getItem('token')
-    setIsLoading(true)
+  const getReadBook = async (params) => {
+    const token = localStorage.getItem("token");
+    setIsLoading(true);
     try {
-      const url = `${process.env.API_URL}/lecturas_libro_id`
-      const response = await axios.get(url, { params, headers: { Authorization: `Bearer ${token}` }})
-      return response.data
+      const url = `${process.env.API_URL}/lecturas_libro_id`;
+      const response = await axios.get(url, {
+        params,
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
     } catch (error) {
-      return null
+      return null;
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   // Trae todos los capitulos del libro
   const getBookById = async (id) => {
@@ -59,9 +62,12 @@ const useReadBooks = () => {
           libro_id: idBook,
         },
       });
-      if (response.data.error || isEnd) {
+      if (response.data.error) {
         setChapterData(data[0]);
-        postCurrentChapter(data[0].id, idBook, false);
+        postCurrentChapter(data[0].id, idBook, false, false);
+      } else if (isEnd) {
+        setChapterData(data[0]);
+        postCurrentChapter(data[0].id, idBook, false, true);
       } else {
         setChapterData(response.data.capitulo_actual);
         postCurrentChapter(response.data.capitulo_actual.id, idBook, false);
@@ -126,7 +132,7 @@ const useReadBooks = () => {
   };
 
   // Cambia el capitulo actual leido del libro
-  const postCurrentChapter = async (idChapter, idBook, state) => {
+  const postCurrentChapter = async (idChapter, idBook, state, leido) => {
     setIsLoading(true);
     const token = localStorage.getItem("token");
     try {
@@ -137,6 +143,7 @@ const useReadBooks = () => {
           libro_id: idBook,
           capitulo_id: idChapter,
           terminado: state,
+          leido: leido,
         },
         {
           headers: {
@@ -189,7 +196,7 @@ const useReadBooks = () => {
     currentChapterData,
     postCurrentChapter,
     changeBookEnd,
-    getReadBook
+    getReadBook,
   };
 };
 

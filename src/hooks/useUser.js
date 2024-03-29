@@ -29,6 +29,7 @@ const useUserInfo = () => {
       setLoading(false);
     } finally {
       setLoading(false);
+      setIsError(false);
     }
   };
 
@@ -50,13 +51,12 @@ const useUserInfo = () => {
         }
       );
       setIsTrue(true);
+      setIsError(false);
       setCurrentData(response.data.user);
       setMessage(response.data.message);
     } catch (error) {
       setIsError(true);
-      console.log(error);
       setMessage(error.response.data.error);
-      console.log(isError);
     } finally {
       setLoading(false);
     }
@@ -85,6 +85,7 @@ const useUserInfo = () => {
         }
       );
       setIsTrue(true);
+      setIsError(false);
       setMessage(response.data.message);
     } catch (error) {
       setIsError(true);
@@ -94,15 +95,14 @@ const useUserInfo = () => {
     }
   };
 
-  const updateProfile = async (file) => {
+  const updateProfile = async (file, password) => {
     setLoading(true);
     const url = `${process.env.API_URL}/users/profile`;
     const token = localStorage.getItem("token");
 
-    // Crear un objeto FormData
     const formData = new FormData();
     formData.append("profile", file);
-
+    formData.append("password", password);
     try {
       const response = await axios.put(url, formData, {
         headers: {
@@ -110,17 +110,19 @@ const useUserInfo = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      setIsImageChange(true);
+      setIsTrue(true);
+      setIsError(false);
+      setMessage("Foto de perfil actualizado");
       setCurrentData(response.data);
     } catch (error) {
       setIsError(true);
+      setMessage(error.response.data.error);
     } finally {
       setLoading(false);
     }
   };
 
-  const updateBirthday = async (username, newBirthday) => {
-    console.log(newBirthday);
+  const updateBirthday = async (password, newBirthday) => {
     setLoading(true);
     const url = `${process.env.API_URL}/users/birthday`;
     const token = localStorage.getItem("token");
@@ -128,8 +130,8 @@ const useUserInfo = () => {
       const response = await axios.put(
         url,
         {
-          username: username,
           fecha_de_nacimiento: newBirthday,
+          password: password,
         },
         {
           headers: {
@@ -137,8 +139,39 @@ const useUserInfo = () => {
           },
         }
       );
+      setIsTrue(true);
+      setIsError(false);
       setIsTrueBirthay(true);
       setCurrentData(response.data);
+      setMessage("Fecha de compleaños actualizada");
+    } catch (error) {
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteProfile = async (password) => {
+    setLoading(true);
+    const url = `${process.env.API_URL}/users/delete_profile`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        url,
+        {
+          password: password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+      setMessage("Foto de perfil borrado");
     } catch (error) {
       setIsError(true);
       setMessage(error.response.data.error);
@@ -161,6 +194,7 @@ const useUserInfo = () => {
     isImageChange,
     updateBirthday,
     isTrueBirthay,
+    deleteProfile,
   };
 };
 
