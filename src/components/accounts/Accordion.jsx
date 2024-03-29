@@ -14,7 +14,7 @@ const AccordionField = ({ children }) => {
           <h2>
             <AccordionButton className="flex justify-between">
               <span className="text-left text-sm dark:text-white" flex="1">
-                Deseas cambiar tu Contraseña?
+                ¿Deseas cambiar tu Contraseña?
               </span>
               <AccordionIcon className="text-left  dark:!text-white" />
             </AccordionButton>
