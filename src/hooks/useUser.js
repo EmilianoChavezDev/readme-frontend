@@ -120,7 +120,6 @@ const useUserInfo = () => {
   };
 
   const updateBirthday = async (username, newBirthday) => {
-    console.log(newBirthday);
     setLoading(true);
     const url = `${process.env.API_URL}/users/birthday`;
     const token = localStorage.getItem("token");
@@ -147,6 +146,30 @@ const useUserInfo = () => {
     }
   };
 
+  const deleteProfile = async () => {
+    setLoading(true);
+    const url = `${process.env.API_URL}/users/delete_profile`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        url,
+        {}, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCurrentData(response.data);
+    } catch (error) {
+      console.log(error);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     data,
     loading,
@@ -161,6 +184,7 @@ const useUserInfo = () => {
     isImageChange,
     updateBirthday,
     isTrueBirthay,
+    deleteProfile,
   };
 };
 

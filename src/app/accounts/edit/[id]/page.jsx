@@ -4,7 +4,7 @@ import NavBar from "@/components/NavBar";
 import ProfileImageUploader from "@/components/accounts/ProfileImage";
 import Loader from "@/components/common/loader";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import InputField from "@/components/common/InputField";
 import useUserInfo from "@/hooks/useUser";
 import { useUser } from "@/contexts/UserProvider";
@@ -35,13 +35,15 @@ const page = ({ params }) => {
     isImageChange,
     updateBirthday,
     isTrueBirthay,
+    deleteProfile,
   } = useUserInfo();
   const router = useRouter();
-  const { login } = useUser();
+  const { refresh } = useUser();
   const [changeImage, setChangeImage] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+  const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
   const initials = data?.username
@@ -53,6 +55,7 @@ const page = ({ params }) => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setIsDeleteProfile(false);
       const reader = new FileReader();
       reader.onload = (e) => {
         setProfileImage(e.target.result);
@@ -60,6 +63,10 @@ const page = ({ params }) => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleDeleteProfile = () => {
+    setIsDeleteProfile(true);
   };
 
   const {
@@ -98,12 +105,12 @@ const page = ({ params }) => {
     if (isTrueBirthay) {
       toast.success("Fecha de cumpleaños actualizada!!");
     }
-  }, [isError, isTrue, isImageChange, isTrueBirthay]);
+  }, [isError, isTrue, isImageChange, isTrueBirthay, isDeleteProfile]);
 
   // si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
   useEffect(() => {
     if (!currentData) return;
-    login(currentData);
+    refresh(currentData);
   }, [currentData]);
 
   // traer los datos del usuario
@@ -117,6 +124,13 @@ const page = ({ params }) => {
 
   //validaciones
   const onSubmit = (formData) => {
+    const currentDate = new Date();
+
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 15);
+
+    const fechaNacimiento = new Date(formData.fecha_nacimiento);
+
     if (formData.username !== data.username) {
       updateUsername(formData.username, formData.oldPassword);
     }
@@ -141,12 +155,23 @@ const page = ({ params }) => {
       }
     }
 
-    if (formData.fecha_nacimiento != data?.fecha_de_nacimiento) {
-      updateBirthday(formData.username, formData.fecha_nacimiento);
+    if ((currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365) > 15) {
+      if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento) {
+        updateBirthday(formData.username, formData.fecha_nacimiento);
+      }
+    } else {
+      toast.error("Debes ser mayor a 15 años!");
+      return;
     }
 
+    console.log(isError);
     if (changeImage) {
       updateProfile(profileImage);
+    }
+
+    if (isDeleteProfile) {
+      deleteProfile();
+      toast.success("Foto de perfil actualizado!!");
     }
 
     reset({
@@ -180,6 +205,8 @@ const page = ({ params }) => {
                     initials={initials}
                     profileImage={profileImage}
                     handleImageChange={handleImageChange}
+                    handleDeleteProfile={handleDeleteProfile}
+                    isDeleteProfile={isDeleteProfile}
                   />
                   <div className="mt-72  text-center text-colorPrimario font-semibold">
                     <span className="font-normal mr-1">Nombre de usuario:</span>
