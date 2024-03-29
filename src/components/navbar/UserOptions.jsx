@@ -23,8 +23,9 @@ const UserOptions = ({ username, logout }) => {
   };
 
   useEffect(() => {
+    if (!username) return;
     getUserInformation(username);
-  }, []);
+  }, [username]);
 
   useEffect(() => {
     if (data) {

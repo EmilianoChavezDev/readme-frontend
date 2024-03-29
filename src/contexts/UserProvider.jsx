@@ -9,6 +9,7 @@ export const UserProvider = ({ children }) => {
 
   const [token, setToken] = useState(null);
   const [expiration, setExpiration] = useState(null);
+  const [fecha_nacimiento, setFecha_nacimiento] = useState(null);
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -28,6 +29,7 @@ export const UserProvider = ({ children }) => {
 
   const refresh = (data) => {
     localStorage.removeItem("profile");
+    localStorage.removeItem("fecha_de_nacimiento");
 
     setToken(data.token);
     setExpiration(data.expiration);
@@ -35,6 +37,7 @@ export const UserProvider = ({ children }) => {
     setRole(data.role);
     setUserId(data.userId);
     setProfile(data.profile);
+    setFecha_nacimiento(data.fecha_de_nacimiento);
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
     router.push(`/accounts/edit/${data.username}`);

@@ -81,8 +81,9 @@ const page = ({ params }) => {
 
   // trae la informacion del usuario
   useEffect(() => {
+    if (!params.id) return;
     getUserInformation(params.id);
-  }, []);
+  }, [params.id]);
 
   // cuando se trae la foto la coloco en pantalla
   useEffect(() => {
@@ -95,15 +96,11 @@ const page = ({ params }) => {
   useEffect(() => {
     if (isError && !isTrue) {
       toast.error(message);
+      return;
     }
-    if (isTrue) {
+    if (isTrue && !isError) {
       toast.success(message);
-    }
-    if (isImageChange) {
-      toast.success("Foto de perfil actualizado!!");
-    }
-    if (isTrueBirthay) {
-      toast.success("Fecha de cumpleaños actualizada!!");
+      return;
     }
   }, [isError, isTrue, isImageChange, isTrueBirthay, isDeleteProfile]);
 
@@ -115,12 +112,13 @@ const page = ({ params }) => {
 
   // traer los datos del usuario
   useEffect(() => {
-    if (!data) return;
+    if (!data && !currentData) return;
     reset({
       username: data?.username,
-      fecha_nacimiento: data?.fecha_de_nacimiento,
+      fecha_nacimiento:
+        currentData?.fecha_de_nacimiento || data?.fecha_de_nacimiento,
     });
-  }, [data]);
+  }, [data, currentData]);
 
   //validaciones
   const onSubmit = (formData) => {
@@ -159,7 +157,7 @@ const page = ({ params }) => {
 
     if ((currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365) > 15) {
       if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento) {
-        updateBirthday(formData.username, formData.fecha_nacimiento);
+        updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
       }
     } else {
       toast.error("Debes ser mayor a 15 años!");
@@ -167,12 +165,11 @@ const page = ({ params }) => {
     }
 
     if (changeImage) {
-      updateProfile(profileImage);
+      updateProfile(profileImage, formData.oldPassword);
     }
 
     if (isDeleteProfile) {
-      deleteProfile();
-      toast.success("Foto de perfil actualizada!!");
+      deleteProfile(formData.oldPassword);
     }
 
     reset({

@@ -10,11 +10,17 @@ const NavBar = () => {
   const { username, logout, expiration } = useUser();
   const [isLoaded, setIsLoaded] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [usernameStorage, setUsernameStorage] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+  useEffect(() => {
+    if (!username) return;
+    setUsernameStorage(localStorage.getItem("username"));
+  }, [username]);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -50,7 +56,7 @@ const NavBar = () => {
           {/* parte del buscador */}
           <InputSearch />
           {/* parte del usuario */}
-          <UserOptions username={username} logout={logout} />
+          <UserOptions username={usernameStorage} logout={logout} />
         </div>
 
         <div className="sticky top-0 z-50">
