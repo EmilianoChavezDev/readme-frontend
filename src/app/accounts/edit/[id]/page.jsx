@@ -46,6 +46,16 @@ const page = ({ params }) => {
   const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues,
+  });
+
   const initials = data?.username
     ?.split(" ")
     ?.map((word) => word[0])
@@ -69,16 +79,6 @@ const page = ({ params }) => {
     setIsDeleteProfile(true);
   };
 
-  const {
-    register,
-    handleSubmit,
-    trigger,
-    reset,
-    formState: { errors },
-  } = useForm({
-    defaultValues,
-  });
-
   // trae la informacion del usuario
   useEffect(() => {
     getUserInformation(params.id);
@@ -93,7 +93,7 @@ const page = ({ params }) => {
 
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
-    if (isError) {
+    if (isError && !isTrue) {
       toast.error(message);
     }
     if (isTrue) {
@@ -149,9 +149,11 @@ const page = ({ params }) => {
           toast.error(
             "La nueva contraseña debe tener al menos 8 caracteres y al menos un número."
           );
+          return;
         }
       } else {
         toast.error("Las contraseñas no coinciden");
+        return;
       }
     }
 
@@ -164,14 +166,13 @@ const page = ({ params }) => {
       return;
     }
 
-    console.log(isError);
     if (changeImage) {
       updateProfile(profileImage);
     }
 
     if (isDeleteProfile) {
       deleteProfile();
-      toast.success("Foto de perfil actualizado!!");
+      toast.success("Foto de perfil actualizada!!");
     }
 
     reset({
@@ -309,7 +310,7 @@ const page = ({ params }) => {
                 </div>
               </div>
             </div>
-            <div className="_sm:mt-16 mt-10 flex justify-center _md:justify-end   _lg:mr-20 _xl:mr-80 gap-x-3 mb-10 _sm:mb-0">
+            <div className="_sm:mt-16 mt-10 flex justify-center _md:justify-end   _lg:mr-20 _xl:mr-80 gap-x-4 mb-10 _sm:mb-0">
               <button
                 className="bg-textColorGray p-2 text-white rounded-lg hover:bg-textHeaderColorGray ml-52"
                 onClick={() => router.push("/accounts")}
@@ -318,8 +319,7 @@ const page = ({ params }) => {
               </button>
               <button
                 type="submit"
-                className="bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario text-nowrap mr-48 _lg:mr-0  _md:mr-14"
-                disabled={loading}
+                className={`bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario text-nowrap mr-48 _lg:mr-0  _md:mr-14 `}
                 onClick={handleSubmit(onSubmit)}
               >
                 Guardar cambios

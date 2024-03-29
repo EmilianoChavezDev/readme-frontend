@@ -11,7 +11,6 @@ const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [storageProfile, setStorageProfile] = useState(null);
   const { getUserInformation, data } = useUserInfo();
-  const { profile } = useUser();
   const router = useRouter();
   const initials = username
     ?.split(" ")
