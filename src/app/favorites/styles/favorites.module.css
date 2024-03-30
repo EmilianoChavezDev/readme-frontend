@@ -18,13 +18,42 @@
 .buscador {
   border: 1px solid #dee2e6;
   border-radius: 0.5rem;
-  padding: 0.5rem;
+  padding: 0.4rem;
+  outline: none;
 }
 
 .buscador::placeholder {
   font-size: 12px;
   color: #adb5bd;
   padding-left: 5px;
+}
+
+.buscador:focus {
+  outline: 1px solid #125e55;
+}
+
+.search_content_button {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search_label {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-size: 12px;
+  color: #ffffff;
+  background-color: black;
+  padding: 0.3rem 0.8rem 0.3rem 0.8rem;
+  border-radius: 5px;
+}
+
+.search_content_button:hover .search_label {
+  opacity: 1;
 }
 
 .titulo_favorito {

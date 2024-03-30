@@ -45,7 +45,7 @@ const PageFavoritos = () => {
   // Paginacion
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    chargeList(currentPage, filtro);
+    chargeList(pageNumber, filtro);
   };
 
   return (
@@ -64,12 +64,12 @@ const PageFavoritos = () => {
                 <div>
                   <input
                     className={styles.buscador}
-                    type="text"
+                    type="search"
                     placeholder="Buscar en Favoritos"
                     onBlur={(e) => setFiltro(e.target.value)}
                   />
                 </div>
-                <div>
+                <div className={styles.search_content_button}>
                   <button
                     className={styles.btn_search}
                     onClick={() => handleSearch()}
@@ -79,6 +79,7 @@ const PageFavoritos = () => {
                       className="hover:text-colorHoverPrimario ml-2"
                     />
                   </button>
+                  <span className={styles.search_label}>Buscar</span>
                 </div>
               </div>
             </div>
@@ -96,9 +97,7 @@ const PageFavoritos = () => {
                   <div>
                     <div className={styles.contenedor_cuadros}>
                       {librosFavoritos?.map((data) => (
-                        <>
-                          <Cuadros key={data.id} data={data} />
-                        </>
+                        <Cuadros key={data.id} data={data} />
                       ))}
                     </div>
                     <div className={styles.pagination}>
