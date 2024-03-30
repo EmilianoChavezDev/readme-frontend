@@ -17,6 +17,8 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 const defaultValues = {
   username: "",
   oldPassword: "",
+  newPassword: "",
+  confirmNewPassword: "",
   fecha_nacimiento: null,
 };
 
@@ -32,9 +34,7 @@ const page = ({ params }) => {
     isTrue,
     message,
     updateProfile,
-    isImageChange,
     updateBirthday,
-    isTrueBirthay,
     deleteProfile,
   } = useUserInfo();
   const router = useRouter();
@@ -45,16 +45,26 @@ const page = ({ params }) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+  const [fileInputKey, setFileInputKey] = useState(Date.now());
+  const [isNotDisable, setIsNotDisable] = useState(true);
 
   const {
     register,
     handleSubmit,
     trigger,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues,
   });
+
+  const watchedFields = watch([
+    "username",
+    "fecha_nacimiento",
+    "newPassword",
+    "confirmNewPassword",
+  ]);
 
   const initials = data?.username
     ?.split(" ")
@@ -63,21 +73,30 @@ const page = ({ params }) => {
     ?.toUpperCase();
 
   const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setIsDeleteProfile(false);
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
       const reader = new FileReader();
+      setIsDeleteProfile(false);
+      setChangeImage(true);
       reader.onload = (e) => {
         setProfileImage(e.target.result);
-        setChangeImage(true);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(selectedFile);
+      setIsNotDisable(false);
     }
   };
 
   const handleDeleteProfile = () => {
+    setFileInputKey(Date.now());
     setIsDeleteProfile(true);
   };
+
+  useEffect(() => {
+    if (!isDeleteProfile) return;
+    setIsNotDisable(false);
+    setProfileImage(null);
+    setChangeImage(false);
+  }, [isDeleteProfile]);
 
   // trae la informacion del usuario
   useEffect(() => {
@@ -95,6 +114,7 @@ const page = ({ params }) => {
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
     if (isError && !isTrue) {
+      console.log("entro error");
       toast.error(message);
       return;
     }
@@ -102,7 +122,25 @@ const page = ({ params }) => {
       toast.success(message);
       return;
     }
-  }, [isError, isTrue, isImageChange, isTrueBirthay, isDeleteProfile]);
+  }, [isError, isTrue]);
+
+  useEffect(() => {
+    // Verificar si hay cambios en los campos
+    const areFieldsChanged = watchedFields.some(
+      (field) => field !== defaultValues[field.name]
+    );
+
+    if (
+      watchedFields[0] != data?.username &&
+      watchedFields[1] != data?.fecha_de_nacimiento &&
+      watchedFields[2] != defaultValues.newPassword &&
+      watchedFields[3] != defaultValues.confirmNewPassword
+    ) {
+      if (areFieldsChanged && data) {
+        setIsNotDisable(false);
+      }
+    }
+  }, [watchedFields]);
 
   // si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
   useEffect(() => {
@@ -118,6 +156,7 @@ const page = ({ params }) => {
       fecha_nacimiento:
         currentData?.fecha_de_nacimiento || data?.fecha_de_nacimiento,
     });
+    setIsNotDisable(true);
   }, [data, currentData]);
 
   //validaciones
@@ -133,24 +172,32 @@ const page = ({ params }) => {
       updateUsername(formData.username, formData.oldPassword);
     }
 
-    if (formData.newPassword && formData.newPassword !== formData.oldPassword) {
-      if (formData.newPassword === formData.confirmNewPassword) {
-        if (
-          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(formData.newPassword)
-        ) {
-          updatePassword(
-            formData.oldPassword,
-            formData.newPassword,
-            formData.confirmNewPassword
-          );
+    if (formData.newPassword && formData.confirmNewPassword != "") {
+      if (
+        formData.newPassword &&
+        formData.newPassword !== formData.oldPassword
+      ) {
+        if (formData.newPassword === formData.confirmNewPassword) {
+          if (
+            /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(formData.newPassword)
+          ) {
+            updatePassword(
+              formData.oldPassword,
+              formData.newPassword,
+              formData.confirmNewPassword
+            );
+          } else {
+            toast.error(
+              "La nueva contraseña debe tener al menos 8 caracteres y al menos un número."
+            );
+            return;
+          }
         } else {
-          toast.error(
-            "La nueva contraseña debe tener al menos 8 caracteres y al menos un número."
-          );
+          toast.error("Las contraseñas no coinciden");
           return;
         }
       } else {
-        toast.error("Las contraseñas no coinciden");
+        toast.error("La contraseña nueva no puede ser la misma que la actual");
         return;
       }
     }
@@ -179,6 +226,7 @@ const page = ({ params }) => {
       confirmNewPassword: "",
       fecha_nacimiento: data?.fecha_de_nacimiento,
     });
+    setIsNotDisable(true);
   };
 
   return (
@@ -188,6 +236,7 @@ const page = ({ params }) => {
       ) : (
         <>
           <NavBar />
+
           <div className="flex flex-col">
             <div
               className="flex _md:mx-auto _md:w-5/6 w-full _lg:px-4 _md:mt-14 _md:justify-between _md:items-center
@@ -205,6 +254,8 @@ const page = ({ params }) => {
                     handleImageChange={handleImageChange}
                     handleDeleteProfile={handleDeleteProfile}
                     isDeleteProfile={isDeleteProfile}
+                    setProfileImage={setProfileImage}
+                    key={fileInputKey}
                   />
                   <div className="mt-72  text-center text-colorPrimario font-semibold">
                     <span className="font-normal mr-1">Nombre de usuario:</span>
@@ -316,8 +367,15 @@ const page = ({ params }) => {
               </button>
               <button
                 type="submit"
-                className={`bg-colorPrimario p-2 text-white rounded-lg hover:bg-colorHoverPrimario text-nowrap mr-48 _lg:mr-0  _md:mr-14 `}
+                className={`
+                bg-colorPrimario p-2 text-white rounded-lg text-nowrap mr-48 _lg:mr-0  _md:mr-14 
+                ${
+                  isNotDisable
+                    ? "cursor-no-drop"
+                    : " hover:bg-colorHoverPrimario  hover:cursor-pointer"
+                }`}
                 onClick={handleSubmit(onSubmit)}
+                disabled={isNotDisable}
               >
                 Guardar cambios
               </button>

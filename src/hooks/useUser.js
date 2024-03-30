@@ -8,7 +8,6 @@ const useUserInfo = () => {
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isTrue, setIsTrue] = useState(false);
-  const [isTrueBirthay, setIsTrueBirthay] = useState(false);
   const [isImageChange, setIsImageChange] = useState(false);
 
   const getUserInformation = async (username) => {
@@ -25,6 +24,7 @@ const useUserInfo = () => {
       const data = await response.data;
       setData(data);
     } catch (error) {
+      setIsTrue(false);
       setIsError(true);
       setLoading(false);
     } finally {
@@ -55,6 +55,7 @@ const useUserInfo = () => {
       setCurrentData(response.data.user);
       setMessage(response.data.message);
     } catch (error) {
+      setIsTrue(false);
       setIsError(true);
       setMessage(error.response.data.error);
     } finally {
@@ -88,6 +89,7 @@ const useUserInfo = () => {
       setIsError(false);
       setMessage(response.data.message);
     } catch (error) {
+      setIsTrue(false);
       setIsError(true);
       setMessage(error.response.data.error);
     } finally {
@@ -97,6 +99,7 @@ const useUserInfo = () => {
 
   const updateProfile = async (file, password) => {
     setLoading(true);
+    setIsTrue(false);
     const url = `${process.env.API_URL}/users/profile`;
     const token = localStorage.getItem("token");
 
@@ -115,6 +118,8 @@ const useUserInfo = () => {
       setMessage("Foto de perfil actualizado");
       setCurrentData(response.data);
     } catch (error) {
+      console.log(error);
+      setIsTrue(false);
       setIsError(true);
       setMessage(error.response.data.error);
     } finally {
@@ -141,10 +146,10 @@ const useUserInfo = () => {
       );
       setIsTrue(true);
       setIsError(false);
-      setIsTrueBirthay(true);
       setCurrentData(response.data);
       setMessage("Fecha de compleaños actualizada");
     } catch (error) {
+      setIsTrue(false);
       setIsError(true);
       setMessage(error.response.data.error);
     } finally {
@@ -154,6 +159,7 @@ const useUserInfo = () => {
 
   const deleteProfile = async (password) => {
     setLoading(true);
+    setIsTrue(false);
     const url = `${process.env.API_URL}/users/delete_profile`;
     const token = localStorage.getItem("token");
     try {
@@ -172,7 +178,9 @@ const useUserInfo = () => {
       setIsError(false);
       setCurrentData(response.data);
       setMessage("Foto de perfil borrado");
+      console.log(response.data);
     } catch (error) {
+      setIsTrue(false);
       setIsError(true);
       setMessage(error.response.data.error);
     } finally {
@@ -193,7 +201,6 @@ const useUserInfo = () => {
     updateProfile,
     isImageChange,
     updateBirthday,
-    isTrueBirthay,
     deleteProfile,
   };
 };

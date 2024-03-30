@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
   const [role, setRole] = useState(null);
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const login = (data) => {
     setToken(data.token);
@@ -98,6 +99,8 @@ export const UserProvider = ({ children }) => {
         login,
         refresh,
         profile,
+        isOpen,
+        setIsOpen,
       }}
     >
       {children}
