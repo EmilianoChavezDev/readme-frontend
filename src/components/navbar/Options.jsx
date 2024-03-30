@@ -30,7 +30,7 @@ const Options = () => {
   };
 
   const handleMyBooks = () => {
-    router.push("/mybooks");
+    router.push("/books/mybooks");
   };
 
   const handleHomeClick = () => {
