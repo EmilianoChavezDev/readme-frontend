@@ -80,7 +80,9 @@ const PageMyBooks = () => {
   return (
     <>
       {isLoading && <Loader />}
-      <NavBar />
+      <div className="sticky top-0 z-50">
+        <NavBar />
+      </div>
       <div className={styles.global_container}>
         <div className={styles.title_drafts_container}>
           <div>
