@@ -5,7 +5,7 @@ import useBook from "@/hooks/useBook";
 import { useEffect, useState } from "react";
 
 export default function Page({ params }) {
-  const { getBookByID, isLoading, error } = useBook();
+  const { getBookByID } = useBook();
 
   const [book, setBook] = useState(null);
 
