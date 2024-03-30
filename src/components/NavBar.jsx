@@ -6,15 +6,13 @@ import Options from "./navbar/Options";
 import UserOptions from "./navbar/UserOptions";
 import MobileMenu from "./navbar/MobileMenu";
 
+ 
 const NavBar = ({onSearch}) => {
-  const { username, logout, expiration } = useUser();
+ const { username, logout, expiration, isOpen, setIsOpen } = useUser();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [usernameStorage, setUsernameStorage] = useState(null);
   const router = useRouter();
   const searchParams = useSearchParams()
-
-
   const [search, setSearch] = useState("")
 
   useEffect(() => {
