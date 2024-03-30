@@ -27,7 +27,10 @@ const OptionBooks = ({ libroId }) => {
         <div className={styles.container_option}>
           <MdModeEdit size={20} onClick={handleEdit} />
           <div className={styles.container_btn_options}>
-            <button className={styles.btn_edition_option} onClick={handleEdit}>
+            <button
+              className={styles.btn_edition_option}
+              onClick={() => handleEdit(libroId)}
+            >
               Editar
             </button>
           </div>

@@ -1,8 +1,18 @@
+import React from "react";
 import styles from "@/app/books/mybooks/styles/mybooks.module.css";
+import useBook from "@/hooks/useBook";
 
 const ModalDelete = ({ onClose = () => {}, libroId }) => {
-  const handleDelete = () => {
-    onClose();
+  const { deleteBook } = useBook();
+  const deleteBookHandler = async () => {
+    try {
+      await deleteBook(libroId);
+      console.log("Libro eliminado exitosamente");
+    } catch (error) {
+      console.error("Error al eliminar el libro:", error);
+    } finally {
+      onClose();
+    }
   };
 
   return (
@@ -18,7 +28,7 @@ const ModalDelete = ({ onClose = () => {}, libroId }) => {
             </div>
             <div>
               <button
-                onClick={handleDelete}
+                onClick={deleteBookHandler}
                 className={styles.btn_confirm_delete}
               >
                 Eliminar
