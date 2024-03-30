@@ -21,6 +21,7 @@ const PageMyBooks = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [categoryBooks, setCategoryBooks] = useState([]);
   const [selectBooks, setSelectBooks] = useState("");
+  const [isDeleted, setIsDeleted] = useState(false);
 
   //Para cargar la lista
   const chargeList = async (page, titulo = null, categoria = null) => {
@@ -28,10 +29,12 @@ const PageMyBooks = () => {
       page: page,
       titulo: titulo,
       categorias: categoria,
+      user_id: localStorage.getItem("user_id"),
     };
     const bookData = await getAllBooks(params);
     setDataBooks(bookData.data);
     setTotalPage(bookData.total_pages);
+    setIsDeleted(false);
   };
 
   const fetchCategory = async () => {
@@ -43,6 +46,12 @@ const PageMyBooks = () => {
     chargeList(1, null, null);
     fetchCategory();
   }, []);
+
+  useEffect(() => {
+    if (!isDeleted) return;
+    chargeList(currentPage, null, null);
+    fetchCategory();
+  }, [isDeleted]);
 
   const selectOptions = [
     { value: "", label: "Todas las categorías" },
@@ -75,6 +84,7 @@ const PageMyBooks = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     chargeList(pageNumber, filter, null);
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -138,7 +148,12 @@ const PageMyBooks = () => {
           <div>
             <div className={styles.drafts_container}>
               {dataBooks.map((data, index) => (
-                <MyBooksContainer key={index} libroData={data} />
+                <MyBooksContainer
+                  key={index}
+                  libroData={data}
+                  isDeleted={isDeleted}
+                  setIsDeleted={setIsDeleted}
+                />
               ))}
             </div>
             <div className={styles.pagination}>
