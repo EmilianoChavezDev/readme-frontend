@@ -11,7 +11,7 @@ import { Tooltip } from "@material-tailwind/react";
 import useBook from "@/hooks/useBook";
 import useCategory from "@/hooks/useCategory";
 
-export default function BookForm({ book }) {
+const BookForm = ({ book }) => {
   const router = useRouter();
   const { createBook, updateBook, error, isLoading } = useBook();
   const { data: categories, fetchCategories } = useCategory();
@@ -251,7 +251,8 @@ export default function BookForm({ book }) {
             <div className="mb-2 w-full flex items-center gap-3 px-6 md:px-16">
               <label
                 htmlFor="categoria"
-                className="block font-semibold py-2 text-gray-900 pt-2 text-2xl">
+                className="block font-semibold py-2 text-gray-900 pt-2 text-2xl"
+              >
                 Categoría
               </label>
               <select
@@ -295,4 +296,6 @@ export default function BookForm({ book }) {
       </div>
     </div>
   );
-}
+};
+
+export default BookForm;
