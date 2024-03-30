@@ -28,7 +28,7 @@ export default function UpdateChapter({ params }) {
         const createdChapter = await updateChapter(params.chapterId, values)
         if (createdChapter) {
             toast.success('El capítulo de tu libro ha sido guardado')
-            router.push('/drafts')
+            router.push('/books/mybooks')
         } else {
             toast.error('El capítulo de tu libro no se pudo guardar')
         }

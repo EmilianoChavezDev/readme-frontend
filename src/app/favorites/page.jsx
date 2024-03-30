@@ -2,23 +2,25 @@
 
 import { useEffect, useState } from "react";
 import styles from "./styles/favorites.module.css";
-import Cuadros from "@/components/Squares";
+import Cuadros from "@/components/favorites/Squares";
 import useFavoritos from "@/hooks/useFavorites";
 import NavBar from "@/components/NavBar";
 import NotFound from "@/components/common/NotFound";
 import Loader from "@/components/common/loader";
 import { CiSearch } from "react-icons/ci";
 import BookNotFound from "@/components/favorites/BookNotFound";
+import Pagination from "@/components/common/Pagination";
 
 const PageFavoritos = () => {
   const [filtro, setFiltro] = useState("");
   const [librosFavoritos, setLibrosFavoritos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const {
     traerFavoritosPorUsuario,
     isLoading,
     favoritos,
-    error,
     isSearchEmpty,
+    totalPage,
   } = useFavoritos();
 
   // traemos todos los favoritos de la primera pagina del usuario
@@ -26,6 +28,7 @@ const PageFavoritos = () => {
     traerFavoritosPorUsuario(1, "");
   }, []);
 
+  //Carga mi lista de favoritos
   useEffect(() => {
     setLibrosFavoritos(favoritos);
   }, [favoritos]);
@@ -34,16 +37,23 @@ const PageFavoritos = () => {
   const chargeList = (pagina, busqueda = null) => {
     traerFavoritosPorUsuario(pagina, busqueda);
   };
-
+  //Busca cuando se haga click en buscador
   const handleSearch = () => {
     chargeList(1, filtro);
+  };
+
+  // Paginacion
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    chargeList(pageNumber, filtro);
   };
 
   return (
     <>
       {isLoading && <Loader />}
-      <NavBar />
-
+      <div className="sticky top-0 z-50">
+        <NavBar />
+      </div>
       <div className={styles.contenedor_global}>
         <div className={styles.contenedor_principal}>
           <div className={styles.barra_principal}>
@@ -55,12 +65,12 @@ const PageFavoritos = () => {
                 <div>
                   <input
                     className={styles.buscador}
-                    type="text"
+                    type="search"
                     placeholder="Buscar en Favoritos"
                     onBlur={(e) => setFiltro(e.target.value)}
                   />
                 </div>
-                <div>
+                <div className={styles.search_content_button}>
                   <button
                     className={styles.btn_search}
                     onClick={() => handleSearch()}
@@ -70,6 +80,7 @@ const PageFavoritos = () => {
                       className="hover:text-colorHoverPrimario ml-2"
                     />
                   </button>
+                  <span className={styles.search_label}>Buscar</span>
                 </div>
               </div>
             </div>
@@ -78,14 +89,25 @@ const PageFavoritos = () => {
             <div>
               {librosFavoritos && librosFavoritos.length > 0 ? (
                 isSearchEmpty ? (
-                  <BookNotFound />
+                  <BookNotFound
+                    message={
+                      "Lo sentimos, el libro que buscas no está en tus favoritos"
+                    }
+                  />
                 ) : (
-                  <div className={styles.contenedor_cuadros}>
-                    {librosFavoritos?.map((data) => (
-                      <>
+                  <div>
+                    <div className={styles.contenedor_cuadros}>
+                      {librosFavoritos?.map((data) => (
                         <Cuadros key={data.id} data={data} />
-                      </>
-                    ))}
+                      ))}
+                    </div>
+                    <div className={styles.pagination}>
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPage}
+                        onPageChange={handlePageChange}
+                      />
+                    </div>
                   </div>
                 )
               ) : (

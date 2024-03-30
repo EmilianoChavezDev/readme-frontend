@@ -1,8 +1,8 @@
-const BookNotFound = () => {
+const BookNotFound = ({ message }) => {
   return (
     <div className="flex flex-col items-center justify-center mt-10 px-4">
       <h1 className="text-2xl _md:text-xll font-bold mb-4 text-center">
-        Lo sentimos, el libro que buscas no está en tus favoritos
+        {message}
       </h1>
       <img
         src="/image/bookNotFound.png"

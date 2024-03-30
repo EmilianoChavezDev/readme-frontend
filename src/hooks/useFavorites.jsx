@@ -7,6 +7,7 @@ const useFavoritos = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSearchEmpty, setIsSearchEmpty] = useState(false);
   const [favoritos, setFavoritos] = useState([]);
+  const [totalPage, setTotalPage] = useState(1);
 
   const traerFavoritosPorUsuario = async (page, busqueda = null) => {
     setIsSearchEmpty(false);
@@ -31,13 +32,13 @@ const useFavoritos = () => {
           params: params,
         }
       );
-      console.log(response.data);
       if (
         busqueda != null &&
-        Array.isArray(response.data) &&
-        response.data.length > 0
+        Array.isArray(response.data.favoritos) &&
+        response.data.favoritos.length > 0
       ) {
-        setFavoritos(response.data);
+        setFavoritos(response.data.favoritos);
+        setTotalPage(response.data.total_pages);
       } else {
         setIsSearchEmpty(true);
       }
@@ -52,6 +53,7 @@ const useFavoritos = () => {
     isLoading,
     favoritos,
     isSearchEmpty,
+    totalPage,
   };
 };
 
