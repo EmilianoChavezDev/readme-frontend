@@ -54,17 +54,10 @@ const page = ({ params }) => {
     trigger,
     reset,
     watch,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm({
     defaultValues,
   });
-
-  const watchedFields = watch([
-    "username",
-    "fecha_nacimiento",
-    "newPassword",
-    "confirmNewPassword",
-  ]);
 
   const initials = data?.username
     ?.split(" ")
@@ -92,6 +85,12 @@ const page = ({ params }) => {
   };
 
   useEffect(() => {
+    if (!isError) return;
+    setFileInputKey(Date.now());
+    setProfileImage(data?.profile || null);
+  }, [isError]);
+
+  useEffect(() => {
     if (!isDeleteProfile) return;
     setIsNotDisable(false);
     setProfileImage(null);
@@ -114,7 +113,6 @@ const page = ({ params }) => {
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
     if (isError && !isTrue) {
-      console.log("entro error");
       toast.error(message);
       return;
     }
@@ -124,23 +122,18 @@ const page = ({ params }) => {
     }
   }, [isError, isTrue]);
 
-  useEffect(() => {
-    // Verificar si hay cambios en los campos
-    const areFieldsChanged = watchedFields.some(
-      (field) => field !== defaultValues[field.name]
-    );
+  const usernameValue = watch("username");
+  const fechaValue = watch("fecha_nacimiento");
+  const newPassword = watch("newPassword", "");
+  const confirmNewPassword = watch("confirmNewPassword", "");
 
-    if (
-      watchedFields[0] != data?.username &&
-      watchedFields[1] != data?.fecha_de_nacimiento &&
-      watchedFields[2] != defaultValues.newPassword &&
-      watchedFields[3] != defaultValues.confirmNewPassword
-    ) {
-      if (areFieldsChanged && data) {
-        setIsNotDisable(false);
-      }
-    }
-  }, [watchedFields]);
+  useEffect(() => {
+    if (!data) return;
+    if (usernameValue !== data?.username) setIsNotDisable(false);
+    if (fechaValue !== data?.fecha_de_nacimiento) setIsNotDisable(false);
+    if (newPassword !== "") setIsNotDisable(false);
+    if (confirmNewPassword !== "") setIsNotDisable(false);
+  }, [data, isDirty]);
 
   // si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
   useEffect(() => {

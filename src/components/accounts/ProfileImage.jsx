@@ -8,7 +8,6 @@ const ProfileImageUploader = ({
   handleImageChange,
   handleDeleteProfile,
   isDeleteProfile,
-
   key,
 }) => {
   const [hovered, setHovered] = useState(false);

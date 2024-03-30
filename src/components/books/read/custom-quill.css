@@ -1,8 +1,10 @@
 .ql-container {
-    border: none !important;
-  }
-  
-  .ql-editor {
-    border: none !important;
-  }
-  
+  border: none !important;
+}
+
+.ql-editor {
+  border: none !important;
+}
+.select-none {
+  user-select: none;
+}
