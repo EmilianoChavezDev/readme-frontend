@@ -25,8 +25,8 @@ const Options = () => {
     router.push("/books/create");
   };
 
-  const handleDraft = () => {
-    router.push("/mybooks");
+  const handleMyBooks = () => {
+    router.push("/books/mybooks");
   };
 
   const handleHomeClick = () => {
@@ -141,7 +141,7 @@ const Options = () => {
                 </li>
                 <li
                   className=" mb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                  onClick={() => handleDraft()}
+                  onClick={() => handleMyBooks()}
                 >
                   <FaListUl className="inline-block mr-2" />
                   Mis libros
