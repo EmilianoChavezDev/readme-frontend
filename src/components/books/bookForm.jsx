@@ -9,10 +9,12 @@ import { FaAngleLeft } from "react-icons/fa6";
 import { Tooltip } from "@material-tailwind/react";
 
 import useBook from "@/hooks/useBook";
+import useCategory from "@/hooks/useCategory";
 
 export default function BookForm({ book }) {
   const router = useRouter();
   const { createBook, updateBook, error, isLoading } = useBook();
+  const { data: categories, fetchCategories } = useCategory();
 
   const [image, setImage] = useState({});
   const [loadingPortada, setLoadingPortada] = useState(false);
@@ -31,6 +33,18 @@ export default function BookForm({ book }) {
 
   const { titulo, sinopsis, categoria, portada, adulto } = info;
 
+  const formatCategories = () => {
+    if (!categories) return [];
+    return categories.map((category) => ({
+      value: category[0],
+      label: category[1],
+    }));
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   const handleInputChange = (event) => {
     const { id, value, checked } = event.target;
     const newValue = id === "adulto" ? checked : value;
@@ -48,7 +62,7 @@ export default function BookForm({ book }) {
   const handleSubmit = async () => {
     const newErrors = {};
     if (!titulo.trim().length) {
-      newErrors.titulo = "Hola mundo. ";
+      newErrors.titulo = "El titulo no puede estar vacio. ";
     }
     if (!sinopsis.trim().length) {
       newErrors.sinopsis = "La descripción no puede estar vacio. ";
@@ -105,6 +119,7 @@ export default function BookForm({ book }) {
       setImage({ current: book.portada });
     }
   }, [book]);
+
   return (
     <div className="flex flex-col bg-white">
       <div className="bg-ChaptearHeader h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg">
@@ -236,13 +251,12 @@ export default function BookForm({ book }) {
             <div className="mb-2 w-full flex items-center gap-3 px-6 md:px-16">
               <label
                 htmlFor="categoria"
-                className="block font-semibold py-2 text-gray-900 pt-2 text-2xl"
-              >
+                className="block font-semibold py-2 text-gray-900 pt-2 text-2xl">
                 Categoría
               </label>
               <select
                 id="categoria"
-                className="border p-2 rounded focus:outline-none text-gray-500 font-semibold "
+                className="border p-2 rounded focus:outline-none text-gray-500 font-semibold overflow-y-auto max-h-60"
                 value={categoria}
                 onChange={handleInputChange}
                 disabled={isLoading}
@@ -250,8 +264,11 @@ export default function BookForm({ book }) {
                 <option value="" disabled>
                   Selecciona una categoria
                 </option>
-                <option value="Ficcion">Ficcion</option>
-                <option value="Fantasia">Fantasia</option>
+                {formatCategories()?.map((category) => (
+                  <option key={category.value} value={category.value}>
+                    {category.label}
+                  </option>
+                ))}
               </select>
               {errors.categoria && (
                 <p className="text-red-500 font-semibold">{errors.categoria}</p>
