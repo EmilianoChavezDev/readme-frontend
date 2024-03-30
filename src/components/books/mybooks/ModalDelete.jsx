@@ -1,4 +1,4 @@
-import styles from "@/app/mybooks/styles/mybooks.module.css";
+import styles from "@/app/books/mybooks/styles/mybooks.module.css";
 
 const ModalDelete = ({ onClose = () => {}, libroId }) => {
   const handleDelete = () => {

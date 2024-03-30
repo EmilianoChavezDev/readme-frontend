@@ -1,4 +1,4 @@
-import styles from "@/app/mybooks/styles/mybooks.module.css";
+import styles from "@/app/books/mybooks/styles/mybooks.module.css";
 import { MdModeEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { useRouter } from "next/navigation";

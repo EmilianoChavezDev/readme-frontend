@@ -1,7 +1,9 @@
+/* Estilos generales */
 .global_container {
   margin: 30px;
 }
 
+/* Contenedor de títulos */
 .title_drafts_container {
   display: flex;
   justify-content: space-between;
@@ -10,8 +12,7 @@
 }
 
 .title_drafts_container > div {
-  margin-right: 1rem;
-  margin-bottom: 1rem;
+  margin: 0 1rem 1rem 0;
 }
 
 .title_drafts {
@@ -19,7 +20,7 @@
   font-weight: bold;
 }
 
-/*For Dratfs Container*/
+/* Contenedor de borradores */
 .container_drafts {
   background-color: #e9ecef;
   box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.144);
@@ -28,13 +29,19 @@
   display: flex;
 }
 
-.image_book_container {
+.container_drafts > * {
   margin-left: 1rem;
 }
 
+/* Contenedor de datos del libro */
 .books_data_container {
-  margin-left: 1rem;
   flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.image_port {
+  height: 11rem;
 }
 
 .data_FCV {
@@ -55,15 +62,6 @@
   font-size: 1.3rem;
 }
 
-.writting_container {
-  display: flex;
-  align-items: end;
-}
-
-.image_port {
-  height: 11rem;
-}
-
 .dataFCV_container {
   display: flex;
   align-items: center;
@@ -73,76 +71,38 @@
   margin-right: 0.5rem;
 }
 
-.txt_public_parts {
-  font-weight: bold;
-  font-size: 0.8rem;
-}
-
-.txt_actualization {
-  font-weight: bold;
-  font-size: 0.8rem;
-}
-
+.txt_public_parts,
+.txt_actualization,
 .puntuation {
   font-weight: bold;
   font-size: 0.8rem;
 }
 
-.btn_new_book {
+/* Botones */
+.btn_new_book,
+.btn_continue_writting {
   position: relative;
   background-color: #1675736c;
   color: white;
-  padding: 0.2rem;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  padding: 0.2rem 1rem;
   font-weight: bold;
   font-size: 0.8rem;
   border-radius: 0.3rem;
   transition: background-color 0.3s ease;
   display: inline-block;
   text-decoration: none;
-}
-
-.btn_new_book:hover {
-  background-color: #125e55;
-}
-
-.btn_new_book::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 0.3rem;
-}
-
-.btn_new_book:hover::before {
-  opacity: 1;
 }
 
 .btn_continue_writting {
-  position: relative;
-  background-color: #167574;
-  color: white;
-  padding: 0.2rem;
-  padding-right: 1rem;
-  padding-left: 1rem;
-  font-weight: bold;
-  font-size: 0.8rem;
-  border-radius: 0.3rem;
-  transition: background-color 0.3s ease;
-  display: inline-block;
-  text-decoration: none;
+  background-color: #125e55;
 }
 
+.btn_new_book:hover,
 .btn_continue_writting:hover {
   background-color: #125e55;
 }
 
+.btn_new_book::before,
 .btn_continue_writting::before {
   content: "";
   position: absolute;
@@ -156,26 +116,28 @@
   border-radius: 0.3rem;
 }
 
+.btn_new_book:hover::before,
 .btn_continue_writting:hover::before {
   opacity: 1;
 }
 
-.writting_container {
+.write_content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-end;
 }
 
+.txt_category {
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* Contenedor de menú */
 .menu_container {
   display: flex;
   align-self: flex-end;
+  justify-content: flex-end;
   margin-top: 10px;
-}
-
-.btn_continue_writting {
-  align-self: center;
-  margin-top: auto;
 }
 
 .btn_menu {
@@ -189,30 +151,36 @@
   transform: scale(1.1);
 }
 
+/* Contenedor de filtros */
 .filters_container {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   flex-wrap: wrap;
   padding-bottom: 1rem;
 }
 
-.select_category {
-  background-color: #ffffff;
-  color: #00000057;
-  padding: 0.3rem;
-  border-radius: 0.3rem;
-  border: 1px solid rgba(0, 0, 0, 0.192);
-}
-
 .select_container {
+  font-size: 12px;
   padding-right: 1rem;
-  padding-bottom: 1rem;
+  width: 180px;
 }
 
 .search {
-  border: 1px solid rgba(0, 0, 0, 0.192);
-  border-radius: 0.2rem;
-  padding: 0.2rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  padding: 0.4rem;
+  outline: none;
+}
+
+.search:focus {
+  outline: 1px solid #125e55;
+}
+
+.search::placeholder {
+  font-size: 12px;
+  color: #adb5bd;
+  padding-left: 5px;
 }
 
 .btn_search {
@@ -226,7 +194,30 @@
   transform: scale(1.1);
 }
 
-.txt_category {
+.search_content {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search_label {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-size: 12px;
+  color: #ffffff;
+  background-color: black;
+  padding: 0.3rem 0.8rem 0.3rem 0.8rem;
+  border-radius: 5px;
+}
+
+.search_content:hover .search_label {
+  opacity: 1;
+}
+.btn_continue_writting .txt_category {
   font-size: 0.8rem;
   font-weight: bold;
 }
@@ -237,7 +228,7 @@
   padding-top: 1rem;
 }
 
-/*Modal Delete*/
+/* Estilos de modal */
 .modal_overlay {
   position: fixed;
   top: 0;
@@ -264,24 +255,20 @@
   justify-content: space-between;
 }
 
-.btn_confirm_delete {
+.btn_confirm_delete,
+.btn_cancel_delete {
   color: white;
-  background-color: #125e55;
   border-radius: 0.5rem;
-  padding: 0.4rem;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  padding: 0.4rem 1rem;
   transition: background-color 0.3s ease;
 }
 
+.btn_confirm_delete {
+  background-color: #125e55;
+}
+
 .btn_cancel_delete {
-  color: white;
   background-color: #b4b4b4;
-  border-radius: 0.5rem;
-  padding: 0.4rem;
-  padding-right: 1rem;
-  padding-left: 1rem;
-  transition: background-color 0.3s ease;
 }
 
 .btn_confirm_delete:hover {
@@ -292,7 +279,7 @@
   background-color: #858585;
 }
 
-/*My Books Options*/
+/* Contenedor de opciones de libros */
 .menu_container_options {
   width: 8rem;
   background-color: white;
@@ -312,7 +299,7 @@
 .btn_edition_option,
 .btn_delete_option {
   font-size: 14px;
-  padding: 0.4rem 0.4rem;
+  padding: 0.4rem;
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -325,7 +312,7 @@
   font-weight: bold;
 }
 
-/*Media Screen*/
+/* Estilos responsivos */
 @media screen and (max-width: 800px) {
   .title_book {
     width: 150px;
@@ -339,20 +326,21 @@
   .btn_continue_writting {
     width: 100px;
     padding-left: 1rem;
-  }
-  .container_btn_options {
-    display: none;
-  }
-  .menu_container_options {
-    width: auto;
-  }
-  .container_option {
-    display: block;
-  }
-  .btn_continue_writting {
     font-size: 0.6rem;
     padding-right: 0.2rem;
     padding-left: 0.3rem;
+  }
+
+  .container_btn_options {
+    display: none;
+  }
+
+  .menu_container_options {
+    width: auto;
+  }
+
+  .container_option {
+    display: block;
   }
 }
 

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import styles from "@/app/mybooks/styles/mybooks.module.css";
+import styles from "@/app/books/mybooks/styles/mybooks.module.css";
 import Image from "next/image";
 import formatNumber from "@/utils/formatNumber";
 import Link from "next/link";
@@ -68,7 +68,7 @@ const MyBooksContainer = ({ libroData }) => {
             </div>
           </div>
         </div>
-        <div className={styles.writting_container}>
+        <div className={styles.write_content}>
           <div className={styles.menu_container}>
             <div>{showOptionMenu && <OptionBooks libroId={libroId} />}</div>
             <div>
