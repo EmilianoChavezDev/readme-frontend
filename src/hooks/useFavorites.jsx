@@ -18,7 +18,7 @@ const useFavoritos = () => {
         page: page,
       };
 
-      if (busqueda) {
+      if (busqueda != null) {
         params.busqueda = busqueda;
       }
 
@@ -31,11 +31,17 @@ const useFavoritos = () => {
           params: params,
         }
       );
-      setFavoritos(response.data);
-    } catch (error) {
-      if (busqueda != null) {
+      console.log(response.data);
+      if (
+        busqueda != null &&
+        Array.isArray(response.data) &&
+        response.data.length > 0
+      ) {
+        setFavoritos(response.data);
+      } else {
         setIsSearchEmpty(true);
       }
+    } catch (error) {
     } finally {
       setIsLoading(false);
     }

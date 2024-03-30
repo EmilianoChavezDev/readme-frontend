@@ -134,8 +134,10 @@
     opacity: 1;
   }
 }
+
 .sk-circle {
   margin: auto;
+
   width: 24px;
   height: 24px;
   position: relative;
