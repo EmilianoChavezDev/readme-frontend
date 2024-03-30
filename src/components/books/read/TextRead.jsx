@@ -23,7 +23,7 @@ const TextRead = ({ urlContenido }) => {
   }, [contentChapter]);
 
   return (
-    <div>
+    <div className="select-none">
       <ReactQuill
         ref={quillRef}
         value={text}
