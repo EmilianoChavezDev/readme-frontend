@@ -8,7 +8,7 @@ import { MdMoreVert } from "react-icons/md";
 import { FaStar, FaEye, FaComment } from "react-icons/fa";
 import OptionBooks from "@/components/books/mybooks/OptionsMenuBooks";
 
-const MyBooksContainer = ({ libroData }) => {
+const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
   const [showOptionMenu, setShowOptionMenu] = useState(false);
 
   const {
@@ -70,7 +70,16 @@ const MyBooksContainer = ({ libroData }) => {
         </div>
         <div className={styles.write_content}>
           <div className={styles.menu_container}>
-            <div>{showOptionMenu && <OptionBooks libroId={libroId} />}</div>
+            <div>
+              {showOptionMenu && (
+                <OptionBooks
+                  libroId={libroId}
+                  isDeleted={isDeleted}
+                  setIsDeleted={setIsDeleted}
+                  setShowOptionMenu={setShowOptionMenu}
+                />
+              )}
+            </div>
             <div>
               <button className={styles.btn_menu} onClick={toggleOptionBooks}>
                 <MdMoreVert

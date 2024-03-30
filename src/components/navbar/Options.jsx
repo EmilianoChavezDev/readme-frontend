@@ -26,7 +26,7 @@ const Options = () => {
   };
 
   const handleDraft = () => {
-    router.push("/mybooks");
+    router.push("/books/mybooks");
   };
 
   const handleHomeClick = () => {

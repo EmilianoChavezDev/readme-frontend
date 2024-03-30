@@ -1,15 +1,23 @@
 import React from "react";
 import styles from "@/app/books/mybooks/styles/mybooks.module.css";
 import useBook from "@/hooks/useBook";
+import toast from "react-hot-toast";
 
-const ModalDelete = ({ onClose = () => {}, libroId }) => {
+const ModalDelete = ({
+  onClose = () => {},
+  libroId,
+  setIsDeleted,
+  setShowOptionMenu,
+}) => {
   const { deleteBook } = useBook();
   const deleteBookHandler = async () => {
     try {
       await deleteBook(libroId);
-      console.log("Libro eliminado exitosamente");
+      toast.success("Libro eliminado exitosamente");
+      setIsDeleted(true);
+      setShowOptionMenu(false);
     } catch (error) {
-      console.error("Error al eliminar el libro:", error);
+      toast.error("Lo sentimos,ocurrio un error al eliminar el libro");
     } finally {
       onClose();
     }
