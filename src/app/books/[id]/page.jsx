@@ -124,6 +124,10 @@ export default function BookDetails({ params }) {
                                 </div>
                                 <div className='flex-grow p-3 flex flex-col gap-3'>
                                     <h1 className='font-extrabold text-xl'>{book?.titulo}</h1>
+                                    <div className='flex items-center gap-2'>
+                                        <span className='font-semibold'>Autor:</span>
+                                        <span className='font-light'>{book?.autorUsername}</span>
+                                    </div>
                                     <div className='flex'>
                                         <div className='flex flex-col items-center flex-grow pr-2'>
                                             <div className='flex gap-1 items-center text-gray-400'>

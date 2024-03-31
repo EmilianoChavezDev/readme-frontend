@@ -9,6 +9,8 @@ const useUserInfo = () => {
   const [isError, setIsError] = useState(false);
   const [isTrue, setIsTrue] = useState(false);
   const [isImageChange, setIsImageChange] = useState(false);
+  const [isErrorProfile, setIsErrorProfile] = useState(false);
+  const [isErrorProfileUpdate, setIsErrorProfileUpdate] = useState(false);
 
   const getUserInformation = async (username) => {
     setLoading(true);
@@ -107,6 +109,7 @@ const useUserInfo = () => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
+    setIsErrorProfileUpdate(false);
     const url = `${process.env.API_URL}/users/profile`;
     const token = localStorage.getItem("token");
 
@@ -127,6 +130,7 @@ const useUserInfo = () => {
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
+      setIsErrorProfileUpdate(true);
       setMessage(error.response.data.error);
     } finally {
       setLoading(false);
@@ -169,6 +173,7 @@ const useUserInfo = () => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
+    setIsErrorProfile(false);
     const url = `${process.env.API_URL}/users/delete_profile`;
     const token = localStorage.getItem("token");
     try {
@@ -191,6 +196,7 @@ const useUserInfo = () => {
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
+      setIsErrorProfile(true);
       setMessage(error.response.data.error);
     } finally {
       setLoading(false);
@@ -211,6 +217,8 @@ const useUserInfo = () => {
     isImageChange,
     updateBirthday,
     deleteProfile,
+    isErrorProfile,
+    isErrorProfileUpdate,
   };
 };
 
