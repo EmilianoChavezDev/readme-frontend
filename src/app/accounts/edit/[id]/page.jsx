@@ -73,6 +73,12 @@ const page = ({ params }) => {
   const handleImageChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
+      const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
+
+      if (fileExtension !== "png" && fileExtension !== "jpg") {
+        toast.error("Solo se permiten archivos PNG o JPG.");
+        return;
+      }
       const reader = new FileReader();
       setIsDeleteProfile(false);
       setChangeImage(true);
