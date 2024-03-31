@@ -28,12 +28,16 @@ const UserOptions = ({ username, logout }) => {
   }, [username]);
 
   useEffect(() => {
-    if (data || currentData) {
-      setStorageProfile(
-        data?.profile || currentData?.profile || localStorage.getItem("profile")
-      );
+    if (data) {
+      setStorageProfile(data?.profile || localStorage.getItem("profile"));
     }
-  }, [data, currentData]);
+  }, [data]);
+
+  useEffect(() => {
+    if (currentData) {
+      setStorageProfile(currentData?.profile);
+    }
+  }, [currentData]);
 
   return (
     <div

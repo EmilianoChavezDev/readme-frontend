@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation";
 import AccordionField from "@/components/accounts/Accordion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
+import Link from "next/link";
+import { VscChevronRight } from "react-icons/vsc";
 
 const defaultValues = {
   username: "",
@@ -121,10 +123,10 @@ const page = ({ params }) => {
 
   // cuando se trae la foto la coloco en pantalla
   useEffect(() => {
-    if (currentData?.profile) {
+    if (currentData) {
       setProfileImage(currentData?.profile);
     }
-  }, [currentData?.profile]);
+  }, [currentData]);
 
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
@@ -235,7 +237,6 @@ const page = ({ params }) => {
       confirmNewPassword: "",
       fecha_nacimiento: data?.fecha_de_nacimiento,
     });
-
     setIsNotDisable(true);
   };
 
@@ -249,14 +250,30 @@ const page = ({ params }) => {
 
           <div className="flex flex-col">
             <div
-              className="flex _md:mx-auto _md:w-5/6 w-full _lg:px-4 _md:mt-14 _md:justify-between _md:items-center
+              className="flex _md:mx-auto _md:w-5/6 w-full _lg:px-4 _md:py-9 _md:justify-between _md:items-center
             mt-8 flex-col _md:flex-row
             "
             >
               <div className="flex flex-col">
-                <h1 className="text-textHeaderColorGray text-2xl font-bold text-nowrap text-center">
-                  Información Personal
-                </h1>
+                <div className="flex flex-col gap-y-2">
+                  <div className="flex gap-2 items-center">
+                    <Link
+                      href="/accounts"
+                      className="font-semibold text-gray-800"
+                    >
+                      Cuenta
+                    </Link>
+                    <span>
+                      <VscChevronRight />
+                    </span>
+                    <span className="font-semibold text-gray-800">
+                      Información Personal
+                    </span>
+                  </div>
+                  <h1 className="text-textHeaderColorGray text-2xl font-bold text-nowrap ">
+                    Editar Perfil
+                  </h1>
+                </div>
                 <div className="flex flex-col _xl:ml-36 _xl:mt-28 _md:mt-10 items-center">
                   <ProfileImageUploader
                     initials={initials}
