@@ -17,10 +17,10 @@ export const UserProvider = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const login = (data) => {
-    setToken(data.token);
-    setExpiration(data.expiration);
-    setUsername(data.username);
-    setRole(data.role);
+    setToken(data?.token);
+    setExpiration(data?.expiration);
+    setUsername(data?.username);
+    setRole(data?.role);
     setUserId(data.userId);
     setProfile(data.profile);
 
@@ -32,13 +32,13 @@ export const UserProvider = ({ children }) => {
     localStorage.removeItem("profile");
     localStorage.removeItem("fecha_de_nacimiento");
 
-    setToken(data.token);
-    setExpiration(data.expiration);
-    setUsername(data.username);
-    setRole(data.role);
-    setUserId(data.userId);
-    setProfile(data.profile);
-    setFecha_nacimiento(data.fecha_de_nacimiento);
+    setToken(data?.token);
+    setExpiration(data?.expiration);
+    setUsername(data?.username);
+    setRole(data?.role);
+    setUserId(data?.userId);
+    setProfile(data?.profile);
+    setFecha_nacimiento(data?.fecha_de_nacimiento);
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
     router.push(`/accounts/edit/${data.username}`);
