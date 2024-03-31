@@ -12,6 +12,8 @@ const useUserInfo = () => {
 
   const getUserInformation = async (username) => {
     setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
     const url = `${process.env.API_URL}/usersFind/${username}`;
     const token = localStorage.getItem("token");
     try {
@@ -35,6 +37,8 @@ const useUserInfo = () => {
 
   const updateUsername = async (newUsername, password) => {
     setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
     const url = `${process.env.API_URL}/users/username`;
     const token = localStorage.getItem("token");
     try {
@@ -69,6 +73,8 @@ const useUserInfo = () => {
     confirmNewPassword
   ) => {
     setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
     const url = `${process.env.API_URL}/users/password`;
     const token = localStorage.getItem("token");
     try {
@@ -100,6 +106,7 @@ const useUserInfo = () => {
   const updateProfile = async (file, password) => {
     setLoading(true);
     setIsTrue(false);
+    setIsError(false);
     const url = `${process.env.API_URL}/users/profile`;
     const token = localStorage.getItem("token");
 
@@ -118,7 +125,6 @@ const useUserInfo = () => {
       setMessage("Foto de perfil actualizado");
       setCurrentData(response.data);
     } catch (error) {
-      console.log(error);
       setIsTrue(false);
       setIsError(true);
       setMessage(error.response.data.error);
@@ -129,6 +135,8 @@ const useUserInfo = () => {
 
   const updateBirthday = async (password, newBirthday) => {
     setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
     const url = `${process.env.API_URL}/users/birthday`;
     const token = localStorage.getItem("token");
     try {
@@ -160,6 +168,7 @@ const useUserInfo = () => {
   const deleteProfile = async (password) => {
     setLoading(true);
     setIsTrue(false);
+    setIsError(false);
     const url = `${process.env.API_URL}/users/delete_profile`;
     const token = localStorage.getItem("token");
     try {
