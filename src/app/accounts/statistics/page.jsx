@@ -100,9 +100,9 @@ export default function Page() {
         let favorites = (statistics?.cantidad_favoritos_ultima_semana * 100) / (statistics?.cantidad_total_favoritos - statistics?.cantidad_favoritos_ultima_semana)
         let views = (statistics?.cantidad_vistas_ultima_semana * 100) / (statistics?.cantidad_vistas_totales - statistics?.cantidad_vistas_ultima_semana)
         return {
-            comments: isFinite(comments) ? comments : 0,
-            favorites: isFinite(favorites)? favorites : 0,
-            views: isFinite(views) ? views : 0
+            comments: isFinite(comments) ? Number(comments.toFixed(1)) : 100,
+            favorites: isFinite(favorites)? Number(favorites.toFixed(1)) : 100,
+            views: isFinite(views) ? Number(views.toFixed(1)) : 100
         }
     }
 
@@ -236,7 +236,7 @@ export default function Page() {
                     </button>
                 </div>
                 <div className='flex gap-3 h-full'>
-                    <div className='w-2/3 flex flex-col gap-3'>
+                    <div className='grow flex flex-col gap-3'>
                         <div className='border rounded-md border-gray-300 w-full flex flex-col gap-6 items-center p-5'>
                             <h1 className='text-xl font-semibold'>Mis Libros</h1>
                             <table className='w-full'>
@@ -244,9 +244,9 @@ export default function Page() {
                                     <tr className='h-14'>
                                         <th className='text-start font-semibold'>N°</th>
                                         <th className='text-start font-semibold'>Título</th>
-                                        <th className='text-start font-semibold'>Capítulos Publicados</th>
+                                        <th className='text-start font-semibold whitespace-nowrap'>Cap. Publicados</th>
                                         <th className='text-start font-semibold'>Categoría</th>
-                                        <th className='text-end font-semibold'>Usuarios que terminaron de leer</th>
+                                        <th className='text-end font-semibold whitespace-nowrap'>Lectores</th>
                                         <th className='text-end font-semibold'>Calificación</th>
                                     </tr>
                                 </thead>
@@ -281,7 +281,7 @@ export default function Page() {
                             <Pagination currentPage={currentPage} totalPages={booksData?.total_pages} onPageChange={setCurrentPage}/>
                         </div>
                     </div>
-                    <div className='flex flex-col gap-3 grow'>
+                    <div className='flex flex-col gap-3 !max-w-2/5'>
                         <div className='flex gap-3'>
                             <div className='border rounded-md border-gray-300 p-3 w-1/2 flex flex-col'>
                                 <div className='flex justify-between'>
@@ -319,7 +319,7 @@ export default function Page() {
                             </div>
                         </div>
                         <div className='flex gap-3'>
-                        <div className='border rounded-md border-gray-300 p-3 w-1/2 flex flex-col'>
+                            <div className='border rounded-md border-gray-300 p-3 w-1/2 flex flex-col'>
                                 <div className='flex justify-between'>
                                     <span className='text-xl font-bold'>{statistics?.cantidad_vistas_totales}</span>
                                     <span className='text-purple-500'>
@@ -346,7 +346,7 @@ export default function Page() {
                                 <span>Edad Promedio de Lectores</span>
                             </div>
                         </div>
-                        <div className='border rounded-md border-gray-300 p-5 pb-8 relative w-full !max-h-72'>
+                        <div className='border rounded-md border-gray-300 p-5 pb-8 relative !max-h-72'>
                             <h1 className='text-xl font-semibold'>Estadísticas de lectura</h1>
                             <Line options={options} data={chartData} />
                         </div>

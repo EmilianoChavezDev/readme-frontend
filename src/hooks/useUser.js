@@ -192,7 +192,6 @@ const useUserInfo = () => {
       setIsError(false);
       setCurrentData(response.data);
       setMessage("Foto de perfil borrado");
-      console.log(response.data);
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
