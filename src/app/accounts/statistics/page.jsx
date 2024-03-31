@@ -246,7 +246,7 @@ export default function Page() {
                                         <th className='text-start font-semibold'>Título</th>
                                         <th className='text-start font-semibold whitespace-nowrap'>Cap. Publicados</th>
                                         <th className='text-start font-semibold'>Categoría</th>
-                                        <th className='text-end font-semibold whitespace-nowrap'>Usuarios que terminaron de leer</th>
+                                        <th className='text-end font-semibold whitespace-nowrap'>Lectores</th>
                                         <th className='text-end font-semibold'>Calificación</th>
                                     </tr>
                                 </thead>
