@@ -75,8 +75,12 @@ const page = ({ params }) => {
     if (selectedFile) {
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
 
-      if (fileExtension !== "png" && fileExtension !== "jpg") {
-        toast.error("Solo se permiten archivos PNG o JPG.");
+      if (
+        fileExtension !== "png" &&
+        fileExtension !== "jpg" &&
+        fileExtension !== "jpeg"
+      ) {
+        toast.error("Solo se permiten archivos PNG, JPG o JPEG.");
         return;
       }
       const reader = new FileReader();
