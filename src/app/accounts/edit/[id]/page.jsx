@@ -368,7 +368,7 @@ const page = ({ params }) => {
                 </div>
               </div>
             </div>
-            <div className="mt-10 flex justify-center _md:justify-end _lg:mr-20 _xl:mr-80 gap-x-4 mb-10 _sm:mb-0">
+            <div className="mt-10 _sm:mt-0 flex justify-center _md:justify-end _lg:mr-20 _xl:mr-80 gap-x-4 mb-10 _sm:mb-0">
               <button
                 className="bg-textColorGray p-2 text-white rounded-lg hover:bg-textHeaderColorGray ml-52"
                 onClick={() => router.push("/accounts")}
