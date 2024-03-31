@@ -36,6 +36,8 @@ const page = ({ params }) => {
     updateProfile,
     updateBirthday,
     deleteProfile,
+    isErrorProfile,
+    isErrorProfileUpdate,
   } = useUserInfo();
   const router = useRouter();
   const { refresh } = useUser();
@@ -87,22 +89,27 @@ const page = ({ params }) => {
   };
 
   useEffect(() => {
-    if (!isError) return;
-    setFileInputKey(Date.now());
-    setProfileImage(data?.profile || null);
-    if (data?.profile) setIsDeleteProfile(false);
-  }, [isError]);
+    if (!isErrorProfile && isErrorProfileUpdate) return;
+    setIsDeleteProfile(false);
+    setProfileImage(data?.profile || localStorage.getItem("profile"));
+  }, [isErrorProfile]);
+
+  useEffect(() => {
+    if (!isErrorProfileUpdate && isErrorProfile) return;
+    setProfileImage(data?.profile || localStorage.getItem("profile") || null);
+  }, [isErrorProfileUpdate]);
 
   useEffect(() => {
     if (!isDeleteProfile) return;
     setIsNotDisable(false);
     setProfileImage(null);
+    setFileInputKey(Date.now());
   }, [isDeleteProfile]);
 
   // trae la informacion del usuario
   useEffect(() => {
     if (!params.id) return;
-    getUserInformation(params.id);
+    getUserInformation(params.id || localStorage.getItem("username"));
   }, [params.id]);
 
   // cuando se trae la foto la coloco en pantalla
@@ -111,6 +118,13 @@ const page = ({ params }) => {
       setProfileImage(data?.profile || localStorage.getItem("profile"));
     }
   }, [data?.profile]);
+
+  // cuando se trae la foto la coloco en pantalla
+  useEffect(() => {
+    if (currentData?.profile) {
+      setProfileImage(currentData?.profile);
+    }
+  }, [currentData?.profile]);
 
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {

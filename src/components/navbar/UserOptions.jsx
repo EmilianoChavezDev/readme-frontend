@@ -10,7 +10,7 @@ import { useUser } from "@/contexts/UserProvider";
 const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [storageProfile, setStorageProfile] = useState(null);
-  const { getUserInformation, data } = useUserInfo();
+  const { getUserInformation, data, currentData } = useUserInfo();
   const router = useRouter();
   const initials = username
     ?.split(" ")
@@ -28,10 +28,12 @@ const UserOptions = ({ username, logout }) => {
   }, [username]);
 
   useEffect(() => {
-    if (data) {
-      setStorageProfile(data?.profile);
+    if (data || currentData) {
+      setStorageProfile(
+        data?.profile || currentData?.profile || localStorage.getItem("profile")
+      );
     }
-  }, [data]);
+  }, [data, currentData]);
 
   return (
     <div
