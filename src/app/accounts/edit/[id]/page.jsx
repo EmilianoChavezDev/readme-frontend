@@ -181,9 +181,13 @@ const page = ({ params }) => {
   //validaciones
   const onSubmit = (formData) => {
     const currentDate = new Date();
+    const whitespaceRegex = /\s/;
 
     const minDate = new Date();
     minDate.setFullYear(minDate.getFullYear() - 15);
+
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 70);
 
     const fechaNacimiento = new Date(formData.fecha_nacimiento);
 
@@ -195,8 +199,15 @@ const page = ({ params }) => {
       deleteProfile(formData.oldPassword);
     }
 
-    if (formData.username !== data?.username) {
-      updateUsername(formData.username, formData.oldPassword);
+    if (!whitespaceRegex.test(formData.username)) {
+      if (formData.username !== data?.username) {
+        updateUsername(formData.username, formData.oldPassword);
+      }
+    } else {
+      toast.error(
+        "El nombre de usuario no puede contener espacios en blanco tampoco estar vacio."
+      );
+      return;
     }
 
     if (formData.newPassword && formData.confirmNewPassword != "") {
@@ -204,37 +215,38 @@ const page = ({ params }) => {
         formData.newPassword &&
         formData.newPassword !== formData.oldPassword
       ) {
-        if (formData.newPassword === formData.confirmNewPassword) {
-          if (
-            /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(formData.newPassword)
-          ) {
-            updatePassword(
-              formData.oldPassword,
-              formData.newPassword,
-              formData.confirmNewPassword
-            );
-          } else {
-            toast.error(
-              "La nueva contraseña debe tener al menos 8 caracteres y al menos un número."
-            );
-            return;
-          }
+        if (
+          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(formData.newPassword) &&
+          !whitespaceRegex.test(formData.newPassword)
+        ) {
+          updatePassword(
+            formData.oldPassword,
+            formData.newPassword,
+            formData.confirmNewPassword
+          );
         } else {
-          toast.error("Las contraseñas no coinciden");
+          toast.error(
+            "La nueva contraseña debe tener al menos 8 caracteres, al menos un número y no puede contener espacios."
+          );
           return;
         }
       } else {
-        toast.error("La contraseña nueva no puede ser la misma que la actual");
+        toast.error("Las contraseñas no coinciden");
         return;
       }
     }
 
-    if ((currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365) > 15) {
+    const edad = (currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365);
+
+    if (edad > 15 && edad <= 70) {
       if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento) {
         updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
       }
-    } else {
+    } else if (edad <= 15) {
       toast.error("Debes ser mayor a 15 años!");
+      return;
+    } else if (edad > 70) {
+      toast.error("No debes ser mayor de 70 años!");
       return;
     }
 
