@@ -38,10 +38,6 @@ const useReadBooks = () => {
       });
       setData(response.data);
     } catch (error) {
-      console.error(
-        "Error al obtener el libro:",
-        error.response ? error.response.data : error.message
-      );
     } finally {
       setIsLoading(false);
     }
@@ -103,10 +99,6 @@ const useReadBooks = () => {
       });
       setCurrentChapterData(response.data);
     } catch (error) {
-      console.log(
-        "error al obtener el contenido nuevo",
-        error.response ? error.response.data : error.message
-      );
     } finally {
       setIsLoading(false);
     }
@@ -125,7 +117,6 @@ const useReadBooks = () => {
       });
       return response.data;
     } catch (error) {
-      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -154,10 +145,6 @@ const useReadBooks = () => {
       await changeNowChapter(idBook);
       return response.data;
     } catch (error) {
-      console.log(
-        "error al cambiar el capitulo",
-        error.response ? error.response.data : error.message
-      );
     } finally {
       setIsLoading(false);
     }
