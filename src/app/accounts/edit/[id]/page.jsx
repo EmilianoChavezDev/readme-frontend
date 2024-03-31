@@ -47,6 +47,7 @@ const page = ({ params }) => {
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const [fileInputKey, setFileInputKey] = useState(Date.now());
   const [isNotDisable, setIsNotDisable] = useState(true);
+  const [isRefresh, setIsRefresh] = useState(true);
 
   const {
     register,
@@ -82,19 +83,20 @@ const page = ({ params }) => {
   const handleDeleteProfile = () => {
     setFileInputKey(Date.now());
     setIsDeleteProfile(true);
+    setChangeImage(false);
   };
 
   useEffect(() => {
     if (!isError) return;
     setFileInputKey(Date.now());
     setProfileImage(data?.profile || null);
+    if (data?.profile) setIsDeleteProfile(false);
   }, [isError]);
 
   useEffect(() => {
     if (!isDeleteProfile) return;
     setIsNotDisable(false);
     setProfileImage(null);
-    setChangeImage(false);
   }, [isDeleteProfile]);
 
   // trae la informacion del usuario
@@ -106,7 +108,7 @@ const page = ({ params }) => {
   // cuando se trae la foto la coloco en pantalla
   useEffect(() => {
     if (data?.profile) {
-      setProfileImage(data?.profile);
+      setProfileImage(data?.profile || localStorage.getItem("profile"));
     }
   }, [data?.profile]);
 
@@ -133,13 +135,13 @@ const page = ({ params }) => {
     if (fechaValue !== data?.fecha_de_nacimiento) setIsNotDisable(false);
     if (newPassword !== "") setIsNotDisable(false);
     if (confirmNewPassword !== "") setIsNotDisable(false);
-  }, [data, isDirty]);
+  }, [data, isDirty, newPassword, confirmNewPassword]);
 
   // si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
   useEffect(() => {
-    if (!currentData) return;
+    if (!currentData || !isRefresh) return;
     refresh(currentData);
-  }, [currentData]);
+  }, [currentData, isRefresh]);
 
   // traer los datos del usuario
   useEffect(() => {
@@ -161,7 +163,7 @@ const page = ({ params }) => {
 
     const fechaNacimiento = new Date(formData.fecha_nacimiento);
 
-    if (formData.username !== data.username) {
+    if (formData.username !== data?.username) {
       updateUsername(formData.username, formData.oldPassword);
     }
 
@@ -211,7 +213,7 @@ const page = ({ params }) => {
     if (isDeleteProfile) {
       deleteProfile(formData.oldPassword);
     }
-
+    setIsRefresh(true);
     reset({
       username: data?.username,
       oldPassword: "",
@@ -219,6 +221,7 @@ const page = ({ params }) => {
       confirmNewPassword: "",
       fecha_nacimiento: data?.fecha_de_nacimiento,
     });
+
     setIsNotDisable(true);
   };
 
@@ -361,7 +364,7 @@ const page = ({ params }) => {
               <button
                 type="submit"
                 className={`
-                bg-colorPrimario p-2 text-white rounded-lg text-nowrap mr-48 _lg:mr-0  _md:mr-14 
+                bg-colorPrimario p-2 text-white rounded-lg text-nowrap mr-48 _lg:px-4 _md:mr-10 _lg:mr-8 
                 ${
                   isNotDisable
                     ? "cursor-no-drop"
