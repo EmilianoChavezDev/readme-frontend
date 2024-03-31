@@ -161,14 +161,22 @@ const page = ({ params }) => {
 
   // traer los datos del usuario
   useEffect(() => {
-    if (!data && !currentData) return;
+    if (!data) return;
     reset({
       username: data?.username,
       fecha_nacimiento:
         currentData?.fecha_de_nacimiento || data?.fecha_de_nacimiento,
     });
     setIsNotDisable(true);
-  }, [data, currentData]);
+  }, [data]);
+  useEffect(() => {
+    if (!currentData) return;
+    reset({
+      username: currentData?.username,
+      fecha_nacimiento: currentData?.fecha_de_nacimiento,
+    });
+    setIsNotDisable(true);
+  }, [currentData]);
 
   //validaciones
   const onSubmit = (formData) => {
@@ -178,6 +186,14 @@ const page = ({ params }) => {
     minDate.setFullYear(minDate.getFullYear() - 15);
 
     const fechaNacimiento = new Date(formData.fecha_nacimiento);
+
+    if (changeImage) {
+      updateProfile(profileImage, formData.oldPassword);
+    }
+
+    if (isDeleteProfile) {
+      deleteProfile(formData.oldPassword);
+    }
 
     if (formData.username !== data?.username) {
       updateUsername(formData.username, formData.oldPassword);
@@ -222,13 +238,6 @@ const page = ({ params }) => {
       return;
     }
 
-    if (changeImage) {
-      updateProfile(profileImage, formData.oldPassword);
-    }
-
-    if (isDeleteProfile) {
-      deleteProfile(formData.oldPassword);
-    }
     setIsRefresh(true);
     reset({
       username: data?.username,
@@ -250,7 +259,7 @@ const page = ({ params }) => {
 
           <div className="flex flex-col">
             <div
-              className="flex _md:mx-auto _md:w-5/6 w-full _lg:px-4 _md:py-9 _md:justify-between _md:items-center
+              className="flex _md:mx-auto _md:w-5/6 w-full _lg:px-4 _md:py-9 _lg:mt-0 _md:justify-between _md:items-center
             mt-8 flex-col _md:flex-row
             "
             >
