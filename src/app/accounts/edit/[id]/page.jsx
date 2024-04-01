@@ -214,43 +214,48 @@ const page = ({ params }) => {
       }
     } else {
       toast.error(
-        "El nombre de usuario no puede contener espacios en blanco tampoco estar vacio."
+        "El nombre de usuario no puede contener espacios en blanco ni estar vacío."
       );
       return;
     }
 
-    if (formData.newPassword && formData.confirmNewPassword != "") {
+    if (formData.newPassword && formData.confirmNewPassword !== "") {
       if (
         formData.newPassword &&
         formData.confirmNewPassword !== formData.oldPassword
       ) {
-        if (formData.newPassword === formData.confirmNewPassword) {
-          if (
-            /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(
-              formData.newPassword
-            ) &&
-            !whitespaceRegex.test(formData.newPassword)
-          ) {
-            updatePassword(
-              formData.oldPassword,
-              formData.newPassword,
-              formData.confirmNewPassword
-            );
-          } else {
-            toast.error(
-              "La nueva contraseña debe tener al menos 8 caracteres, al menos un número y no puede contener espacios."
-            );
-            return;
-          }
+        if (
+          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(formData.newPassword) &&
+          !whitespaceRegex.test(formData.newPassword)
+        ) {
+          updatePassword(
+            formData.oldPassword,
+            formData.newPassword,
+            formData.confirmNewPassword
+          );
         } else {
-          toast.error("Las contraseñas no coinciden");
+          toast.error(
+            "La nueva contraseña debe tener al menos 8 caracteres, al menos un número y no puede contener espacios."
+          );
+          // Asignar valores vacíos a los campos de contraseña
+          formData.newPassword = "";
+          formData.confirmNewPassword = "";
           return;
         }
       } else {
-        toast.error("No puedes poner la misma contraseña");
-        error = true;
+        toast.error("Las contraseñas no coinciden");
+        // Asignar valores vacíos a los campos de contraseña
+        formData.newPassword = "";
+        formData.confirmNewPassword = "";
         return;
       }
+    } else {
+      toast.error("No puedes poner la misma contraseña");
+      // Asignar valores vacíos a los campos de contraseña
+      formData.newPassword = "";
+      formData.confirmNewPassword = "";
+      error = true;
+      return;
     }
 
     if (changeImage && !error) {
