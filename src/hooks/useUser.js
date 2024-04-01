@@ -59,7 +59,7 @@ const useUserInfo = () => {
       setIsTrue(true);
       setIsError(false);
       setCurrentData(response.data.user);
-      setMessage(response.data.message);
+      setMessage("Datos actualizado con exito");
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
@@ -95,7 +95,7 @@ const useUserInfo = () => {
       );
       setIsTrue(true);
       setIsError(false);
-      setMessage(response.data.message);
+      setMessage("Datos actualizado con exito");
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
@@ -125,7 +125,7 @@ const useUserInfo = () => {
       });
       setIsTrue(true);
       setIsError(false);
-      setMessage("Foto de perfil actualizado");
+      setMessage("Datos actualizado con exito");
       setCurrentData(response.data);
     } catch (error) {
       setIsTrue(false);
@@ -159,7 +159,7 @@ const useUserInfo = () => {
       setIsTrue(true);
       setIsError(false);
       setCurrentData(response.data);
-      setMessage("Fecha de compleaños actualizada");
+      setMessage("Datos actualizado con exito");
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
@@ -191,7 +191,7 @@ const useUserInfo = () => {
       setIsTrue(true);
       setIsError(false);
       setCurrentData(response.data);
-      setMessage("Foto de perfil borrado");
+      setMessage("Datos actualizado con exito");
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
