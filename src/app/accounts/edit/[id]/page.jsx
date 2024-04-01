@@ -264,10 +264,16 @@ const page = ({ params }) => {
 
     if (changeImage && !error) {
       updateProfile(profileImage, formData.oldPassword);
+      formData.oldPassword = "";
+      formData.newPassword = "";
+      formData.confirmNewPassword = "";
     }
 
     if (isDeleteProfile && !error) {
       deleteProfile(formData.oldPassword);
+      formData.oldPassword = "";
+      formData.newPassword = "";
+      formData.confirmNewPassword = "";
     }
 
     if (edad > 15 && edad <= 70) {
