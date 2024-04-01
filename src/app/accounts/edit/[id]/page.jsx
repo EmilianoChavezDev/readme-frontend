@@ -187,6 +187,9 @@ const page = ({ params }) => {
     reset({
       username: currentData?.username,
       fecha_nacimiento: currentData?.fecha_de_nacimiento,
+      oldPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
     });
     setIsNotDisable(true);
   }, [currentData]);
@@ -204,14 +207,6 @@ const page = ({ params }) => {
 
     const fechaNacimiento = new Date(formData.fecha_nacimiento);
     const edad = (currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365);
-
-    if (changeImage) {
-      updateProfile(profileImage, formData.oldPassword);
-    }
-
-    if (isDeleteProfile) {
-      deleteProfile(formData.oldPassword);
-    }
 
     if (!whitespaceRegex.test(formData.username)) {
       if (formData.username !== data?.username) {
@@ -253,9 +248,17 @@ const page = ({ params }) => {
         }
       } else {
         toast.error("No puedes poner la misma contraseña");
-        error = true; // Aquí estableces error como true si ocurre un error
+        error = true;
         return;
       }
+    }
+
+    if (changeImage && !error) {
+      updateProfile(profileImage, formData.oldPassword);
+    }
+
+    if (isDeleteProfile && !error) {
+      deleteProfile(formData.oldPassword);
     }
 
     if (edad > 15 && edad <= 70) {
