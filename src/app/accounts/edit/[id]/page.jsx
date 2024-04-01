@@ -276,9 +276,15 @@ const page = ({ params }) => {
       }
     } else if (edad <= 15) {
       toast.error("Debes ser mayor a 15 años!");
+      formData.oldPassword = "";
+      formData.newPassword = "";
+      formData.confirmNewPassword = "";
       return;
     } else if (edad > 70) {
       toast.error("No debes ser mayor de 70 años!");
+      formData.oldPassword = "";
+      formData.newPassword = "";
+      formData.confirmNewPassword = "";
       return;
     }
 
