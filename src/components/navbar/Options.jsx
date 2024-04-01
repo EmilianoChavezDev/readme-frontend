@@ -21,16 +21,12 @@ const Options = () => {
     setIsOpenEscribir(false);
   };
 
-  const handlNoPageClick = () => {
-    router.push("/page-construction");
-  };
-
   const handleNewBook = () => {
     router.push("/books/create");
   };
 
   const handleDraft = () => {
-    router.push("/drafts");
+    router.push("/books/mybooks");
   };
 
   const handleHomeClick = () => {
@@ -144,19 +140,11 @@ const Options = () => {
                   Crear nuevo libro
                 </li>
                 <li
-                  className="
-                  mb-4 pb-2 border-b border-gray-200 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                  onClick={() => handlNoPageClick()}
+                  className=" mb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
+                  onClick={() => handleDraft()}
                 >
                   <FaListUl className="inline-block mr-2" />
                   Mis libros
-                </li>
-                <li
-                 className=" mb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                  onClick={() => handleDraft()}
-                >
-                  <FaFileAlt className="inline-block mr-2" />
-                  Mis borradores
                 </li>
               </ul>
             </div>

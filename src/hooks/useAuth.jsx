@@ -49,6 +49,7 @@ const useAuth = () => {
     }
   };
 
+
   return { data, loading, error, login, register };
 };
 

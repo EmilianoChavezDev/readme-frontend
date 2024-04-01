@@ -1,20 +1,27 @@
 import { useUser } from "@/contexts/UserProvider";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import InputSearch from "./navbar/InputSearch";
 import Options from "./navbar/Options";
 import UserOptions from "./navbar/UserOptions";
 import MobileMenu from "./navbar/MobileMenu";
 
-const NavBar = () => {
-  const { username, logout, expiration } = useUser();
+const NavBar = ({ onSearch }) => {
+  const { username, logout, expiration, isOpen, setIsOpen } = useUser();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [usernameStorage, setUsernameStorage] = useState(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+  useEffect(() => {
+    if (!username) return;
+    setUsernameStorage(localStorage.getItem("username"));
+  }, [username]);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -37,22 +44,51 @@ const NavBar = () => {
     }
   }, [expiration, router]);
 
+  useEffect(() => {
+    if (!searchParams) return;
+    setSearch(searchParams.get("search"));
+  }, [searchParams]);
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  const handleSearchChange = ({ target }) => {
+    const { value } = target;
+    setSearch(value);
+  };
+
+  const handleSearch = () => {
+    if (!search) return;
+    const query = createQueryString("search", search);
+    router.push("/books/search" + "?" + query);
+    onSearch && onSearch();
+  };
+
   return (
     <>
-
       <nav className="relative">
         <div className="_lg:justify-between _md:px-5 bg-colorPrimario _md:py-4  _lg:flex hidden">
           {/* parte de las opciones */}
           <Options />
           {/* parte del buscador */}
-          <InputSearch />
+          <InputSearch
+            value={search}
+            onChange={handleSearchChange}
+            onSearch={handleSearch}
+          />
           {/* parte del usuario */}
-          <UserOptions username={username} logout={logout} />
 
+          <UserOptions username={usernameStorage} logout={logout} />
         </div>
 
         <div className="sticky top-0 z-50">
@@ -77,7 +113,11 @@ const NavBar = () => {
               </svg>
             </button>
             <div className="mx-auto">
-              <InputSearch />
+              <InputSearch
+                value={search}
+                onChange={handleSearchChange}
+                onSearch={handleSearch}
+              />
             </div>
           </div>
         </div>

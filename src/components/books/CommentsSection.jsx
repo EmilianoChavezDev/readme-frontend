@@ -16,11 +16,12 @@ export default function CommentsSection({ bookId }) {
     moment.locale('es')
     const COMMENTS_PAGE_SIZE = 5
     const { username } = useUser()
-    const { getCommentsByUserAndBook, deleteComment, createComment } = useComment()
+    const { getCommentsByUserAndBook, deleteComment, createComment, updateComment } = useComment()
 
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState({ list: [] })
     const [commentsListPage, setCommentsListPage] = useState(1)
+    const [commentToEdit, setCommentToEdit] = useState(null)
     const [commentIdToRemove, setCommentIdToRemove] = useState(null)
 
     const fetchComments = async () => {
@@ -37,6 +38,28 @@ export default function CommentsSection({ bookId }) {
         setCommentsListPage(1)
         setComments({ total_pages: cant_paginas, list: resultado })
         setComment('')
+    }
+
+    const handleCommentToUpdateChange = value => {
+        let commentToEditCopy = {...commentToEdit, comentario: value}
+        setCommentToEdit(commentToEditCopy)
+    }
+
+    const handleUpdateComment = async () => {
+        if (commentToEdit?.comentario?.trim()?.length) {
+            const result = await updateComment(commentToEdit.id, { comentario: commentToEdit.comentario })
+            if (result?.comentario) {
+                let commentsCopy = [...(comments.list)]
+                let commentIndex = commentsCopy.findIndex(c => c.id === commentToEdit.id)
+                commentsCopy[commentIndex] = {...commentsCopy[commentIndex], comentario: commentToEdit.comentario}
+                setComments({...comments, list: commentsCopy})
+            } else {
+                toast.error('El comentario no pudo ser editado')
+            }
+        } else {
+            toast.error('No se puede dejar un comentario en blanco')
+        }
+        setCommentToEdit(null)
     }
 
     const removeComment = async () => {
@@ -64,6 +87,15 @@ export default function CommentsSection({ bookId }) {
                 onSave={removeComment}
                 title='Eliminar Comentario'>
                 <span>¿Estás seguro de eliminar este comentario?</span>
+            </Modal>
+            <Modal open={Boolean(commentToEdit)}
+                onHide={() => setCommentToEdit(null)}
+                onSave={handleUpdateComment}
+                title='Editar Comentario'>
+                <textarea className='border rounded-lg p-3 w-full border-gray-400 outline-none' 
+                    value={commentToEdit?.comentario ?? ''}
+                    onChange={event => handleCommentToUpdateChange(event.target.value)}
+                    rows={5} />
             </Modal>
             <section className='flex flex-wrap'>
                 <div className='w-full _lg:w-1/2 px-9 _lg:px-16 min-w-96 py-4 flex flex-col gap-3'>
@@ -106,9 +138,14 @@ export default function CommentsSection({ bookId }) {
                                                     </button>
                                                 </PopoverHandler>
                                                 <PopoverContent className='shadow-lg p-1 border-gray-400'>
-                                                    <div className='p-1 text-xs text-black'>
-                                                            <span className='cursor-pointer text-gray-700 hover:text-black' onClick={() => setCommentIdToRemove(item.id)}>
+                                                    <div className='p-1 flex flex-col text-xs text-black'>
+                                                            <span className='cursor-pointer h-7 flex items-center text-gray-700 hover:text-black hover:bg-gray-100 rounded-sm px-2' 
+                                                                onClick={() => setCommentIdToRemove(item.id)}>
                                                                 Eliminar
+                                                            </span>
+                                                            <span className='cursor-pointer h-7 flex items-center text-gray-700 hover:text-black hover:bg-gray-100 rounded-sm px-2' 
+                                                                onClick={() => setCommentToEdit(item)}>
+                                                                Editar
                                                             </span>
                                                     </div>
                                                 </PopoverContent>

@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useSwipeable } from "react-swipeable";
 import { Tooltip } from "@material-tailwind/react";
+import { isMobile } from "react-device-detect"; // Importar isMobile
 
 const BodyRead = () => {
   const { chapterData, getCurrentChapterById, data } = UseRead();
@@ -28,8 +29,10 @@ const BodyRead = () => {
       getCurrentChapterById(
         chapterData.libro_id,
         data[0].id,
-        shouldSendTrueNextChapter
+        shouldSendTrueNextChapter,
+        true
       );
+      console.log("entro aqui");
       router.push(`/books/${chapterData.libro_id}`);
       toast.success("¡Felicidades! Has terminado este libro");
     }
@@ -45,12 +48,15 @@ const BodyRead = () => {
     }
   };
 
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: handleSwipeLeft,
-    onSwipedRight: handleSwipeRight,
-    preventDefaultTouchmoveEvent: true,
-    trackMouse: true,
-  });
+  let swipeHandlers = {};
+  if (isMobile) {
+    swipeHandlers = useSwipeable({
+      onSwipedLeft: handleSwipeLeft,
+      onSwipedRight: handleSwipeRight,
+      preventDefaultTouchmoveEvent: true,
+      trackMouse: true,
+    });
+  }
 
   return (
     <div className="_sm:w-4/6 w-full mx-auto relative" {...swipeHandlers}>

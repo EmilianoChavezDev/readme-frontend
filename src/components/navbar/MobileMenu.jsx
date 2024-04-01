@@ -47,10 +47,10 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
         </button>
         <button
           className="flex items-center gap-x-2 py-2 border-b border-lineColorBorder transform transition-all duration-300 hover:scale-105"
-          onClick={() => handleMenuClick("/drafts")}
+          onClick={() => handleMenuClick("/books/mybooks")}
         >
           <FaFileAlt />
-          Mis Borradores
+          Mis libros
         </button>
         <button
           className="flex items-center gap-x-2 py-2 border-b border-lineColorBorder transform transition-all duration-300 hover:scale-105"
