@@ -115,7 +115,7 @@ const useReadBooks = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data;
+      return response.data.terminado;
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -171,6 +171,28 @@ const useReadBooks = () => {
     }
   };
 
+  const getReadCurrent = async (idBook) => {
+    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    try {
+      const url = `${process.env.API_URL}/lecturas/createfecha`;
+      await axios.post(
+        url,
+        {
+          libro_id: idBook,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     getBookById,
     data,
@@ -184,6 +206,7 @@ const useReadBooks = () => {
     postCurrentChapter,
     changeBookEnd,
     getReadBook,
+    getReadCurrent,
   };
 };
 

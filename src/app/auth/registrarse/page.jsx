@@ -140,11 +140,9 @@ const page = () => {
     minDate.setFullYear(minDate.getFullYear() - 15);
     const fechaNacimientoDate = new Date(fechaNacimiento);
 
-    // Calcular la diferencia de años entre la fecha de nacimiento y la fecha actual
     const diferenciaAnhos =
       (currentDate - fechaNacimientoDate) / (1000 * 60 * 60 * 24 * 365);
 
-    // Retorna true si la diferencia de años es mayor o igual a 15, false de lo contrario
     return diferenciaAnhos >= 15;
   };
 

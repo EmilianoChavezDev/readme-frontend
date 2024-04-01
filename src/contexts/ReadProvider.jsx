@@ -18,6 +18,7 @@ const ReadProvider = ({ children }) => {
     currentNextChapterData,
     changeBookEnd,
     bookInfo,
+    getReadCurrent,
   } = useReadBooks();
 
   const handleZoom = () => {
@@ -31,6 +32,7 @@ const ReadProvider = ({ children }) => {
   // consulto todo lo que se necesita antes de cargar la pantalla
   const getAll = (id) => {
     getBookById(id);
+    getReadCurrent(id);
   };
 
   const getChapter = (id, data) => {
