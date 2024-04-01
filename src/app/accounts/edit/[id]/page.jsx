@@ -228,7 +228,6 @@ const page = ({ params }) => {
     if (edad > 15 && edad <= 70) {
       if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento) {
         updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
-        return;
       }
     } else if (edad <= 15) {
       toast.error("Debes ser mayor a 15 años!");
@@ -427,7 +426,7 @@ const page = ({ params }) => {
                 </div>
               </div>
             </div>
-            <div className="mt-10 _sm:mt-0 flex justify-center _md:justify-end _lg:mr-20 _xl:mr-80 gap-x-4 mb-10 _sm:mb-0">
+            <div className="mt-10 _sm:mt-0 flex justify-center _md:justify-end _lg:mr-20 _xl:mr-80 gap-x-6 mb-10 _sm:mb-0">
               <button
                 className="bg-textColorGray p-2 text-white rounded-lg hover:bg-textHeaderColorGray ml-52"
                 onClick={() => router.push("/accounts")}
@@ -437,7 +436,7 @@ const page = ({ params }) => {
               <button
                 type="submit"
                 className={`
-                bg-colorPrimario p-2 text-white rounded-lg text-nowrap mr-48 _xl:mr-8
+                bg-colorPrimario p-2 text-white rounded-lg text-nowrap mr-48 _xl:mr-24
                 ${
                   isNotDisable
                     ? "cursor-no-drop"
