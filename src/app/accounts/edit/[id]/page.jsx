@@ -191,8 +191,8 @@ const page = ({ params }) => {
     setIsNotDisable(true);
   }, [currentData]);
 
-  //validaciones
   const onSubmit = (formData) => {
+    let error = false;
     const currentDate = new Date();
     const whitespaceRegex = /\s/;
 
@@ -203,6 +203,7 @@ const page = ({ params }) => {
     maxDate.setFullYear(maxDate.getFullYear() - 70);
 
     const fechaNacimiento = new Date(formData.fecha_nacimiento);
+    const edad = (currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365);
 
     if (changeImage) {
       updateProfile(profileImage, formData.oldPassword);
@@ -220,20 +221,6 @@ const page = ({ params }) => {
       toast.error(
         "El nombre de usuario no puede contener espacios en blanco tampoco estar vacio."
       );
-      return;
-    }
-
-    const edad = (currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365);
-
-    if (edad > 15 && edad <= 70) {
-      if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento) {
-        updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
-      }
-    } else if (edad <= 15) {
-      toast.error("Debes ser mayor a 15 años!");
-      return;
-    } else if (edad > 70) {
-      toast.error("No debes ser mayor de 70 años!");
       return;
     }
 
@@ -266,8 +253,21 @@ const page = ({ params }) => {
         }
       } else {
         toast.error("No puedes poner la misma contraseña");
+        error = true; // Aquí estableces error como true si ocurre un error
         return;
       }
+    }
+
+    if (edad > 15 && edad <= 70) {
+      if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento && !error) {
+        updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
+      }
+    } else if (edad <= 15) {
+      toast.error("Debes ser mayor a 15 años!");
+      return;
+    } else if (edad > 70) {
+      toast.error("No debes ser mayor de 70 años!");
+      return;
     }
 
     setIsRefresh(true);
