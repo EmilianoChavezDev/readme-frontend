@@ -266,7 +266,7 @@ const BookForm = ({ book }) => {
                   Selecciona una categoria
                 </option>
                 {formatCategories()?.map((category) => (
-                  <option key={category.value} value={category.value}>
+                  <option key={category.value} value={category.label}>
                     {category.label}
                   </option>
                 ))}
