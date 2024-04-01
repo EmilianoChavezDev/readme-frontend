@@ -211,11 +211,25 @@ const page = ({ params }) => {
     if (!whitespaceRegex.test(formData.username)) {
       if (formData.username !== data?.username) {
         updateUsername(formData.username, formData.oldPassword);
+        reset({
+          username: data?.username,
+          oldPassword: "",
+          newPassword: "",
+          confirmNewPassword: "",
+          fecha_nacimiento: data?.fecha_de_nacimiento,
+        });
       }
     } else {
       toast.error(
         "El nombre de usuario no puede contener espacios en blanco tampoco estar vacio."
       );
+      reset({
+        username: data?.username,
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+        fecha_nacimiento: data?.fecha_de_nacimiento,
+      });
       return;
     }
 
@@ -236,27 +250,46 @@ const page = ({ params }) => {
               formData.newPassword,
               formData.confirmNewPassword
             );
+            reset({
+              username: data?.username,
+              oldPassword: "",
+              newPassword: "",
+              confirmNewPassword: "",
+              fecha_nacimiento: data?.fecha_de_nacimiento,
+            });
           } else {
             toast.error(
               "La nueva contraseña debe tener al menos 8 caracteres, al menos un número y no puede contener espacios."
             );
-            formData.oldPassword = "";
-            formData.newPassword = "";
-            formData.confirmNewPassword = "";
+            reset({
+              username: data?.username,
+              oldPassword: "",
+              newPassword: "",
+              confirmNewPassword: "",
+              fecha_nacimiento: data?.fecha_de_nacimiento,
+            });
             return;
           }
         } else {
           toast.error("Las contraseñas no coinciden");
-          formData.oldPassword = "";
-          formData.newPassword = "";
-          formData.confirmNewPassword = "";
+          reset({
+            username: data?.username,
+            oldPassword: "",
+            newPassword: "",
+            confirmNewPassword: "",
+            fecha_nacimiento: data?.fecha_de_nacimiento,
+          });
           return;
         }
       } else {
         toast.error("No puedes poner la misma contraseña");
-        formData.oldPassword = "";
-        formData.newPassword = "";
-        formData.confirmNewPassword = "";
+        reset({
+          username: data?.username,
+          oldPassword: "",
+          newPassword: "",
+          confirmNewPassword: "",
+          fecha_nacimiento: data?.fecha_de_nacimiento,
+        });
         error = true;
         return;
       }
@@ -264,33 +297,55 @@ const page = ({ params }) => {
 
     if (changeImage && !error) {
       updateProfile(profileImage, formData.oldPassword);
-      formData.oldPassword = "";
-      formData.newPassword = "";
-      formData.confirmNewPassword = "";
+      reset({
+        username: data?.username,
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+        fecha_nacimiento: data?.fecha_de_nacimiento,
+      });
     }
 
     if (isDeleteProfile && !error) {
       deleteProfile(formData.oldPassword);
-      formData.oldPassword = "";
-      formData.newPassword = "";
-      formData.confirmNewPassword = "";
+      reset({
+        username: data?.username,
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+        fecha_nacimiento: data?.fecha_de_nacimiento,
+      });
     }
 
     if (edad > 15 && edad <= 70) {
       if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento && !error) {
         updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
+        reset({
+          username: data?.username,
+          oldPassword: "",
+          newPassword: "",
+          confirmNewPassword: "",
+          fecha_nacimiento: data?.fecha_de_nacimiento,
+        });
       }
     } else if (edad <= 15) {
+      reset({
+        username: data?.username,
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+        fecha_nacimiento: data?.fecha_de_nacimiento,
+      });
       toast.error("Debes ser mayor a 15 años!");
-      formData.oldPassword = "";
-      formData.newPassword = "";
-      formData.confirmNewPassword = "";
       return;
     } else if (edad > 70) {
-      toast.error("No debes ser mayor de 70 años!");
-      formData.oldPassword = "";
-      formData.newPassword = "";
-      formData.confirmNewPassword = "";
+      reset({
+        username: data?.username,
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPassword: "",
+        fecha_nacimiento: data?.fecha_de_nacimiento,
+      });
       return;
     }
 
