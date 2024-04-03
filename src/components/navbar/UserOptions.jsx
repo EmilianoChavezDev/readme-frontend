@@ -58,8 +58,8 @@ const UserOptions = ({ username, logout }) => {
           {initials}
         </div>
       )}
-      <div className="flex items-center gap-x-1">
-        <p className="cursor-pointer _lg:text-sm text-lg">{username}</p>
+      <div className="flex items-center gap-x-1" onClick={toggleDropdown}>
+        <span className="cursor-pointer _lg:text-sm text-lg">{username}</span>
         <button
           type="button"
           className={`_lg:flex items-center justify-center hidden 
@@ -67,7 +67,6 @@ const UserOptions = ({ username, logout }) => {
             isOpen ? "rotate-180" : "rotate-0"
           }
           `}
-          onClick={toggleDropdown}
         >
           <IoMdArrowDropdown size={18} />
         </button>
