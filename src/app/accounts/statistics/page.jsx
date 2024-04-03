@@ -133,7 +133,7 @@ export default function Page() {
             labels: Object.keys(dailyReadingsPerBook)?.map(date => moment(date).format('DD-MM')),
             datasets: [
                 {
-                    label: 'Comentarios',
+                    label: 'Lecturas',
                     data: Object.values(dailyReadingsPerBook),
                     fill: true,
                     backgroundColor: 'rgba(75,192,192,0.2)',
