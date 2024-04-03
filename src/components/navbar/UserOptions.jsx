@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { FaUserCircle, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
@@ -59,14 +59,19 @@ const UserOptions = ({ username, logout }) => {
         </div>
       )}
       <div className="flex items-center gap-x-1">
-        <p className="cursor-pointer _lg:text-sm text-lg">{username}</p>
+        <span
+          className="cursor-pointer _lg:text-sm text-lg"
+          onClick={toggleDropdown}
+        >
+          {username}
+        </span>
         <button
           type="button"
           className={`_lg:flex items-center justify-center hidden 
-          transition-all duration-200 transform ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }
-          `}
+            transition-all duration-200 transform ${
+              isOpen ? "rotate-180" : "rotate-0"
+            }
+            `}
           onClick={toggleDropdown}
         >
           <IoMdArrowDropdown size={18} />
@@ -84,6 +89,14 @@ const UserOptions = ({ username, logout }) => {
         {isOpen && (
           <div className="_lg:absolute z-10 bg-white border border-gray-200 shadow-lg p-2 mt-2 -right-2 top-7 text-black w-40 ">
             <ul className="my-2">
+              <li
+                className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
+                onClick={() => router.push(`/user/${username}`)}
+              >
+                <FaUser className="inline-block mr-2" />
+                Mi Perfil
+              </li>
+
               <li
                 className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
                 onClick={() => router.push(`/accounts`)}
