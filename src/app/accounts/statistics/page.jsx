@@ -271,7 +271,7 @@ export default function Page() {
                                             {`${book?.cantidad_usuarios_terminaron}/${book?.cantidad_usuarios_leyeron}`}    
                                         </td>
                                         <td className={`text-end font-normal ${book.id === bookSelected.id? 'text-colorPrimario font-semibold' : 'text-gray-800'}`}>
-                                            {book?.puntuacion_media}
+                                            {Number(book?.puntuacion_media.toFixed(1))}
                                         </td>
                                     </tr>
                                 )}</tbody>

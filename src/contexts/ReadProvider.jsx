@@ -31,6 +31,7 @@ const ReadProvider = ({ children }) => {
 
   // consulto todo lo que se necesita antes de cargar la pantalla
   const getAll = (id) => {
+    if (!id) return;
     getBookById(id);
     getReadCurrent(id);
   };

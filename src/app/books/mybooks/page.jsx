@@ -67,6 +67,7 @@ const PageMyBooks = () => {
     if (selectedCategory === "") {
       chargeList(1, filter, null);
     } else {
+      setCurrentPage(1);
       setFilter("");
       chargeList(1, null, selectedCategory);
     }
@@ -77,6 +78,7 @@ const PageMyBooks = () => {
     if (selectOptions.length > 0) {
       setSelectBooks(selectOptions[0].value);
     }
+    setCurrentPage(1);
     chargeList(1, filter, null);
   };
 

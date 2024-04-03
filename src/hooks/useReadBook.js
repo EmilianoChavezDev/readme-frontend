@@ -176,7 +176,7 @@ const useReadBooks = () => {
     const token = localStorage.getItem("token");
     try {
       const url = `${process.env.API_URL}/lecturas/createfecha`;
-      await axios.post(
+      const response = await axios.post(
         url,
         {
           libro_id: idBook,
@@ -187,6 +187,7 @@ const useReadBooks = () => {
           },
         }
       );
+      console.log(response.data);
     } catch (error) {
     } finally {
       setIsLoading(false);

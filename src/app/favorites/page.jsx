@@ -39,6 +39,7 @@ const PageFavoritos = () => {
   };
   //Busca cuando se haga click en buscador
   const handleSearch = () => {
+    setCurrentPage(1);
     chargeList(1, filtro);
   };
 
