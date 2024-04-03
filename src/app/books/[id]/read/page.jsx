@@ -16,8 +16,8 @@ export default function ReadBook({ params }) {
   }, []);
 
   useEffect(() => {
+    if (!data) return;
     getChapter(params.id, data);
-    return;
   }, [data]);
 
   return (
