@@ -1,12 +1,6 @@
 import React from "react";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 const UserOption = ({ isOwner, isFollow }) => {
   return (
     <>
