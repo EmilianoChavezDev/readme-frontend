@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext } from "react";
-import { SlUserFollow } from "react-icons/sl";
+import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 
 import {
   Card,
@@ -17,7 +17,7 @@ const defaultValue = {
 };
 
 const ThemeContext = createContext(defaultValue);
-export function UserCard({ username, nombre, image }) {
+export function UserCard({ username, nombre, image, description, isFolow }) {
   const initials = username
     ?.split(" ")
     ?.map((word) => word[0])
@@ -25,9 +25,9 @@ export function UserCard({ username, nombre, image }) {
     ?.toUpperCase();
 
   return (
-    <Card className="mt-6 w-80 h-80 py-4 overflow-hidden bg-buttonColorGray">
+    <Card className="mt-6 _md:w-80 _md:h-80 h-52 py-4 overflow-hidden bg-buttonColorGray rounded-3xl shadow-xl">
       <div className="flex items-center justify-between mx-6 hover:cursor-pointer">
-        <span className="font-bold">{nombre}</span>
+        <span className="font-bold _md:text-xl">{nombre}</span>
         {image ? (
           <Image
             src={image}
@@ -42,19 +42,29 @@ export function UserCard({ username, nombre, image }) {
           </div>
         )}
       </div>
-      <CardBody className="h-40 overflow-hidden">
-        <Typography className="overflow-hidden truncate-lines">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et
-          necessitatibus magnam, fugiat numquam impedit dolorem a tempora ipsa
-          eos nesciunt autem aspernatur distinctio rem! Veritatis assumenda
-          fugiat necessitatibus et illum.
+      <CardBody className="_md:h-40 overflow-hidden">
+        <Typography className="overflow-hidden truncate-lines text-sm _md:text-base">
+          {description}
         </Typography>
       </CardBody>
 
-      <CardFooter className="flex justify-center mt-4 p-0">
-        <Button className="flex items-center text-colorPrimario border border-colorPrimario bg-buttonColorGray hover:bg-colorHoverPrimario hover:text-white">
-          <SlUserFollow className="inline-block align-middle mr-1" size={18} />
-          Seguir
+      <CardFooter className="flex justify-center p-0">
+        <Button
+          className="
+        _md:px-6 _md:py-3 px-1 py-1
+        flex text-colorPrimario border border-colorPrimario bg-buttonColorGray hover:bg-colorHoverPrimario hover:text-white"
+        >
+          {isFolow ? (
+            <span className="flex items-center">
+              <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+              Seguir
+            </span>
+          ) : (
+            <span className="flex items-center">
+              <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+              Dejar de seguir
+            </span>
+          )}
         </Button>
       </CardFooter>
     </Card>

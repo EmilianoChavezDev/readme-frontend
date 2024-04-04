@@ -1,8 +1,10 @@
 "use client";
 import Layout from "@/components/common/Layout";
-import { UserCard } from "@/components/users/UserCard";
+
 import useUserInfo from "@/hooks/useUser";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { UserCard } from "../../../components/users/UserCard";
+import ProfileView from "../../../components/common/ProfileView";
 
 const page = ({ params }) => {
   const { getUserInformation, data } = useUserInfo();
@@ -13,11 +15,7 @@ const page = ({ params }) => {
   return (
     <div>
       <Layout>
-        hola
-        <div className="mx-10">
-
-        <UserCard nombre={data?.username} image={data?.profile} />
-          </div>
+        <ProfileView username={params.id} imagen={data?.profile} />
       </Layout>
     </div>
   );
