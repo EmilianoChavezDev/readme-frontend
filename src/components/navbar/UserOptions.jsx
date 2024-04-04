@@ -39,6 +39,7 @@ const UserOptions = ({ username, logout }) => {
     _lg:hover:cursor-pointer
   "
     >
+
       <div className="mr-1">
         <ProfileView username={username} imagen={storageProfile} size={8} />
       </div>
@@ -47,10 +48,12 @@ const UserOptions = ({ username, logout }) => {
         <button
           type="button"
           className={`_lg:flex items-center justify-center hidden 
+
             transition-all duration-200 transform ${
               isOpen ? "rotate-180" : "rotate-0"
             }
             `}
+
         >
           <IoMdArrowDropdown size={18} />
         </button>
