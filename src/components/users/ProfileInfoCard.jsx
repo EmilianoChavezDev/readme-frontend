@@ -2,9 +2,12 @@ import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { FaBirthdayCake } from "react-icons/fa";
 import { RiMapPin2Fill } from "react-icons/ri";
 import { AiOutlinePaperClip } from "react-icons/ai";
+import moment, { locale } from "moment";
+import "moment/locale/es";
 
 export function ProfileInfoCard({
   direction,
+  nacionalidad,
   birthday,
   createAt,
   description,
@@ -15,15 +18,17 @@ export function ProfileInfoCard({
         <div className="flex flex-col gap-y-4">
           <div className="flex items-center gap-2">
             <RiMapPin2Fill size={18} />
-            <span>{direction}</span>
+            <span>{direction}</span>,<snap>{nacionalidad}</snap>
           </div>
           <div className="flex items-center gap-2">
             <FaBirthdayCake size={18} />
-            <span>{birthday}</span>
+            <span>
+              {moment(birthday).format("MMMM Do, YYYY", { locale: "ES, es" })}
+            </span>
           </div>
           <div className="flex items-center gap-1">
             <span className="font-semibold">Se ha unido</span>
-            {createAt}
+            {moment(createAt).format("MMMM Do, YYYY", { locale: "ES, es" })}
           </div>
           <div className="flex items-start gap-2">
             <span className="flex mt-1">

@@ -15,7 +15,8 @@ const Layout = ({ children }) => {
           !(
             router.startsWith("/books/") &&
             pathSegments[pathSegments.length - 1] === "read"
-          ) && <NavBar />}
+          ) &&
+          !router.startsWith("/accounts/edit/") && <NavBar />}
       </div>
       <div>{children}</div>
     </div>

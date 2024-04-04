@@ -1,9 +1,8 @@
 "use client";
-import Layout from "@/components/common/Layout";
 
+import { ProfileInfoCard } from "@/components/users/ProfileInfoCard";
 import useUserInfo from "@/hooks/useUser";
 import React, { useEffect } from "react";
-import { UserCard } from "../../../components/users/UserCard";
 
 const page = ({ params }) => {
   const { getUserInformation, data } = useUserInfo();
@@ -12,13 +11,15 @@ const page = ({ params }) => {
     getUserInformation(params.id);
   }, []);
 
-  const handleClick = () => {
-    console.log("entro");
-  };
-
   return (
     <div>
-
+      <ProfileInfoCard
+        direction={data?.direccion}
+        nacionalidad={data?.nacionalidad}
+        birthday={data?.fecha_de_nacimiento}
+        createAt={data?.created_at}
+        description={data?.descripcion}
+      />
     </div>
   );
 };
