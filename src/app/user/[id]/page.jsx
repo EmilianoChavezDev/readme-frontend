@@ -3,7 +3,7 @@ import Layout from "@/components/common/Layout";
 
 import useUserInfo from "@/hooks/useUser";
 import React, { useEffect } from "react";
-import ProfileInfoCard from "../../../components/users/ProfileInfoCard";
+import { UserCard } from "../../../components/users/UserCard";
 
 const page = ({ params }) => {
   const { getUserInformation, data } = useUserInfo();
@@ -11,10 +11,26 @@ const page = ({ params }) => {
   useEffect(() => {
     getUserInformation(params.id);
   }, []);
+
+  const handleClick = () => {
+    console.log("entro");
+  };
+
   return (
     <div>
       <Layout>
-        <ProfileInfoCard />
+        <div className="flex items-center justify-center">
+          <UserCard
+            username={params?.id}
+            nombre={data?.username}
+            image={data?.profile}
+            description={"lorem insup"}
+            buttonProps={{
+              info: "Follow",
+              onClick: handleClick,
+            }}
+          />
+        </div>
       </Layout>
     </div>
   );

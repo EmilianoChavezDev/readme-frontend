@@ -3,20 +3,14 @@ import { FaUserCircle, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import useUserInfo from "@/hooks/useUser";
-import { useUser } from "@/contexts/UserProvider";
+import ProfileView from "../common/ProfileView";
 
 const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [storageProfile, setStorageProfile] = useState(null);
   const { getUserInformation, data, currentData } = useUserInfo();
   const router = useRouter();
-  const initials = username
-    ?.split(" ")
-    ?.map((word) => word[0])
-    ?.join("")
-    ?.toUpperCase();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -45,19 +39,9 @@ const UserOptions = ({ username, logout }) => {
     _lg:hover:cursor-pointer
   "
     >
-      {storageProfile ? (
-        <Image
-          src={storageProfile}
-          alt="User"
-          className="h-8 w-8 rounded-full mr-2"
-          width={200}
-          height={200}
-        />
-      ) : (
-        <div className="h-8 w-8 flex items-center justify-center bg-blue-500 text-white rounded-full mr-2">
-          {initials}
-        </div>
-      )}
+      <div className="mr-1">
+        <ProfileView username={username} imagen={storageProfile} size={8} />
+      </div>
       <div className="flex items-center gap-x-1" onClick={toggleDropdown}>
         <span className="cursor-pointer _lg:text-sm text-lg">{username}</span>
         <button

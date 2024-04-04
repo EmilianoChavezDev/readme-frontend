@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const ProfileView = ({ username, imagen }) => {
+const ProfileView = ({ username, imagen, size }) => {
   const initials = username
     ?.split(" ")
     ?.map((word) => word[0])
@@ -13,7 +13,7 @@ const ProfileView = ({ username, imagen }) => {
         <Image
           src={imagen}
           alt="User"
-          className="h-16 w-16 rounded-full"
+          className={`h-${size} w-${size} rounded-full`}
           width={200}
           height={200}
         />
