@@ -13,7 +13,6 @@ const PageUnderConstruction = () => {
 
   return (
     <div>
-      <NavBar />
       <div className="flex flex-col items-center justify-center mt-20">
         <h1 className="text-3xl font-bold mb-4">Página en construcción</h1>
         <Image

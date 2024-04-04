@@ -29,9 +29,6 @@ export default function BackgroundBlogCard() {
 
   return (
     <>
-      <div className="sticky top-0 z-50">
-        <NavBar />
-      </div>
       {loading ? (
         <Loader />
       ) : (
