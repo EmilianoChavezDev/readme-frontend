@@ -18,20 +18,7 @@ const page = ({ params }) => {
 
   return (
     <div>
-      <Layout>
-        <div className="flex items-center justify-center">
-          <UserCard
-            username={params?.id}
-            nombre={data?.username}
-            image={data?.profile}
-            description={"lorem insup"}
-            buttonProps={{
-              info: "Follow",
-              onClick: handleClick,
-            }}
-          />
-        </div>
-      </Layout>
+
     </div>
   );
 };
