@@ -3,7 +3,7 @@ import Layout from "@/components/common/Layout";
 
 import useUserInfo from "@/hooks/useUser";
 import React, { useEffect } from "react";
-import UserOption from "../../../components/users/UserOption";
+import ProfileInfoCard from "../../../components/users/ProfileInfoCard";
 
 const page = ({ params }) => {
   const { getUserInformation, data } = useUserInfo();
@@ -14,7 +14,7 @@ const page = ({ params }) => {
   return (
     <div>
       <Layout>
-        <UserOption isOwner={false} isFollow={true} />
+        <ProfileInfoCard />
       </Layout>
     </div>
   );
