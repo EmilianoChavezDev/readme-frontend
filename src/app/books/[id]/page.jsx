@@ -160,11 +160,8 @@ export default function BookDetails({ params }) {
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="font-semibold">Autor:</span>
-                      <span className="font-light">
-                        <Link
-                          href={`/user/${book?.autorUsername}`}
-                          className="hover:font-semibold transition-all duration-200 transform"
-                        >
+                      <span className="font-light transition-all duration-100 hover:scale-105 hover:font-semibold">
+                        <Link href={`/user/${book?.autorUsername}`}>
                           <span>{book?.autorUsername}</span>
                         </Link>
                       </span>

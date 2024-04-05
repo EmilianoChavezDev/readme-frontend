@@ -169,11 +169,8 @@ export default function CommentsSection({ bookId }) {
                         username={item?.username}
                         size={8}
                       />
-                      <span className="text-black font-bold">
-                        <Link
-                          href={`/user/${item?.username}`}
-                          className="hover:font-semibold transition-all duration-200 transform"
-                        >
+                      <span className="text-black font-semibold transition-all duration-100 hover:scale-105">
+                        <Link href={`/user/${item?.username}`}>
                           <span>{item.username}</span>
                         </Link>
                       </span>

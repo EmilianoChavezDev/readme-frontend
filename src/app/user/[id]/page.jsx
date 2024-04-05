@@ -1,6 +1,7 @@
 "use client";
 
-import { ProfileInfoCard } from "@/components/users/ProfileInfoCard";
+import ProfileView from "@/components/common/ProfileView";
+import ProfileHeader from "@/components/users/ProfileHeader";
 import useUserInfo from "@/hooks/useUser";
 import React, { useEffect } from "react";
 
@@ -13,15 +14,13 @@ const page = ({ params }) => {
 
   return (
     <div>
-      <ProfileInfoCard
-        direction={data?.direccion}
-        nacionalidad={data?.nacionalidad}
-        birthday={data?.fecha_de_nacimiento}
-        createAt={data?.created_at}
-        description={data?.descripcion}
+      <ProfileHeader
+        username={data?.username}
+        profile={data?.profile}
+        portada={data?.portada}
       />
     </div>
   );
-}
+};
 
 export default page;
