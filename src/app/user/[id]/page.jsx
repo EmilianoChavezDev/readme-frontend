@@ -22,6 +22,6 @@ const page = ({ params }) => {
       />
     </div>
   );
-};
+}
 
 export default page;
