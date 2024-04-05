@@ -1,6 +1,6 @@
 import { useUser } from "@/contexts/UserProvider";
 import { useCallback, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import InputSearch from "./navbar/InputSearch";
 import Options from "./navbar/Options";
 import UserOptions from "./navbar/UserOptions";
@@ -13,6 +13,7 @@ const NavBar = ({ onSearch }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
+  const path = usePathname();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -25,7 +26,8 @@ const NavBar = ({ onSearch }) => {
 
   useEffect(() => {
     if (!isLoaded) return;
-    if (!localStorage.getItem("token")) router.push("/auth/login");
+    if (!localStorage.getItem("token") & (path !== "/auth/registrarse"))
+      router.push("/auth/login");
   }, [isLoaded, router]);
 
   useEffect(() => {
