@@ -44,19 +44,15 @@ const useUserInfo = () => {
     const url = `${process.env.API_URL}/cantseguidores`;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
+        params: {
           user_id: user_id,
-        }
-      );
-
-      return response.data;
+        },
+      });
+      setData(response.data)
     } catch (error) {
       setIsTrue(false);
       setIsError(true);

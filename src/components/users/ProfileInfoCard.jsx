@@ -19,7 +19,7 @@ export function ProfileInfoCard({
           {direction && nacionalidad && (
             <div className="flex items-center gap-2">
               <RiMapPin2Fill size={18} />
-              <span>{direction}</span>,<snap>{nacionalidad}</snap>
+              <span>{direction+', '+nacionalidad}</span>
             </div>
           )}
           {birthday && (

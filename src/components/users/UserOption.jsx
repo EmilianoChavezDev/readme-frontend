@@ -13,7 +13,7 @@ const UserOption = ({ isOwner, isFollow }) => {
             <span className="hover:cursor-pointer transition-all transform duration-200 border-b-2 border-transparent hover:border-colorPrimario">
               Lista de lectura
             </span>
-            {!isOwner && (
+            {isOwner && (
               <span className="hover:cursor-pointer transition-all transform duration-200 border-b-2 border-transparent pb-2 hover:border-colorPrimario">
                 Seguidos
               </span>
