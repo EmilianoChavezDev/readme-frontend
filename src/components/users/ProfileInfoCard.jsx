@@ -23,12 +23,12 @@ export function ProfileInfoCard({
           <div className="flex items-center gap-2">
             <FaBirthdayCake size={18} />
             <span>
-              {moment(birthday).format("MMMM Do, YYYY", { locale: "ES, es" })}
+              {moment(birthday).format("MMMM DD, YYYY", { locale: "ES, es" })}
             </span>
           </div>
           <div className="flex items-center gap-1">
             <span className="font-semibold">Se ha unido</span>
-            {moment(createAt).format("MMMM Do, YYYY", { locale: "ES, es" })}
+            {moment(createAt).format("MMMM DD, YYYY", { locale: "ES, es" })}
           </div>
           <div className="flex items-start gap-2">
             <span className="flex mt-1">
