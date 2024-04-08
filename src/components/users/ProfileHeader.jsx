@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProfileView from "../common/ProfileView";
 import { Button } from "@material-tailwind/react";
+import { BsPersonFillGear } from "react-icons/bs";
 
 const ProfileHeader = ({
   profile,
@@ -10,20 +11,37 @@ const ProfileHeader = ({
   username,
   name,
   portada,
-  isOwner,
 }) => {
+  const [usernameLs, setUsernameLs] = useState(null);
+
+  useEffect(() => {
+    setUsernameLs(localStorage.getItem("username"));
+  }, []);
+
   return (
-    <div className="flex flex-col justify-center">
+    <div
+      className={`flex flex-col justify-center ${
+        portada ? "text-white" : "text-black"
+      }`}
+    >
       <div
         className="w-full h-full bg-cover bg-center"
-        style={{ backgroundImage: `url(${portada})` }}
+        style={{
+          backgroundImage: portada
+            ? `url(${portada})`
+            : "linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent)",
+        }}
       >
         <div className="flex justify-center items-center h-full mt-4">
           <ProfileView username={username} imagen={profile} size={44} />
         </div>
+        <div className="flex flex-col items-center justify-center mt-2 ">
+          <span className="font-bold">{name}</span>
+          <span className="text-md">@{username}</span>
+        </div>
         <div
-          className={`flex justify-center items-center text-white gap-x-4 pt-8 ${
-            !isOwner && "py-8"
+          className={`flex justify-center items-center text-white text-sm gap-x-8 pt-8 ${
+            usernameLs !== username && "py-8"
           } font-semibold`}
         >
           <div className="flex flex-col items-center">
@@ -31,7 +49,7 @@ const ProfileHeader = ({
             Seguidores
           </div>
           <div className="flex flex-col items-center">
-            <span>2</span>
+            <span>{read}</span>
             Lista de lectura
           </div>
           <div className="flex flex-col items-center">
@@ -39,9 +57,15 @@ const ProfileHeader = ({
             Seguidos
           </div>
         </div>
-        {isOwner && (
-          <div className="flex items-end justify-end mb-2 mx-2">
-            <Button>Editar Perfil</Button>
+        {usernameLs === username && (
+          <div className="flex items-end justify-end mb-2 mx-2 ">
+            <button
+              className="flex rounded-lg items-center px-1 py-2
+             border border-colorPrimario bg-transparent hover:bg-colorHoverPrimario gap-x-2"
+            >
+              <BsPersonFillGear size={18} />
+              <span>Editar Perfil</span>
+            </button>
           </div>
         )}
       </div>

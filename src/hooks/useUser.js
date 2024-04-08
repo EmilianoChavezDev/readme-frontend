@@ -52,7 +52,33 @@ const useUserInfo = () => {
           user_id: user_id,
         },
       });
-      setData(response.data)
+      setData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+      setIsError(false);
+    }
+  };
+
+  const getUserLecturas = async (page) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/lecturas/lista_lecturas`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          page: page,
+        },
+      });
+      setData(response.data);
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
@@ -245,6 +271,7 @@ const useUserInfo = () => {
     isErrorProfile,
     isErrorProfileUpdate,
     getFollowFollowers,
+    getUserLecturas,
   };
 };
 
