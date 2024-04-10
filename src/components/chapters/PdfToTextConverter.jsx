@@ -1,42 +1,19 @@
-import { useState } from "react";
-import pdfjs from "pdfjs-dist";
+import { PdfReader } from "pdfreader";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
-const PdfToTextConverter = ({ onTextExtracted }) => {
-  const [pdfText, setPdfText] = useState("");
-
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = async (event) => {
-      const binaryString = event.target.result;
-      const pdfData = new Uint8Array(binaryString);
-      const pdf = await pdfjs.getDocument({ data: pdfData }).promise;
-
-      let textContent = "";
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const text = await page.getTextContent();
-        textContent += text.items.map((item) => item.str).join(" ");
-      }
-
-      setPdfText(textContent);
-      onTextExtracted(textContent);
-    };
-
-    reader.readAsArrayBuffer(file);
-  };
-
-  return (
-    <div>
-      <div>
-        <h3>Texto extraído del PDF:</h3>
-        <p>{pdfText}</p>
-      </div>
-    </div>
-  );
+const convertirPDFaTexto = async (archivoPDF) => {
+  const buffer = await archivoPDF.arrayBuffer();
+  const texto = [];
+  const reader = new PdfReader();
+  reader.parseBuffer(buffer, function (err, item) {
+    if (err) {
+      console.error(err);
+    } else if (!item) {
+      console.log("Fin del archivo");
+    } else if (item.text) {
+      texto.push(item.text);
+    }
+  });
+  return texto.join("\n");
 };
 
-export default PdfToTextConverter;
+export default convertirPDFaTexto;

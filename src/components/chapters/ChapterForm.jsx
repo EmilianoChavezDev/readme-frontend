@@ -10,7 +10,6 @@ import Editor from "@/components/chapters/Editor";
 import { useUser } from "@/contexts/UserProvider";
 import TitleInput from "@/components/chapters/TitleInput";
 import ChapterEditorHeader from "@/components/chapters/ChapterEditorHeader";
-import PdfToTextConverter from "@/components/chapters/PdfToTextConverter";
 
 export default function ChapterForm({
   bookId,
@@ -48,14 +47,6 @@ export default function ChapterForm({
 
   const handleSubmitPDF = (event) => {
     setFile(event.target.files[0]);
-    if (setFile) {
-      try {
-        console.log("Archivo PDF seleccionado:", setFile);
-      } catch (error) {
-        console.error("Error al procesar el archivo PDF:", error);
-        toast.error("Error al procesar el archivo PDF");
-      }
-    }
   };
 
   const handleSave = () => {

@@ -33,9 +33,6 @@ const ChapterEditorHeader = ({
         </div>
       </div>
       <div className="flex gap-4">
-        <span className="`bg-gray-600 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed`">
-          Subir PDF
-        </span>
         <input
           type="file"
           onChange={onSubmitPDF}
