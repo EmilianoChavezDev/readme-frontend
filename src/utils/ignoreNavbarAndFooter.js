@@ -3,6 +3,7 @@ const ignorePaths = [
   "/auth/registrarse",
   "/books/create",
   "/books/[id]/read",
+  "/search"
 ];
 
 export { ignorePaths };
