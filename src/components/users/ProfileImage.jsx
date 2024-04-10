@@ -67,7 +67,7 @@ const ProfileImageUploader = ({
             }`}
             style={{ zIndex: 50 }}
           >
-            Borrar perfil
+            Borrar foto de perfil
           </button>
         )}
       </div>

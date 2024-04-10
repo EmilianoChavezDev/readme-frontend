@@ -9,9 +9,6 @@ const page = () => {
   const router = useRouter();
   return (
     <>
-      <div>
-        <NavBar />
-      </div>
       <div className="flex flex-col">
         <div className="m-5 font-bold _lg:text-2xl _lg:my-8 _lg:ml-20 text-textHeaderColorGray">
           Mi cuenta
@@ -40,7 +37,7 @@ const page = () => {
 
             <li className="hover:cursor-pointer rounded-lg hover:shadow-lg transition-all transform duration-300 hover:scale-105">
               <button
-                onClick={() => router.push('/accounts/statistics')}
+                onClick={() => router.push("/accounts/statistics")}
                 className="flex items-center gap-x-3  py-4 px-2  _lg:py-6 _lg:flex-col _lg:text-left _lg:items-start _lg:gap-y-4 _lg:px-4"
               >
                 <div>

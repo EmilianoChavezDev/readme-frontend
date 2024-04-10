@@ -1,10 +1,11 @@
 import { useUser } from "@/contexts/UserProvider";
 import { useCallback, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import InputSearch from "./navbar/InputSearch";
 import Options from "./navbar/Options";
 import UserOptions from "./navbar/UserOptions";
 import MobileMenu from "./navbar/MobileMenu";
+import useCategory from "@/hooks/useCategory";
 
 const NavBar = ({ onSearch }) => {
   const { username, logout, expiration, isOpen, setIsOpen } = useUser();
@@ -13,9 +14,12 @@ const NavBar = ({ onSearch }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
+  const path = usePathname();
+  const {data:categories,fetchCategories,} = useCategory()
 
   useEffect(() => {
     setIsLoaded(true);
+    fetchCategories()
   }, []);
 
   useEffect(() => {
@@ -25,7 +29,8 @@ const NavBar = ({ onSearch }) => {
 
   useEffect(() => {
     if (!isLoaded) return;
-    if (!localStorage.getItem("token")) router.push("/auth/login");
+    if (!localStorage.getItem("token") & (path !== "/auth/registrarse"))
+      router.push("/auth/login");
   }, [isLoaded, router]);
 
   useEffect(() => {
@@ -70,7 +75,7 @@ const NavBar = ({ onSearch }) => {
   const handleSearch = () => {
     if (!search) return;
     const query = createQueryString("search", search);
-    router.push("/books/search" + "?" + query);
+    router.push("/search" + "?" + query);
     onSearch && onSearch();
   };
 
@@ -79,7 +84,7 @@ const NavBar = ({ onSearch }) => {
       <nav className="relative">
         <div className="_lg:justify-between _md:px-5 bg-colorPrimario _md:py-4  _lg:flex hidden">
           {/* parte de las opciones */}
-          <Options />
+          <Options  categories={categories}/>
           {/* parte del buscador */}
           <InputSearch
             value={search}
