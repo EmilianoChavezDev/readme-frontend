@@ -108,7 +108,7 @@ const Search = ({ }) => {
                             </div>
                             :
                             <>
-                                <div className="flex justify-center flex-col gap-10 px-10">
+                                <div className="flex justify-center flex-col gap-5 px-10">
                                 {findedBooks?.map((book, i) => <SearchItem key={i} book={book} />)}
                                 </div>
                                 <div className="flex justify-center p-3 my-4">
