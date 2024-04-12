@@ -23,13 +23,13 @@ const SearchItem = ({ book }) => {
         <div className="col-span-12 _md:col-span-7">
           <div className="flex flex-col">
             <div>
-              <Typography variant="h4" color="blue-gray">
+              <Typography variant="h5" color="blue-gray">
                 {book.titulo}
               </Typography>
             </div>
             <div className="-mt-2">
-              <Typography variant="lead" color="blue-gray">
-                <span className="font-bold">
+              <Typography variant="h7" color="blue-gray">
+                <span className="font-semibold">
                   {book.cantidad_capitulos_publicados}
                 </span>{" "}
                 partes publicadas

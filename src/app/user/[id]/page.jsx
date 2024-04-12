@@ -5,10 +5,11 @@ import Loader from "@/components/common/loader";
 import SearchItem from "@/components/search/SearchItem";
 import ProfileHeader from "@/components/users/ProfileHeader";
 import { ProfileInfoCard } from "@/components/users/ProfileInfoCard";
+import { UserCard } from "@/components/users/UserCard";
 import UserOption from "@/components/users/UserOption";
 import useBook from "@/hooks/useBook";
 import useUserInfo from "@/hooks/useUser";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 const page = ({ params }) => {
   const { getUserInformation, data } = useUserInfo();
@@ -22,6 +23,7 @@ const page = ({ params }) => {
   const [selectedOption, setSelectedOption] = useState("misLibros");
   const [arrBooks, setArrBooks] = useState([]);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [usernameLs, setUsernmeLs] = useState(null);
 
   useEffect(() => {
     getUserInformation(params.id);
@@ -32,6 +34,7 @@ const page = ({ params }) => {
     getFollowFollowers(data?.id);
     getUserLecturas(1, data?.id);
     getAllUserBooks(data?.id);
+    setUsernmeLs(localStorage.getItem("username"));
   }, [data]);
 
   const getAllUserBooks = async (id) => {
@@ -50,6 +53,14 @@ const page = ({ params }) => {
   useEffect(() => {
     console.log(arrBooks);
   }, [arrBooks]);
+
+  const isMyBook = useMemo(() => {
+    return usernameLs !== data?.username;
+  });
+
+  const hola = () => {
+    console.log("hola mundo");
+  };
 
   return (
     <>
@@ -98,12 +109,17 @@ const page = ({ params }) => {
                       6 libros publicados
                     </span>
                     <div className="flex flex-col gap-y-3 mt-3">
-                      {arrBooks?.data?.map((lectura) => (
-                        <MyBooksContainer
-                          key={lectura.id}
-                          libroData={lectura}
-                        />
-                      ))}
+                      {!isMyBook
+                        ? arrBooks?.data?.map((lectura) => (
+                            <MyBooksContainer
+                              key={lectura.id}
+                              libroData={lectura}
+                            />
+                          ))
+                        : arrBooks?.data?.map((lectura) => (
+                            <SearchItem key={lectura?.id} book={lectura} />
+                          ))}
+                      {}
                     </div>
                   </div>
                 </div>
@@ -126,7 +142,45 @@ const page = ({ params }) => {
                   </div>
                 </div>
               )}
-              {selectedOption === "seguidos" && <p>Seguidos</p>}
+              {selectedOption === "seguidos" && (
+                <p className="grid grid-col grid-cols-4 gap-2">
+                  <UserCard
+                    username={data?.username}
+                    nombre={data?.nombre}
+                    image={data?.profile}
+                    description={data?.descripcion}
+                    buttonProps={{ info: "seguir", onClick: hola }}
+                  />
+                  <UserCard
+                    username={data?.username}
+                    nombre={data?.nombre}
+                    image={data?.profile}
+                    description={data?.descripcion}
+                    buttonProps={{ info: "seguir", onClick: hola }}
+                  />
+                  <UserCard
+                    username={data?.username}
+                    nombre={data?.nombre}
+                    image={data?.profile}
+                    description={data?.descripcion}
+                    buttonProps={{ info: "seguir", onClick: hola }}
+                  />
+                  <UserCard
+                    username={data?.username}
+                    nombre={data?.nombre}
+                    image={data?.profile}
+                    description={data?.descripcion}
+                    buttonProps={{ info: "seguir", onClick: hola }}
+                  />
+                  <UserCard
+                    username={data?.username}
+                    nombre={data?.nombre}
+                    image={data?.profile}
+                    description={data?.descripcion}
+                    buttonProps={{ info: "seguir", onClick: hola }}
+                  />
+                </p>
+              )}
               {selectedOption === "seguidores" && <p>Seguidores</p>}
             </div>
           </div>
