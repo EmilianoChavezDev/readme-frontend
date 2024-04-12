@@ -1,12 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FaPlusCircle, FaListUl, FaFileAlt } from "react-icons/fa";
 
-const Options = () => {
+const Options = ({ categories, handleSearch = ()=>{} }) => {
   const [isOpenEscribir, setIsOpenEscribir] = useState(false);
   const [isOpenExplorar, setIsOpenExplorar] = useState(false);
 
@@ -34,6 +34,12 @@ const Options = () => {
     setIsOpenEscribir(false);
     router.push("/");
   };
+
+  const handleSearchByCategory = (category) => {  
+    const newRoute = "/search?category=" + category[0] + "&categoryTagName=" + category[1];
+    window.location.replace(newRoute)
+  }
+  
 
   return (
     <div
@@ -71,9 +77,8 @@ const Options = () => {
             <p>Explorar</p>
             <button
               type="button"
-              className={`_lg:flex _lg:items-center _lg:justify-center transition-all duration-200 transform ${
-                isOpenExplorar ? "rotate-180" : "rotate-0"
-              }`}
+              className={`_lg:flex _lg:items-center _lg:justify-center transition-all duration-200 transform ${isOpenExplorar ? "rotate-180" : "rotate-0"
+                }`}
               style={{ transition: "transform 0.3s" }}
             >
               <IoMdArrowDropdown size={18} />
@@ -86,9 +91,14 @@ const Options = () => {
           "
             >
               <ul className="_lg:my-2 _lg:gap-4 lg:gap-x-4 _lg:grid _lg:grid-cols-3 col-span-1">
-                <li className="hover:cursor-pointer hover:font-bold transition-all duration-300">
-                  Proximamente
-                </li>
+                {categories?.map((category, i) =>
+                  <li
+                    onClick={() => handleSearchByCategory(category)}
+                    key={i}
+                    className="hover:cursor-pointer hover:font-bold transition-all duration-300"
+                  >
+                    {category[1]}
+                  </li>)}
               </ul>
             </div>
           )}
@@ -118,9 +128,8 @@ const Options = () => {
             <p>Escribe</p>
             <button
               type="button"
-              className={`_lg:flex _lg:items-center _lg:justify-center transition-all duration-200 transform ${
-                isOpenEscribir ? "rotate-180" : "rotate-0"
-              }`}
+              className={`_lg:flex _lg:items-center _lg:justify-center transition-all duration-200 transform ${isOpenEscribir ? "rotate-180" : "rotate-0"
+                }`}
               style={{ transition: "transform 0.3s" }}
             >
               <IoMdArrowDropdown size={18} />
