@@ -3,7 +3,7 @@ import { Tooltip } from "@material-tailwind/react";
 
 const InputSearch = ({ value, onChange, onSearch }) => {
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       onSearch();
     }
   };
@@ -11,7 +11,7 @@ const InputSearch = ({ value, onChange, onSearch }) => {
   return (
     <div className="flex items-center _lg:flex-grow _xl:mr-64 _lg:mr-16 _xl:ml-16 _lg:ml-5 justify-center _md:w-96 w-80 py-2 _lg:py-0">
       <input
-        value={value}
+        value={value ?? ""}
         onChange={onChange}
         onKeyDown={handleKeyPress} // Agregar este evento
         type="text"
@@ -27,7 +27,7 @@ const InputSearch = ({ value, onChange, onSearch }) => {
           <AiOutlineSearch size={24} />
         </button>
       </Tooltip>
-    </div >
+    </div>
   );
 };
 

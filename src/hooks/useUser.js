@@ -63,7 +63,7 @@ const useUserInfo = () => {
     }
   };
 
-  const getUserLecturas = async (page) => {
+  const getUserLecturas = async (page, user_id) => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
@@ -76,6 +76,7 @@ const useUserInfo = () => {
         },
         params: {
           page: page,
+          user_id: user_id,
         },
       });
       setData(response.data);

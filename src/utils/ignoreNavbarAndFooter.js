@@ -5,7 +5,6 @@ const ignorePaths = [
   "/books/[id]/read",
   "/books/search",
   "/search",
-
 ];
 
 export { ignorePaths };
