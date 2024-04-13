@@ -181,7 +181,45 @@ const page = ({ params }) => {
                   />
                 </p>
               )}
-              {selectedOption === "seguidores" && <p>Seguidores</p>}
+              {selectedOption === "seguidores" && (
+                <p className="grid grid-col grid-cols-4 gap-2">
+                  <UserCard
+                    username={data?.username}
+                    nombre={data?.nombre}
+                    image={data?.profile}
+                    description={data?.descripcion}
+                    buttonProps={{ info: "seguir", onClick: hola }}
+                  />
+                  <UserCard
+                    username={data?.username}
+                    nombre={data?.nombre}
+                    image={data?.profile}
+                    description={data?.descripcion}
+                    buttonProps={{ info: "seguir", onClick: hola }}
+                  />
+                  <UserCard
+                    username={data?.username}
+                    nombre={data?.nombre}
+                    image={data?.profile}
+                    description={data?.descripcion}
+                    buttonProps={{ info: "seguir", onClick: hola }}
+                  />
+                  <UserCard
+                    username={data?.username}
+                    nombre={data?.nombre}
+                    image={data?.profile}
+                    description={data?.descripcion}
+                    buttonProps={{ info: "seguir", onClick: hola }}
+                  />
+                  <UserCard
+                    username={data?.username}
+                    nombre={data?.nombre}
+                    image={data?.profile}
+                    description={data?.descripcion}
+                    buttonProps={{ info: "eliminar", onClick: hola }}
+                  />
+                </p>
+              )}
             </div>
           </div>
         </div>
