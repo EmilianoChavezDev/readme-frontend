@@ -9,6 +9,7 @@ import ProfileImageUploader from "@/components/users/ProfileImage";
 import { ProfileInfoCard } from "@/components/users/ProfileInfoCard";
 import { UserCard } from "@/components/users/UserCard";
 import UserOption from "@/components/users/UserOption";
+import { useUser } from "@/contexts/UserProvider";
 import useBook from "@/hooks/useBook";
 import useUserInfo from "@/hooks/useUser";
 import { Button } from "@material-tailwind/react";
@@ -16,6 +17,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BsPersonFillGear } from "react-icons/bs";
 import { CiCamera } from "react-icons/ci";
+import toast from "react-hot-toast";
 
 const defaultValues = {
   username: "",
@@ -23,6 +25,7 @@ const defaultValues = {
 };
 
 const page = ({ params }) => {
+  const { refresh } = useUser();
   const { getUserInformation, data } = useUserInfo();
   const {
     getFollowFollowers,
@@ -30,6 +33,13 @@ const page = ({ params }) => {
     loading,
   } = useUserInfo();
   const { getUserLecturas, data: lecturas } = useUserInfo();
+  const {
+    updateUserInformation,
+    data: informacion,
+    isError,
+    isTrue,
+    message,
+  } = useUserInfo();
   const { getAllBooks } = useBook();
   const [selectedOption, setSelectedOption] = useState("misLibros");
   const [arrBooks, setArrBooks] = useState([]);
@@ -51,12 +61,29 @@ const page = ({ params }) => {
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
-    login(formData);
+    updateUserInformation(formData);
+    setIsEdit(!isEdit);
   };
 
   useEffect(() => {
     getUserInformation(params.id);
   }, []);
+
+  useEffect(() => {
+    getUserInformation(params.id);
+  }, [informacion]);
+
+  // si hay algun mensaje lanzo un toast con el mensaje
+  useEffect(() => {
+    if (isError && !isTrue) {
+      toast.error(message);
+      return;
+    }
+    if (isTrue && !isError) {
+      toast.success(message);
+      return;
+    }
+  }, [isError, isTrue]);
 
   useEffect(() => {
     if (!isDeleteProfile) return;
@@ -86,10 +113,6 @@ const page = ({ params }) => {
   const handleSelectOption = (option) => {
     setSelectedOption(option);
   };
-
-  useEffect(() => {
-    console.log(arrBooks);
-  }, [arrBooks]);
 
   const isMyBook = useMemo(() => {
     return usernameLs !== data?.username;
@@ -148,7 +171,7 @@ const page = ({ params }) => {
               <div className="flex gap-2">
                 <Button
                   className="px-2 py-2 flex text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
-                  onClick={handleEditChange}
+                  onClick={handleSubmit(onSubmit)}
                 >
                   <span className="flex items-center">Guardar Cambios</span>
                 </Button>
@@ -304,16 +327,20 @@ const page = ({ params }) => {
                     required={true}
                   />
                 </div>
-                <div className="h-auto">
-                  <InputField
-                    label={"Descripción"}
-                    type={"text"}
-                    onBlur={() => trigger("descripcion")}
-                    register={register}
-                    name={"descripcion"}
-                    required={false}
-                    className="h-64"
-                  />
+
+                <div className="w-72">
+                  <div className="relative w-full min-w-[200px]">
+                    <textarea
+                      className="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
+                      id="descripcion"
+                      rows="4"
+                      {...register("descripcion")}
+                      onBlur={() => trigger("descripcion")}
+                    ></textarea>
+                    <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                      Descripción
+                    </label>
+                  </div>
                 </div>
               </div>
             )}

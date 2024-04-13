@@ -222,6 +222,43 @@ const useUserInfo = () => {
     }
   };
 
+  const updateUserInformation = async (data) => {
+    console.log(data);
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/information`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        url,
+        {
+          fecha_de_nacimiento: data.fecha_nacimiento,
+          direccion: data.direccion,
+          descripcion: data.descripcion,
+          nacionalidad: data.nacionalidad,
+          nombre: data.nombre,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setData(response.data);
+      setMessage("Datos actualizado con exito");
+    } catch (error) {
+      console.log(error);
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const deleteProfile = async (password) => {
     setLoading(true);
     setIsTrue(false);
@@ -273,6 +310,7 @@ const useUserInfo = () => {
     isErrorProfileUpdate,
     getFollowFollowers,
     getUserLecturas,
+    updateUserInformation,
   };
 };
 
