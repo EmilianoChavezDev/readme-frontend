@@ -18,26 +18,6 @@ const UserOption = ({ isFollow, selectedOption, onSelectOption, username }) => {
     setSearch(searchParams.get("user"));
   }, [searchParams]);
 
-  const createQueryString = useCallback(
-    (name, value) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-      return params.toString();
-    },
-    [searchParams]
-  );
-
-  const handleSearchChange = ({ target }) => {
-    const { value } = target;
-    setSearch(value);
-  };
-
-  const handleSearch = () => {
-    if (!search) return;
-    const query = createQueryString("user", search);
-    router.push(`/${username}` + "?" + query);
-  };
-
   return (
     <>
       <div>

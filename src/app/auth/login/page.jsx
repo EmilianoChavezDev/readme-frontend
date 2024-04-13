@@ -101,7 +101,6 @@ const Page = () => {
               errors={errors}
               date={"username"}
               placeholder={"Nombre de usuario"}
-              message={"*Debe ingresar su nombre de usuario"}
             />
 
             {/*parte del password */}
@@ -117,7 +116,6 @@ const Page = () => {
               trigger={trigger}
               styles={styles}
               date={"password"}
-              message={"*Debe ingresar su contraseña"}
               placeholder={"Contraseña"}
             />
           </div>

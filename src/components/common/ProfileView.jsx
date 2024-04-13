@@ -19,7 +19,7 @@ const ProfileView = ({ username, imagen, size }) => {
         />
       ) : (
         <div
-          className={`flex items-center justify-center h-${size} w-${size} bg-textColorGray text-white rounded-full`}
+          className={`flex items-center justify-center h-${size} w-${size} bg-colorPrimario text-white rounded-full`}
         >
           {initials}
         </div>
