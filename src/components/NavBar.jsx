@@ -15,11 +15,11 @@ const NavBar = ({ onSearch }) => {
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
   const path = usePathname();
-  const {data:categories,fetchCategories,} = useCategory()
+  const { data: categories, fetchCategories } = useCategory();
 
   useEffect(() => {
     setIsLoaded(true);
-    fetchCategories()
+    fetchCategories();
   }, []);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const NavBar = ({ onSearch }) => {
       <nav className="relative">
         <div className="_lg:justify-between _md:px-5 bg-colorPrimario _md:py-4  _lg:flex hidden">
           {/* parte de las opciones */}
-          <Options  categories={categories}/>
+          <Options categories={categories} />
           {/* parte del buscador */}
           <InputSearch
             value={search}
