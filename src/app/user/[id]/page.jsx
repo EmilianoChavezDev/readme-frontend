@@ -33,6 +33,7 @@ const page = ({ params }) => {
     loading,
   } = useUserInfo();
   const { getUserLecturas, data: lecturas } = useUserInfo();
+  const { updateProfile, data: updProfile, isImageChange } = useUserInfo();
   const {
     updateUserInformation,
     data: informacion,
@@ -62,6 +63,7 @@ const page = ({ params }) => {
 
   const onSubmit = async (formData) => {
     updateUserInformation(formData);
+    updateProfile(profileImage);
     setIsEdit(!isEdit);
   };
 
@@ -71,7 +73,10 @@ const page = ({ params }) => {
 
   useEffect(() => {
     getUserInformation(params.id);
-  }, [informacion]);
+    if (updProfile) {
+      refresh(updProfile);
+    }
+  }, [informacion, updProfile]);
 
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
@@ -130,6 +135,30 @@ const page = ({ params }) => {
   };
 
   const handleImageChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
+
+      if (
+        fileExtension !== "png" &&
+        fileExtension !== "jpg" &&
+        fileExtension !== "jpeg"
+      ) {
+        toast.error("Solo se permiten archivos PNG, JPG o JPEG.");
+        return;
+      }
+      const reader = new FileReader();
+      setIsDeleteProfile(false);
+      setChangeImage(true);
+      reader.onload = (e) => {
+        setProfileImage(e.target.result);
+      };
+      reader.readAsDataURL(selectedFile);
+      setIsNotDisable(false);
+    }
+  };
+
+  const handlePortadaChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
@@ -213,7 +242,7 @@ const page = ({ params }) => {
                       id="profile-input"
                       style={{ display: "none" }}
                       accept="image/*"
-                      onChange={handleImageChange}
+                      onChange={handlePortadaChange}
                     />
                   </div>
 
