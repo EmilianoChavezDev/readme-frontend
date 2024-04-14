@@ -22,7 +22,7 @@ export default function ChapterForm({
   const { userId } = useUser();
   const { getBookByID, isLoading: isBookLoading, error: bookError } = useBook();
 
-  const [file, setFile] = useState(null);
+  const [pdf, setPdf] = useState(null);
   const [book, setBook] = useState(null);
   const [chapterTitle, setChapterTitle] = useState("");
   const [chapterContent, setChapterContent] = useState("");
@@ -45,10 +45,44 @@ export default function ChapterForm({
     return formData;
   };
 
-  const handleSubmitPDF = (event) => {
-    setFile(event.target.files[0]);
+  const handleSubmitPDF = (e) => {
+    const file = e.target.files[0];
+    if (!file || !(file instanceof Blob)) {
+      // Handle invalid file
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const arrayBuffer = e.target.result;
+      const uint8Array = new Uint8Array(arrayBuffer);
+      // Convertimos el pdf a texto
+      const text = await convertPDFToText(uint8Array);
+      setChapterContent(text);
+    };
+    reader.readAsArrayBuffer(file);
   };
 
+  // Convertimos todo el pdf a texto
+  const convertPDFToText = async (pdfData) => {
+    const pdfjs = await import("pdfjs-dist");
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
+    const loadingTask = pdfjs.getDocument({ data: pdfData });
+    const pdfDocument = await loadingTask.promise;
+    let textContent = [];
+
+    for (let i = 1; i <= pdfDocument.numPages; i++) {
+      const page = await pdfDocument.getPage(i);
+      const content = await page.getTextContent();
+
+      const text = content.items.map((item) => item.str).join("\n");
+      const formattedText = text.replace(/\n/g, "<br>"); // Reemplazar los saltos de línea
+      textContent.push(formattedText);
+    }
+
+    // Unir el texto de todas las páginas con saltos de línea
+    return textContent.join("\n");
+  };
   const handleSave = () => {
     if (!chapterTitle?.trim()?.length)
       return toast.error("El título del capítulo es requerido");
