@@ -20,10 +20,34 @@ import useReadBooks from "@/hooks/useReadBook";
 import Loader from "@/components/common/loader";
 import ReviewSelector from "@/components/books/ReviewSelector";
 import CommentsSection from "@/components/books/CommentsSection";
+import { Document, Page, Text, StyleSheet, pdf } from "@react-pdf/renderer";
+import { saveAs } from "file-saver";
+import { htmlToText, convert } from "html-to-text";
+
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: "column",
+    padding: 20,
+  },
+  chapterTitle: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  chapterContent: {
+    fontSize: 14,
+  },
+});
 
 export default function BookDetails({ params }) {
   const { getReadBook } = useReadBooks();
   const { getBookByID, isLoading, error } = useBook();
+  const {
+    downloadBook,
+    data: capitulos,
+    isDownloading,
+    getContentChapter,
+    contentChapter,
+  } = useReadBooks();
   const { createOrUpdateReview, getReviewByUserAndBook, deleteReview } =
     useReview();
   const { getFavoriteByUserAndBook, createFavorite, updateFavorite } =
@@ -108,6 +132,38 @@ export default function BookDetails({ params }) {
     }
   }, [book?.id]);
 
+  useEffect(() => {
+    if (!isDownloading) return;
+    generatePdf(book?.titulo, capitulos);
+  }, [isDownloading]);
+
+  const generatePdf = async (bookTitle, chaptersData) => {
+    const downloadedChapters = [];
+    // Función para obtener el contenido de un capítulo y guardarlo en el array
+    const downloadChapterContent = async (contenidoUrl) => {
+      await getContentChapter(contenidoUrl);
+      downloadedChapters.push(contentChapter);
+    };
+    await Promise.all(
+      chaptersData.map((chapter) => downloadChapterContent(chapter.contenido))
+    );
+    const cleanedChapters = downloadedChapters?.map(convert);
+    // Generar el documento PDF
+    const doc = (
+      <Document>
+        {chaptersData?.map((chapter, index) => (
+          <Page key={index} style={styles.page}>
+            <Text style={styles.chapterTitle}>{chapter.titulo}</Text>
+            <Text style={styles.chapterContent}>{cleanedChapters[index]}</Text>
+          </Page>
+        ))}
+      </Document>
+    );
+
+    // Convertir el documento a un Blob y guardarlo como PDF
+    const pdfBlob = await pdf(doc).toBlob();
+    saveAs(pdfBlob, `${bookTitle}.pdf`);
+  };
   return (
     <>
       <Modal
@@ -222,7 +278,7 @@ export default function BookDetails({ params }) {
                     </button>
                     <button
                       className="h-9 rounded-md bg-gray-500 hover:brightness-90"
-                      onClick={() => toast.error("Implementar en otro ticket")}
+                      onClick={() => downloadBook(book?.id)}
                     >
                       Descargar
                     </button>
