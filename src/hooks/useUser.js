@@ -158,17 +158,18 @@ const useUserInfo = () => {
     }
   };
 
-  const updateProfile = async (file, password) => {
+  const updateProfile = async (file) => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
+    setIsImageChange(false);
     setIsErrorProfileUpdate(false);
     const url = `${process.env.API_URL}/users/profile`;
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
     formData.append("profile", file);
-    formData.append("password", password);
+
     try {
       const response = await axios.put(url, formData, {
         headers: {
@@ -179,7 +180,8 @@ const useUserInfo = () => {
       setIsTrue(true);
       setIsError(false);
       setMessage("Datos actualizado con exito");
-      setCurrentData(response.data);
+      setData(response.data);
+      setIsImageChange(true);
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
@@ -214,6 +216,42 @@ const useUserInfo = () => {
       setCurrentData(response.data);
       setMessage("Datos actualizado con exito");
     } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateUserInformation = async (data) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/information`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        url,
+        {
+          fecha_de_nacimiento: data.fecha_nacimiento,
+          direccion: data.direccion,
+          descripcion: data.descripcion,
+          nacionalidad: data.nacionalidad,
+          nombre: data.nombre,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setData(response.data);
+      setMessage("Datos actualizado con exito");
+    } catch (error) {
+      console.log(error);
       setIsTrue(false);
       setIsError(true);
       setMessage(error.response.data.error);
@@ -273,6 +311,7 @@ const useUserInfo = () => {
     isErrorProfileUpdate,
     getFollowFollowers,
     getUserLecturas,
+    updateUserInformation,
   };
 };
 
