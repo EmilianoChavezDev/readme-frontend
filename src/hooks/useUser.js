@@ -37,6 +37,59 @@ const useUserInfo = () => {
     }
   };
 
+  const getFollowFollowers = async (user_id) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/cantseguidores`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          user_id: user_id,
+        },
+      });
+      setData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+      setIsError(false);
+    }
+  };
+
+  const getUserLecturas = async (page, user_id) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/lecturas/lista_lecturas`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          page: page,
+          user_id: user_id,
+        },
+      });
+      setData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+      setIsError(false);
+    }
+  };
+
   const updateUsername = async (newUsername, password) => {
     setLoading(true);
     setIsTrue(false);
@@ -218,6 +271,8 @@ const useUserInfo = () => {
     deleteProfile,
     isErrorProfile,
     isErrorProfileUpdate,
+    getFollowFollowers,
+    getUserLecturas,
   };
 };
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "@/app/books/mybooks/styles/mybooks.module.css";
 import Image from "next/image";
 import formatNumber from "@/utils/formatNumber";
@@ -20,11 +20,16 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
     puntuacion_media,
     cantidad_comentarios,
     categoria,
+    autorUsername,
   } = libroData;
 
   const toggleOptionBooks = () => {
     setShowOptionMenu(!showOptionMenu);
   };
+
+  const isMyBook = useMemo(() => {
+    return localStorage.getItem("username") !== autorUsername;
+  });
 
   return (
     <>
@@ -47,6 +52,10 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
               : `${publicados} partes publicadas`}{" "}
           </p>
           <p className={styles.txt_category}>Categoria: {categoria}</p>
+          {isMyBook && (
+            <p className={styles.txt_category}>Autor: {autorUsername}</p>
+          )}
+
           <div className={styles.data_FCV}>
             <div className={styles.dataFCV_container}>
               <FaEye size={15} color="black" className={styles.img_icons} />

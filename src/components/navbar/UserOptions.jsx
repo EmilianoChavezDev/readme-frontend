@@ -72,7 +72,7 @@ const UserOptions = ({ username, logout }) => {
             <ul className="my-2">
               <li
                 className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                onClick={() => router.push(`/user/${username}`)}
+                onClick={() => {router.push(`/user/${username}`), toggleDropdown()}}
               >
                 <FaUser className="inline-block mr-2" />
                 Mi Perfil
@@ -80,7 +80,7 @@ const UserOptions = ({ username, logout }) => {
 
               <li
                 className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                onClick={() => router.push(`/accounts`)}
+                onClick={() => {router.push(`/accounts`), toggleDropdown()}}
               >
                 <FaUserCircle className="inline-block mr-2" />
                 Mi cuenta

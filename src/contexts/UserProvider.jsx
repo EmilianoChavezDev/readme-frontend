@@ -101,6 +101,7 @@ export const UserProvider = ({ children }) => {
         profile,
         isOpen,
         setIsOpen,
+        profile,
       }}
     >
       {children}

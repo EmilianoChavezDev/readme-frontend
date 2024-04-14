@@ -24,7 +24,16 @@ const Search = ({}) => {
   const [findedBooks, setFindedBooks] = useState(null);
 
   const [selectedPoints, setSelectedPoints] = useState(0);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState(
+    searchParams.get("category")
+      ? [
+          {
+            value: searchParams.get("category"),
+            label: searchParams.get("categoryTagName"),
+          },
+        ]
+      : []
+  );
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -39,7 +48,14 @@ const Search = ({}) => {
     const response = await getAllBooks({
       page,
       titulo: searchParams.get("search") ?? "",
-      categorias: selectedCategories?.map((category) => category.value) ?? [],
+      categorias: [
+        ...new Set(
+          [
+            ...selectedCategories?.map((category) => category.value),
+            searchParams.get("category") ?? false,
+          ].filter((category) => category)
+        ),
+      ],
       puntuacion_media: selectedPoints ?? 0,
     });
     setCurrentPage(page);
@@ -62,7 +78,7 @@ const Search = ({}) => {
 
   const handleApplyFilters = () => {
     if (isLoading) return;
-    handlePageChange(currentPage);
+    handlePageChange(1);
   };
 
   return (
@@ -96,7 +112,13 @@ const Search = ({}) => {
           <>
             <div className="flex flex-col justify-start mt-3 px-16 mb-5">
               <Typography variant="h3" color="blue-gray">
-                Resultados de la Busqueda "{searchParams.get("search") ?? ""}"
+                {searchParams.get("search")
+                  ? `Resultados de la Búsqueda "${searchParams.get("search")}"`
+                  : searchParams.get("categoryTagName")
+                  ? `Resultados de la Categoría "${searchParams.get(
+                      "categoryTagName"
+                    )}"`
+                  : ""}
               </Typography>
               <Typography variant="lead" color="blue-gray" className="-mt-2">
                 {findedBooks && <span>{totalItems} resultados</span>}
