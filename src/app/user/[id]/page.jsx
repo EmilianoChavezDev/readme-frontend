@@ -47,6 +47,7 @@ const page = ({ params }) => {
   const [usernameLs, setUsernmeLs] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
+  const [portadaImage, setPortadaImage] = useState(null);
   const [changeImage, setChangeImage] = useState(false);
   const [fileInputKey, setFileInputKey] = useState(Date.now());
   const [isDeleteProfile, setIsDeleteProfile] = useState(false);
@@ -175,7 +176,7 @@ const page = ({ params }) => {
       setIsDeleteProfile(false);
       setChangeImage(true);
       reader.onload = (e) => {
-        setProfileImage(e.target.result);
+        setPortadaImage(e.target.result);
       };
       reader.readAsDataURL(selectedFile);
       setIsNotDisable(false);
