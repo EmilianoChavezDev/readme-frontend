@@ -76,7 +76,7 @@ export default function ChapterForm({
       const content = await page.getTextContent();
 
       const text = content.items.map((item) => item.str).join("\n");
-      const formattedText = text.replace(/\n/g, "<br>"); // Reemplazar los saltos de línea
+      const formattedText = text.replace(/\n\n+/g, "<br>"); // Reemplazar los saltos de línea
       textContent.push(formattedText);
     }
 
