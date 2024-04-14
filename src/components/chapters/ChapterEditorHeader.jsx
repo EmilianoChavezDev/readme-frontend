@@ -32,12 +32,22 @@ const ChapterEditorHeader = ({
           )}
         </div>
       </div>
-      <div className="flex gap-4">
-        <input
-          type="file"
-          onChange={onSubmitPDF}
-          className={`bg-gray-600 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed`}
-        />
+      <div className="flex gap-4 items-center">
+        <div style={{ display: "inline-block" }}>
+          <input
+            type="file"
+            onChange={onSubmitPDF}
+            className="hidden"
+            id="fileInput"
+          />
+          <label
+            htmlFor="fileInput"
+            className="bg-gray-600 text-white py-2 px-7 rounded-lg cursor-pointer"
+          >
+            Subir PDF
+          </label>
+        </div>
+
         <button
           disabled={disableButtons}
           onClick={onSave}
