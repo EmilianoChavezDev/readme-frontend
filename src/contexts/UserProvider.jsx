@@ -41,7 +41,7 @@ export const UserProvider = ({ children }) => {
     setFecha_nacimiento(data?.fecha_de_nacimiento);
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
-    router.push(`/user/${data.username}`);
+    router.push(`/accounts/edit/${data.username}`);
   };
 
   const logout = () => {

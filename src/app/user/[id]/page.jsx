@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { BsPersonFillGear } from "react-icons/bs";
 import { CiCamera } from "react-icons/ci";
 import toast from "react-hot-toast";
+import OptionsUpdate from "@/components/users/OptionsUpdate";
 
 const defaultValues = {
   username: "",
@@ -52,6 +53,7 @@ const page = ({ params }) => {
   const [fileInputKey, setFileInputKey] = useState(Date.now());
   const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [isNotDisable, setIsNotDisable] = useState(true);
+  const [isPortadaUpdate, setPortadaUpdate] = useState(false);
 
   const {
     register,
@@ -74,9 +76,6 @@ const page = ({ params }) => {
 
   useEffect(() => {
     getUserInformation(params.id);
-    if (updProfile) {
-      refresh(updProfile);
-    }
   }, [informacion, updProfile]);
 
   // si hay algun mensaje lanzo un toast con el mensaje
@@ -105,6 +104,7 @@ const page = ({ params }) => {
     getAllUserBooks(data?.id);
     setProfileImage(data?.profile);
     setUsernmeLs(localStorage.getItem("username"));
+    setPortadaImage(data?.portada);
   }, [data]);
 
   const getAllUserBooks = async (id) => {
@@ -189,6 +189,10 @@ const page = ({ params }) => {
     setChangeImage(false);
   };
 
+  const handleUpdate = () => {
+    setPortadaUpdate(!isPortadaUpdate);
+  };
+
   return (
     <>
       {loading ? (
@@ -224,28 +228,23 @@ const page = ({ params }) => {
                 <div
                   className="w-full h-full bg-cover bg-center"
                   style={{
-                    backgroundImage: data?.portada
-                      ? `url(${data?.portada})`
+                    backgroundImage: portadaImage
+                      ? `url(${portadaImage})`
                       : "linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent)",
                   }}
                 >
                   <div>
-                    <label htmlFor="profile-input" className="cursor-pointer">
-                      <div className="inline-block">
-                        <span className="rounded-lg mt-2 ml-2 px-2 py-2 flex items-center gap-1 text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white">
-                          <CiCamera size={18} />
-                          <span>Actualizar foto de portada</span>
-                        </span>
-                      </div>
-                    </label>
-                    <input
-                      type="file"
-                      id="profile-input"
-                      style={{ display: "none" }}
-                      accept="image/*"
-                      onChange={handlePortadaChange}
-                    />
+                    <div className="inline-block">
+                      <Button
+                        onClick={handleUpdate}
+                        className="rounded-lg mt-2 ml-2 px-2 py-2 flex items-center gap-1 text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
+                      >
+                        <CiCamera size={18} />
+                        <span>Editar foto de portada</span>
+                      </Button>
+                    </div>
                   </div>
+                  {isPortadaUpdate && <OptionsUpdate  />}
 
                   <div
                     className={`flex justify-center items-center h-full  ${
