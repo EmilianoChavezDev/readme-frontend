@@ -13,7 +13,7 @@ export function ProfileInfoCard({
   description,
 }) {
   return (
-    <Card className="_sm:w-80 _sm:h-96 w-72 rounded-xl shadow-lg">
+    <Card className="min-h-44 _md:min-h-screen rounded-xl shadow-lg">
       <CardBody>
         <div className="flex flex-col gap-y-4">
           {direction && nacionalidad && (

@@ -8,7 +8,7 @@ import { MdMoreVert } from "react-icons/md";
 import { FaStar, FaEye, FaComment } from "react-icons/fa";
 import OptionBooks from "@/components/books/mybooks/OptionsMenuBooks";
 
-const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
+const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted, canEdit=true }) => {
   const [showOptionMenu, setShowOptionMenu] = useState(false);
 
   const {
@@ -77,7 +77,7 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
             </div>
           </div>
         </div>
-        <div className={styles.write_content}>
+        {canEdit &&  <div className={styles.write_content}>
           <div className={styles.menu_container}>
             <div>
               {showOptionMenu && (
@@ -106,7 +106,7 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
               <span>Seguir escribiendo</span>
             </Link>
           </div>
-        </div>
+        </div>}
       </div>
     </>
   );
