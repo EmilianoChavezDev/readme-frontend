@@ -3,7 +3,7 @@ import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { Button } from "@material-tailwind/react";
 import { usePathname, useSearchParams } from "next/navigation";
 
-const UserOption = ({ isFollow, selectedOption, onSelectOption, username }) => {
+const UserOption = ({ isFollow, selectedOption, onSelectOption, username, handleFollow, handleUnfollow, id }) => {
   const [usernameLs, setUsernameLs] = useState(null);
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
@@ -17,6 +17,8 @@ const UserOption = ({ isFollow, selectedOption, onSelectOption, username }) => {
     if (!searchParams) return;
     setSearch(searchParams.get("user"));
   }, [searchParams]);
+
+  const isOwner = username === localStorage.getItem("username")
 
   return (
     <>
@@ -32,7 +34,7 @@ const UserOption = ({ isFollow, selectedOption, onSelectOption, username }) => {
               }`}
               onClick={() => onSelectOption("misLibros")}
             >
-              Mis libros
+              {isOwner ? "Mis libros" : "Libros"}
             </span>
             <span
               className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 hover:border-colorPrimario
@@ -73,14 +75,20 @@ const UserOption = ({ isFollow, selectedOption, onSelectOption, username }) => {
           {usernameLs !== username && (
             <div className="hover:cursor-pointer pb-2 text-xl hidden _sm:block">
               {isFollow ? (
-                <Button className="px-2 py-2 flex text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white">
+                <Button 
+                  className="px-2 py-2 flex text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
+                  onClick={() => handleUnfollow(id)}  
+                >
                   <span className="flex items-center">
                     <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
                     Dejar de seguir
                   </span>
                 </Button>
               ) : (
-                <Button className="px-2 py-2 flex text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white">
+                <Button 
+                  className="px-2 py-2 flex text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
+                  onClick={() => handleFollow(id)}
+                >
                   <span className="flex items-center">
                     <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
                     Seguir

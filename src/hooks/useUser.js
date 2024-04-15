@@ -254,6 +254,153 @@ const useUserInfo = () => {
     }
   };
 
+  const follow = async (userId) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/seguidors`;
+
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        url,
+        {
+          followed_id: userId
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getFollowers = async (userId,page) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/seguidores`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        url,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            user_id: userId,
+            page
+          }
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getFollowed = async (userId,page) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/seguidos`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        url,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            user_id: userId,
+            page
+          }
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const unfollow = async (userId) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/seguidors/`+userId;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(
+        url,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteFollower = async (userId) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/seguidors/seguidor/`+userId;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(
+        url,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const updateUserInformation = async (data) => {
     setLoading(true);
     setIsTrue(false);
@@ -350,6 +497,8 @@ const useUserInfo = () => {
     }
   };
 
+
+
   return {
     data,
     loading,
@@ -368,6 +517,11 @@ const useUserInfo = () => {
     isErrorProfileUpdate,
     getFollowFollowers,
     getUserLecturas,
+    follow,
+    unfollow,
+    deleteFollower,
+    getFollowers,
+    getFollowed,
     updateUserInformation,
     updatePortada,
     deletePortada,

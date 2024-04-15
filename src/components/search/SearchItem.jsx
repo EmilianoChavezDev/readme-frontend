@@ -28,7 +28,7 @@ const SearchItem = ({ book }) => {
               </Typography>
             </div>
             <div className="-mt-2">
-              <Typography variant="h7" color="blue-gray">
+              <Typography variant="h6" color="blue-gray">
                 <span className="font-semibold">
                   {book.cantidad_capitulos_publicados}
                 </span>{" "}
