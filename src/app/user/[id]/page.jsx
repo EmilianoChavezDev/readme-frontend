@@ -13,11 +13,12 @@ import { useUser } from "@/contexts/UserProvider";
 import useBook from "@/hooks/useBook";
 import useUserInfo from "@/hooks/useUser";
 import { Button } from "@material-tailwind/react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BsPersonFillGear } from "react-icons/bs";
 import { CiCamera } from "react-icons/ci";
 import toast from "react-hot-toast";
+import OptionsUpdate from "@/components/users/OptionsUpdate";
 
 const defaultValues = {
   username: "",
@@ -25,7 +26,7 @@ const defaultValues = {
 };
 
 const page = ({ params }) => {
-  const { refresh } = useUser();
+  const { setIsActualizado, setProfileUpdate, profileUpdate } = useUser();
   const { getUserInformation, data } = useUserInfo();
   const {
     getFollowFollowers,
@@ -33,7 +34,11 @@ const page = ({ params }) => {
     loading,
   } = useUserInfo();
   const { getUserLecturas, data: lecturas } = useUserInfo();
-  const { updateProfile, data: updProfile, isImageChange } = useUserInfo();
+  const { updateProfile, data: updProfile } = useUserInfo();
+  const { data: dltProfile, deleteProfile } = useUserInfo();
+  const { data: updPortada, updatePortada } = useUserInfo();
+  const { data: dltPortada, deletePortada } = useUserInfo();
+
   const {
     updateUserInformation,
     data: informacion,
@@ -46,37 +51,119 @@ const page = ({ params }) => {
   const [arrBooks, setArrBooks] = useState([]);
   const [usernameLs, setUsernmeLs] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
-  const [profileImage, setProfileImage] = useState(null);
-  const [changeImage, setChangeImage] = useState(false);
-  const [fileInputKey, setFileInputKey] = useState(Date.now());
-  const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [isNotDisable, setIsNotDisable] = useState(true);
+
+  //imagen
+  const [fileInputKey, setFileInputKey] = useState(Date.now());
+  const [profileImage, setProfileImage] = useState(null);
+  const [isDeleteProfile, setIsDeleteProfile] = useState(false);
+  const [isChangeImage, setIsChangeImage] = useState(false);
+
+  // portada
+  const [fileInputPortadaKey, setFileInputPortadaKey] = useState(Date.now());
+  const [portadaImage, setPortadaImage] = useState(null);
+  const [isPortadaUpdate, setIsPortadaUpdate] = useState(false);
+  const [isChangePortada, setIsChangePortada] = useState(false);
+  const [isDeletePortada, setIsDeletePortada] = useState(false);
+
+  const optionsRef = useRef();
 
   const {
     register,
     handleSubmit,
     trigger,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
     watch,
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
-    updateUserInformation(formData);
-    updateProfile(profileImage);
+    const currentDate = new Date();
+
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 15);
+
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 70);
+
+    const fechaNacimiento = new Date(formData.fecha_nacimiento);
+    const edad = (currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365);
+
+    if (edad > 12 && edad <= 120) {
+      updateUserInformation(formData);
+      if (isChangeImage) {
+        updateProfile(profileImage);
+      }
+
+      if (isDeleteProfile) {
+        deleteProfile();
+      }
+      if (isChangePortada && !isDeletePortada) {
+        updatePortada(portadaImage);
+      }
+      if (isDeletePortada) {
+        deletePortada();
+      }
+    } else if (edad <= 12) {
+      toast.error("Humm, Lo siento! Debes tener al menos 12 años");
+      return;
+    } else if (edad > 120) {
+      toast.error("Humm, lo siento! excedes el limite de edad");
+      return;
+    }
+
+    setIsActualizado(true);
     setIsEdit(!isEdit);
+    setIsPortadaUpdate(false);
   };
+
+  //efects
 
   useEffect(() => {
     getUserInformation(params.id);
   }, []);
 
   useEffect(() => {
-    getUserInformation(params.id);
-    if (updProfile) {
-      refresh(updProfile);
-    }
-  }, [informacion, updProfile]);
+    setIsNotDisable(false);
+  }, [isDirty]);
+
+  // actualizar la informacion si algo cambia
+  useEffect(
+    () => {
+      getUserInformation(params.id);
+    },
+    [informacion, updProfile, dltProfile, updPortada],
+    dltPortada
+  );
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Si el clic ocurre fuera del contenedor de OptionsUpdate, cierra el componente
+      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+        setIsPortadaUpdate(false);
+      }
+    };
+
+    // Agrega el event listener cuando el componente se monta
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Limpia el event listener cuando el componente se desmonta
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!data) return;
+    getFollowFollowers(data?.id);
+    getUserLecturas(1, data?.id);
+    getAllUserBooks(data?.id);
+    setProfileImage(data?.profile);
+    setUsernmeLs(localStorage.getItem("username"));
+    setPortadaImage(data?.portada);
+    setProfileUpdate(data?.profile);
+    setIsActualizado(true);
+  }, [data]);
 
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
@@ -90,6 +177,7 @@ const page = ({ params }) => {
     }
   }, [isError, isTrue]);
 
+  // si elimino la foto seteo todo los contenedores relacionados
   useEffect(() => {
     if (!isDeleteProfile) return;
     setIsNotDisable(false);
@@ -97,14 +185,12 @@ const page = ({ params }) => {
     setFileInputKey(Date.now());
   }, [isDeleteProfile]);
 
+  // si elimino el perfil seteo lo de portada
   useEffect(() => {
-    if (!data) return;
-    getFollowFollowers(data?.id);
-    getUserLecturas(1, data?.id);
-    getAllUserBooks(data?.id);
-    setProfileImage(data?.profile);
-    setUsernmeLs(localStorage.getItem("username"));
-  }, [data]);
+    if (!isDeletePortada) return;
+    setPortadaImage(null);
+    setFileInputPortadaKey(Date.now());
+  }, [isDeletePortada]);
 
   const getAllUserBooks = async (id) => {
     const option = {
@@ -115,6 +201,8 @@ const page = ({ params }) => {
     setArrBooks(bookData);
   };
 
+  // funciones
+
   const handleSelectOption = (option) => {
     setSelectedOption(option);
   };
@@ -123,8 +211,10 @@ const page = ({ params }) => {
     return usernameLs !== data?.username;
   });
 
-  const handleEditChange = () => {
-    setIsEdit(!isEdit);
+  const handleEditCancel = () => {
+    setPortadaImage(data?.portada);
+    setProfileImage(data?.profile);
+    setIsPortadaUpdate(false);
     reset({
       nombre: data?.nombre,
       direccion: data?.direccion,
@@ -132,9 +222,12 @@ const page = ({ params }) => {
       fecha_nacimiento: data?.fecha_de_nacimiento,
       descripcion: data?.descripcion,
     });
+    setIsEdit(!isEdit);
+    setIsNotDisable(true);
   };
 
   const handleImageChange = (event) => {
+    setIsChangeImage(true);
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
@@ -149,7 +242,6 @@ const page = ({ params }) => {
       }
       const reader = new FileReader();
       setIsDeleteProfile(false);
-      setChangeImage(true);
       reader.onload = (e) => {
         setProfileImage(e.target.result);
       };
@@ -159,6 +251,8 @@ const page = ({ params }) => {
   };
 
   const handlePortadaChange = (event) => {
+    setIsChangePortada(true);
+    console.log(event.target.files);
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
@@ -172,20 +266,30 @@ const page = ({ params }) => {
         return;
       }
       const reader = new FileReader();
-      setIsDeleteProfile(false);
-      setChangeImage(true);
+
       reader.onload = (e) => {
-        setProfileImage(e.target.result);
+        setPortadaImage(e.target.result);
       };
       reader.readAsDataURL(selectedFile);
       setIsNotDisable(false);
+      setIsPortadaUpdate(false);
     }
   };
 
   const handleDeleteProfile = () => {
     setFileInputKey(Date.now());
     setIsDeleteProfile(true);
-    setChangeImage(false);
+    setIsChangeImage(false);
+  };
+
+  const handleDeletePortada = () => {
+    setIsDeletePortada(true);
+    setIsPortadaUpdate(!isPortadaUpdate);
+    setIsNotDisable(false);
+  };
+
+  const handleUpdate = () => {
+    setIsPortadaUpdate(!isPortadaUpdate);
   };
 
   return (
@@ -201,12 +305,13 @@ const page = ({ params }) => {
                 <Button
                   className="px-2 py-2 flex text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
                   onClick={handleSubmit(onSubmit)}
+                  disabled={isNotDisable}
                 >
                   <span className="flex items-center">Guardar Cambios</span>
                 </Button>
                 <Button
                   className="px-2 py-2 flex text-black border border-textColorGray bg-white hover:bg-textHeaderColorGray hover:text-white"
-                  onClick={handleEditChange}
+                  onClick={handleEditCancel}
                 >
                   <span className="flex items-center">Cancelar</span>
                 </Button>
@@ -223,33 +328,40 @@ const page = ({ params }) => {
                 <div
                   className="w-full h-full bg-cover bg-center"
                   style={{
-                    backgroundImage: data?.portada
-                      ? `url(${data?.portada})`
+                    backgroundImage: portadaImage
+                      ? `url(${portadaImage})`
                       : "linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent)",
                   }}
                 >
                   <div>
-                    <label htmlFor="profile-input" className="cursor-pointer">
-                      <div className="inline-block">
-                        <span className="rounded-lg mt-2 ml-2 px-2 py-2 flex items-center gap-1 text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white">
-                          <CiCamera size={18} />
-                          <span>Actualizar foto de portada</span>
-                        </span>
-                      </div>
-                    </label>
-                    <input
-                      type="file"
-                      id="profile-input"
-                      style={{ display: "none" }}
-                      accept="image/*"
-                      onChange={handlePortadaChange}
-                    />
+                    <div className="inline-block">
+                      <Button
+                        onClick={handleUpdate}
+                        className="rounded-lg mt-2 ml-2 px-2 py-2 flex items-center gap-1 text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
+                      >
+                        <CiCamera size={18} />
+                        <span>Editar foto de portada</span>
+                      </Button>
+                    </div>
                   </div>
+                  {isPortadaUpdate && (
+                    <div ref={optionsRef}>
+                      <OptionsUpdate
+                        handleUpdate={handlePortadaChange}
+                        handleDelete={handleDeletePortada}
+                        portada={portadaImage}
+                        fileInputPortadaKey={fileInputPortadaKey}
+                      />
+                    </div>
+                  )}
 
                   <div
                     className={`flex justify-center items-center h-full  ${
                       isDeleteProfile && "mb-11"
-                    }`}
+                    }
+                    
+                    ${!profileImage && "mb-11"}
+                    `}
                   >
                     <ProfileImageUploader
                       username={data?.username}
@@ -258,7 +370,7 @@ const page = ({ params }) => {
                       handleDeleteProfile={handleDeleteProfile}
                       isDeleteProfile={isDeleteProfile}
                       setProfileImage={setProfileImage}
-                      key={fileInputKey}
+                      fileInputKey={fileInputKey}
                     />
                   </div>
                 </div>
@@ -280,7 +392,7 @@ const page = ({ params }) => {
                       <span>Editar Perfil</span>
                     </div>
                   ),
-                  onClick: handleEditChange,
+                  onClick: handleEditCancel,
                 }}
               />
             )}
@@ -328,7 +440,7 @@ const page = ({ params }) => {
                 </div>
                 <div>
                   <InputField
-                    label={"Direccion"}
+                    label={"Dirección"}
                     type={"text"}
                     onBlur={() => trigger("direccion")}
                     register={register}
@@ -428,35 +540,35 @@ const page = ({ params }) => {
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                 </p>
               )}
@@ -467,28 +579,28 @@ const page = ({ params }) => {
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
@@ -497,7 +609,7 @@ const page = ({ params }) => {
                     description={data?.descripcion}
                     buttonProps={{
                       info: "eliminar",
-                      onClick: handleEditChange,
+                      onClick: handleEditCancel,
                     }}
                   />
                 </p>

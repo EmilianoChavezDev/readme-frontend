@@ -21,7 +21,7 @@ const CapMenu = ({ capitulo }) => {
             onClick={() =>
               getCurrentChapterById(capitulo?.libro_id, capitulo?.id, false)
             }
-            className={`col-span-1 hover:font-semibold hover:cursor-pointer ${
+            className={` col-span-1 hover:font-semibold hover:cursor-pointer ${
               index === capMapp.length - 1 ? "" : "border-b-2 pb-2"
             }`}
           >
