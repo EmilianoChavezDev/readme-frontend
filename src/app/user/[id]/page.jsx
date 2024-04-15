@@ -546,6 +546,7 @@ const page = ({ params }) => {
               />
             )}
           </div>
+
           <div
             className={`bg-white ${
               isEdit ? "pointer-events-none opacity-50" : ""
@@ -562,7 +563,8 @@ const page = ({ params }) => {
             />
           </div>
 
-          <div className="flex mx-auto _lg:w-5/6 mt-4 gap-x-4">
+          {/**Container information */}
+          <div className="flex flex-col _lg:flex-row justify-between mx-auto w-auto _lg:w-5/6 mt-4 gap-x-4">
             <div className={`${isEdit ? "hidden" : "block"} _lg:w-1/4 w-1/6`}>
               <ProfileInfoCard
                 direction={data?.direccion}
@@ -572,75 +574,12 @@ const page = ({ params }) => {
                 description={data?.descripcion}
               />
             </div>
-            {isEdit && (
-              <div className="flex flex-col w-1/2 mx-auto items-center justify-center min-h-full rounded-lg p-6 bg-white shadow-lg gap-y-4">
-                <span className="w-4/6 mx-auto text-sm mb-4">
-                  La información que introduzcas aquí, incluyendo tu nombre de
-                  usuario, foto de perfil e imagen de fondo, serán visibles a
-                  otros usuarios. Ten cuidado al momento de publicar información
-                  valiosa.
-                </span>
-                <div>
-                  <InputField
-                    label={"Nombre"}
-                    type={"text"}
-                    onBlur={() => trigger("nombre")}
-                    register={register}
-                    name={"nombre"}
-                    required={false}
-                  />
-                </div>
-                <div>
-                  <InputField
-                    label={"Dirección"}
-                    type={"text"}
-                    onBlur={() => trigger("direccion")}
-                    register={register}
-                    name={"direccion"}
-                    required={false}
-                  />
-                </div>
-                <div>
-                  <InputField
-                    label={"Nacionalidad"}
-                    type={"text"}
-                    onBlur={() => trigger("nacionalidad")}
-                    register={register}
-                    name={"nacionalidad"}
-                    required={false}
-                  />
-                </div>
-                <div>
-                  <InputField
-                    label={"Fecha de nacimiento"}
-                    type={"date"}
-                    onBlur={() => trigger("fecha_nacimiento")}
-                    register={register}
-                    name={"fecha_nacimiento"}
-                    required={true}
-                  />
-                </div>
 
-                <div className="w-72">
-                  <div className="relative w-full min-w-[200px]">
-                    <textarea
-                      className="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
-                      id="descripcion"
-                      rows="4"
-                      {...register("descripcion")}
-                      onBlur={() => trigger("descripcion")}
-                    ></textarea>
-                    <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                      Descripción
-                    </label>
-                  </div>
-                </div>
-              </div>
-            )}
+            {/**Container datos */}
             <div
               className={`${
                 isEdit ? "hidden" : "block"
-              } flex flex-col _lg:w-full _sm:w-1/2 h-full rounded-xl p-6 bg-white shadow-lg`}
+              } flex flex-col mx-auto h-full rounded-xl _lg:p-6 bg-white shadow-lg _lg:w-full w-full lg:pl-4`}
             >
               {selectedOption === "misLibros" && (
                 <div>
@@ -876,6 +815,71 @@ const page = ({ params }) => {
               )}
             </div>
           </div>
+          {isEdit && (
+            <div className="flex flex-col w-1/2 mx-auto items-center justify-center min-h-full rounded-lg p-6 bg-white shadow-lg gap-y-4">
+              <span className="w-4/6 mx-auto text-sm mb-4">
+                La información que introduzcas aquí, incluyendo tu nombre de
+                usuario, foto de perfil e imagen de fondo, serán visibles a
+                otros usuarios. Ten cuidado al momento de publicar información
+                valiosa.
+              </span>
+              <div>
+                <InputField
+                  label={"Nombre"}
+                  type={"text"}
+                  onBlur={() => trigger("nombre")}
+                  register={register}
+                  name={"nombre"}
+                  required={false}
+                />
+              </div>
+              <div>
+                <InputField
+                  label={"Dirección"}
+                  type={"text"}
+                  onBlur={() => trigger("direccion")}
+                  register={register}
+                  name={"direccion"}
+                  required={false}
+                />
+              </div>
+              <div>
+                <InputField
+                  label={"Nacionalidad"}
+                  type={"text"}
+                  onBlur={() => trigger("nacionalidad")}
+                  register={register}
+                  name={"nacionalidad"}
+                  required={false}
+                />
+              </div>
+              <div>
+                <InputField
+                  label={"Fecha de nacimiento"}
+                  type={"date"}
+                  onBlur={() => trigger("fecha_nacimiento")}
+                  register={register}
+                  name={"fecha_nacimiento"}
+                  required={true}
+                />
+              </div>
+
+              <div className="w-72">
+                <div className="relative w-full min-w-[200px]">
+                  <textarea
+                    className="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
+                    id="descripcion"
+                    rows="4"
+                    {...register("descripcion")}
+                    onBlur={() => trigger("descripcion")}
+                  ></textarea>
+                  <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                    Descripción
+                  </label>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>

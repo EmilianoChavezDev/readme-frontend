@@ -34,7 +34,7 @@ export function UserCard({
   });
 
   return (
-    <Card className="mt-6 w-64 min-h-52 py-4 overflow-hidden bg-buttonColorGray rounded-3xl shadow-xl">
+    <Card className="mt-6 _lg:w-64 min-h-52 py-4 overflow-hidden bg-buttonColorGray rounded-3xl shadow-xl">
       <div
         onClick={() => router.push(`/user/${username}`)}
         className="flex items-center justify-between mx-4 hover:cursor-pointer"
