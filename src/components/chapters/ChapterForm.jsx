@@ -22,7 +22,6 @@ export default function ChapterForm({
   const { userId } = useUser();
   const { getBookByID, isLoading: isBookLoading, error: bookError } = useBook();
 
-  const [pdf, setPdf] = useState(null);
   const [book, setBook] = useState(null);
   const [chapterTitle, setChapterTitle] = useState("");
   const [chapterContent, setChapterContent] = useState("");
