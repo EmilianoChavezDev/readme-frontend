@@ -22,12 +22,12 @@ import {
 } from "chart.js";
 
 import useBook from "@/hooks/useBook";
-import NavBar from "@/components/NavBar";
 import useReport from "@/hooks/useReport";
 import useCategory from "@/hooks/useCategory";
 import Loader from "@/components/common/loader";
 import Pagination from "@/components/common/Pagination";
 import { IoIosArrowRoundUp } from "react-icons/io";
+
 
 ChartJS.register(
   CategoryScale,
@@ -147,6 +147,7 @@ export default function Page() {
       fetchDailyReadingsPerBook();
     }
   }, [bookSelected]);
+
 
   useEffect(() => {
     if (categoriesArray?.length) {

@@ -152,10 +152,22 @@ export default function BookDetails({ params }) {
                   </div>
                 </div>
                 <div className="flex-grow p-3 flex flex-col gap-3">
-                  <h1 className="font-extrabold text-xl">{book?.titulo}</h1>
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold">Autor:</span>
-                    <span className="font-light">{book?.autorUsername}</span>
+
+                  <div className="flex flex-col gap-1">
+                    <h1 className="font-extrabold text-xl">{book?.titulo}</h1>
+                    <div className="flex items-center text-sm gap-2">
+                      <span className="font-semibold">Categoria:</span>
+                      <span className="font-light">{book?.categoria}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold">Autor:</span>
+                      <span className="font-light transition-all duration-100 hover:scale-105 hover:font-semibold">
+                        <Link href={`/user/${book?.autorUsername}`}>
+                          <span>{book?.autorUsername}</span>
+                        </Link>
+                      </span>
+                    </div>
+
                   </div>
                   <div className="flex">
                     <div className="flex flex-col items-center flex-grow pr-2">

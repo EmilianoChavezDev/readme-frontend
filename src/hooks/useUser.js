@@ -37,6 +37,59 @@ const useUserInfo = () => {
     }
   };
 
+  const getFollowFollowers = async (user_id) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/cantseguidores`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          user_id: user_id,
+        },
+      });
+      setData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+      setIsError(false);
+    }
+  };
+
+  const getUserLecturas = async (page, user_id) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/lecturas/lista_lecturas`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          page: page,
+          user_id: user_id,
+        },
+      });
+      setData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+      setIsError(false);
+    }
+  };
+
   const updateUsername = async (newUsername, password) => {
     setLoading(true);
     setIsTrue(false);
@@ -80,7 +133,7 @@ const useUserInfo = () => {
     const url = `${process.env.API_URL}/users/password`;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.put(
+      await axios.put(
         url,
         {
           current_password: oldPassword,
@@ -105,17 +158,18 @@ const useUserInfo = () => {
     }
   };
 
-  const updateProfile = async (file, password) => {
+  const updateProfile = async (file) => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
+    setIsImageChange(false);
     setIsErrorProfileUpdate(false);
     const url = `${process.env.API_URL}/users/profile`;
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
     formData.append("profile", file);
-    formData.append("password", password);
+
     try {
       const response = await axios.put(url, formData, {
         headers: {
@@ -126,11 +180,42 @@ const useUserInfo = () => {
       setIsTrue(true);
       setIsError(false);
       setMessage("Datos actualizado con exito");
-      setCurrentData(response.data);
+      setData(response.data);
+      setIsImageChange(true);
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
       setIsErrorProfileUpdate(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updatePortada = async (file) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/portada`;
+    const token = localStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("portada", file);
+
+    try {
+      const response = await axios.put(url, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setIsTrue(true);
+      setIsError(false);
+      setMessage("Datos actualizado con exito");
+      setData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
       setMessage(error.response.data.error);
     } finally {
       setLoading(false);
@@ -169,18 +254,18 @@ const useUserInfo = () => {
     }
   };
 
-  const deleteProfile = async (password) => {
+  const follow = async (userId) => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
-    setIsErrorProfile(false);
-    const url = `${process.env.API_URL}/users/delete_profile`;
+    const url = `${process.env.API_URL}/seguidors`;
+
     const token = localStorage.getItem("token");
     try {
       const response = await axios.post(
         url,
         {
-          password: password,
+          followed_id: userId,
         },
         {
           headers: {
@@ -191,11 +276,209 @@ const useUserInfo = () => {
       setIsTrue(true);
       setIsError(false);
       setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getFollowers = async (userId, page) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/seguidores`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          user_id: userId,
+          page,
+        },
+      });
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getFollowed = async (userId, page) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/seguidos`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          user_id: userId,
+          page,
+        },
+      });
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const unfollow = async (userId) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/seguidors/` + userId;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteFollower = async (userId) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/seguidors/seguidor/` + userId;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateUserInformation = async (data) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/information`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        url,
+        {
+          fecha_de_nacimiento: data.fecha_nacimiento,
+          direccion: data.direccion,
+          descripcion: data.descripcion,
+          nacionalidad: data.nacionalidad,
+          nombre: data.nombre,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setData(response.data);
+      setMessage("Datos actualizado con exito");
+    } catch (error) {
+      console.log(error);
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteProfile = async () => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    setIsErrorProfile(false);
+    const url = `${process.env.API_URL}/users/delete_profile`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setData(response.data);
       setMessage("Datos actualizado con exito");
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
       setIsErrorProfile(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deletePortada = async () => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/delete_portada`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setData(response.data);
+      setMessage("Datos actualizado con exito");
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
       setMessage(error.response.data.error);
     } finally {
       setLoading(false);
@@ -218,6 +501,16 @@ const useUserInfo = () => {
     deleteProfile,
     isErrorProfile,
     isErrorProfileUpdate,
+    getFollowFollowers,
+    getUserLecturas,
+    follow,
+    unfollow,
+    deleteFollower,
+    getFollowers,
+    getFollowed,
+    updateUserInformation,
+    updatePortada,
+    deletePortada,
   };
 };
 

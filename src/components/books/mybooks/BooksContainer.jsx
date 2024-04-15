@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "@/app/books/mybooks/styles/mybooks.module.css";
 import Image from "next/image";
 import formatNumber from "@/utils/formatNumber";
@@ -8,7 +8,7 @@ import { MdMoreVert } from "react-icons/md";
 import { FaStar, FaEye, FaComment } from "react-icons/fa";
 import OptionBooks from "@/components/books/mybooks/OptionsMenuBooks";
 
-const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
+const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted, canEdit=true }) => {
   const [showOptionMenu, setShowOptionMenu] = useState(false);
 
   const {
@@ -20,11 +20,16 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
     puntuacion_media,
     cantidad_comentarios,
     categoria,
+    autorUsername,
   } = libroData;
 
   const toggleOptionBooks = () => {
     setShowOptionMenu(!showOptionMenu);
   };
+
+  const isMyBook = useMemo(() => {
+    return localStorage.getItem("username") !== autorUsername;
+  });
 
   return (
     <>
@@ -40,13 +45,22 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
           />
         </div>
         <div className={styles.books_data_container}>
-          <p className={styles.title_book}>{titulo}</p>
+          <p className={styles.title_book}>
+            <Link href={"/books/"+libroId}>
+             {titulo}  
+            </Link>
+           
+            </p>
           <p className={styles.txt_public_parts}>
             {Number(publicados) === 1
               ? `${publicados} parte publicada`
               : `${publicados} partes publicadas`}{" "}
           </p>
           <p className={styles.txt_category}>Categoria: {categoria}</p>
+          {isMyBook && (
+            <p className={styles.txt_category}>Autor: {autorUsername}</p>
+          )}
+
           <div className={styles.data_FCV}>
             <div className={styles.dataFCV_container}>
               <FaEye size={15} color="black" className={styles.img_icons} />
@@ -68,7 +82,7 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
             </div>
           </div>
         </div>
-        <div className={styles.write_content}>
+        {canEdit &&  <div className={styles.write_content}>
           <div className={styles.menu_container}>
             <div>
               {showOptionMenu && (
@@ -97,7 +111,7 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
               <span>Seguir escribiendo</span>
             </Link>
           </div>
-        </div>
+        </div>}
       </div>
     </>
   );
