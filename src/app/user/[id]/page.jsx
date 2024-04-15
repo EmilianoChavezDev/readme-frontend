@@ -1,5 +1,5 @@
 "use client";
-import Layout from "@/components/common/Layout";
+
 import useUserInfo from "@/hooks/useUser";
 import MyBooksContainer from "@/components/books/mybooks/BooksContainer";
 import InputField from "@/components/common/InputField";
@@ -12,12 +12,10 @@ import { UserCard } from "@/components/users/UserCard";
 import UserOption from "@/components/users/UserOption";
 import { useUser } from "@/contexts/UserProvider";
 import useBook from "@/hooks/useBook";
-import useUserInfo from "@/hooks/useUser";
 import { IconButton, Spinner, Typography } from "@material-tailwind/react";
-import { all } from "axios";
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { AiOutlineUserDelete } from "react-icons/ai";
-import { FaArrowDown, FaUpload } from "react-icons/fa";
+import { FaArrowDown } from "react-icons/fa";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { Button } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
