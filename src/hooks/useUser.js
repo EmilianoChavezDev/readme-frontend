@@ -265,7 +265,7 @@ const useUserInfo = () => {
       const response = await axios.post(
         url,
         {
-          followed_id: userId
+          followed_id: userId,
         },
         {
           headers: {
@@ -285,25 +285,22 @@ const useUserInfo = () => {
     }
   };
 
-  const getFollowers = async (userId,page) => {
+  const getFollowers = async (userId, page) => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
     const url = `${process.env.API_URL}/seguidores`;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            user_id: userId,
-            page
-          }
-        }
-      );
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          user_id: userId,
+          page,
+        },
+      });
       setIsTrue(true);
       setIsError(false);
       setCurrentData(response.data);
@@ -316,25 +313,22 @@ const useUserInfo = () => {
     }
   };
 
-  const getFollowed = async (userId,page) => {
+  const getFollowed = async (userId, page) => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
     const url = `${process.env.API_URL}/seguidos`;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            user_id: userId,
-            page
-          }
-        }
-      );
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          user_id: userId,
+          page,
+        },
+      });
       setIsTrue(true);
       setIsError(false);
       setCurrentData(response.data);
@@ -351,17 +345,14 @@ const useUserInfo = () => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
-    const url = `${process.env.API_URL}/seguidors/`+userId;
+    const url = `${process.env.API_URL}/seguidors/` + userId;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.delete(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setIsTrue(true);
       setIsError(false);
       setCurrentData(response.data);
@@ -378,17 +369,14 @@ const useUserInfo = () => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
-    const url = `${process.env.API_URL}/seguidors/seguidor/`+userId;
+    const url = `${process.env.API_URL}/seguidors/seguidor/` + userId;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.delete(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setIsTrue(true);
       setIsError(false);
       setCurrentData(response.data);
@@ -472,7 +460,7 @@ const useUserInfo = () => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
-    const url = `${process.env.API_URL}/users/delete_profile`;
+    const url = `${process.env.API_URL}/users/delete_portada`;
     const token = localStorage.getItem("token");
     try {
       const response = await axios.post(
@@ -496,8 +484,6 @@ const useUserInfo = () => {
       setLoading(false);
     }
   };
-
-
 
   return {
     data,

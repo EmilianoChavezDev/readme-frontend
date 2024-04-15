@@ -13,9 +13,9 @@ export function ProfileInfoCard({
   description,
 }) {
   return (
-    <Card className="min-h-44 _md:min-h-screen rounded-xl shadow-lg">
+    <Card className="w-80 _sm:h-96 _lg:w-72 rounded-xl shadow-lg">
       <CardBody>
-        <div className="flex flex-col gap-y-4">
+        <div className="flex flex-col gap-y-4 ">
           {direction && nacionalidad && (
             <div className="flex items-center gap-2">
               <RiMapPin2Fill size={18} />
