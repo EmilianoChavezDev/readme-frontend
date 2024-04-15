@@ -2,6 +2,9 @@ import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { FaBirthdayCake } from "react-icons/fa";
 import { RiMapPin2Fill } from "react-icons/ri";
 import { AiOutlinePaperClip } from "react-icons/ai";
+
+
+
 import moment from "moment";
 import "moment/locale/es";
 
@@ -13,6 +16,7 @@ export function ProfileInfoCard({
   description,
 }) {
   return (
+
     <Card className="w-80 _sm:h-96 _lg:w-72 rounded-xl shadow-lg">
       <CardBody>
         <div className="flex flex-col gap-y-4 ">
