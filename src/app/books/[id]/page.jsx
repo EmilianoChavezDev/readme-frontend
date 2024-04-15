@@ -22,19 +22,21 @@ import ReviewSelector from "@/components/books/ReviewSelector";
 import CommentsSection from "@/components/books/CommentsSection";
 import { Document, Page, Text, StyleSheet, pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
-import { htmlToText, convert } from "html-to-text";
+import { convert } from "html-to-text";
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
-    padding: 20,
+    padding: 10,
   },
   chapterTitle: {
     fontSize: 20,
     marginBottom: 10,
   },
   chapterContent: {
-    fontSize: 14,
+    fontSize: 10,
+    padding: 0,
+    marginBottom: 0,
   },
 });
 
@@ -139,7 +141,7 @@ export default function BookDetails({ params }) {
 
   const generatePdf = async (bookTitle, chaptersData) => {
     const downloadedChapters = [];
-    // Función para obtener el contenido de un capítulo y guardarlo en el array
+
     const downloadChapterContent = async (contenidoUrl) => {
       await getContentChapter(contenidoUrl);
       downloadedChapters.push(contentChapter);
@@ -148,7 +150,7 @@ export default function BookDetails({ params }) {
       chaptersData.map((chapter) => downloadChapterContent(chapter.contenido))
     );
     const cleanedChapters = downloadedChapters?.map(convert);
-    // Generar el documento PDF
+
     const doc = (
       <Document>
         {chaptersData?.map((chapter, index) => (
@@ -160,7 +162,6 @@ export default function BookDetails({ params }) {
       </Document>
     );
 
-    // Convertir el documento a un Blob y guardarlo como PDF
     const pdfBlob = await pdf(doc).toBlob();
     saveAs(pdfBlob, `${bookTitle}.pdf`);
   };
