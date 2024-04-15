@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const ProfileView = ({ username, imagen, size }) => {
+const ProfileView = ({ username, imagen, size, color = "textColorGray" }) => {
   const initials = username
     ?.split(" ")
     ?.map((word) => word[0])
@@ -19,7 +19,7 @@ const ProfileView = ({ username, imagen, size }) => {
         />
       ) : (
         <div
-          className={`flex items-center justify-center h-${size} w-${size} bg-colorPrimario text-white rounded-full`}
+          className={`flex items-center justify-center h-${size} w-${size} bg-tex  bg-${color} text-white rounded-full`}
         >
           {initials}
         </div>

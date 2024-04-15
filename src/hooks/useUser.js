@@ -133,7 +133,7 @@ const useUserInfo = () => {
     const url = `${process.env.API_URL}/users/password`;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.put(
+      await axios.put(
         url,
         {
           current_password: oldPassword,
@@ -158,17 +158,18 @@ const useUserInfo = () => {
     }
   };
 
-  const updateProfile = async (file, password) => {
+  const updateProfile = async (file) => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
+    setIsImageChange(false);
     setIsErrorProfileUpdate(false);
     const url = `${process.env.API_URL}/users/profile`;
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
     formData.append("profile", file);
-    formData.append("password", password);
+
     try {
       const response = await axios.put(url, formData, {
         headers: {
@@ -179,11 +180,42 @@ const useUserInfo = () => {
       setIsTrue(true);
       setIsError(false);
       setMessage("Datos actualizado con exito");
-      setCurrentData(response.data);
+      setData(response.data);
+      setIsImageChange(true);
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
       setIsErrorProfileUpdate(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updatePortada = async (file) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/portada`;
+    const token = localStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("portada", file);
+
+    try {
+      const response = await axios.put(url, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setIsTrue(true);
+      setIsError(false);
+      setMessage("Datos actualizado con exito");
+      setData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
       setMessage(error.response.data.error);
     } finally {
       setLoading(false);
@@ -222,46 +254,12 @@ const useUserInfo = () => {
     }
   };
 
-  const deleteProfile = async (password) => {
-    setLoading(true);
-    setIsTrue(false);
-    setIsError(false);
-    setIsErrorProfile(false);
-    const url = `${process.env.API_URL}/users/delete_profile`;
-    const token = localStorage.getItem("token");
-    try {
-      const response = await axios.post(
-        url,
-        {
-          password: password,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setIsTrue(true);
-      setIsError(false);
-      setCurrentData(response.data);
-      setMessage("Datos actualizado con exito");
-    } catch (error) {
-      setIsTrue(false);
-      setIsError(true);
-      setIsErrorProfile(true);
-      setMessage(error.response.data.error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  
-
   const follow = async (userId) => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
     const url = `${process.env.API_URL}/seguidors`;
+
     const token = localStorage.getItem("token");
     try {
       const response = await axios.post(
@@ -403,6 +401,103 @@ const useUserInfo = () => {
     }
   };
 
+  const updateUserInformation = async (data) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/information`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        url,
+        {
+          fecha_de_nacimiento: data.fecha_nacimiento,
+          direccion: data.direccion,
+          descripcion: data.descripcion,
+          nacionalidad: data.nacionalidad,
+          nombre: data.nombre,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setData(response.data);
+      setMessage("Datos actualizado con exito");
+    } catch (error) {
+      console.log(error);
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteProfile = async () => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    setIsErrorProfile(false);
+    const url = `${process.env.API_URL}/users/delete_profile`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setData(response.data);
+      setMessage("Datos actualizado con exito");
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setIsErrorProfile(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deletePortada = async () => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/delete_profile`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        url,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setData(response.data);
+      setMessage("Datos actualizado con exito");
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
 
   return {
     data,
@@ -426,7 +521,10 @@ const useUserInfo = () => {
     unfollow,
     deleteFollower,
     getFollowers,
-    getFollowed
+    getFollowed,
+    updateUserInformation,
+    updatePortada,
+    deletePortada,
   };
 };
 

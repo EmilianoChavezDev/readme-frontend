@@ -45,7 +45,12 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted, canEdit=true }) 
           />
         </div>
         <div className={styles.books_data_container}>
-          <p className={styles.title_book}>{titulo}</p>
+          <p className={styles.title_book}>
+            <Link href={"/books/"+libroId}>
+             {titulo}  
+            </Link>
+           
+            </p>
           <p className={styles.txt_public_parts}>
             {Number(publicados) === 1
               ? `${publicados} parte publicada`
