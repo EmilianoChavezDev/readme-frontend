@@ -13,11 +13,21 @@ sm:text-sm  sm:right-auto left-3 mt-1
           className={`col-span-1 hover:font-semibold hover:cursor-pointer
           `}
         >
-          Subir foto de portada
+          <label htmlFor="profile-input" className="cursor-pointer">
+            <div className="inline-block">Subir foto de portada</div>
+            <input
+              type="file"
+              id="profile-input"
+              style={{ display: "none" }}
+              accept="image/*"
+              onChange={handleUpdate}
+            />
+          </label>
         </li>
         <li
           className={`col-span-1 hover:font-semibold hover:cursor-pointer
           `}
+          onClick={handleDelete}
         >
           Eliminar foto de portada
         </li>

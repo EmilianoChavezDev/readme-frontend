@@ -34,7 +34,11 @@ const page = ({ params }) => {
     loading,
   } = useUserInfo();
   const { getUserLecturas, data: lecturas } = useUserInfo();
-  const { updateProfile, data: updProfile, isImageChange } = useUserInfo();
+  const { updateProfile, data: updProfile } = useUserInfo();
+  const { data: dltProfile, deleteProfile } = useUserInfo();
+  const { data: updPortada, updatePortada } = useUserInfo();
+  const { data: dltPortada, deletePortada } = useUserInfo();
+
   const {
     updateUserInformation,
     data: informacion,
@@ -49,11 +53,14 @@ const page = ({ params }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [portadaImage, setPortadaImage] = useState(null);
-  const [changeImage, setChangeImage] = useState(false);
   const [fileInputKey, setFileInputKey] = useState(Date.now());
   const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [isNotDisable, setIsNotDisable] = useState(true);
-  const [isPortadaUpdate, setPortadaUpdate] = useState(false);
+  const [isPortadaUpdate, setIsPortadaUpdate] = useState(false);
+
+  const [isChangeImage, setIsChangeImage] = useState(false);
+  const [isChangePortada, setIsChangePortada] = useState(false);
+  const [isDeletePortada, setIsDeletePortada] = useState(false);
 
   const {
     register,
@@ -66,17 +73,35 @@ const page = ({ params }) => {
 
   const onSubmit = async (formData) => {
     updateUserInformation(formData);
-    updateProfile(profileImage);
+    if (isChangeImage) {
+      updateProfile(profileImage);
+    }
+
+    if (isDeleteProfile) {
+      deleteProfile();
+    }
+    if (isChangePortada && !isDeletePortada) {
+      updatePortada(portadaImage);
+    }
+    if (isDeletePortada) {
+      deletePortada();
+    }
+
     setIsEdit(!isEdit);
+    setIsPortadaUpdate(false);
   };
 
   useEffect(() => {
     getUserInformation(params.id);
   }, []);
 
-  useEffect(() => {
-    getUserInformation(params.id);
-  }, [informacion, updProfile]);
+  useEffect(
+    () => {
+      getUserInformation(params.id);
+    },
+    [informacion, updProfile, dltProfile, updPortada],
+    dltPortada
+  );
 
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
@@ -96,6 +121,12 @@ const page = ({ params }) => {
     setProfileImage(null);
     setFileInputKey(Date.now());
   }, [isDeleteProfile]);
+
+  useEffect(() => {
+    if (!isDeletePortada) return;
+    console.log("entro");
+    setPortadaImage(null);
+  }, [isDeletePortada]);
 
   useEffect(() => {
     if (!data) return;
@@ -124,8 +155,10 @@ const page = ({ params }) => {
     return usernameLs !== data?.username;
   });
 
-  const handleEditChange = () => {
-    setIsEdit(!isEdit);
+  const handleEditCancel = () => {
+    setPortadaImage(data?.portada);
+    setProfileImage(data?.profile);
+    setIsPortadaUpdate(false);
     reset({
       nombre: data?.nombre,
       direccion: data?.direccion,
@@ -133,9 +166,11 @@ const page = ({ params }) => {
       fecha_nacimiento: data?.fecha_de_nacimiento,
       descripcion: data?.descripcion,
     });
+    setIsEdit(!isEdit);
   };
 
   const handleImageChange = (event) => {
+    setIsChangeImage(true);
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
@@ -150,7 +185,6 @@ const page = ({ params }) => {
       }
       const reader = new FileReader();
       setIsDeleteProfile(false);
-      setChangeImage(true);
       reader.onload = (e) => {
         setProfileImage(e.target.result);
       };
@@ -160,6 +194,7 @@ const page = ({ params }) => {
   };
 
   const handlePortadaChange = (event) => {
+    setIsChangePortada(true);
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
@@ -173,24 +208,31 @@ const page = ({ params }) => {
         return;
       }
       const reader = new FileReader();
-      setIsDeleteProfile(false);
-      setChangeImage(true);
+
       reader.onload = (e) => {
         setPortadaImage(e.target.result);
       };
       reader.readAsDataURL(selectedFile);
       setIsNotDisable(false);
+      setIsPortadaUpdate(false);
     }
   };
 
   const handleDeleteProfile = () => {
     setFileInputKey(Date.now());
     setIsDeleteProfile(true);
-    setChangeImage(false);
+    setIsChangeImage(false);
+  };
+
+  const handleDeletePortada = () => {
+    console.log("entro");
+    setIsDeletePortada(true);
+    setIsChangePortada(false);
+    setIsPortadaUpdate(!isPortadaUpdate);
   };
 
   const handleUpdate = () => {
-    setPortadaUpdate(!isPortadaUpdate);
+    setIsPortadaUpdate(!isPortadaUpdate);
   };
 
   return (
@@ -211,7 +253,7 @@ const page = ({ params }) => {
                 </Button>
                 <Button
                   className="px-2 py-2 flex text-black border border-textColorGray bg-white hover:bg-textHeaderColorGray hover:text-white"
-                  onClick={handleEditChange}
+                  onClick={handleEditCancel}
                 >
                   <span className="flex items-center">Cancelar</span>
                 </Button>
@@ -244,12 +286,20 @@ const page = ({ params }) => {
                       </Button>
                     </div>
                   </div>
-                  {isPortadaUpdate && <OptionsUpdate  />}
+                  {isPortadaUpdate && (
+                    <OptionsUpdate
+                      handleUpdate={handlePortadaChange}
+                      handleDelete={handleDeletePortada}
+                    />
+                  )}
 
                   <div
                     className={`flex justify-center items-center h-full  ${
                       isDeleteProfile && "mb-11"
-                    }`}
+                    }
+                    
+                    ${!profileImage && "mb-11"}
+                    `}
                   >
                     <ProfileImageUploader
                       username={data?.username}
@@ -280,7 +330,7 @@ const page = ({ params }) => {
                       <span>Editar Perfil</span>
                     </div>
                   ),
-                  onClick: handleEditChange,
+                  onClick: handleEditCancel,
                 }}
               />
             )}
@@ -428,35 +478,35 @@ const page = ({ params }) => {
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                 </p>
               )}
@@ -467,28 +517,28 @@ const page = ({ params }) => {
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
                     nombre={data?.nombre}
                     image={data?.profile}
                     description={data?.descripcion}
-                    buttonProps={{ info: "seguir", onClick: handleEditChange }}
+                    buttonProps={{ info: "seguir", onClick: handleEditCancel }}
                   />
                   <UserCard
                     username={data?.username}
@@ -497,7 +547,7 @@ const page = ({ params }) => {
                     description={data?.descripcion}
                     buttonProps={{
                       info: "eliminar",
-                      onClick: handleEditChange,
+                      onClick: handleEditCancel,
                     }}
                   />
                 </p>
