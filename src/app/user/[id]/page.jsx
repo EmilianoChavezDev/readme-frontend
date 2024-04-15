@@ -212,8 +212,11 @@ const page = ({ params }) => {
     setProfileImage(data?.profile);
     setUsernmeLs(localStorage.getItem("username"));
     setPortadaImage(data?.portada);
-    setProfileUpdate(data?.profile);
-    setIsActualizado(true);
+
+    if (data?.username == usernameLs) {
+      setProfileUpdate(data?.profile);
+      setIsActualizado(true);
+    }
   }, [data]);
 
   useEffect(() => {
@@ -815,7 +818,7 @@ const page = ({ params }) => {
                     )}
                     {allFollowers?.map((follower) => (
                       <div
-                        className="col-span-12 _md:col-span-6"
+                        className="col-span-12 _md:col-span-2"
                         key={follower?.id}
                       >
                         <UserCard
