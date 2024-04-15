@@ -9,6 +9,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import ProfileView from "../common/ProfileView";
+import Link from "next/link";
 
 export function UserCard({
   username,
@@ -16,13 +17,16 @@ export function UserCard({
   image,
   description,
   canDelete = false,
+  canFollow = true,
   deleteButtonProps: { deleteInfo = "", onDelete = () => { } } = {},
-  buttonProps: { info, onClick = () => { } },
+  buttonProps: { info, onClick = () => { } } = {},
 }) {
   return (
     <Card className="mt-6 w-64 min-h-52 py-4 overflow-hidden bg-buttonColorGray rounded-3xl shadow-xl">
       <div className="flex items-center justify-between mx-4 hover:cursor-pointer">
-        <span className="font-bold _md:text-lg">{nombre}</span>
+        <Link href={"/user/"+username}>
+          <span className="font-bold _md:text-lg">{nombre?.lenght ? nombre : username}</span>
+        </Link>
         <ProfileView username={username} imagen={image} size={12} />
       </div>
       <CardBody className="_md:h-40 overflow-hidden">
@@ -31,8 +35,8 @@ export function UserCard({
         </Typography>
       </CardBody>
 
-      <CardFooter className="flex flex-row justify-center gap-x-3">
-      {canDelete &&  <div>
+      {canFollow && <CardFooter className="flex flex-row justify-center gap-x-3">
+        {canDelete && <div>
           <IconButton
             className="border border-red-800 bg-none text-red-800 bg-transparent hover:bg-red-800 hover:text-white"
             onClick={onDelete}
@@ -49,7 +53,7 @@ export function UserCard({
           </Button>
         </div>
 
-      </CardFooter>
+      </CardFooter> }
     </Card>
   );
 }
