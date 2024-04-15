@@ -78,12 +78,8 @@ const page = ({ params }) => {
   }, [isError, isTrue]);
 
   useEffect(() => {
-    if (!data) return;
-    if (usernameValue !== data?.username) setIsNotDisable(false);
-    if (fechaValue !== data?.fecha_de_nacimiento) setIsNotDisable(false);
-    if (newPassword !== "") setIsNotDisable(false);
-    if (confirmNewPassword !== "") setIsNotDisable(false);
-  }, [data, isDirty, newPassword, confirmNewPassword]);
+    setIsNotDisable(false);
+  }, [isDirty]);
 
   // si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
   useEffect(() => {
