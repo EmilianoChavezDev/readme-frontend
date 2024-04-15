@@ -152,6 +152,7 @@ export default function BookDetails({ params }) {
                   </div>
                 </div>
                 <div className="flex-grow p-3 flex flex-col gap-3">
+
                   <div className="flex flex-col gap-1">
                     <h1 className="font-extrabold text-xl">{book?.titulo}</h1>
                     <div className="flex items-center text-sm gap-2">
@@ -166,6 +167,7 @@ export default function BookDetails({ params }) {
                         </Link>
                       </span>
                     </div>
+
                   </div>
                   <div className="flex">
                     <div className="flex flex-col items-center flex-grow pr-2">

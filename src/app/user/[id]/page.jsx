@@ -1,5 +1,6 @@
 "use client";
 
+import useUserInfo from "@/hooks/useUser";
 import MyBooksContainer from "@/components/books/mybooks/BooksContainer";
 import InputField from "@/components/common/InputField";
 import Loader from "@/components/common/loader";
@@ -11,12 +12,10 @@ import { UserCard } from "@/components/users/UserCard";
 import UserOption from "@/components/users/UserOption";
 import { useUser } from "@/contexts/UserProvider";
 import useBook from "@/hooks/useBook";
-import useUserInfo from "@/hooks/useUser";
 import { IconButton, Spinner, Typography } from "@material-tailwind/react";
-import { all } from "axios";
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { AiOutlineUserDelete } from "react-icons/ai";
-import { FaArrowDown, FaUpload } from "react-icons/fa";
+import { FaArrowDown } from "react-icons/fa";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { Button } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
@@ -740,7 +739,7 @@ const page = ({ params }) => {
               )}
               {selectedOption === "seguidos" && (
                 <div>
-                  <div className="grid grid-cols-12 gap-x-20 gap-y-10">
+                  <div className="grid grid-col _lg:grid-cols-4 grid-cols-2 gap-2">
                     {!allFollowed.length && (
                       <div className="col-span-12 flex flex-col justify-center text-center">
                         <Typography variant="h4">
@@ -753,7 +752,7 @@ const page = ({ params }) => {
                     )}
                     {allFollowed?.map((followed) => (
                       <div
-                        className="col-span-12 _md:col-span-6"
+                        className="grid grid-col _lg:grid-cols-4 grid-cols-1 _lg:gap-2"
                         key={followed?.id}
                       >
                         <UserCard
@@ -803,7 +802,7 @@ const page = ({ params }) => {
               )}
               {selectedOption === "seguidores" && (
                 <div>
-                  <div className="grid grid-cols-12 gap-x-20 gap-y-10">
+                  <div className="grid grid-col grid-cols-4 gap-1">
                     {!allFollowers.length && (
                       <div className="col-span-12 flex flex-col justify-center text-center">
                         <Typography variant="h4">
@@ -817,16 +816,13 @@ const page = ({ params }) => {
                       </div>
                     )}
                     {allFollowers?.map((follower) => (
-                      <div
-                        className="col-span-12 _md:col-span-2"
-                        key={follower?.id}
-                      >
+                      <div key={follower?.id}>
                         <UserCard
                           username={
                             follower?.username ??
                             "Nombre de Usuario no encotrado"
                           }
-                          nombre={follower?.nombre ?? "Nombre no encontrado"}
+                          nombre={follower?.nombre ?? follower?.username}
                           image={follower?.profile}
                           description={follower?.descripcion ?? ""}
                           canDelete={usernameLs === data?.username}

@@ -485,6 +485,37 @@ const useUserInfo = () => {
     }
   };
 
+  const searchUsers = async (username,page) => {
+    setLoading(true);
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/find_by_username/`+username;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        url,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            page
+          }
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data);
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   return {
     data,
     loading,
@@ -511,6 +542,7 @@ const useUserInfo = () => {
     updateUserInformation,
     updatePortada,
     deletePortada,
+    searchUsers
   };
 };
 
