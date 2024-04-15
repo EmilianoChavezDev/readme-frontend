@@ -36,7 +36,12 @@ const ProfileHeader = ({
         }}
       >
         <div className="flex justify-center items-center h-full mt-4">
-          <ProfileView username={username} imagen={profile} size={44} />
+          <ProfileView
+            username={username}
+            imagen={profile}
+            size={44}
+            color="colorPrimario"
+          />
         </div>
         <div className="flex flex-col items-center justify-center mt-2 ">
           <span className="font-bold drop-shadow-2xl">{name}</span>

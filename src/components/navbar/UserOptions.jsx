@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FaUserCircle, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
@@ -10,8 +10,9 @@ import { useUser } from "@/contexts/UserProvider";
 const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { getUserInformation, data } = useUserInfo();
-  const { isActualizado, setIsActualizado } = useUser();
+  const { isActualizado, setIsActualizado, profileUpdate } = useUser();
   const router = useRouter();
+  const userMenuRef = useRef();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -25,7 +26,20 @@ const UserOptions = ({ username, logout }) => {
   useEffect(() => {
     if (!isActualizado) return;
     getUserInformation(username);
+    setIsActualizado(false);
   }, [isActualizado]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -35,7 +49,7 @@ const UserOptions = ({ username, logout }) => {
   "
       >
         <div className="mr-1">
-          <ProfileView username={username} imagen={data?.profile} size={8} />
+          <ProfileView username={username} imagen={profileUpdate} size={8} />
         </div>
         <div className="flex items-center gap-x-1" onClick={toggleDropdown}>
           <span className="cursor-pointer _lg:text-sm text-lg">{username}</span>
@@ -61,7 +75,10 @@ const UserOptions = ({ username, logout }) => {
 
         <div className="relative">
           {isOpen && (
-            <div className="_lg:absolute z-10 bg-white border border-gray-200 shadow-lg p-2 mt-2 -right-2 top-7 text-black w-40 ">
+            <div
+              ref={userMenuRef}
+              className="_lg:absolute z-10 bg-white border border-gray-200 shadow-lg p-2 mt-2 -right-2 top-7 text-black w-40 "
+            >
               <ul className="my-2">
                 <li
                   className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"

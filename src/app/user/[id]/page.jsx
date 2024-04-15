@@ -13,7 +13,7 @@ import { useUser } from "@/contexts/UserProvider";
 import useBook from "@/hooks/useBook";
 import useUserInfo from "@/hooks/useUser";
 import { Button } from "@material-tailwind/react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BsPersonFillGear } from "react-icons/bs";
 import { CiCamera } from "react-icons/ci";
@@ -26,7 +26,7 @@ const defaultValues = {
 };
 
 const page = ({ params }) => {
-  const { setIsActualizado } = useUser();
+  const { setIsActualizado, setProfileUpdate, profileUpdate } = useUser();
   const { getUserInformation, data } = useUserInfo();
   const {
     getFollowFollowers,
@@ -51,24 +51,29 @@ const page = ({ params }) => {
   const [arrBooks, setArrBooks] = useState([]);
   const [usernameLs, setUsernmeLs] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
-  const [profileImage, setProfileImage] = useState(null);
-  const [portadaImage, setPortadaImage] = useState(null);
-  const [fileInputKey, setFileInputKey] = useState(Date.now());
-  const [fileInputPortadaKey, setFileInputPortadaKey] = useState(Date.now());
-  const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [isNotDisable, setIsNotDisable] = useState(true);
-  const [isPortadaUpdate, setIsPortadaUpdate] = useState(false);
 
+  //imagen
+  const [fileInputKey, setFileInputKey] = useState(Date.now());
+  const [profileImage, setProfileImage] = useState(null);
+  const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [isChangeImage, setIsChangeImage] = useState(false);
+
+  // portada
+  const [fileInputPortadaKey, setFileInputPortadaKey] = useState(Date.now());
+  const [portadaImage, setPortadaImage] = useState(null);
+  const [isPortadaUpdate, setIsPortadaUpdate] = useState(false);
   const [isChangePortada, setIsChangePortada] = useState(false);
   const [isDeletePortada, setIsDeletePortada] = useState(false);
+
+  const optionsRef = useRef();
 
   const {
     register,
     handleSubmit,
     trigger,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
     watch,
   } = useForm({ defaultValues });
 
@@ -84,7 +89,7 @@ const page = ({ params }) => {
     const fechaNacimiento = new Date(formData.fecha_nacimiento);
     const edad = (currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365);
 
-    if (edad > 15 && edad <= 70) {
+    if (edad > 12 && edad <= 120) {
       updateUserInformation(formData);
       if (isChangeImage) {
         updateProfile(profileImage);
@@ -99,10 +104,11 @@ const page = ({ params }) => {
       if (isDeletePortada) {
         deletePortada();
       }
-    } else if (edad <= 15) {
-      toast.error("Debes ser mayor a 15 años!");
+    } else if (edad <= 12) {
+      toast.error("Humm, Lo siento! Debes tener al menos 12 años");
       return;
-    } else if (edad > 70) {
+    } else if (edad > 120) {
+      toast.error("Humm, lo siento! excedes el limite de edad");
       return;
     }
 
@@ -111,10 +117,17 @@ const page = ({ params }) => {
     setIsPortadaUpdate(false);
   };
 
+  //efects
+
   useEffect(() => {
     getUserInformation(params.id);
   }, []);
 
+  useEffect(() => {
+    setIsNotDisable(false);
+  }, [isDirty]);
+
+  // actualizar la informacion si algo cambia
   useEffect(
     () => {
       getUserInformation(params.id);
@@ -122,6 +135,35 @@ const page = ({ params }) => {
     [informacion, updProfile, dltProfile, updPortada],
     dltPortada
   );
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Si el clic ocurre fuera del contenedor de OptionsUpdate, cierra el componente
+      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+        setIsPortadaUpdate(false);
+      }
+    };
+
+    // Agrega el event listener cuando el componente se monta
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Limpia el event listener cuando el componente se desmonta
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!data) return;
+    getFollowFollowers(data?.id);
+    getUserLecturas(1, data?.id);
+    getAllUserBooks(data?.id);
+    setProfileImage(data?.profile);
+    setUsernmeLs(localStorage.getItem("username"));
+    setPortadaImage(data?.portada);
+    setProfileUpdate(data?.profile);
+    setIsActualizado(true);
+  }, [data]);
 
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
@@ -135,6 +177,7 @@ const page = ({ params }) => {
     }
   }, [isError, isTrue]);
 
+  // si elimino la foto seteo todo los contenedores relacionados
   useEffect(() => {
     if (!isDeleteProfile) return;
     setIsNotDisable(false);
@@ -142,21 +185,12 @@ const page = ({ params }) => {
     setFileInputKey(Date.now());
   }, [isDeleteProfile]);
 
+  // si elimino el perfil seteo lo de portada
   useEffect(() => {
     if (!isDeletePortada) return;
     setPortadaImage(null);
     setFileInputPortadaKey(Date.now());
   }, [isDeletePortada]);
-
-  useEffect(() => {
-    if (!data) return;
-    getFollowFollowers(data?.id);
-    getUserLecturas(1, data?.id);
-    getAllUserBooks(data?.id);
-    setProfileImage(data?.profile);
-    setUsernmeLs(localStorage.getItem("username"));
-    setPortadaImage(data?.portada);
-  }, [data]);
 
   const getAllUserBooks = async (id) => {
     const option = {
@@ -166,6 +200,8 @@ const page = ({ params }) => {
     const bookData = await getAllBooks(option);
     setArrBooks(bookData);
   };
+
+  // funciones
 
   const handleSelectOption = (option) => {
     setSelectedOption(option);
@@ -187,6 +223,7 @@ const page = ({ params }) => {
       descripcion: data?.descripcion,
     });
     setIsEdit(!isEdit);
+    setIsNotDisable(true);
   };
 
   const handleImageChange = (event) => {
@@ -215,6 +252,7 @@ const page = ({ params }) => {
 
   const handlePortadaChange = (event) => {
     setIsChangePortada(true);
+    console.log(event.target.files);
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
@@ -246,8 +284,8 @@ const page = ({ params }) => {
 
   const handleDeletePortada = () => {
     setIsDeletePortada(true);
-    setIsChangePortada(false);
     setIsPortadaUpdate(!isPortadaUpdate);
+    setIsNotDisable(false);
   };
 
   const handleUpdate = () => {
@@ -267,6 +305,7 @@ const page = ({ params }) => {
                 <Button
                   className="px-2 py-2 flex text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
                   onClick={handleSubmit(onSubmit)}
+                  disabled={isNotDisable}
                 >
                   <span className="flex items-center">Guardar Cambios</span>
                 </Button>
@@ -306,12 +345,14 @@ const page = ({ params }) => {
                     </div>
                   </div>
                   {isPortadaUpdate && (
-                    <OptionsUpdate
-                      handleUpdate={handlePortadaChange}
-                      handleDelete={handleDeletePortada}
-                      portada={portadaImage}
-                      fileInputPortadaKey={fileInputPortadaKey}
-                    />
+                    <div ref={optionsRef}>
+                      <OptionsUpdate
+                        handleUpdate={handlePortadaChange}
+                        handleDelete={handleDeletePortada}
+                        portada={portadaImage}
+                        fileInputPortadaKey={fileInputPortadaKey}
+                      />
+                    </div>
                   )}
 
                   <div
@@ -399,7 +440,7 @@ const page = ({ params }) => {
                 </div>
                 <div>
                   <InputField
-                    label={"Direccion"}
+                    label={"Dirección"}
                     type={"text"}
                     onBlur={() => trigger("direccion")}
                     register={register}

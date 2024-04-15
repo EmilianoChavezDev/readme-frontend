@@ -1,5 +1,5 @@
 import { useUser } from "@/contexts/UserProvider";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import InputSearch from "./navbar/InputSearch";
 import Options from "./navbar/Options";

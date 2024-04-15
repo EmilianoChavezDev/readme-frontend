@@ -17,6 +17,7 @@ export const UserProvider = ({ children }) => {
   const [profile, setProfile] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isActualizado, setIsActualizado] = useState(false);
+  const [profileUpdate, setProfileUpdate] = useState(false);
 
   const login = (data) => {
     setToken(data?.token);
@@ -106,6 +107,8 @@ export const UserProvider = ({ children }) => {
         profile,
         isActualizado,
         setIsActualizado,
+        setProfileUpdate,
+        profileUpdate,
       }}
     >
       {children}

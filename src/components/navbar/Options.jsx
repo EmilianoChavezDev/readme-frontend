@@ -1,16 +1,19 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FaPlusCircle, FaListUl, FaFileAlt } from "react-icons/fa";
 
-const Options = ({ categories, handleSearch = ()=>{} }) => {
+const Options = ({ categories, handleSearch = () => {} }) => {
   const [isOpenEscribir, setIsOpenEscribir] = useState(false);
   const [isOpenExplorar, setIsOpenExplorar] = useState(false);
 
   const router = useRouter();
+
+  const menuExplorar = useRef();
+  const menuEscribe = useRef();
 
   const toggleDropdownEscribir = () => {
     setIsOpenEscribir(!isOpenEscribir);
@@ -35,11 +38,38 @@ const Options = ({ categories, handleSearch = ()=>{} }) => {
     router.push("/");
   };
 
-  const handleSearchByCategory = (category) => {  
-    const newRoute = "/search?category=" + category[0] + "&categoryTagName=" + category[1];
-    window.location.replace(newRoute)
-  }
-  
+  const handleSearchByCategory = (category) => {
+    const newRoute =
+      "/search?category=" + category[0] + "&categoryTagName=" + category[1];
+    window.location.replace(newRoute);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuExplorar.current &&
+        !menuExplorar.current.contains(event.target)
+      ) {
+        setIsOpenExplorar(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuEscribe.current && !menuEscribe.current.contains(event.target)) {
+        setIsOpenEscribir(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div
@@ -77,8 +107,9 @@ const Options = ({ categories, handleSearch = ()=>{} }) => {
             <p>Explorar</p>
             <button
               type="button"
-              className={`_lg:flex _lg:items-center _lg:justify-center transition-all duration-200 transform ${isOpenExplorar ? "rotate-180" : "rotate-0"
-                }`}
+              className={`_lg:flex _lg:items-center _lg:justify-center transition-all duration-200 transform ${
+                isOpenExplorar ? "rotate-180" : "rotate-0"
+              }`}
               style={{ transition: "transform 0.3s" }}
             >
               <IoMdArrowDropdown size={18} />
@@ -86,19 +117,21 @@ const Options = ({ categories, handleSearch = ()=>{} }) => {
           </div>
           {isOpenExplorar && (
             <div
+              ref={menuExplorar}
               className="_lg:absolute _lg:z-10 bg-white border border-gray-200 shadow-lg p-2 top-11 text-black _lg:w-96 md:w-60
           
           "
             >
               <ul className="_lg:my-2 _lg:gap-4 lg:gap-x-4 _lg:grid _lg:grid-cols-3 col-span-1">
-                {categories?.map((category, i) =>
+                {categories?.map((category, i) => (
                   <li
                     onClick={() => handleSearchByCategory(category)}
                     key={i}
                     className="hover:cursor-pointer hover:font-bold transition-all duration-300"
                   >
                     {category[1]}
-                  </li>)}
+                  </li>
+                ))}
               </ul>
             </div>
           )}
@@ -128,8 +161,9 @@ const Options = ({ categories, handleSearch = ()=>{} }) => {
             <p>Escribe</p>
             <button
               type="button"
-              className={`_lg:flex _lg:items-center _lg:justify-center transition-all duration-200 transform ${isOpenEscribir ? "rotate-180" : "rotate-0"
-                }`}
+              className={`_lg:flex _lg:items-center _lg:justify-center transition-all duration-200 transform ${
+                isOpenEscribir ? "rotate-180" : "rotate-0"
+              }`}
               style={{ transition: "transform 0.3s" }}
             >
               <IoMdArrowDropdown size={18} />
@@ -137,6 +171,7 @@ const Options = ({ categories, handleSearch = ()=>{} }) => {
           </div>
           {isOpenEscribir && (
             <div
+              ref={menuEscribe}
               className="_lg:absolute _lg:z-10 bg-white border md:border-gray-200 _lg:shadow-lg _lg:p-2 _lg:top-11 text-black _lg:w-48
           "
             >
