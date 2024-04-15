@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ProfileView from "../common/ProfileView";
-import { Button } from "@material-tailwind/react";
-import { BsPersonFillGear } from "react-icons/bs";
 
 const ProfileHeader = ({
   profile,
@@ -33,7 +31,7 @@ const ProfileHeader = ({
         className="w-full h-full bg-cover bg-center"
         style={{
           backgroundImage: portada
-            ? `url(${portada})` 
+            ? `url(${portada})`
             : "linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent)",
         }}
       >
@@ -41,7 +39,7 @@ const ProfileHeader = ({
           <ProfileView username={username} imagen={profile} size={44} />
         </div>
         <div className="flex flex-col items-center justify-center mt-2 ">
-          <span className="font-bold">{name}</span>
+          <span className="font-bold drop-shadow-2xl">{name}</span>
           <span className="text-md">@{username}</span>
         </div>
         <div

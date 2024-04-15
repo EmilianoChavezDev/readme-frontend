@@ -290,6 +290,7 @@ const page = ({ params }) => {
                     <OptionsUpdate
                       handleUpdate={handlePortadaChange}
                       handleDelete={handleDeletePortada}
+                      portada={portadaImage}
                     />
                   )}
 
@@ -308,7 +309,7 @@ const page = ({ params }) => {
                       handleDeleteProfile={handleDeleteProfile}
                       isDeleteProfile={isDeleteProfile}
                       setProfileImage={setProfileImage}
-                      key={fileInputKey}
+                      fileInputKey={fileInputKey}
                     />
                   </div>
                 </div>

@@ -8,7 +8,7 @@ const ProfileImageUploader = ({
   handleDeleteProfile,
   isDeleteProfile,
   username,
-  key,
+  fileInputKey,
 }) => {
   const [hovered, setHovered] = useState(false);
   const { isOpen } = useUser();
@@ -56,7 +56,7 @@ const ProfileImageUploader = ({
           </span>
         </label>
         <input
-          key={key}
+          key={fileInputKey}
           type="file"
           id="profile-input"
           style={{ display: "none" }}
