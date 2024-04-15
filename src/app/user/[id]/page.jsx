@@ -754,11 +754,8 @@ const page = ({ params }) => {
                         key={followed?.id}
                       >
                         <UserCard
-                          username={
-                            followed?.username ??
-                            "Nombre de Usuario no encotrado"
-                          }
-                          nombre={followed?.nombre ?? "Nombre no encontrado"}
+                          username={followed?.username ?? followed?.nombre}
+                          nombre={followed?.nombre ?? followed?.username}
                           image={followed?.profile}
                           description={followed?.descripcion ?? ""}
                           buttonProps={
