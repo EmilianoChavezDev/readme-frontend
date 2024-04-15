@@ -5,7 +5,9 @@ import { useState } from 'react'
 
 const useReport = () => {
 
-    const REPORT_ENDPOINT = '/informe'
+    const ANALYSIS_ENDPOINT = '/informe'
+    const REPORTS_ENDPOINT = '/reportes'
+    const BOOK_REPORTS_ENDPOINT = '/reportes_libros'
 
     const [error, setError] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -27,14 +29,26 @@ const useReport = () => {
 
     // Functions to interact with the API
     const getDailyReadingsPerBook = async (params = {}) => {
-        return handleRequest(() => api.get(`${REPORT_ENDPOINT}/lectura`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+        return handleRequest(() => api.get(`${ANALYSIS_ENDPOINT}/lectura`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
 
     const getUserStatistics = async (params = {}) => {
-        return handleRequest(() => api.get(`${REPORT_ENDPOINT}/estadisticas_usuario`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+        return handleRequest(() => api.get(`${ANALYSIS_ENDPOINT}/estadisticas_usuario`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
 
-    return { getDailyReadingsPerBook, getUserStatistics, error, isLoading }
+    const createBookReport = async (params = {}) => {
+        return handleRequest(() => api.post(BOOK_REPORTS_ENDPOINT, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
+
+    const getBookReportCategories = async (params = {}) => {
+        return handleRequest(() => api.get(`${REPORTS_ENDPOINT}/categorias/libros`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
+
+    const getReports = async (params = {}) => {
+        return handleRequest(() => api.get(`${REPORTS_ENDPOINT}/find_by`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
+
+    return { getDailyReadingsPerBook, getUserStatistics, createBookReport, getReports, getBookReportCategories, error, isLoading }
 }
 
 export default useReport
