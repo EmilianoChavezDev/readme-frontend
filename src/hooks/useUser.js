@@ -133,7 +133,7 @@ const useUserInfo = () => {
     const url = `${process.env.API_URL}/users/password`;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.put(
+      await axios.put(
         url,
         {
           current_password: oldPassword,
@@ -321,11 +321,10 @@ const useUserInfo = () => {
     }
   };
 
-  const deletePortada = async (password) => {
+  const deletePortada = async () => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
-    setIsErrorProfile(false);
     const url = `${process.env.API_URL}/users/delete_profile`;
     const token = localStorage.getItem("token");
     try {

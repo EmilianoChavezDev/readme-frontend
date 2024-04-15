@@ -9,12 +9,14 @@ export const UserProvider = ({ children }) => {
 
   const [token, setToken] = useState(null);
   const [expiration, setExpiration] = useState(null);
+
   const [fecha_nacimiento, setFecha_nacimiento] = useState(null);
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isActualizado, setIsActualizado] = useState(false);
 
   const login = (data) => {
     setToken(data?.token);
@@ -102,6 +104,8 @@ export const UserProvider = ({ children }) => {
         isOpen,
         setIsOpen,
         profile,
+        isActualizado,
+        setIsActualizado,
       }}
     >
       {children}

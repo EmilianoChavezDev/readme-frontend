@@ -11,7 +11,6 @@ const NavBar = ({ onSearch }) => {
   const { username, logout, expiration, isOpen, setIsOpen } = useUser();
   const [isLoaded, setIsLoaded] = useState(false);
   const [usernameStorage, setUsernameStorage] = useState(null);
-  const [nombreStorage, setNombreStorage] = useState(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -27,7 +26,6 @@ const NavBar = ({ onSearch }) => {
   useEffect(() => {
     if (!username) return;
     setUsernameStorage(localStorage.getItem("username"));
-    setNombreStorage(localStorage.getItem("nombre"));
   }, [username]);
 
   useEffect(() => {
@@ -96,10 +94,7 @@ const NavBar = ({ onSearch }) => {
           />
           {/* parte del usuario */}
 
-          <UserOptions
-            username={nombreStorage ?? usernameStorage}
-            logout={logout}
-          />
+          <UserOptions username={usernameStorage} logout={logout} />
         </div>
 
         <div className="sticky top-0 z-50">

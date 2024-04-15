@@ -26,7 +26,7 @@ const defaultValues = {
 };
 
 const page = ({ params }) => {
-  const { refresh } = useUser();
+  const { setIsActualizado } = useUser();
   const { getUserInformation, data } = useUserInfo();
   const {
     getFollowFollowers,
@@ -54,6 +54,7 @@ const page = ({ params }) => {
   const [profileImage, setProfileImage] = useState(null);
   const [portadaImage, setPortadaImage] = useState(null);
   const [fileInputKey, setFileInputKey] = useState(Date.now());
+  const [fileInputPortadaKey, setFileInputPortadaKey] = useState(Date.now());
   const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [isNotDisable, setIsNotDisable] = useState(true);
   const [isPortadaUpdate, setIsPortadaUpdate] = useState(false);
@@ -72,21 +73,40 @@ const page = ({ params }) => {
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
-    updateUserInformation(formData);
-    if (isChangeImage) {
-      updateProfile(profileImage);
+    const currentDate = new Date();
+
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 15);
+
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 70);
+
+    const fechaNacimiento = new Date(formData.fecha_nacimiento);
+    const edad = (currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365);
+
+    if (edad > 15 && edad <= 70) {
+      updateUserInformation(formData);
+      if (isChangeImage) {
+        updateProfile(profileImage);
+      }
+
+      if (isDeleteProfile) {
+        deleteProfile();
+      }
+      if (isChangePortada && !isDeletePortada) {
+        updatePortada(portadaImage);
+      }
+      if (isDeletePortada) {
+        deletePortada();
+      }
+    } else if (edad <= 15) {
+      toast.error("Debes ser mayor a 15 años!");
+      return;
+    } else if (edad > 70) {
+      return;
     }
 
-    if (isDeleteProfile) {
-      deleteProfile();
-    }
-    if (isChangePortada && !isDeletePortada) {
-      updatePortada(portadaImage);
-    }
-    if (isDeletePortada) {
-      deletePortada();
-    }
-
+    setIsActualizado(true);
     setIsEdit(!isEdit);
     setIsPortadaUpdate(false);
   };
@@ -124,8 +144,8 @@ const page = ({ params }) => {
 
   useEffect(() => {
     if (!isDeletePortada) return;
-    console.log("entro");
     setPortadaImage(null);
+    setFileInputPortadaKey(Date.now());
   }, [isDeletePortada]);
 
   useEffect(() => {
@@ -225,7 +245,6 @@ const page = ({ params }) => {
   };
 
   const handleDeletePortada = () => {
-    console.log("entro");
     setIsDeletePortada(true);
     setIsChangePortada(false);
     setIsPortadaUpdate(!isPortadaUpdate);
@@ -291,6 +310,7 @@ const page = ({ params }) => {
                       handleUpdate={handlePortadaChange}
                       handleDelete={handleDeletePortada}
                       portada={portadaImage}
+                      fileInputPortadaKey={fileInputPortadaKey}
                     />
                   )}
 

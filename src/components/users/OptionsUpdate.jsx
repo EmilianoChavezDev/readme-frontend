@@ -1,6 +1,9 @@
-import { RiUploadLine, RiDeleteBinLine } from "react-icons/ri";
-
-const OptionsUpdate = ({ handleUpdate, handleDelete, portada }) => {
+const OptionsUpdate = ({
+  handleUpdate,
+  handleDelete,
+  portada,
+  fileInputPortadaKey,
+}) => {
   return (
     <div
       className="absolute z-10 bg-white border border-gray-200 rounded-md shadow-lg p-2 text-black w-52 overflow-y-auto max-h-60
@@ -27,6 +30,7 @@ sm:text-sm  sm:right-auto left-2 mt-1
               style={{ display: "none" }}
               accept="image/*"
               onChange={handleUpdate}
+              key={fileInputPortadaKey}
             />
           </label>
         </li>
@@ -38,7 +42,7 @@ sm:text-sm  sm:right-auto left-2 mt-1
             <span>Eliminar foto de portada</span>
           </li>
         )}
-      </ul>{" "}
+      </ul>
     </div>
   );
 };
