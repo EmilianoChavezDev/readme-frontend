@@ -1,4 +1,5 @@
 import { useUser } from "@/contexts/UserProvider";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import InputSearch from "./navbar/InputSearch";
@@ -16,7 +17,9 @@ const NavBar = ({ onSearch }) => {
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
   const path = usePathname();
+
   const { data: categories, fetchCategories } = useCategory();
+
 
   useEffect(() => {
     setIsLoaded(true);

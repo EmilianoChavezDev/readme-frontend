@@ -1,3 +1,4 @@
+
 import React, { useCallback, useEffect, useState } from "react";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { Button } from "@material-tailwind/react";
@@ -20,11 +21,13 @@ const UserOption = ({ isFollow, selectedOption, onSelectOption, username, handle
 
   const isOwner = username === localStorage.getItem("username")
 
+
   return (
     <>
       <div>
         <div className="flex _sm:justify-between justify-center items-center _sm:w-5/6 mx-auto pt-3">
           <div className="flex _sm:text-xl text-sm text-nowrap gap-x-4 font-semibold">
+
             <span
               className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 hover:border-colorPrimario 
               ${
@@ -78,6 +81,7 @@ const UserOption = ({ isFollow, selectedOption, onSelectOption, username, handle
                 <Button 
                   className="px-2 py-2 flex text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
                   onClick={() => handleUnfollow(id)}  
+
                 >
                   <span className="flex items-center">
                     <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
@@ -85,9 +89,11 @@ const UserOption = ({ isFollow, selectedOption, onSelectOption, username, handle
                   </span>
                 </Button>
               ) : (
+
                 <Button 
                   className="px-2 py-2 flex text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
                   onClick={() => handleFollow(id)}
+
                 >
                   <span className="flex items-center">
                     <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />

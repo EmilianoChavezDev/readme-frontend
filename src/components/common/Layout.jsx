@@ -8,10 +8,14 @@ const Layout = ({ children }) => {
   const router = usePathname();
   const pathSegments = router.split("/");
 
+  const shouldRenderNavBar = !ignorePaths.some((path) =>
+    router.startsWith(path)
+  );
+
   return (
     <div>
       <div className="sticky top-0 z-50">
-        {!ignorePaths.some((path) => path === router) &&
+        {shouldRenderNavBar &&
           !(
             router.startsWith("/books/") &&
             pathSegments[pathSegments.length - 1] === "read"

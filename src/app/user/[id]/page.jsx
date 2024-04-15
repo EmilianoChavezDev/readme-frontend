@@ -1,5 +1,6 @@
 "use client";
 
+import useUserInfo from "@/hooks/useUser";
 import MyBooksContainer from "@/components/books/mybooks/BooksContainer";
 import InputField from "@/components/common/InputField";
 import Loader from "@/components/common/loader";
@@ -11,12 +12,10 @@ import { UserCard } from "@/components/users/UserCard";
 import UserOption from "@/components/users/UserOption";
 import { useUser } from "@/contexts/UserProvider";
 import useBook from "@/hooks/useBook";
-import useUserInfo from "@/hooks/useUser";
 import { IconButton, Spinner, Typography } from "@material-tailwind/react";
-import { all } from "axios";
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { AiOutlineUserDelete } from "react-icons/ai";
-import { FaArrowDown, FaUpload } from "react-icons/fa";
+import { FaArrowDown } from "react-icons/fa";
 import { SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { Button } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
@@ -38,8 +37,12 @@ const page = ({ params }) => {
     data: seguidoresSeguidos,
     loading,
   } = useUserInfo();
-  const { getUserLecturas, data: lecturas, loading: lecturasLoading } = useUserInfo();
-  const { deleteFollower } = useUserInfo()
+  const {
+    getUserLecturas,
+    data: lecturas,
+    loading: lecturasLoading,
+  } = useUserInfo();
+  const { deleteFollower } = useUserInfo();
   const { follow } = useUserInfo();
   const { unfollow } = useUserInfo();
   const { getAllBooks, isLoading: librosLoading } = useBook();
@@ -74,24 +77,32 @@ const page = ({ params }) => {
   const [isChangePortada, setIsChangePortada] = useState(false);
   const [isDeletePortada, setIsDeletePortada] = useState(false);
 
-  const { getFollowers, currentData: pageFollowers, loading: followersLoading } = useUserInfo()
-  const [allFollowers, setAllFollowers] = useState([])
-  const [followersPage, setFollowersPage] = useState(0)
-  const [followersLastPage, setFollowersLastPage] = useState(false)
+  const {
+    getFollowers,
+    currentData: pageFollowers,
+    loading: followersLoading,
+  } = useUserInfo();
+  const [allFollowers, setAllFollowers] = useState([]);
+  const [followersPage, setFollowersPage] = useState(0);
+  const [followersLastPage, setFollowersLastPage] = useState(false);
 
-  const { getFollowed, currentData: pageFollowed, loading: followedLoading } = useUserInfo()
-  const [allFOllowed, setAllFollowed] = useState([])
-  const [followedPage, setFollowedPage] = useState(0)
-  const [followedLastPage, setFollowedLastPage] = useState(false)
+  const {
+    getFollowed,
+    currentData: pageFollowed,
+    loading: followedLoading,
+  } = useUserInfo();
+  const [allFollowed, setAllFollowed] = useState([]);
+  const [followedPage, setFollowedPage] = useState(0);
+  const [followedLastPage, setFollowedLastPage] = useState(false);
 
-  const [allLecturas, setAllLecturas] = useState([])
-  const [lecturaPage, setLecturaPage] = useState(0)
-  const [lecturaLastPage, setLecturaLastPage] = useState(false)
+  const [allLecturas, setAllLecturas] = useState([]);
+  const [lecturaPage, setLecturaPage] = useState(0);
+  const [lecturaLastPage, setLecturaLastPage] = useState(false);
 
-  const [allLibros, setAllLibros] = useState([])
-  const [libroPage, setLibroPage] = useState(0)
-  const [libroLastPage, setLibroLastPage] = useState(false)
-  const [cantLibros, setCantLibros] = useState(0)
+  const [allLibros, setAllLibros] = useState([]);
+  const [libroPage, setLibroPage] = useState(0);
+  const [libroLastPage, setLibroLastPage] = useState(false);
+  const [cantLibros, setCantLibros] = useState(0);
 
   const optionsRef = useRef();
 
@@ -100,7 +111,7 @@ const page = ({ params }) => {
     handleSubmit,
     trigger,
     reset,
-    formState: { errors, isDirty },
+    formState: { isDirty },
     watch,
   } = useForm({ defaultValues });
 
@@ -153,14 +164,14 @@ const page = ({ params }) => {
     setIsNotDisable(false);
   }, [isDirty]);
 
+  const isMyBook = useMemo(() => {
+    return usernameLs !== data?.username;
+  });
+
   // actualizar la informacion si algo cambia
-  useEffect(
-    () => {
-      getUserInformation(params.id);
-    },
-    [informacion, updProfile, dltProfile, updPortada],
-    dltPortada
-  );
+  useEffect(() => {
+    getUserInformation(params.id);
+  }, [informacion, updProfile, dltProfile, updPortada, dltPortada]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -180,14 +191,14 @@ const page = ({ params }) => {
   }, []);
 
   useEffect(() => {
-    setAllFollowers([])
-    setFollowersPage(1)
+    setAllFollowers([]);
+    setFollowersPage(1);
 
-    setAllFollowed([])
-    setFollowedPage(1)
+    setAllFollowed([]);
+    setFollowedPage(1);
 
-    setAllLecturas([])
-    setLecturaPage(1)
+    setAllLecturas([]);
+    setLecturaPage(1);
 
     setAllLibros([]);
     setLibroPage(1);
@@ -195,8 +206,8 @@ const page = ({ params }) => {
     getFollowFollowers(data?.id);
     getUserLecturas(1, data?.id);
     getAllUserBooks(data?.id, 1);
-    getFollowers(data?.id, 1)
-    getFollowed(data?.id, 1)
+    getFollowers(data?.id, 1);
+    getFollowed(data?.id, 1);
     setProfileImage(data?.profile);
     setUsernmeLs(localStorage.getItem("username"));
     setPortadaImage(data?.portada);
@@ -205,47 +216,54 @@ const page = ({ params }) => {
   }, [data]);
 
   useEffect(() => {
-    if (!pageFollowers) return
-    const followers = pageFollowers?.users ?? []
-    setAllFollowers(prevFollowers => {
-      const prevIds = new Set(prevFollowers.map(follower => follower.id));
-      const newFollowers = followers.filter(follower => !prevIds.has(follower.id));
+    if (!pageFollowers) return;
+    const followers = pageFollowers?.users ?? [];
+    setAllFollowers((prevFollowers) => {
+      const prevIds = new Set(prevFollowers.map((follower) => follower.id));
+      const newFollowers = followers.filter(
+        (follower) => !prevIds.has(follower.id)
+      );
       return [...prevFollowers, ...newFollowers];
-  });
-      setFollowersLastPage(followersPage >= pageFollowers.total_pages)
-  }, [pageFollowers])
+    });
+    setFollowersLastPage(followersPage >= pageFollowers.total_pages);
+  }, [pageFollowers]);
 
   useEffect(() => {
-    if (!pageFollowed) return
-    const followed = pageFollowed?.users ?? []
-    setAllFollowed(prevFollowed => {
-      const prevIds = new Set(prevFollowed.map(item => item.id));
-      const newFollowed = followed.filter(item => !prevIds.has(item.id));
+    if (!pageFollowed) return;
+    const followed = pageFollowed?.users ?? [];
+    setAllFollowed((prevFollowed) => {
+      const prevIds = new Set(prevFollowed.map((item) => item.id));
+      const newFollowed = followed.filter((item) => !prevIds.has(item.id));
       return [...prevFollowed, ...newFollowed];
-  });
-      setFollowedLastPage(followedPage >= pageFollowed.total_pages)
-  }, [pageFollowed])
+    });
+    setFollowedLastPage(followedPage >= pageFollowed.total_pages);
+  }, [pageFollowed]);
 
   useEffect(() => {
-    if (!lecturas) return
-    const findedLecturas = lecturas?.libros ?? []
-    setAllLecturas(prevLecturas => {
-      const prevIds = new Set(prevLecturas.map(lectura => lectura.id));
-      const nuevasLecturas = findedLecturas.filter(lectura => !prevIds.has(lectura.id));
+    if (!lecturas) return;
+    const findedLecturas = lecturas?.libros ?? [];
+    setAllLecturas((prevLecturas) => {
+      const prevIds = new Set(prevLecturas.map((lectura) => lectura.id));
+      const nuevasLecturas = findedLecturas.filter(
+        (lectura) => !prevIds.has(lectura.id)
+      );
       return [...prevLecturas, ...nuevasLecturas];
-  });
-      setLecturaLastPage(lecturaPage >= lecturas.total_pages)
-  }, [lecturas])
+    });
+    setLecturaLastPage(lecturaPage >= lecturas.total_pages);
+  }, [lecturas]);
 
   useEffect(() => {
     if (!arrBooks) return;
     const findedLibros = arrBooks?.data ?? [];
-    setCantLibros(arrBooks?.total_items ?? 0)
-    setAllLibros(prevLibros => {
-      const prevIds = new Set(prevLibros.map(libro => libro.id));
-      const nuevosLibros = findedLibros.filter(libro => !prevIds.has(libro.id));
+    setCantLibros(arrBooks?.total_items ?? 0);
+    setAllLibros((prevLibros) => {
+      const prevIds = new Set(prevLibros.map((libro) => libro.id));
+      const nuevosLibros = findedLibros.filter(
+        (libro) => !prevIds.has(libro.id)
+      );
       return [...prevLibros, ...nuevosLibros];
-  });    setLibroLastPage(libroPage >= arrBooks.total_pages);
+    });
+    setLibroLastPage(libroPage >= arrBooks.total_pages);
   }, [arrBooks]);
 
   // si hay algun mensaje lanzo un toast con el mensaje
@@ -263,6 +281,7 @@ const page = ({ params }) => {
   // si elimino la foto seteo todo los contenedores relacionados
   useEffect(() => {
     if (!isDeleteProfile) return;
+    console.log("entro aca");
     setIsNotDisable(false);
     setProfileImage(null);
     setFileInputKey(Date.now());
@@ -275,7 +294,7 @@ const page = ({ params }) => {
     setFileInputPortadaKey(Date.now());
   }, [isDeletePortada]);
 
-  const getAllUserBooks = async (id,page) => {
+  const getAllUserBooks = async (id, page) => {
     const option = {
       page,
       user_id: id,
@@ -290,57 +309,52 @@ const page = ({ params }) => {
     setSelectedOption(option);
   };
 
-  const isMyBook = useMemo(() => {
-    return usernameLs !== data?.username;
-  });
-
   const handleFollow = async (id) => {
     try {
-      await follow(id)
-      getUserInformation(params.id)
+      await follow(id);
+      getUserInformation(params.id);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   const handleUnfollow = async (id) => {
     try {
-      await unfollow(id)
-      getUserInformation(params.id)
+      await unfollow(id);
+      getUserInformation(params.id);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   const handleFollowedNextPage = () => {
-    setFollowedPage(followedPage + 1)
-    getFollowed(data?.id, followedPage + 1)
-  }
+    setFollowedPage(followedPage + 1);
+    getFollowed(data?.id, followedPage + 1);
+  };
 
   const handleFollowersNextPage = () => {
-    setFollowersPage(followersPage + 1)
-    getFollowers(data?.id, followersPage + 1)
-  }
-
+    setFollowersPage(followersPage + 1);
+    getFollowers(data?.id, followersPage + 1);
+  };
 
   const handleLecturasNextPage = () => {
-    setLecturaPage(prevPage => prevPage + 1);
+    setLecturaPage((prevPage) => prevPage + 1);
     getUserLecturas(lecturaPage + 1, data?.id);
-  }
+  };
 
   const handleLibrosNextPage = () => {
-    setLibroPage(prevPage => prevPage + 1)
-    getAllUserBooks(data?.id, libroPage + 1)
-  }
+    setLibroPage((prevPage) => prevPage + 1);
+    getAllUserBooks(data?.id, libroPage + 1);
+  };
 
   const handleDeleteFollower = async (id) => {
     try {
-      await deleteFollower(id)
-      getUserInformation(params.id)
+      await deleteFollower(id);
+      getUserInformation(params.id);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   const handleEditCancel = () => {
     setPortadaImage(data?.portada);
@@ -417,10 +431,11 @@ const page = ({ params }) => {
     setIsDeletePortada(true);
     setIsPortadaUpdate(!isPortadaUpdate);
     setIsNotDisable(false);
+    setPortadaImage(null);
   };
 
   const handleUpdate = () => {
-    setIsPortadaUpdate(!isPortadaUpdate);
+    setIsPortadaUpdate((prevState) => !prevState);
   };
 
   return (
@@ -452,8 +467,9 @@ const page = ({ params }) => {
           <div>
             {isEdit ? (
               <div
-                className={`${isEdit ? "opacity-100" : "opacity-0"
-                  } flex flex-col justify-center items-center transition-all duration-200 transform`}
+                className={`${
+                  isEdit ? "opacity-100" : "opacity-0"
+                } flex flex-col justify-center items-center transition-all duration-200 transform`}
               >
                 <div
                   className="w-full h-full bg-cover bg-center"
@@ -486,8 +502,9 @@ const page = ({ params }) => {
                   )}
 
                   <div
-                    className={`flex justify-center items-center h-full  ${isDeleteProfile && "mb-11"
-                      }
+                    className={`flex justify-center items-center h-full  ${
+                      isDeleteProfile && "mb-11"
+                    }
                     
                     ${!profileImage && "mb-11"}
                     `}
@@ -527,8 +544,9 @@ const page = ({ params }) => {
             )}
           </div>
           <div
-            className={`bg-white ${isEdit ? "pointer-events-none opacity-50" : ""
-              }`}
+            className={`bg-white ${
+              isEdit ? "pointer-events-none opacity-50" : ""
+            }`}
           >
             <UserOption
               isFollow={data?.seguidor}
@@ -541,8 +559,8 @@ const page = ({ params }) => {
             />
           </div>
 
-          <div className="flex mx-auto w-5/6 mt-4 gap-x-4">
-            <div className={`${isEdit ? "hidden" : "block"}`}>
+          <div className="flex mx-auto _lg:w-5/6 mt-4 gap-x-4">
+            <div className={`${isEdit ? "hidden" : "block"} _lg:w-1/4 w-1/6`}>
               <ProfileInfoCard
                 direction={data?.direccion}
                 nacionalidad={data?.nacionalidad}
@@ -617,36 +635,56 @@ const page = ({ params }) => {
               </div>
             )}
             <div
-              className={`${isEdit ? "hidden" : "block"
-                } flex flex-col w-full h-full rounded-xl p-6 bg-white shadow-lg ml-10`}
+              className={`${
+                isEdit ? "hidden" : "block"
+              } flex flex-col _lg:w-full _sm:w-1/2 h-full rounded-xl p-6 bg-white shadow-lg`}
             >
               {selectedOption === "misLibros" && (
                 <div>
                   <div className="flex flex-col">
-                    <span className="text-xl font-semibold">
-                      Ultimos libros de {data?.nombre || data?.username}
-                    </span>
-                    <span className="text-textColorGray text-sm">
-                      {cantLibros} libros publicados
-                    </span>
-                    <div className="flex flex-col gap-y-3 mt-3">
-                      {allLibros?.map((lectura) => (
-                        <MyBooksContainer
-                          key={lectura.id}
-                          libroData={lectura}
-                          canEdit={usernameLs === data?.username}
-                        />
-                      ))}
-                      <div className="flex justify-center w-full mt-10">
-                        {librosLoading ? <Spinner /> : !libroLastPage &&
-                          <IconButton
-                            onClick={handleLibrosNextPage}
-                          >
-                            <FaArrowDown />
-                          </IconButton>
-                        }
+                    {!allLecturas.length ? (
+                      <div className="col-span-12 flex flex-col justify-center text-center">
+                        <Typography variant="h4">
+                          {!isMyBook
+                            ? "Aun no tienes liros"
+                            : "Este usuario no tiene libros"}
+                        </Typography>
+                        {!isMyBook && (
+                          <Typography variant="h4">
+                            ¡Comienza ya a escribir tus libros!
+                          </Typography>
+                        )}
                       </div>
-                    </div>
+                    ) : (
+                      <>
+                        <span className="text-xl font-semibold">
+                          Ultimos libros de {data?.nombre || data?.username}
+                        </span>
+                        <span className="text-textColorGray text-sm">
+                          {cantLibros} libros publicados
+                        </span>
+                        <div className="flex flex-col gap-y-3 mt-3">
+                          {allLibros?.map((lectura) => (
+                            <MyBooksContainer
+                              key={lectura.id}
+                              libroData={lectura}
+                              canEdit={usernameLs === data?.username}
+                            />
+                          ))}
+                          <div className="flex justify-center w-full mt-10">
+                            {librosLoading ? (
+                              <Spinner />
+                            ) : (
+                              !libroLastPage && (
+                                <IconButton onClick={handleLibrosNextPage}>
+                                  <FaArrowDown />
+                                </IconButton>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               )}
@@ -654,139 +692,188 @@ const page = ({ params }) => {
               {selectedOption === "listaLectura" && (
                 <div>
                   <div className="flex flex-col">
-                    <span className="text-xl font-semibold">
-                      Lista de lectura de {data?.nombre || data?.username}
-                    </span>
-                    <span className="text-textColorGray text-sm">
-                      {lecturas?.total_items} libros leidos
-                    </span>
+                    {!allLecturas.length ? (
+                      <div className="col-span-12 flex flex-col justify-center text-center">
+                        <Typography variant="h4">
+                          {!isMyBook
+                            ? "Aun no tienes lecturas"
+                            : "Este usuario no tiene lecturas"}
+                        </Typography>
+                        {!isMyBook && (
+                          <Typography variant="h4">
+                            ¡Lee libros y conoce a tus autores favoritos!
+                          </Typography>
+                        )}
+                      </div>
+                    ) : (
+                      <>
+                        <span className="text-xl font-semibold">
+                          Lista de lectura de {data?.nombre || data?.username}
+                        </span>
+                        <span className="text-textColorGray text-sm">
+                          {lecturas?.total_items} libros leidos
+                        </span>
+                      </>
+                    )}
                     <div className="flex flex-col gap-y-5 mt-3">
                       {allLecturas?.map((lectura) => (
                         <SearchItem key={lectura?.id} book={lectura} />
                       ))}
                     </div>
                     <div className="flex justify-center w-full mt-10">
-                      {lecturasLoading ? <Spinner /> : !lecturaLastPage &&
-                        <IconButton
-                          onClick={handleLecturasNextPage}
-                        >
-                          <FaArrowDown />
-                        </IconButton>
-                      }
+                      {lecturasLoading ? (
+                        <Spinner />
+                      ) : (
+                        !lecturaLastPage && (
+                          <IconButton onClick={handleLecturasNextPage}>
+                            <FaArrowDown />
+                          </IconButton>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>
               )}
-              {selectedOption === "seguidos" && (<div>
-                <div className="grid grid-cols-12 gap-x-20 gap-y-10">
-                  {!allFOllowed.length &&
-                    <div className="col-span-12 flex flex-col justify-center text-center">
-                      <Typography variant="h4">Aún no sigues a nadie</Typography>
-                      <Typography variant="h4">¡Lee libros y conoce a tus autores favoritos!</Typography>
-                    </div>
-                  }
-                  {
-                    allFOllowed?.map(followed => (
-                      <div className="col-span-12 _md:col-span-6" key={followed?.id}>
+              {selectedOption === "seguidos" && (
+                <div>
+                  <div className="grid grid-cols-12 gap-x-20 gap-y-10">
+                    {!allFollowed.length && (
+                      <div className="col-span-12 flex flex-col justify-center text-center">
+                        <Typography variant="h4">
+                          Aún no sigues a nadie
+                        </Typography>
+                        <Typography variant="h4">
+                          ¡Lee libros y conoce a tus autores favoritos!
+                        </Typography>
+                      </div>
+                    )}
+                    {allFollowed?.map((followed) => (
+                      <div
+                        className="col-span-12 _md:col-span-6"
+                        key={followed?.id}
+                      >
                         <UserCard
-                          username={followed?.username ?? "Nombre de Usuario no encotrado"}
+                          username={
+                            followed?.username ??
+                            "Nombre de Usuario no encotrado"
+                          }
                           nombre={followed?.nombre ?? "Nombre no encontrado"}
                           image={followed?.profile}
                           description={followed?.descripcion ?? ""}
-                          buttonProps={followed?.seguidor ?
-                            {
-                              info: <span className="flex items-center">
-                                <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
-                                Dejar de seguir
-                              </span>,
-                              onClick: () => handleUnfollow(followed?.id)
-                            }
-                            :
-                            {
-                              info: <>
-                                <span className="flex items-center">
-                                  <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
-                                  Seguir
-                                </span>
-                              </>,
-                              onClick: () => handleFollow(followed?.id)
-                            }
+                          buttonProps={
+                            followed?.seguidor
+                              ? {
+                                  info: (
+                                    <span className="flex items-center">
+                                      <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+                                      Dejar de seguir
+                                    </span>
+                                  ),
+                                  onClick: () => handleUnfollow(followed?.id),
+                                }
+                              : {
+                                  info: (
+                                    <>
+                                      <span className="flex items-center">
+                                        <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+                                        Seguir
+                                      </span>
+                                    </>
+                                  ),
+                                  onClick: () => handleFollow(followed?.id),
+                                }
                           }
                         />
-                      </div>))
-                  }
-
-
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-center w-full mt-10">
+                    {followedLoading ? (
+                      <Spinner />
+                    ) : (
+                      !followedLastPage && (
+                        <IconButton onClick={handleFollowedNextPage}>
+                          <FaArrowDown />
+                        </IconButton>
+                      )
+                    )}
+                  </div>
                 </div>
-                <div className="flex justify-center w-full mt-10">
-                  {followedLoading ? <Spinner /> : !followedLastPage &&
-                    <IconButton
-                      onClick={handleFollowedNextPage}
-                    >
-                      <FaArrowDown />
-                    </IconButton>
-                  }
-                </div>
-              </div>)}
+              )}
               {selectedOption === "seguidores" && (
                 <div>
                   <div className="grid grid-cols-12 gap-x-20 gap-y-10">
-                    {!allFollowers.length &&
+                    {!allFollowers.length && (
                       <div className="col-span-12 flex flex-col justify-center text-center">
-                        <Typography variant="h4">Aún no tienes seguidores</Typography>
-                        <Typography variant="h4">¡Escribe para que te conozcan!</Typography>
+                        <Typography variant="h4">
+                          {!isMyBook
+                            ? "Aun no tienes seguidores"
+                            : "Este usuario no tiene seguidores"}
+                        </Typography>
+                        <Typography variant="h4">
+                          {!isMyBook && " ¡Escribe para que te conozcan!"}
+                        </Typography>
                       </div>
-                    }
-                    {
-                      allFollowers?.map(follower => (
-                        <div className="col-span-12 _md:col-span-6" key={follower?.id}>
-                          <UserCard
-                            username={follower?.username ?? "Nombre de Usuario no encotrado"}
-                            nombre={follower?.nombre ?? "Nombre no encontrado"}
-                            image={follower?.profile}
-                            description={follower?.descripcion ?? ""}
-                            canDelete={usernameLs === data?.username}
-                            deleteButtonProps={
-                              {
-                                deleteInfo: <span className="flex items-center">
-                                  <AiOutlineUserDelete />
-                                </span>,
-                                onDelete: () => handleDeleteFollower(follower?.id)
-                              }
-                            }
-                            buttonProps={follower?.seguidor ?
-                              {
-                                info: <span className="flex items-center">
-                                  <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
-                                  Dejar de seguir
-                                </span>,
-                                onClick: () => handleUnfollow(follower?.id)
-                              }
-                              :
-                              {
-                                info: <>
-                                  <span className="flex items-center">
-                                    <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
-                                    Seguir
-                                  </span>
-                                </>,
-                                onClick: () => handleFollow(follower?.id)
-                              }
-                            }
-                          />
-                        </div>))
-                    }
-
-
+                    )}
+                    {allFollowers?.map((follower) => (
+                      <div
+                        className="col-span-12 _md:col-span-6"
+                        key={follower?.id}
+                      >
+                        <UserCard
+                          username={
+                            follower?.username ??
+                            "Nombre de Usuario no encotrado"
+                          }
+                          nombre={follower?.nombre ?? "Nombre no encontrado"}
+                          image={follower?.profile}
+                          description={follower?.descripcion ?? ""}
+                          canDelete={usernameLs === data?.username}
+                          deleteButtonProps={{
+                            deleteInfo: (
+                              <span className="flex items-center">
+                                <AiOutlineUserDelete />
+                              </span>
+                            ),
+                            onDelete: () => handleDeleteFollower(follower?.id),
+                          }}
+                          buttonProps={
+                            follower?.seguidor
+                              ? {
+                                  info: (
+                                    <span className="flex items-center">
+                                      <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+                                      Dejar de seguir
+                                    </span>
+                                  ),
+                                  onClick: () => handleUnfollow(follower?.id),
+                                }
+                              : {
+                                  info: (
+                                    <>
+                                      <span className="flex items-center">
+                                        <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+                                        Seguir
+                                      </span>
+                                    </>
+                                  ),
+                                  onClick: () => handleFollow(follower?.id),
+                                }
+                          }
+                        />
+                      </div>
+                    ))}
                   </div>
                   <div className="flex justify-center w-full mt-10">
-                    {followersLoading ? <Spinner /> : !followersLastPage &&
-                      <IconButton
-                        onClick={handleFollowersNextPage}
-                      >
-                        <FaArrowDown />
-                      </IconButton>
-                    }
+                    {followersLoading ? (
+                      <Spinner />
+                    ) : (
+                      !followersLastPage && (
+                        <IconButton onClick={handleFollowersNextPage}>
+                          <FaArrowDown />
+                        </IconButton>
+                      )
+                    )}
                   </div>
                 </div>
               )}
