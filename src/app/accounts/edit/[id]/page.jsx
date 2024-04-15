@@ -1,10 +1,8 @@
 "use client";
 
-import NavBar from "@/components/NavBar";
-import ProfileImageUploader from "@/components/users/ProfileImage";
 import Loader from "@/components/common/loader";
 import { useEffect, useState } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import InputField from "@/components/common/InputField";
 import useUserInfo from "@/hooks/useUser";
 import { useUser } from "@/contexts/UserProvider";
@@ -15,6 +13,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import Link from "next/link";
 import { VscChevronRight } from "react-icons/vsc";
+import ProfileView from "@/components/common/ProfileView";
 
 const defaultValues = {
   username: "",
@@ -35,21 +34,13 @@ const page = ({ params }) => {
     isError,
     isTrue,
     message,
-    updateProfile,
     updateBirthday,
-    deleteProfile,
-    isErrorProfile,
-    isErrorProfileUpdate,
   } = useUserInfo();
   const router = useRouter();
   const { refresh } = useUser();
-  const [changeImage, setChangeImage] = useState(false);
-  const [profileImage, setProfileImage] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
-  const [isDeleteProfile, setIsDeleteProfile] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
-  const [fileInputKey, setFileInputKey] = useState(Date.now());
   const [isNotDisable, setIsNotDisable] = useState(true);
   const [isRefresh, setIsRefresh] = useState(true);
 
@@ -63,80 +54,16 @@ const page = ({ params }) => {
   } = useForm({
     defaultValues,
   });
-
-  const initials = data?.username
-    ?.split(" ")
-    ?.map((word) => word[0])
-    ?.join("")
-    ?.toUpperCase();
-
-  const handleImageChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
-
-      if (
-        fileExtension !== "png" &&
-        fileExtension !== "jpg" &&
-        fileExtension !== "jpeg"
-      ) {
-        toast.error("Solo se permiten archivos PNG, JPG o JPEG.");
-        return;
-      }
-      const reader = new FileReader();
-      setIsDeleteProfile(false);
-      setChangeImage(true);
-      reader.onload = (e) => {
-        setProfileImage(e.target.result);
-      };
-      reader.readAsDataURL(selectedFile);
-      setIsNotDisable(false);
-    }
-  };
-
-  const handleDeleteProfile = () => {
-    setFileInputKey(Date.now());
-    setIsDeleteProfile(true);
-    setChangeImage(false);
-  };
-
-  useEffect(() => {
-    if (!isErrorProfile && isErrorProfileUpdate) return;
-    setIsDeleteProfile(false);
-    setProfileImage(data?.profile || localStorage.getItem("profile"));
-  }, [isErrorProfile]);
-
-  useEffect(() => {
-    if (!isErrorProfileUpdate && isErrorProfile) return;
-    setProfileImage(data?.profile || localStorage.getItem("profile") || null);
-  }, [isErrorProfileUpdate]);
-
-  useEffect(() => {
-    if (!isDeleteProfile) return;
-    setIsNotDisable(false);
-    setProfileImage(null);
-    setFileInputKey(Date.now());
-  }, [isDeleteProfile]);
+  const usernameValue = watch("username");
+  const fechaValue = watch("fecha_nacimiento");
+  const newPassword = watch("newPassword", "");
+  const confirmNewPassword = watch("confirmNewPassword", "");
 
   // trae la informacion del usuario
   useEffect(() => {
     if (!params.id) return;
     getUserInformation(params.id || localStorage.getItem("username"));
   }, [params.id]);
-
-  // cuando se trae la foto la coloco en pantalla
-  useEffect(() => {
-    if (data?.profile) {
-      setProfileImage(data?.profile || localStorage.getItem("profile"));
-    }
-  }, [data?.profile]);
-
-  // cuando se trae la foto la coloco en pantalla
-  useEffect(() => {
-    if (currentData) {
-      setProfileImage(currentData?.profile);
-    }
-  }, [currentData]);
 
   // si hay algun mensaje lanzo un toast con el mensaje
   useEffect(() => {
@@ -149,11 +76,6 @@ const page = ({ params }) => {
       return;
     }
   }, [isError, isTrue]);
-
-  const usernameValue = watch("username");
-  const fechaValue = watch("fecha_nacimiento");
-  const newPassword = watch("newPassword", "");
-  const confirmNewPassword = watch("confirmNewPassword", "");
 
   useEffect(() => {
     if (!data) return;
@@ -182,6 +104,7 @@ const page = ({ params }) => {
     });
     setIsNotDisable(true);
   }, [data]);
+
   useEffect(() => {
     if (!currentData) return;
     reset({
@@ -257,33 +180,23 @@ const page = ({ params }) => {
         error = true;
         return;
       }
-    }
 
-    if (changeImage && !error) {
-      updateProfile(profileImage, formData.oldPassword);
-      resetForm();
-    }
-
-    if (isDeleteProfile && !error) {
-      deleteProfile(formData.oldPassword);
-      resetForm();
-    }
-
-    if (edad > 15 && edad <= 70) {
-      if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento && !error) {
-        updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
-        resetForm();
+      if (edad > 15 && edad <= 70) {
+        if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento && !error) {
+          updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
+          resetForm();
+        }
+      } else if (edad <= 15) {
+        toast.error("Debes ser mayor a 15 años!");
+        return;
+      } else if (edad > 70) {
+        return;
       }
-    } else if (edad <= 15) {
-      toast.error("Debes ser mayor a 15 años!");
-      return;
-    } else if (edad > 70) {
-      return;
-    }
 
-    setIsRefresh(true);
-    resetForm();
-    setIsNotDisable(true);
+      setIsRefresh(true);
+      resetForm();
+      setIsNotDisable(true);
+    }
   };
 
   const resetForm = () => {
@@ -328,16 +241,12 @@ const page = ({ params }) => {
               >
                 <div className="flex flex-col">
                   <div className="flex flex-col _md:mt-10 items-center">
-                    <ProfileImageUploader
-                      initials={initials}
-                      profileImage={profileImage}
-                      handleImageChange={handleImageChange}
-                      handleDeleteProfile={handleDeleteProfile}
-                      isDeleteProfile={isDeleteProfile}
-                      setProfileImage={setProfileImage}
-                      key={fileInputKey}
+                    <ProfileView
+                      username={params.id}
+                      imagen={data?.profile}
+                      size={64}
                     />
-                    <div className=" flex flex-col _md:flex-row mt-72 text-center text-colorPrimario font-semibold">
+                    <div className=" flex flex-col _md:flex-row mt-2 mb-4 text-center text-colorPrimario font-semibold">
                       <span className="font-normal text-nowrap mr-1">
                         Nombre de usuario:
                       </span>
@@ -345,7 +254,7 @@ const page = ({ params }) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex mt-10 _sm:mt-0 flex-col items-center _lg:justify-start _sm:items-start _md:gap-y-8 gap-y-4">
+                <div className="flex _sm:mt-0 flex-col items-center _lg:justify-start _sm:items-start _md:gap-y-8 gap-y-4">
                   <div>
                     <InputField
                       label={"Nombre de usuario"}
@@ -353,17 +262,6 @@ const page = ({ params }) => {
                       onBlur={() => trigger("username")}
                       register={register}
                       name={"username"}
-                      required={true}
-                    />
-                  </div>
-
-                  <div>
-                    <InputField
-                      label={"Fecha de nacimiento"}
-                      type={"date"}
-                      onBlur={() => trigger("fecha_nacimiento")}
-                      register={register}
-                      name={"fecha_nacimiento"}
                       required={true}
                     />
                   </div>
@@ -444,7 +342,7 @@ const page = ({ params }) => {
                   </div>
                 </div>
               </div>
-              <div className="mt-10 flex justify-center _lg:justify-end gap-x-6 mb-10 _sm:mb-0">
+              <div className="mt-10 flex justify-center _lg:justify-end gap-x-4 mb-10 _sm:mb-0">
                 <button
                   className="bg-textColorGray p-2 text-white rounded-lg hover:bg-textHeaderColorGray"
                   onClick={() => router.push("/accounts")}

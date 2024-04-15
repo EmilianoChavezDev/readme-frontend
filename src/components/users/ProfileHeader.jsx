@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ProfileView from "../common/ProfileView";
-import { Button } from "@material-tailwind/react";
-import { BsPersonFillGear } from "react-icons/bs";
 
 const ProfileHeader = ({
   profile,
@@ -11,12 +9,17 @@ const ProfileHeader = ({
   username,
   name,
   portada,
+  buttonProps: { info, onClick = () => {} },
 }) => {
   const [usernameLs, setUsernameLs] = useState(null);
 
   useEffect(() => {
     setUsernameLs(localStorage.getItem("username"));
   }, []);
+
+  const isMyProfile = useMemo(() => {
+    return usernameLs === username;
+  });
 
   return (
     <div
@@ -33,10 +36,15 @@ const ProfileHeader = ({
         }}
       >
         <div className="flex justify-center items-center h-full mt-4">
-          <ProfileView username={username} imagen={profile} size={44} />
+          <ProfileView
+            username={username}
+            imagen={profile}
+            size={44}
+            color="colorPrimario"
+          />
         </div>
         <div className="flex flex-col items-center justify-center mt-2 ">
-          <span className="font-bold">{name}</span>
+          <span className="font-bold drop-shadow-2xl">{name}</span>
           <span className="text-md">@{username}</span>
         </div>
         <div
@@ -57,14 +65,14 @@ const ProfileHeader = ({
             Seguidos
           </div>
         </div>
-        {usernameLs === username && (
+        {isMyProfile && (
           <div className="flex items-end justify-end mb-2 mx-2 ">
             <button
               className="flex rounded-lg items-center px-1 py-2
              border border-colorPrimario bg-transparent hover:bg-colorHoverPrimario gap-x-2"
+              onClick={onClick}
             >
-              <BsPersonFillGear size={18} />
-              <span>Editar Perfil</span>
+              {info}
             </button>
           </div>
         )}

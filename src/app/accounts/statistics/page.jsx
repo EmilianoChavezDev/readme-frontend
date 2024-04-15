@@ -20,9 +20,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-
 import useBook from "@/hooks/useBook";
-import NavBar from "@/components/NavBar";
 import useReport from "@/hooks/useReport";
 import useCategory from "@/hooks/useCategory";
 import Loader from "@/components/common/loader";
