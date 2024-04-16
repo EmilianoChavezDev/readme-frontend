@@ -3,7 +3,7 @@ import "moment/locale/es";
 
 import moment from "moment";
 import toast from "react-hot-toast";
-import toast from "react-hot-toast";
+
 import { useEffect, useState } from "react";
 import { VscKebabVertical } from "react-icons/vsc";
 import {
@@ -30,10 +30,7 @@ export default function xCommentsSection({ bookId }) {
     updateComment,
   } = useComment();
 
-  const {
-    getReportCommentCategory,
-    createReportComment,
-  } = useDenuncias();
+  const { getReportCommentCategory, createReportComment } = useDenuncias();
 
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState({ list: [] });

@@ -14,26 +14,24 @@ const useUserInfo = () => {
 
   const getUserInformation = async (username) => {
     setLoading(true);
-    setIsTrue(false);
-    setIsError(false);
-    const url = `${process.env.API_URL}/usersFind/${username}`;
-    const token = localStorage.getItem("token");
+
     try {
+      const url = `${process.env.API_URL}/usersFind/${username}`;
+      const token = localStorage.getItem("token");
+
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      const data = await response.data;
+      const data = response.data;
       setData(data);
     } catch (error) {
       setIsTrue(false);
       setIsError(true);
-      setLoading(false);
     } finally {
       setLoading(false);
-      setIsError(false);
     }
   };
 
@@ -485,24 +483,21 @@ const useUserInfo = () => {
     }
   };
 
-  const searchUsers = async (username,page) => {
+  const searchUsers = async (username, page) => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
-    const url = `${process.env.API_URL}/users/find_by_username/`+username;
+    const url = `${process.env.API_URL}/users/find_by_username/` + username;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            page
-          }
-        }
-      );
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          page,
+        },
+      });
       setIsTrue(true);
       setIsError(false);
       setCurrentData(response.data);
@@ -515,6 +510,26 @@ const useUserInfo = () => {
     }
   };
 
+  const deleteUser = async (id) => {
+    setLoading(true);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/${id}`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setIsError(false);
+      return response?.data;
+    } catch (error) {
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return {
     data,
@@ -542,7 +557,8 @@ const useUserInfo = () => {
     updateUserInformation,
     updatePortada,
     deletePortada,
-    searchUsers
+    deleteUser,
+    searchUsers,
   };
 };
 

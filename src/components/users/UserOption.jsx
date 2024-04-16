@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { SlFlag, SlUserFollow, SlUserUnfollow } from "react-icons/sl";
 import { Button } from "@material-tailwind/react";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -83,7 +83,10 @@ const UserOption = ({
     setErrorMotive(false);
     setShowReportModal(false);
   };
-  const isOwner = username === localStorage.getItem("username");
+
+  const isOwner = useMemo(() => {
+    return username === usernameLs;
+  });
 
   return (
     <>

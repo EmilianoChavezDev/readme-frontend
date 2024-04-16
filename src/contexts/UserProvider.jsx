@@ -26,6 +26,7 @@ export const UserProvider = ({ children }) => {
     setRole(data?.role);
     setUserId(data.userId);
     setProfile(data.profile);
+    setProfileUpdate(data.profile);
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
     router.push("/");
@@ -61,7 +62,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
-      setToken(storedToken);
+      setToken(storedToken ?? "");
     }
 
     const storedExpiration = localStorage.getItem("expiration");

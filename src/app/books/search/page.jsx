@@ -71,7 +71,7 @@ const Search = ({}) => {
         <NavBar onSearch={handleApplyFilters} />
       </div>
       <div className="flex flex-col mt-5">
-        <div>
+        <div className="">
           <Filter
             selectedPoints={selectedPoints}
             onChangePoints={(val) => setSelectedPoints(val)}

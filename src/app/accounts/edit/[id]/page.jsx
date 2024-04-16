@@ -34,10 +34,9 @@ const page = ({ params }) => {
     isError,
     isTrue,
     message,
-    updateBirthday,
   } = useUserInfo();
   const router = useRouter();
-  const { refresh } = useUser();
+  const { refresh, setProfileUpdate } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
@@ -49,20 +48,15 @@ const page = ({ params }) => {
     handleSubmit,
     trigger,
     reset,
-    watch,
     formState: { errors, isDirty },
   } = useForm({
     defaultValues,
   });
-  const usernameValue = watch("username");
-  const fechaValue = watch("fecha_nacimiento");
-  const newPassword = watch("newPassword", "");
-  const confirmNewPassword = watch("confirmNewPassword", "");
 
   // trae la informacion del usuario
   useEffect(() => {
     if (!params.id) return;
-    getUserInformation(params.id || localStorage.getItem("username"));
+    getUserInformation(params?.id);
   }, [params.id]);
 
   // si hay algun mensaje lanzo un toast con el mensaje
@@ -90,6 +84,7 @@ const page = ({ params }) => {
   // traer los datos del usuario
   useEffect(() => {
     if (!data) return;
+    setProfileUpdate(data?.profile);
     reset({
       username: data?.username,
       fecha_nacimiento:
@@ -113,85 +108,79 @@ const page = ({ params }) => {
     setIsNotDisable(true);
   }, [currentData]);
 
-  const onSubmit = (formData) => {
-    let error = false;
-    const currentDate = new Date();
+  const validateUsername = (username) => {
     const whitespaceRegex = /\s/;
 
-    const minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear() - 15);
+    if (username !== username.toLowerCase()) {
+      return "El nombre de usuario debe estar en minúsculas.";
+    }
 
-    const maxDate = new Date();
-    maxDate.setFullYear(maxDate.getFullYear() - 70);
+    if (whitespaceRegex.test(username)) {
+      return "El nombre de usuario no debe contener espacios.";
+    }
 
-    const fechaNacimiento = new Date(formData.fecha_nacimiento);
-    const edad = (currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365);
+    return null;
+  };
 
-    if (!whitespaceRegex.test(formData.username)) {
-      if (formData.username !== data?.username) {
-        updateUsername(formData.username, formData.oldPassword);
-        resetForm();
-      }
-    } else {
-      toast.error(
-        "El nombre de usuario no puede contener espacios en blanco tampoco estar vacio."
-      );
+  const validatePassword = (oldPassword, newPassword, confirmNewPassword) => {
+    if (newPassword && newPassword === oldPassword) {
+      return "La nueva contraseña debe ser diferente de la contraseña anterior.";
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      return "Las contraseñas no coinciden.";
+    }
+
+    if (newPassword && newPassword.length < 8) {
+      return "La nueva contraseña debe tener al menos 8 caracteres.";
+    }
+
+    if (
+      newPassword &&
+      !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(newPassword)
+    ) {
+      return "La nueva contraseña debe contener al menos un número y no puede contener espacios.";
+    }
+
+    return null;
+  };
+
+  const onSubmit = (formData) => {
+    const usernameError = validateUsername(formData.username);
+    const passwordError = validatePassword(
+      formData.oldPassword,
+      formData.newPassword,
+      formData.confirmNewPassword
+    );
+
+    if (usernameError) {
+      toast.error(usernameError);
       resetForm();
       return;
     }
 
-    if (formData.newPassword && formData.confirmNewPassword != "") {
-      if (
-        formData.newPassword &&
-        formData.confirmNewPassword !== formData.oldPassword
-      ) {
-        if (formData.newPassword === formData.confirmNewPassword) {
-          if (
-            /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(
-              formData.newPassword
-            ) &&
-            !whitespaceRegex.test(formData.newPassword)
-          ) {
-            updatePassword(
-              formData.oldPassword,
-              formData.newPassword,
-              formData.confirmNewPassword
-            );
-            resetForm();
-          } else {
-            toast.error(
-              "La nueva contraseña debe tener al menos 8 caracteres, al menos un número y no puede contener espacios."
-            );
-            resetForm();
-            return;
-          }
-        } else {
-          toast.error("Las contraseñas no coinciden");
-          resetForm();
-          return;
-        }
-      } else {
-        toast.error("No puedes poner la misma contraseña");
-        resetForm();
-        error = true;
-        return;
-      }
-
-      if (edad > 15 && edad <= 70) {
-        if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento && !error) {
-          updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
-          resetForm();
-        }
-      } else if (edad <= 15) {
-        toast.error("Debes ser mayor a 15 años!");
-        return;
-      } else if (edad > 70) {
-        return;
-      }
-
-      setIsRefresh(true);
+    if (passwordError) {
+      toast.error(passwordError);
       resetForm();
+      return;
+    }
+
+    // Si no hay errores de validación, se actualizan los datos
+    if (formData.username !== data?.username || formData.newPassword) {
+      updateUsername(formData.username, formData.oldPassword);
+      if (formData.newPassword) {
+        updatePassword(
+          formData.oldPassword,
+          formData.newPassword,
+          formData.confirmNewPassword
+        );
+      }
+      setIsRefresh(true);
       setIsNotDisable(true);
+      resetForm();
+    } else {
+      toast.error("No se ha encontrado cambios.");
+      resetForm();
     }
   };
 
