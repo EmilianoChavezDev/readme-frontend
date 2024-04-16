@@ -11,6 +11,10 @@ const useReport = () => {
     const COMMENT_REPORTS_ENDPOINT = '/reportes_comentarios'
     const USER_REPORTS_ENDPOINT = '/reportes_usuarios'
 
+    // post 'reportes_comentarios/update_all', to: 'reportes_comentarios#actualizar_muchos_reportes'
+    // post 'reportes_libros/update_all', to: 'reportes_libros#actualizar_muchos_reportes'
+    // post 'reportes_usuarios/update_all', to: 'reportes_usuarios#actualizar_muchos_reportes'
+
     const [error, setError] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -54,7 +58,19 @@ const useReport = () => {
         return handleRequest(() => api.put(`${USER_REPORTS_ENDPOINT}/${id}`, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
 
-    return { getDailyReadingsPerBook, getUserStatistics, getReports, updateBookReport, updateCommentReport, updateUserReport, error, isLoading }
+    const updateAllBookReport = async (params = {}) => {
+        return handleRequest(() => api.post(`${BOOK_REPORTS_ENDPOINT}/update_all`, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
+
+    const updateAllCommentReport = async (params = {}) => {
+        return handleRequest(() => api.post(`${COMMENT_REPORTS_ENDPOINT}/update_all`, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
+
+    const updateAllUserReport = async (params = {}) => {
+        return handleRequest(() => api.post(`${USER_REPORTS_ENDPOINT}/update_all`, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
+
+    return { getDailyReadingsPerBook, getUserStatistics, getReports, updateBookReport, updateCommentReport, updateUserReport, updateAllBookReport,updateAllCommentReport, updateAllUserReport, error, isLoading }
 }
 
 export default useReport
