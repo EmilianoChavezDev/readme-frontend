@@ -588,7 +588,7 @@ const page = ({ params }) => {
                       <div className="col-span-12 flex flex-col justify-center text-center">
                         <Typography variant="h4">
                           {!isMyBook
-                            ? "Aun no tienes liros"
+                            ? "Aun no tienes libros"
                             : "Este usuario no tiene libros"}
                         </Typography>
                         {!isMyBook && (
