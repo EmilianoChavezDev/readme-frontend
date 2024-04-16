@@ -1,7 +1,9 @@
+"use client";
+
 import { useState } from "react";
 import axios from "axios";
 
-const CATEGORY_ENDPOINT = "/libros_categorias"
+const CATEGORY_ENDPOINT = "/libros_categorias";
 const useCategory = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -10,11 +12,14 @@ const useCategory = () => {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(process.env.API_URL+CATEGORY_ENDPOINT, {
-        headers: { 
-            Authorization: `Bearer ${localStorage.getItem('token')}` 
+      const response = await axios.get(
+        process.env.API_URL + CATEGORY_ENDPOINT,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
-      });
+      );
 
       if (response.status < 200 || response.status >= 300) {
         throw error;
@@ -30,7 +35,6 @@ const useCategory = () => {
       setLoading(false);
     }
   };
-
 
   return { data, loading, error, fetchCategories };
 };

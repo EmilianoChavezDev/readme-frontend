@@ -47,7 +47,6 @@ export default function ChapterForm({
   const handleSubmitPDF = (e) => {
     const file = e.target.files[0];
     if (!file || !(file instanceof Blob)) {
-
       return;
     }
     const reader = new FileReader();
@@ -61,25 +60,25 @@ export default function ChapterForm({
     reader.readAsArrayBuffer(file);
   };
 
+  // const convertPDFToText = async (pdfData) => {
+  //   const pdfjs = await import("pdfjs-dist");
+  //   pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-  const convertPDFToText = async (pdfData) => {
-    const pdfjs = await import("pdfjs-dist");
-    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+  //   const loadingTask = pdfjs.getDocument({ data: pdfData });
+  //   const pdfDocument = await loadingTask.promise;
+  //   let textContent = [];
 
-    const loadingTask = pdfjs.getDocument({ data: pdfData });
-    const pdfDocument = await loadingTask.promise;
-    let textContent = [];
+  //   for (let i = 1; i <= pdfDocument.numPages; i++) {
+  //     const page = await pdfDocument.getPage(i);
+  //     const content = await page.getTextContent();
 
-    for (let i = 1; i <= pdfDocument.numPages; i++) {
-      const page = await pdfDocument.getPage(i);
-      const content = await page.getTextContent();
+  //     const text = content.items.map((item) => item.str).join("\n");
+  //     const formattedText = text.replace(/\n\n+/g, "<br>");
+  //     textContent.push(formattedText);
+  //   }
+  //   return textContent.join("\n");
+  // };
 
-      const text = content.items.map((item) => item.str).join("\n");
-      const formattedText = text.replace(/\n\n+/g, "<br>"); 
-      textContent.push(formattedText);
-    }
-    return textContent.join("\n");
-  };
   const handleSave = () => {
     if (!chapterTitle?.trim()?.length)
       return toast.error("El título del capítulo es requerido");

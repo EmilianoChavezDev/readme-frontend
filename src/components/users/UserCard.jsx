@@ -9,7 +9,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import ProfileView from "../common/ProfileView";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 export function UserCard({
@@ -18,12 +18,11 @@ export function UserCard({
   image,
   description,
   canDelete = false,
-  deleteButtonProps: { deleteInfo = "", onDelete = () => {} } = {},
-  buttonProps: { info, onClick = () => {} },
   canFollow = true,
+  deleteButtonProps: { deleteInfo = "", onDelete = () => {} } = {},
+  buttonProps: { info, onClick = () => {} } = {},
 }) {
   const [usernameLs, setUsernameLs] = useState(null);
-  const router = useRouter();
 
   useEffect(() => {
     setUsernameLs(localStorage.getItem("username"));
@@ -32,15 +31,14 @@ export function UserCard({
   const isMyUsername = useMemo(() => {
     return username === usernameLs;
   });
-
   return (
-    <Card className="mt-6 _lg:w-64 min-h-52 py-4 overflow-hidden bg-buttonColorGray rounded-3xl shadow-xl">
-      <div
-        onClick={() => router.push(`/user/${username}`)}
-        className="flex items-center justify-between mx-4 hover:cursor-pointer"
-      >
-        <span className="font-bold _md:text-lg">{nombre ?? username}</span>
-
+    <Card className="mt-6 w-64 min-h-52 py-4 overflow-hidden bg-buttonColorGray rounded-3xl shadow-xl">
+      <div className="flex items-center justify-between mx-4 hover:cursor-pointer">
+        <Link href={"/user/" + username}>
+          <span className="font-bold _md:text-lg">
+            {nombre?.lenght ? nombre : username}
+          </span>
+        </Link>
         <ProfileView username={username} imagen={image} size={12} />
       </div>
       <CardBody className="_md:h-40 overflow-hidden">
