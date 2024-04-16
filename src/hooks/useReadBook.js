@@ -194,6 +194,10 @@ const useReadBooks = () => {
     }
   };
 
+  const downloadBook = async (bookId) => {
+    getBookById(bookId);
+  };
+
   return {
     getBookById,
     data,
@@ -208,6 +212,7 @@ const useReadBooks = () => {
     changeBookEnd,
     getReadBook,
     getReadCurrent,
+    downloadBook,
   };
 };
 

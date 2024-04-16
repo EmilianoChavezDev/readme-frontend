@@ -20,57 +20,56 @@ import useReadBooks from "@/hooks/useReadBook";
 import Loader from "@/components/common/loader";
 import ReviewSelector from "@/components/books/ReviewSelector";
 import CommentsSection from "@/components/books/CommentsSection";
-import useDenuncias from "@/hooks/useDenuncias";
+import { Document, Page, Text, StyleSheet, pdf } from "@react-pdf/renderer";
+import { saveAs } from "file-saver";
+import { convert } from "html-to-text";
+import useChapter from "@/hooks/useChapter";
+
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: "column",
+    padding: 10,
+  },
+  chapterTitle: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  chapterContent: {
+    fontSize: 10,
+    padding: 0,
+    marginBottom: 0,
+  },
+});
 
 export default function BookDetails({ params }) {
   const { getReadBook } = useReadBooks();
   const { getBookByID, isLoading, error } = useBook();
+  const {
+    downloadBook,
+    data: capitulos,
+    getContentChapter,
+    contentChapter,
+  } = useReadBooks();
   const { createOrUpdateReview, getReviewByUserAndBook, deleteReview } =
     useReview();
   const { getFavoriteByUserAndBook, createFavorite, updateFavorite } =
     useFavorite();
-  const { getReportBookCategory, createReportBook } = useDenuncias();
+  const { getChapterByBook } = useChapter();
+
   const [book, setBook] = useState(null);
   const [review, setReview] = useState(null);
   const [favorite, setFavorite] = useState(null);
   const [readBook, setReadBook] = useState(null);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [chapters, setChapters] = useState([]);
+
   const [reasonForReporting, setReasonForReporting] = useState("");
-  const [categoryBookReport, setCategoryBookReport] = useState([]);
-  const [categorySelectBookReport, setCategorySelectBookReport] = useState("");
-  const [errorCommentMotivo, setErrorCommentMotivo] = useState(false);
-  const fetchBookCategoryReport = async () => {
-    try {
-      const categoriesData = await getReportBookCategory();
-      setCategoryBookReport(categoriesData);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
-  const fnCreateReportBook = async () => {
-    try {
-      await createReportBook({
-        libro_id: book.id,
-        reporte: {
-          motivo: reasonForReporting,
-          estado: "pendiente",
-          categoria: categorySelectBookReport,
-        },
-      });
-    } catch (error) {
-      console.error("Error report create:", error);
-    }
-  };
-
-  const handleReportBook = () => {
-    fetchBookCategoryReport();
-    setShowReportModal(true);
-  };
-
   const fetchBook = async () => {
     const result = await getBookByID(params.id);
+    const chapters = await getChapterByBook(params.id);
     setBook(result);
+    setChapters(chapters);
   };
 
   const fetchReview = async () => {
@@ -124,26 +123,8 @@ export default function BookDetails({ params }) {
   };
 
   const reportBook = async () => {
-    if (!reasonForReporting || !categorySelectBookReport) {
-      setErrorCommentMotivo(true);
-      return;
-    }
-    toast.success(
-      "El libro ha sido reportado con éxito, los moderadores lo revisarán pronto"
-    );
-    fnCreateReportBook();
-    setCategorySelectBookReport("");
-    setReasonForReporting("");
+    toast.error("Falta implementar en la API");
     setShowReportModal(false);
-    setErrorCommentMotivo(false);
-  };
-
-  const handleCancelReportBook = () => {
-    setShowReportModal(false);
-    setCategorySelectBookReport("");
-    setReasonForReporting("");
-    setShowReportModal(false);
-    setErrorCommentMotivo(false);
   };
 
   useEffect(() => {
@@ -158,11 +139,56 @@ export default function BookDetails({ params }) {
     }
   }, [book?.id]);
 
+  useEffect(() => {
+    if (!isDownloading) return;
+    generatePdf(book?.titulo, chapters);
+  }, [isDownloading, capitulos]);
+
+  const downloadChapterContent = async (contenidoUrl) => {
+    try {
+      const response = await fetch(contenidoUrl);
+      const htmlText = await response.text();
+      return htmlText;
+    } catch (error) {
+      toast.error("No se pudo obtener el contenido del capítulo");
+    }
+  };
+
+  const generatePdf = async (bookTitle, chaptersData) => {
+    const downloadedChapters = [];
+    await Promise.all(
+      chaptersData.map(async (chapter) => {
+        const data = await downloadChapterContent(chapter.contenido);
+        downloadedChapters.push(data);
+      })
+    );
+    const cleanedChapters = downloadedChapters?.map(convert);
+
+    const doc = (
+      <Document>
+        {chaptersData?.map((chapter, index) => (
+          <Page key={index} style={styles.page}>
+            <Text style={styles.chapterTitle}>{chapter.titulo}</Text>
+            <Text style={styles.chapterContent}>{cleanedChapters[index]}</Text>
+          </Page>
+        ))}
+      </Document>
+    );
+
+    const pdfBlob = await pdf(doc).toBlob();
+    saveAs(pdfBlob, `${bookTitle}.pdf`);
+    setIsDownloading(false);
+  };
+
+  const handleDownloadBook = async () => {
+    setIsDownloading(true);
+  };
+
   return (
     <>
       <Modal
         open={Boolean(showReportModal)}
-        onHide={handleCancelReportBook}
+        onHide={() => setShowReportModal(false)}
         onSave={reportBook}
         title="Denunciar Libro"
       >
@@ -174,23 +200,6 @@ export default function BookDetails({ params }) {
             onChange={(event) => setReasonForReporting(event.target.value)}
             rows={2}
           />
-          <select
-            className="text-xs border rounded-lg p-2 border-gray-400 outline-none"
-            value={categorySelectBookReport}
-            onChange={(e) => setCategorySelectBookReport(e.target.value)}
-          >
-            <option value="">Selecciona el motivo del reporte</option>
-            {categoryBookReport?.map((category) => (
-              <option key={category.id} value={category.name}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-          {errorCommentMotivo && (
-            <div className="text-red-500">
-              Por favor, describe y selecciona un motivo.
-            </div>
-          )}
         </div>
       </Modal>
       {error ? (
@@ -219,7 +228,6 @@ export default function BookDetails({ params }) {
                   </div>
                 </div>
                 <div className="flex-grow p-3 flex flex-col gap-3">
-
                   <div className="flex flex-col gap-1">
                     <h1 className="font-extrabold text-xl">{book?.titulo}</h1>
                     <div className="flex items-center text-sm gap-2">
@@ -234,7 +242,6 @@ export default function BookDetails({ params }) {
                         </Link>
                       </span>
                     </div>
-
                   </div>
                   <div className="flex">
                     <div className="flex flex-col items-center flex-grow pr-2">
@@ -291,7 +298,7 @@ export default function BookDetails({ params }) {
                     </button>
                     <button
                       className="h-9 rounded-md bg-gray-500 hover:brightness-90"
-                      onClick={() => toast.error("Implementar en otro ticket")}
+                      onClick={() => handleDownloadBook()}
                     >
                       Descargar
                     </button>
@@ -304,10 +311,9 @@ export default function BookDetails({ params }) {
                 <h2 className="font-semibold">Sinopsis:</h2>
                 <p className="text-sm">{book?.sinopsis}</p>
               </div>
-
               <button
                 className="absolute bottom-5 right-10 bg-none outline-none border-none text-red-600 flex gap-1"
-                onClick={handleReportBook}
+                onClick={() => setShowReportModal(true)}
               >
                 <span>
                   <PiWarningBold />
@@ -316,7 +322,6 @@ export default function BookDetails({ params }) {
                   Denunciar este libro
                 </span>
               </button>
-
               <div className="absolute top-10 right-10">
                 <ReviewSelector
                   currentPoint={review?.puntuacion ?? 0}

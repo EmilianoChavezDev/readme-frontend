@@ -62,7 +62,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
-      setToken(storedToken);
+      setToken(storedToken ?? "");
     }
 
     const storedExpiration = localStorage.getItem("expiration");
