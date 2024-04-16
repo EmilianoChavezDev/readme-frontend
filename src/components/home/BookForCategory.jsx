@@ -8,13 +8,13 @@ const BookForCategory = ({ category, bookData }) => {
   const [filteredBooks, setFilteredBooks] = useState([]);
 
   useEffect(() => {
-    const filtered = bookData.filter((libro) => libro.categoria === category);
+    const filtered = bookData?.filter((libro) => libro?.categoria === category);
     setFilteredBooks(filtered);
   }, [category, bookData]);
 
   return (
-    <div class="py-4">
-      {filteredBooks.length === 0 ? (
+    <div className="py-4">
+      {filteredBooks?.length === 0 ? (
         <>
           <div>
             <h2 className="text-2xl text-center px-4 _sm:text-left font-bold mb-4 ">
@@ -34,7 +34,7 @@ const BookForCategory = ({ category, bookData }) => {
           </h2>
           <div className={`flex justify-center`}>
             <Link
-              href={`/books/${filteredBooks[0].id}`}
+              href={`/books/${filteredBooks[0]?.id}`}
               className="flex justify-center w-auto h-auto"
             >
               <div className="p-10">
@@ -47,8 +47,8 @@ const BookForCategory = ({ category, bookData }) => {
                       <div className="absolute inset-0 overflow-hidden -mb-4 rounded-t-lg rounded-b-md">
                         <Image
                           src={
-                            filteredBooks[0].portada
-                              ? filteredBooks[0].portada
+                            filteredBooks[0]?.portada
+                              ? filteredBooks[0]?.portada
                               : "/image/template_libro.png"
                           }
                           alt="imgbook"
@@ -63,7 +63,7 @@ const BookForCategory = ({ category, bookData }) => {
                         className="text-3xl font-bold mb-2 truncate"
                         style={{ maxWidth: "auto" }}
                       >
-                        {filteredBooks[0].titulo}
+                        {filteredBooks[0]?.titulo}
                       </h3>
                       <div
                         style={{

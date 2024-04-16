@@ -697,7 +697,7 @@ const page = ({ params }) => {
               {selectedOption === "seguidos" && (
                 <div>
                   <div className="grid grid-col _lg:grid-cols-4 grid-cols-2 gap-2">
-                    {!allFollowed.length && (
+                    {!followedLoading && !allFollowed.length && (
                       <div className="col-span-12 flex flex-col justify-center text-center">
                         <Typography variant="h4">
                           Aún no sigues a nadie

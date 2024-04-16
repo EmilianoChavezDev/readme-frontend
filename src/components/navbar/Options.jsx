@@ -65,7 +65,7 @@ const Options = ({ categories = () => {} }) => {
              hover:cursor-pointer
              hover:text-white"
               >
-                <span className="cursor-pointer text-white _lg:text-sm text-lg">
+                <span className="cursor-pointer  _lg:text-sm text-lg">
                   Explorar
                 </span>
                 <span
@@ -116,7 +116,7 @@ const Options = ({ categories = () => {} }) => {
              hover:cursor-pointer
              hover:text-white"
               >
-                <span className="cursor-pointer text-white _lg:text-sm text-lg">
+                <span className="cursor-pointer _lg:text-sm text-lg">
                   Escribe
                 </span>
                 <span
