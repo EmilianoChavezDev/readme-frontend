@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useEffect } from "react";
+import React, { useEffect } from "react";
 import NavBar from "../NavBar";
 import { usePathname } from "next/navigation";
 import { ignorePaths } from "@/utils/ignoreNavbarAndFooter";

@@ -1,12 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import NavBar from "@/components/NavBar";
 
 const NotExist = ({ message, butMessage }) => {
   return (
     <>
-      <NavBar />
       <div className="flex flex-col justify-center items-center h-screen">
         <p className="text-center mb-4 font-bold">{message}</p>
         <Image
