@@ -129,7 +129,7 @@ export default function BookDetails({ params }) {
       return;
     }
     toast.success(
-      "El libro ha sido reportado con éxito, los moderadores lo revisarán pronto"
+      "Libro Reportado"
     );
     fnCreateReportBook();
     setCategorySelectBookReport("");

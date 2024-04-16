@@ -75,7 +75,7 @@ const UserOption = ({
       return;
     }
     toast.success(
-      "Tu denuncia se ha enviado correctamente, los moderadores lo revisarán pronto"
+      "Usuario Reportado"
     );
     fnCreateReportUser();
     setCategorySelectReportUser("");

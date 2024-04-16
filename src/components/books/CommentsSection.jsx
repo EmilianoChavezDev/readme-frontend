@@ -152,7 +152,7 @@ export default function xCommentsSection({ bookId }) {
       setErrorCommentMotivo(true);
       return;
     }
-    toast.success("Tu denuncia se ha enviado correctamente, los moderadores lo revisarán pronto");
+    toast.success("Comentario Reportado");
     fnCreateReportComment();
     setCommentIdToReport("");
     setCommentDescriptionToReport("");
