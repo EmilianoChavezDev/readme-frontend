@@ -8,6 +8,8 @@ const useReport = () => {
     const ANALYSIS_ENDPOINT = '/informe'
     const REPORTS_ENDPOINT = '/reportes'
     const BOOK_REPORTS_ENDPOINT = '/reportes_libros'
+    const COMMENT_REPORTS_ENDPOINT = '/reportes_comentarios'
+    const USER_REPORTS_ENDPOINT = '/reportes_usuarios'
 
     const [error, setError] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -36,19 +38,23 @@ const useReport = () => {
         return handleRequest(() => api.get(`${ANALYSIS_ENDPOINT}/estadisticas_usuario`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
 
-    const createBookReport = async (params = {}) => {
-        return handleRequest(() => api.post(BOOK_REPORTS_ENDPOINT, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
-    }
-
-    const getBookReportCategories = async (params = {}) => {
-        return handleRequest(() => api.get(`${REPORTS_ENDPOINT}/categorias/libros`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
-    }
-
     const getReports = async (params = {}) => {
         return handleRequest(() => api.get(`${REPORTS_ENDPOINT}/find_by`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
 
-    return { getDailyReadingsPerBook, getUserStatistics, createBookReport, getReports, getBookReportCategories, error, isLoading }
+    const updateBookReport = async (id, params = {}) => {
+        return handleRequest(() => api.put(`${BOOK_REPORTS_ENDPOINT}/${id}`, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
+
+    const updateCommentReport = async (id, params = {}) => {
+        return handleRequest(() => api.put(`${COMMENT_REPORTS_ENDPOINT}/${id}`, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
+
+    const updateUserReport = async (id, params = {}) => {
+        return handleRequest(() => api.put(`${USER_REPORTS_ENDPOINT}/${id}`, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
+
+    return { getDailyReadingsPerBook, getUserStatistics, getReports, updateBookReport, updateCommentReport, updateUserReport, error, isLoading }
 }
 
 export default useReport

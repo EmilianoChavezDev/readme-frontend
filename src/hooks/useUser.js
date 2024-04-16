@@ -497,7 +497,29 @@ const useUserInfo = () => {
     }
   };
 
-
+  const deleteUser = async (id) => {
+    setLoading(true);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/${id}`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(
+        url,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsError(false);
+      return response?.data;
+    } catch (error) {
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return {
     data,
@@ -525,6 +547,7 @@ const useUserInfo = () => {
     updateUserInformation,
     updatePortada,
     deletePortada,
+    deleteUser
   };
 };
 
