@@ -12,8 +12,8 @@ import useReport from '@/hooks/useReport'
 import useUserInfo from '@/hooks/useUser'
 import useComment from '@/hooks/useComment'
 import Modal from '@/components/common/modal'
-import Pagination from '@/components/common/Pagination'
 import Loader from '@/components/common/loader'
+import Pagination from '@/components/common/Pagination'
 
 export default function Page() {
 
@@ -29,7 +29,7 @@ export default function Page() {
     const { deleteBook } = useBook()
     const { deleteUser } = useUserInfo()
     const { deleteComment } = useComment()
-    const { getReports, updateBookReport, updateCommentReport, updateUserReport, isLoading } = useReport()
+    const { getReports, updateBookReport, updateCommentReport, updateUserReport, updateAllBookReport, updateAllCommentReport, updateAllUserReport, isLoading } = useReport()
 
     const [currentPage, setCurrentPage] = useState(1)
     const [reportsData, setReportsData] = useState(null)
@@ -39,14 +39,17 @@ export default function Page() {
     const [showReportRejectModal, setShowReportRejectModal] = useState(false)
     const [showReportApproveModal, setShowReportApproveModal] = useState(false)
 
-    const fetchData = async () => {
+    const fetchData = async (defaultReportSelectedId) => {
         const result = await getReports({ page: currentPage, estado: statusToSearch })
         let mappedValues = {
             ...result, 
             data: result?.data?.map(report => ({...report, tipo: report.comentario? 'Comentario' : report.usuario_reportado? 'Usuario' : 'Libro' }))
         }
         setReportsData(mappedValues)
-        if (mappedValues?.data?.length) {
+        if (defaultReportSelectedId) {
+            let item = mappedValues?.data?.find(r => r.id === defaultReportSelectedId)
+            setReportSelected(item)
+        } else if (mappedValues?.data?.length) {
             setReportSelected(mappedValues?.data[0])
         }
     }
@@ -61,9 +64,9 @@ export default function Page() {
     }
 
     const handleUpdateReportStatus = async estado => {
-        const result = reportSelected.tipo === 'Usuario'? await updateUserReport(reportSelected.id, { estado }) :
-            reportSelected.tipo === 'Comentario'? await updateCommentReport(reportSelected.id, { estado }) : 
-                await updateBookReport(reportSelected.id, { estado })
+        const result = reportSelected.tipo === 'Usuario'? await updateUserReport(reportSelected.id, { reporte: { estado } }) :
+            reportSelected.tipo === 'Comentario'? await updateCommentReport(reportSelected.id, { reporte: { estado } }) : 
+                await updateBookReport(reportSelected.id, { reporte: { estado } })
         if (result?.reporte) {
             handleReloadListValues(result?.reporte)
         } else {
@@ -72,12 +75,13 @@ export default function Page() {
     }
 
     const handleApproveReport = async () => {
-        let params = { estado: 'resuelto', conclusion: reportConclusion }
-        const result = reportSelected.tipo === 'Usuario'? await updateUserReport(reportSelected.id, params) :
-            reportSelected.tipo === 'Comentario'? await updateCommentReport(reportSelected.id, params) : 
-                await updateBookReport(reportSelected.id, params)
-        if (result?.reporte) {
-            handleReloadListValues(result?.reporte)
+        let params = { estado: reportSelected.estado, nuevo_estado: 'resuelto', conclusion: reportConclusion }
+        const result = reportSelected.tipo === 'Usuario'? await updateAllUserReport({...params, usuario_reportado_id: reportSelected?.usuario_reportado?.id}) :
+            reportSelected.tipo === 'Comentario'? await updateAllCommentReport({...params, comentario_id: reportSelected?.comentario?.id}) : 
+                await updateAllBookReport({...params, libro_id: reportSelected?.libro_id})
+        if (result?.error) {
+            toast.error('No se pudo aprobar el reporte')
+        } else {
             if (reportSelected.tipo === 'Usuario') {
                 const userResult = await deleteUser(reportSelected?.usuario_reportado?.id)
                 !userResult && toast.error('EL usuario no pudo ser desactivado')
@@ -88,22 +92,21 @@ export default function Page() {
                 const bookResult = await deleteBook(reportSelected?.libro_id)
                 !bookResult && toast.error('EL libro no pudo ser desactivado')
             }
-        } else {
-            toast.error('No se pudo aprobar el reporte')
+            fetchData(reportSelected?.id)
         }
         setShowReportApproveModal(false)
         setReportConclusion('')
     }
 
     const handleRejectReport = async () => {
-        let params = { estado: 'rechazado', conclusion: reportConclusion }
-        const result = reportSelected.tipo === 'Usuario'? await updateUserReport(reportSelected.id, params) :
-            reportSelected.tipo === 'Comentario'? await updateCommentReport(reportSelected.id, params) : 
-                await updateBookReport(reportSelected.id, params)
-        if (result?.reporte) {
-            handleReloadListValues(result?.reporte)
-        } else {
+        let params = { estado: reportSelected.estado, nuevo_estado: 'rechazado', conclusion: reportConclusion }
+        const result = reportSelected.tipo === 'Usuario'? await updateAllUserReport({...params, usuario_reportado_id: reportSelected?.usuario_reportado?.id}) :
+            reportSelected.tipo === 'Comentario'? await updateAllCommentReport({...params, comentario_id: reportSelected?.comentario?.id}) : 
+                await updateAllBookReport({...params, libro_id: reportSelected?.libro_id})
+        if (result?.error) {
             toast.error('No se pudo rechazar el reporte')
+        } else {
+            fetchData(reportSelected?.id)
         }
         setShowReportRejectModal(false)
         setReportConclusion('')
