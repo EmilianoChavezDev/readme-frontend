@@ -153,7 +153,7 @@ const page = ({ params }) => {
       if (isDeleteProfile) {
         deleteProfile();
       }
-      if (isChangePortada && !isDeletePortada) {
+      if (isChangePortada) {
         updatePortada(portadaImage);
       }
       if (isDeletePortada) {
