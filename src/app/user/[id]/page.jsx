@@ -30,12 +30,12 @@ const defaultValues = {
 };
 
 const page = ({ params }) => {
-  const { setIsActualizado, setProfileUpdate, profileUpdate } = useUser();
-  const { getUserInformation, data } = useUserInfo();
+  const { setIsActualizado, setProfileUpdate } = useUser();
+  const { getUserInformation, data, isLoading: userLoading } = useUserInfo();
   const {
     getFollowFollowers,
     data: seguidoresSeguidos,
-    loading,
+    isLoading: isFollowers,
   } = useUserInfo();
   const {
     getUserLecturas,
@@ -46,10 +46,26 @@ const page = ({ params }) => {
   const { follow } = useUserInfo();
   const { unfollow } = useUserInfo();
   const { getAllBooks, isLoading: librosLoading } = useBook();
-  const { updateProfile, data: updProfile } = useUserInfo();
-  const { data: dltProfile, deleteProfile } = useUserInfo();
-  const { data: updPortada, updatePortada } = useUserInfo();
-  const { data: dltPortada, deletePortada } = useUserInfo();
+  const {
+    updateProfile,
+    data: updProfile,
+    isLoading: profileLoading,
+  } = useUserInfo();
+  const {
+    data: dltProfile,
+    deleteProfile,
+    isLoading: deleteProfileLoading,
+  } = useUserInfo();
+  const {
+    data: updPortada,
+    updatePortada,
+    isLoading: portadaLoading,
+  } = useUserInfo();
+  const {
+    data: dltPortada,
+    deletePortada,
+    isLoading: deletePortadaLoading,
+  } = useUserInfo();
 
   const {
     updateUserInformation,
@@ -57,6 +73,7 @@ const page = ({ params }) => {
     isError,
     isTrue,
     message,
+    isLoading: userInformationLoading,
   } = useUserInfo();
   const [selectedOption, setSelectedOption] = useState("misLibros");
   const [arrBooks, setArrBooks] = useState([]);
@@ -136,7 +153,7 @@ const page = ({ params }) => {
       if (isDeleteProfile) {
         deleteProfile();
       }
-      if (isChangePortada && !isDeletePortada) {
+      if (isChangePortada) {
         updatePortada(portadaImage);
       }
       if (isDeletePortada) {
@@ -175,20 +192,21 @@ const page = ({ params }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Si el clic ocurre fuera del contenedor de OptionsUpdate, cierra el componente
-      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+      if (
+        isPortadaUpdate &&
+        optionsRef.current &&
+        !optionsRef.current.contains(event.target)
+      ) {
         setIsPortadaUpdate(false);
       }
     };
 
-    // Agrega el event listener cuando el componente se monta
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Limpia el event listener cuando el componente se desmonta
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isPortadaUpdate]);
 
   useEffect(() => {
     setAllFollowers([]);
@@ -214,6 +232,7 @@ const page = ({ params }) => {
 
     if (data?.username == usernameLs) {
       setProfileUpdate(data?.profile);
+      setPortadaImage(data?.portada);
       setIsActualizado(true);
     }
   }, [data]);
@@ -354,9 +373,7 @@ const page = ({ params }) => {
     try {
       await deleteFollower(id);
       getUserInformation(params.id);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const handleEditCancel = () => {
@@ -432,6 +449,7 @@ const page = ({ params }) => {
 
   const handleDeletePortada = () => {
     setIsDeletePortada(true);
+    setFileInputPortadaKey(Date.now());
     setIsPortadaUpdate(!isPortadaUpdate);
     setIsNotDisable(false);
     setPortadaImage(null);
@@ -443,7 +461,7 @@ const page = ({ params }) => {
 
   return (
     <>
-      {loading ? (
+      {userLoading && arrBooks ? (
         <Loader />
       ) : (
         <div className="flex flex-col min-h-screen bg-gray-100">

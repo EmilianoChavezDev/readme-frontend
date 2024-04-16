@@ -13,27 +13,28 @@ const useUserInfo = () => {
   const [isErrorProfileUpdate, setIsErrorProfileUpdate] = useState(false);
 
   const getUserInformation = async (username) => {
-    setLoading(true);
-    setIsTrue(false);
-    setIsError(false);
-    const url = `${process.env.API_URL}/usersFind/${username}`;
-    const token = localStorage.getItem("token");
+    setLoading(true); // Establecer loading como true al inicio
+
     try {
+      const url = `${process.env.API_URL}/usersFind/${username}`;
+      const token = localStorage.getItem("token");
+
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      const data = await response.data;
+      const data = response.data;
       setData(data);
-    } catch (error) {
-      setIsTrue(false);
-      setIsError(true);
-      setLoading(false);
-    } finally {
-      setLoading(false);
+      setIsTrue(true); // Marcar como true si se obtiene la información correctamente
       setIsError(false);
+    } catch (error) {
+      console.error("Error al obtener la información del usuario:", error);
+      setIsTrue(false);
+      setIsError(true); // Marcar como true si hay un error al obtener la información
+    } finally {
+      setLoading(false); // Establecer loading como false después de la operación, independientemente del resultado
     }
   };
 
@@ -485,24 +486,21 @@ const useUserInfo = () => {
     }
   };
 
-  const searchUsers = async (username,page) => {
+  const searchUsers = async (username, page) => {
     setLoading(true);
     setIsTrue(false);
     setIsError(false);
-    const url = `${process.env.API_URL}/users/find_by_username/`+username;
+    const url = `${process.env.API_URL}/users/find_by_username/` + username;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            page
-          }
-        }
-      );
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          page,
+        },
+      });
       setIsTrue(true);
       setIsError(false);
       setCurrentData(response.data);
@@ -538,6 +536,7 @@ const useUserInfo = () => {
       setLoading(false);
     }
   };
+
 
   return {
     data,
