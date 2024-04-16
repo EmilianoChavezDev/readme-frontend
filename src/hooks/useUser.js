@@ -13,7 +13,7 @@ const useUserInfo = () => {
   const [isErrorProfileUpdate, setIsErrorProfileUpdate] = useState(false);
 
   const getUserInformation = async (username) => {
-    setLoading(true); // Establecer loading como true al inicio
+    setLoading(true);
 
     try {
       const url = `${process.env.API_URL}/usersFind/${username}`;
@@ -27,14 +27,11 @@ const useUserInfo = () => {
 
       const data = response.data;
       setData(data);
-      setIsTrue(true); // Marcar como true si se obtiene la información correctamente
-      setIsError(false);
     } catch (error) {
-      console.error("Error al obtener la información del usuario:", error);
       setIsTrue(false);
-      setIsError(true); // Marcar como true si hay un error al obtener la información
+      setIsError(true);
     } finally {
-      setLoading(false); // Establecer loading como false después de la operación, independientemente del resultado
+      setLoading(false);
     }
   };
 
@@ -519,14 +516,11 @@ const useUserInfo = () => {
     const url = `${process.env.API_URL}/users/${id}`;
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.delete(
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setIsError(false);
       return response?.data;
     } catch (error) {
@@ -536,7 +530,6 @@ const useUserInfo = () => {
       setLoading(false);
     }
   };
-
 
   return {
     data,
@@ -565,7 +558,7 @@ const useUserInfo = () => {
     updatePortada,
     deletePortada,
     deleteUser,
-    searchUsers
+    searchUsers,
   };
 };
 
