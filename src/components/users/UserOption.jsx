@@ -11,6 +11,8 @@ const UserOption = ({
   selectedOption,
   onSelectOption,
   username,
+  handleFollow,
+  handleUnfollow,
   id,
 }) => {
   const [usernameLs, setUsernameLs] = useState(null);
@@ -81,6 +83,7 @@ const UserOption = ({
     setErrorMotive(false);
     setShowReportModal(false);
   };
+  const isOwner = username === localStorage.getItem("username");
 
   return (
     <>
@@ -129,7 +132,7 @@ const UserOption = ({
               }`}
               onClick={() => onSelectOption("misLibros")}
             >
-              Mis libros
+              {isOwner ? "Mis libros" : "Libros"}
             </span>
             <span
               className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 hover:border-colorPrimario
@@ -170,7 +173,10 @@ const UserOption = ({
           {usernameLs !== username && (
             <div className="hover:cursor-pointer pb-2 text-xl hidden _sm:block">
               {isFollow ? (
-                <Button className="px-2 py-2 flex text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white">
+                <Button
+                  className="px-2 py-2 flex text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
+                  onClick={() => handleUnfollow(id)}
+                >
                   <span className="flex items-center">
                     <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
                     Dejar de seguir
@@ -178,12 +184,16 @@ const UserOption = ({
                 </Button>
               ) : (
                 <div className="flex gap-4">
-                  <Button className="flex items-center px-2 py-2 text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white">
-                    <span className="inline-block align-middle mr-1 _md:w-4 _md:h-4">
+                  <Button
+                    onClick={() => handleFollow(id)}
+                    className="flex items-center px-2 py-2 text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
+                  >
+                    <span className="flex items-center gap-1">
                       <SlUserFollow />
+                      Seguir
                     </span>
-                    Seguir
                   </Button>
+                  
                   {usernameLs !== username && (
                     <Button
                       onClick={handleShowModal}
