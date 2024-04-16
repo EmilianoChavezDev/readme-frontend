@@ -34,16 +34,18 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted, canEdit=true }) 
   return (
     <>
       <div className={styles.container_drafts}>
-        <div className={styles.image_book_container}>
-          <Image
-            src={portada ? portada : "/image/template_libro.png"}
-            width={120}
-            height={160}
-            className={styles.image_port}
-            alt="Portada De Libro"
-            priority={true}
-          />
-        </div>
+        <Link href={`/books/${libroId}`}>
+          <div className={styles.image_book_container}>
+            <Image
+              src={portada ? portada : "/image/template_libro.png"}
+              width={120}
+              height={160}
+              className={styles.image_port}
+              alt="Portada De Libro"
+              priority={true}
+            />
+          </div>
+        </Link>
         <div className={styles.books_data_container}>
           <p className={styles.title_book}>
             <Link href={"/books/"+libroId}>

@@ -125,6 +125,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 153px;
 }
 
 .txt_category {
@@ -348,4 +349,12 @@
   .image_port {
     display: none;
   }
+}
+
+.image_book_container {
+  transition: transform 0.2s ease-in-out;
+}
+
+.image_book_container:hover {
+  transform: scale(1.03);
 }

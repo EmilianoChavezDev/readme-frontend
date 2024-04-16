@@ -3,6 +3,7 @@ import "moment/locale/es";
 
 import moment from "moment";
 import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { VscKebabVertical } from "react-icons/vsc";
 import {
@@ -16,8 +17,9 @@ import Modal from "@/components/common/modal";
 import { useUser } from "@/contexts/UserProvider";
 import ProfileView from "../common/ProfileView";
 import Link from "next/link";
+import useDenuncias from "@/hooks/useDenuncias";
 
-export default function CommentsSection({ bookId }) {
+export default function xCommentsSection({ bookId }) {
   moment.locale("es");
   const COMMENTS_PAGE_SIZE = 5;
   const { username, profile } = useUser();
@@ -28,11 +30,22 @@ export default function CommentsSection({ bookId }) {
     updateComment,
   } = useComment();
 
+  const {
+    getReportCommentCategory,
+    createReportComment,
+  } = useDenuncias();
+
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState({ list: [] });
   const [commentsListPage, setCommentsListPage] = useState(1);
   const [commentToEdit, setCommentToEdit] = useState(null);
   const [commentIdToRemove, setCommentIdToRemove] = useState(null);
+  const [commentIdToReport, setCommentIdToReport] = useState(null);
+  const [commentDescriptionToReport, setCommentDescriptionToReport] =
+    useState(null);
+  const [commentSelectToReport, setCommentSelectToReport] = useState(null);
+  const [categoryCommentReport, setCategoryCommentReport] = useState([]);
+  const [errorCommentMotivo, setErrorCommentMotivo] = useState(false);
 
   const fetchComments = async () => {
     const data = await getCommentsByUserAndBook({
@@ -109,6 +122,55 @@ export default function CommentsSection({ bookId }) {
   useEffect(() => {
     bookId && fetchComments();
   }, [commentsListPage, bookId]);
+
+  const fnCreateReportComment = async () => {
+    try {
+      await createReportComment({
+        comentario_id: commentIdToReport,
+        reporte: {
+          motivo: commentDescriptionToReport,
+          estado: "pendiente",
+          categoria: commentSelectToReport,
+        },
+      });
+    } catch (error) {
+      console.error("Error report create:", error);
+    }
+  };
+
+  const fetchCommentsCategoryReport = async () => {
+    try {
+      const categoriesData = await getReportCommentCategory();
+      setCategoryCommentReport(categoriesData);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const handleCommentReport = () => {
+    if (!commentDescriptionToReport || !commentSelectToReport) {
+      setErrorCommentMotivo(true);
+      return;
+    }
+    toast.success("Tu denuncia se ha enviado correctamente, los moderadores lo revisarán pronto");
+    fnCreateReportComment();
+    setCommentIdToReport("");
+    setCommentDescriptionToReport("");
+    setCommentSelectToReport("");
+    setErrorCommentMotivo(false);
+  };
+
+  const handleCancelCommentReport = () => {
+    setCommentIdToReport("");
+    setCommentDescriptionToReport("");
+    setCommentSelectToReport("");
+    setErrorCommentMotivo(false);
+  };
+
+  const handleReport = (id) => {
+    fetchCommentsCategoryReport();
+    setCommentIdToReport(id);
+  };
 
   return (
     <>
@@ -203,6 +265,92 @@ export default function CommentsSection({ bookId }) {
                         </PopoverContent>
                       </Popover>
                     )}
+                    {item.username !== username && (
+                      <Popover placement="left">
+                        <PopoverHandler>
+                          <button className="h-9">
+                            <VscKebabVertical size={15} />
+                          </button>
+                        </PopoverHandler>
+                        <PopoverContent className="shadow-lg p-1 border-gray-400">
+                          <div className="p-1 flex flex-col text-xs text-black">
+                            <span
+                              className="cursor-pointer h-7 flex items-center text-gray-700 hover:text-black hover:bg-gray-100 rounded-sm px-2"
+                              onClick={() => handleReport(item.id)}
+                            >
+                              Denunciar
+                            </span>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    )}
+
+                    {/*Report Modal*/}
+                    <div
+                      className={`fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 ${
+                        commentIdToReport ? "visible" : "invisible"
+                      }`}
+                    >
+                      <div
+                        className={`fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 ${
+                          commentIdToReport && "visible"
+                        }`}
+                      >
+                        <div className="bg-white rounded-lg p-8">
+                          <h2 className="text-xl font-bold mb-4">
+                            Reportar comentario
+                          </h2>
+                          <p className="mb-4">
+                            ¿Estás seguro de que deseas denunciar este
+                            comentario?
+                          </p>
+                          <textarea
+                            className="w-full h-20 mb-4 border border-gray-400 rounded-lg p-2"
+                            placeholder="Describe el motivo del reporte"
+                            value={commentDescriptionToReport}
+                            onChange={(e) =>
+                              setCommentDescriptionToReport(e.target.value)
+                            }
+                          />
+
+                          <select
+                            className="w-full mb-4 border border-gray-400 rounded-lg p-2"
+                            value={commentSelectToReport}
+                            onChange={(e) =>
+                              setCommentSelectToReport(e.target.value)
+                            }
+                          >
+                            <option value="">
+                              Selecciona el motivo del reporte
+                            </option>
+                            {categoryCommentReport?.map((category) => (
+                              <option key={category.id} value={category.name}>
+                                {category.name}
+                              </option>
+                            ))}
+                          </select>
+                          {errorCommentMotivo && (
+                            <div className="text-red-500">
+                              Por favor, describe y selecciona un motivo.
+                            </div>
+                          )}
+                          <div className="flex justify-end">
+                            <button
+                              className="mr-2 px-4 py-2 border border-gray-400 rounded-lg hover:bg-gray-100"
+                              onClick={handleCancelCommentReport}
+                            >
+                              Cancelar
+                            </button>
+                            <button
+                              className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600"
+                              onClick={handleCommentReport}
+                            >
+                              Enviar denuncia
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </header>
                   <p>{item?.comentario}</p>
                 </div>
