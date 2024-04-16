@@ -108,66 +108,80 @@ const page = ({ params }) => {
     setIsNotDisable(true);
   }, [currentData]);
 
-  const onSubmit = (formData) => {
+  const validateUsername = (username) => {
     const whitespaceRegex = /\s/;
 
-    // Validar que el nombre de usuario esté en minúsculas
-    if (formData.username !== formData.username.toLowerCase()) {
-      toast.error("El nombre de usuario debe estar en minúsculas.");
+    if (username !== username.toLowerCase()) {
+      return "El nombre de usuario debe estar en minúsculas.";
+    }
+
+    if (whitespaceRegex.test(username)) {
+      return "El nombre de usuario no debe contener espacios.";
+    }
+
+    return null;
+  };
+
+  const validatePassword = (oldPassword, newPassword, confirmNewPassword) => {
+    if (newPassword && newPassword === oldPassword) {
+      return "La nueva contraseña debe ser diferente de la contraseña anterior.";
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      return "Las contraseñas no coinciden.";
+    }
+
+    if (newPassword && newPassword.length < 8) {
+      return "La nueva contraseña debe tener al menos 8 caracteres.";
+    }
+
+    if (
+      newPassword &&
+      !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(newPassword)
+    ) {
+      return "La nueva contraseña debe contener al menos un número y no puede contener espacios.";
+    }
+
+    return null;
+  };
+
+  const onSubmit = (formData) => {
+    const usernameError = validateUsername(formData.username);
+    const passwordError = validatePassword(
+      formData.oldPassword,
+      formData.newPassword,
+      formData.confirmNewPassword
+    );
+
+    if (usernameError) {
+      toast.error(usernameError);
       resetForm();
       return;
     }
 
-    if (!whitespaceRegex.test(formData.username)) {
-      if (
-        formData.username !== data?.username ||
-        (formData.newPassword && formData.confirmNewPassword !== "")
-      ) {
-        updateUsername(formData.username, formData.oldPassword);
-        resetForm();
-      } else {
-        toast.error("No se ha encontrado cambios!");
-        resetForm();
-        return;
-      }
+    if (passwordError) {
+      toast.error(passwordError);
+      resetForm();
+      return;
     }
 
-    if (formData.newPassword && formData.confirmNewPassword != "") {
-      if (
-        formData.newPassword &&
-        formData.confirmNewPassword !== formData.oldPassword
-      ) {
-        if (
-          /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(formData.newPassword) &&
-          !whitespaceRegex.test(formData.newPassword)
-        ) {
-          updatePassword(
-            formData.oldPassword,
-            formData.newPassword,
-            formData.confirmNewPassword
-          );
-          resetForm();
-        } else {
-          toast.error(
-            "La nueva contraseña debe tener al menos 8 caracteres, al menos un número y no puede contener espacios."
-          );
-          resetForm();
-          return;
-        }
-      } else {
-        toast.error("Las contraseñas no coinciden");
-        resetForm();
-        return;
+    // Si no hay errores de validación, se actualizan los datos
+    if (formData.username !== data?.username || formData.newPassword) {
+      updateUsername(formData.username, formData.oldPassword);
+      if (formData.newPassword) {
+        updatePassword(
+          formData.oldPassword,
+          formData.newPassword,
+          formData.confirmNewPassword
+        );
       }
+      setIsRefresh(true);
+      setIsNotDisable(true);
+      resetForm();
     } else {
-      toast.error("No puedes poner la misma contraseña");
+      toast.error("No se ha encontrado cambios.");
       resetForm();
-      return;
     }
-
-    setIsRefresh(true);
-    resetForm();
-    setIsNotDisable(true);
   };
 
   const resetForm = () => {
