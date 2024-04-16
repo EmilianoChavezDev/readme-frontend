@@ -276,7 +276,9 @@ const page = ({ params }) => {
 
   useEffect(() => {
     if (!arrBooks) return;
+    console.log(arrBooks);
     const findedLibros = arrBooks?.data ?? [];
+    console.log(findedLibros);
     setCantLibros(arrBooks?.total_items ?? 0);
     setAllLibros((prevLibros) => {
       const prevIds = new Set(prevLibros.map((libro) => libro.id));
@@ -322,8 +324,11 @@ const page = ({ params }) => {
       user_id: id,
     };
     const bookData = await getAllBooks(option);
+    console.log(bookData);
     setArrBooks(bookData);
   };
+
+  useEffect(() => {});
 
   // funciones
 
@@ -602,7 +607,7 @@ const page = ({ params }) => {
               {selectedOption === "misLibros" && (
                 <div>
                   <div className="flex flex-col">
-                    {!allLecturas.length ? (
+                    {!allLibros.length ? (
                       <div className="col-span-12 flex flex-col justify-center text-center">
                         <Typography variant="h4">
                           {!isMyBook
