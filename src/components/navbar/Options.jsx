@@ -26,10 +26,12 @@ const Options = ({ categories, handleSearch = () => {} }) => {
 
   const handleNewBook = () => {
     router.push("/books/create");
+    setIsOpenEscribir(false);
   };
 
   const handleDraft = () => {
     router.push("/books/mybooks");
+    setIsOpenEscribir(false);
   };
 
   const handleHomeClick = () => {
