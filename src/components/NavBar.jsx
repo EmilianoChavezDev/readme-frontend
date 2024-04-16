@@ -1,5 +1,6 @@
 import { useUser } from "@/contexts/UserProvider";
-import { useCallback, useEffect, useState } from "react";
+
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import InputSearch from "./navbar/InputSearch";
 import Options from "./navbar/Options";
@@ -11,11 +12,14 @@ const NavBar = ({ onSearch }) => {
   const { username, logout, expiration, isOpen, setIsOpen } = useUser();
   const [isLoaded, setIsLoaded] = useState(false);
   const [usernameStorage, setUsernameStorage] = useState(null);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
   const path = usePathname();
+
   const { data: categories, fetchCategories } = useCategory();
+
 
   useEffect(() => {
     setIsLoaded(true);

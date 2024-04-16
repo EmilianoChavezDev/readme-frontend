@@ -33,7 +33,7 @@ const ChapterEditorHeader = ({
         </div>
       </div>
       <div className="flex gap-4 items-center">
-        <div style={{ display: "inline-block" }}>
+        <div className="inline-block">
           <input
             type="file"
             onChange={onSubmitPDF}
@@ -42,7 +42,7 @@ const ChapterEditorHeader = ({
           />
           <label
             htmlFor="fileInput"
-            className="bg-gray-600 text-white py-2 px-7 rounded-lg cursor-pointer"
+            className="bg-gray-600 text-white py-2 px-4 md:px-7 rounded-lg disabled:cursor-not-allowed inline-block cursor-pointer"
           >
             Subir PDF
           </label>

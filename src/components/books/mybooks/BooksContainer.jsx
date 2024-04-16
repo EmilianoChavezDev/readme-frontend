@@ -8,7 +8,7 @@ import { MdMoreVert } from "react-icons/md";
 import { FaStar, FaEye, FaComment } from "react-icons/fa";
 import OptionBooks from "@/components/books/mybooks/OptionsMenuBooks";
 
-const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
+const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted, canEdit=true }) => {
   const [showOptionMenu, setShowOptionMenu] = useState(false);
 
   const {
@@ -45,7 +45,12 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
           />
         </div>
         <div className={styles.books_data_container}>
-          <p className={styles.title_book}>{titulo}</p>
+          <p className={styles.title_book}>
+            <Link href={"/books/"+libroId}>
+             {titulo}  
+            </Link>
+           
+            </p>
           <p className={styles.txt_public_parts}>
             {Number(publicados) === 1
               ? `${publicados} parte publicada`
@@ -77,7 +82,7 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
             </div>
           </div>
         </div>
-        <div className={styles.write_content}>
+        {canEdit &&  <div className={styles.write_content}>
           <div className={styles.menu_container}>
             <div>
               {showOptionMenu && (
@@ -106,7 +111,7 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted }) => {
               <span>Seguir escribiendo</span>
             </Link>
           </div>
-        </div>
+        </div>}
       </div>
     </>
   );
