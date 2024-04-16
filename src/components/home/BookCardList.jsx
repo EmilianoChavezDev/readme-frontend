@@ -3,10 +3,12 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import Image from "next/image";
 import Link from "next/link";
+import tooltip from "@material-tailwind/react";
 
 const BookCardList = ({ books }) => {
   return (
@@ -24,17 +26,14 @@ const BookCardList = ({ books }) => {
             href={`/books/${libro.id}`}
             className="flex justify-center w-auto h-auto"
           >
-            <Card
-              shadow={false}
-              className="relative grid w-customWidth h-customHeight items-end justify-center overflow-hidden text-center m-0 p-0"
-            >
+            <Card className="relative grid w-64 h-96 items-end justify-center overflow-hidden text-center m-0 p-0">
               <div className="absolute inset-0 shadow-md rounded-lg"></div>
 
               <CardHeader
                 floated={false}
                 shadow={false}
                 color="transparent"
-                className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
+                className="absolute inset-0 m-0 h-72 w-full object-cover rounded-none bg-cover bg-center"
               >
                 <Image
                   src={
@@ -49,37 +48,31 @@ const BookCardList = ({ books }) => {
                 />
                 <div className="absolute inset-0 shadow-md rounded-lg"></div>
               </CardHeader>
-              <CardBody className="relative py-12 px-6 md:px-8">
+              <CardBody className="relative py-6 px-6 flex flex-col items-center justify-center">
                 <Typography
                   variant="h5"
-                  color="white"
+                  color="black"
                   className="mb-2 font-medium leading-[1.5] text-sm"
-                  style={{ textShadow: "0 0 2px #000" }}
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    maxWidth: "100%",
+                  }}
                 >
                   {libro.autorUsername}
                 </Typography>
-                <Typography
-                  variant="h5"
-                  color="white"
-                  className="mb-2 font-bold leading-[1.5]"
-                  style={{ fontSize: "25px", textShadow: "0 0 2px #000" }}
-                >
-                  {libro.titulo}
-                </Typography>
 
-                <Typography
+                <Tooltip content={libro.titulo}>
+                    <Typography
                   variant="h5"
-                  color="white"
-                  className="mb-5 font-medium leading-[1.5] text-sm"
-                  style={{
-                    maxWidth: "150px",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    textShadow: "0 0 2px #000",
-                  }}
+                  color="black"
+                  className="mb-2 font-bold leading-[1.5] text-lg w-48 truncate"
                 >
-                  {libro.sinopsis}
+                    {libro.titulo}
                 </Typography>
+                  
+                </Tooltip>
               </CardBody>
             </Card>
           </Link>

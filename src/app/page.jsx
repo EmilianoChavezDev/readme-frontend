@@ -74,7 +74,7 @@ export default function BackgroundBlogCard() {
                         backgroundColor: "#167574",
                         position: "absolute",
                         zIndex: 10,
-                        top: "360px",
+                        top: "380px",
                         left: "5px",
                       }}
                     >
@@ -109,7 +109,7 @@ export default function BackgroundBlogCard() {
                         backgroundColor: "#167574",
                         position: "absolute",
                         zIndex: 10,
-                        top: "360px",
+                        top: "380px",
                       }}
                     >
                       <IconButton
@@ -167,7 +167,7 @@ export default function BackgroundBlogCard() {
                         backgroundColor: "#167574",
                         position: "absolute",
                         zIndex: 10,
-                        top: "813px",
+                        top: "850px",
                         left: "5px",
                       }}
                     >
@@ -203,7 +203,7 @@ export default function BackgroundBlogCard() {
                         backgroundColor: "#167574",
                         position: "absolute",
                         zIndex: 10,
-                        top: "820px",
+                        top: "850px",
                       }}
                     >
                       <IconButton
