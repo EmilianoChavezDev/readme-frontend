@@ -123,7 +123,18 @@ export default function BookDetails({ params }) {
   };
 
   const reportBook = async () => {
-    toast.error("Falta implementar en la API");
+
+    if (!reasonForReporting || !categorySelectBookReport) {
+      setErrorCommentMotivo(true);
+      return;
+    }
+    toast.success(
+      "Libro Reportado"
+    );
+    fnCreateReportBook();
+    setCategorySelectBookReport("");
+    setReasonForReporting("");
+
     setShowReportModal(false);
   };
 
