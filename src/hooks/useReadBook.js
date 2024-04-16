@@ -6,6 +6,7 @@ const useReadBooks = () => {
   const [chapterData, setChapterData] = useState([]);
   const [contentChapter, setContentChapter] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [currentChapterData, setCurrentChapterData] = useState([]);
 
   const getReadBook = async (params) => {
@@ -29,6 +30,7 @@ const useReadBooks = () => {
   const getBookById = async (id) => {
     const token = localStorage.getItem("token");
     setIsLoading(true);
+    setIsDownloading(false);
     try {
       const url = `${process.env.API_URL}/capitulos/libro/${id}`;
       const response = await axios.get(url, {
@@ -37,6 +39,7 @@ const useReadBooks = () => {
         },
       });
       setData(response.data);
+      setIsDownloading(true);
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -194,6 +197,10 @@ const useReadBooks = () => {
     }
   };
 
+  const downloadBook = async (bookId) => {
+    getBookById(bookId);
+  };
+
   return {
     getBookById,
     data,
@@ -208,6 +215,8 @@ const useReadBooks = () => {
     changeBookEnd,
     getReadBook,
     getReadCurrent,
+    downloadBook,
+    isDownloading,
   };
 };
 
