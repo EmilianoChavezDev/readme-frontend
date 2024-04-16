@@ -34,10 +34,9 @@ const page = ({ params }) => {
     isError,
     isTrue,
     message,
-    updateBirthday,
   } = useUserInfo();
   const router = useRouter();
-  const { refresh } = useUser();
+  const { refresh, setProfileUpdate } = useUser();
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
@@ -49,20 +48,15 @@ const page = ({ params }) => {
     handleSubmit,
     trigger,
     reset,
-    watch,
     formState: { errors, isDirty },
   } = useForm({
     defaultValues,
   });
-  const usernameValue = watch("username");
-  const fechaValue = watch("fecha_nacimiento");
-  const newPassword = watch("newPassword", "");
-  const confirmNewPassword = watch("confirmNewPassword", "");
 
   // trae la informacion del usuario
   useEffect(() => {
     if (!params.id) return;
-    getUserInformation(params.id || localStorage.getItem("username"));
+    getUserInformation(params?.id);
   }, [params.id]);
 
   // si hay algun mensaje lanzo un toast con el mensaje
@@ -90,6 +84,7 @@ const page = ({ params }) => {
   // traer los datos del usuario
   useEffect(() => {
     if (!data) return;
+    setProfileUpdate(data?.profile);
     reset({
       username: data?.username,
       fecha_nacimiento:
@@ -114,30 +109,16 @@ const page = ({ params }) => {
   }, [currentData]);
 
   const onSubmit = (formData) => {
-    let error = false;
-    const currentDate = new Date();
     const whitespaceRegex = /\s/;
-
-    const minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear() - 15);
-
-    const maxDate = new Date();
-    maxDate.setFullYear(maxDate.getFullYear() - 70);
-
-    const fechaNacimiento = new Date(formData.fecha_nacimiento);
-    const edad = (currentDate - fechaNacimiento) / (1000 * 60 * 60 * 24 * 365);
 
     if (!whitespaceRegex.test(formData.username)) {
       if (formData.username !== data?.username) {
         updateUsername(formData.username, formData.oldPassword);
         resetForm();
+      } else {
+        toast.error("No se ha encontrado cambios!");
+        return;
       }
-    } else {
-      toast.error(
-        "El nombre de usuario no puede contener espacios en blanco tampoco estar vacio."
-      );
-      resetForm();
-      return;
     }
 
     if (formData.newPassword && formData.confirmNewPassword != "") {
@@ -173,19 +154,7 @@ const page = ({ params }) => {
       } else {
         toast.error("No puedes poner la misma contraseña");
         resetForm();
-        error = true;
-        return;
-      }
 
-      if (edad > 15 && edad <= 70) {
-        if (formData.fecha_nacimiento !== data?.fecha_de_nacimiento && !error) {
-          updateBirthday(formData.oldPassword, formData.fecha_nacimiento);
-          resetForm();
-        }
-      } else if (edad <= 15) {
-        toast.error("Debes ser mayor a 15 años!");
-        return;
-      } else if (edad > 70) {
         return;
       }
 
