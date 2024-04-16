@@ -1,24 +1,18 @@
-
 import { useEffect, useState, useRef } from "react";
-
 import { FaUserCircle, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Tooltip } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 import useUserInfo from "@/hooks/useUser";
 import ProfileView from "../common/ProfileView";
-
 import { useUser } from "@/contexts/UserProvider";
-
 
 const UserOptions = ({ username, logout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { getUserInformation, data } = useUserInfo();
   const { isActualizado, setIsActualizado, profileUpdate } = useUser();
   const router = useRouter();
-
   const userMenuRef = useRef();
-
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -53,7 +47,6 @@ const UserOptions = ({ username, logout }) => {
         className="flex items-center border-b border-transparent text-white
     _lg:hover:cursor-pointer
   "
-
       >
         <div className="mr-1">
           <ProfileView username={username} imagen={profileUpdate} size={8} />
@@ -64,12 +57,10 @@ const UserOptions = ({ username, logout }) => {
             type="button"
             className={`_lg:flex items-center justify-center hidden 
 
-
             transition-all duration-200 transform ${
               isOpen ? "rotate-180" : "rotate-0"
             }
             `}
-
           >
             <IoMdArrowDropdown size={18} />
           </button>
@@ -80,10 +71,7 @@ const UserOptions = ({ username, logout }) => {
               </button>
             </Tooltip>
           </div>
-
         </div>
-
-   </li>
 
         <div className="relative">
           {isOpen && (
@@ -101,7 +89,6 @@ const UserOptions = ({ username, logout }) => {
                   <FaUser className="inline-block mr-2" />
                   Mi Perfil
                 </li>
-
 
                 <li
                   className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
