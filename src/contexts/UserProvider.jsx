@@ -26,6 +26,7 @@ export const UserProvider = ({ children }) => {
     setRole(data?.role);
     setUserId(data.userId);
     setProfile(data.profile);
+    setProfileUpdate(data.profile);
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
     router.push("/");
