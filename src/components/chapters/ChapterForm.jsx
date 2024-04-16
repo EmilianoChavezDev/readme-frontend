@@ -47,7 +47,6 @@ export default function ChapterForm({
   const handleSubmitPDF = (e) => {
     const file = e.target.files[0];
     if (!file || !(file instanceof Blob)) {
-
       return;
     }
     const reader = new FileReader();
@@ -60,7 +59,6 @@ export default function ChapterForm({
     };
     reader.readAsArrayBuffer(file);
   };
-
 
   const convertPDFToText = async (pdfData) => {
     const pdfjs = await import("pdfjs-dist");
@@ -75,7 +73,7 @@ export default function ChapterForm({
       const content = await page.getTextContent();
 
       const text = content.items.map((item) => item.str).join("\n");
-      const formattedText = text.replace(/\n\n+/g, "<br>"); 
+      const formattedText = text.replace(/\n\n+/g, "<br>");
       textContent.push(formattedText);
     }
     return textContent.join("\n");
