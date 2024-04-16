@@ -173,15 +173,28 @@ const UserOption = ({
           {usernameLs !== username && (
             <div className="hover:cursor-pointer pb-2 text-xl hidden _sm:block">
               {isFollow ? (
-                <Button
-                  className="px-2 py-2 flex text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
-                  onClick={() => handleUnfollow(id)}
-                >
-                  <span className="flex items-center">
-                    <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
-                    Dejar de seguir
-                  </span>
-                </Button>
+                <div className="flex gap-4">
+                  <Button
+                    className="px-2 py-2 flex text-colorPrimario border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
+                    onClick={() => handleUnfollow(id)}
+                  >
+                    <span className="flex items-center">
+                      <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+                      Dejar de seguir
+                    </span>
+                  </Button>
+                  {usernameLs !== username && (
+                    <Button
+                      onClick={handleShowModal}
+                      className="flex items-center px-2 py-2 text-red-500 border border-red-500 bg-white hover:bg-red-500 hover:text-white"
+                    >
+                      <span className="mr-1 _md:w-4 _md:h-4">
+                        <SlFlag />
+                      </span>
+                      Reportar
+                    </Button>
+                  )}
+                </div>
               ) : (
                 <div className="flex gap-4">
                   <Button
@@ -193,7 +206,7 @@ const UserOption = ({
                       Seguir
                     </span>
                   </Button>
-                  
+
                   {usernameLs !== username && (
                     <Button
                       onClick={handleShowModal}
