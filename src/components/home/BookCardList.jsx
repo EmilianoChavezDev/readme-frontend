@@ -14,7 +14,7 @@ const BookCardList = ({ books }) => {
       {books.map((libro) => (
         <div
           key={libro.id}
-          className="flex justify-center mr-8 shadow-sl"
+          className="flex justify-center mr-8 shadow-sl transition-transform duration-300 transform hover:scale-110"
           style={{
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
             borderRadius: "10px",
@@ -34,7 +34,7 @@ const BookCardList = ({ books }) => {
                 floated={false}
                 shadow={false}
                 color="transparent"
-                className="absolute inset-0 m-0 h-40 w-full rounded-none bg-cover bg-center"
+                className="absolute inset-0 m-0 h-full w-full rounded-none bg-cover bg-center"
               >
                 <Image
                   src={
@@ -52,28 +52,30 @@ const BookCardList = ({ books }) => {
               <CardBody className="relative py-12 px-6 md:px-8">
                 <Typography
                   variant="h5"
-                  color="black"
+                  color="white"
                   className="mb-2 font-medium leading-[1.5] text-sm"
+                  style={{ textShadow: "0 0 2px #000" }}
                 >
                   {libro.autorUsername}
                 </Typography>
                 <Typography
                   variant="h5"
-                  color="black"
+                  color="white"
                   className="mb-2 font-bold leading-[1.5]"
-                  style={{ fontSize: "25px" }}
+                  style={{ fontSize: "25px", textShadow: "0 0 2px #000" }}
                 >
                   {libro.titulo}
                 </Typography>
 
                 <Typography
                   variant="h5"
-                  color="black"
+                  color="white"
                   className="mb-5 font-medium leading-[1.5] text-sm"
                   style={{
                     maxWidth: "150px",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    textShadow: "0 0 2px #000",
                   }}
                 >
                   {libro.sinopsis}
