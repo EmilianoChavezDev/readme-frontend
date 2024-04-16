@@ -9,7 +9,7 @@ const ChapterEditorHeader = ({
   onSave,
   onPublish,
   chapterTitle,
-  disableButtons
+  disableButtons,
 }) => {
   const [showChapters, setShowChapters] = useState(false);
 
@@ -32,20 +32,31 @@ const ChapterEditorHeader = ({
           )}
         </div>
       </div>
-      <div className="flex gap-4">
-        <button disabled={disableButtons}
-          onClick={onSubmitPDF}
-          className={`bg-gray-600 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed`}
-        >
-          Subir PDF
-        </button>
-        <button disabled={disableButtons}
+      <div className="flex gap-4 items-center">
+        <div className="inline-block">
+          <input
+            type="file"
+            onChange={onSubmitPDF}
+            className="hidden"
+            id="fileInput"
+          />
+          <label
+            htmlFor="fileInput"
+            className="bg-gray-600 text-white py-2 px-4 md:px-7 rounded-lg disabled:cursor-not-allowed inline-block cursor-pointer"
+          >
+            Subir PDF
+          </label>
+        </div>
+
+        <button
+          disabled={disableButtons}
           onClick={onSave}
           className={`bg-gray-600 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed`}
         >
           Guardar
         </button>
-        <button disabled={disableButtons}
+        <button
+          disabled={disableButtons}
           onClick={onPublish}
           className={`bg-cyan-800 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed`}
         >
