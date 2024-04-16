@@ -350,3 +350,11 @@
     display: none;
   }
 }
+
+.image_book_container {
+  transition: transform 0.2s ease-in-out;
+}
+
+.image_book_container:hover {
+  transform: scale(1.03);
+}
