@@ -30,6 +30,7 @@ const useReadBooks = () => {
   const getBookById = async (id) => {
     const token = localStorage.getItem("token");
     setIsLoading(true);
+    setIsDownloading(false);
     try {
       const url = `${process.env.API_URL}/capitulos/libro/${id}`;
       const response = await axios.get(url, {
@@ -38,6 +39,7 @@ const useReadBooks = () => {
         },
       });
       setData(response.data);
+      setIsDownloading(true);
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -214,6 +216,7 @@ const useReadBooks = () => {
     getReadBook,
     getReadCurrent,
     downloadBook,
+    isDownloading,
   };
 };
 

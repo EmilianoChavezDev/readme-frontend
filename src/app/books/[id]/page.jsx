@@ -42,11 +42,11 @@ const styles = StyleSheet.create({
 
 export default function BookDetails({ params }) {
   const { getReadBook } = useReadBooks();
-  const { downloadBook, data: downBook } = useReadBooks();
   const { getBookByID, isLoading, error } = useBook();
   const {
+    downloadBook,
     data: capitulos,
-    isLoading: isLoadingDownload,
+    isDownloading,
     getContentChapter,
     contentChapter,
   } = useReadBooks();
@@ -60,7 +60,6 @@ export default function BookDetails({ params }) {
   const [favorite, setFavorite] = useState(null);
   const [readBook, setReadBook] = useState(null);
   const [showReportModal, setShowReportModal] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
   const [reasonForReporting, setReasonForReporting] = useState("");
 
   const fetchBook = async () => {
@@ -136,33 +135,26 @@ export default function BookDetails({ params }) {
   }, [book?.id]);
 
   useEffect(() => {
-    if (!downBook && !isDownloading) return;
-    console.log(downBook);
-    generatePdf(book?.titulo, downBook);
-  }, [downBook]);
+    if (!isDownloading) return;
+    generatePdf(book?.titulo, capitulos);
+  }, [isDownloading]);
 
   const generatePdf = async (bookTitle, chaptersData) => {
-    let downloadedChapters = [];
-
-    if (chaptersData.length === 0) return;
+    const downloadedChapters = [];
 
     const downloadChapterContent = async (contenidoUrl) => {
-      const contentChapter = await getContentChapter(contenidoUrl);
+      await getContentChapter(contenidoUrl);
+      console.log(contentChapter);
       downloadedChapters.push(contentChapter);
     };
-
     await Promise.all(
       chaptersData.map((chapter) => downloadChapterContent(chapter.contenido))
-    ).finally(() => {
-      // Liberar los recursos después de la descarga o en caso de fallo
-      downloadedChapters = [];
-    });
-
-    const cleanedChapters = downloadedChapters.map(convert);
+    );
+    const cleanedChapters = downloadedChapters?.map(convert);
 
     const doc = (
       <Document>
-        {chaptersData.map((chapter, index) => (
+        {chaptersData?.map((chapter, index) => (
           <Page key={index} style={styles.page}>
             <Text style={styles.chapterTitle}>{chapter.titulo}</Text>
             <Text style={styles.chapterContent}>{cleanedChapters[index]}</Text>
@@ -173,14 +165,7 @@ export default function BookDetails({ params }) {
 
     const pdfBlob = await pdf(doc).toBlob();
     saveAs(pdfBlob, `${bookTitle}.pdf`);
-    setIsDownloading(false);
   };
-
-  const handleDownloadBook = async (id) => {
-    setIsDownloading(true);
-    downloadBook(id);
-  };
-
   return (
     <>
       <Modal
@@ -295,7 +280,7 @@ export default function BookDetails({ params }) {
                     </button>
                     <button
                       className="h-9 rounded-md bg-gray-500 hover:brightness-90"
-                      onClick={() => handleDownloadBook(book.id)}
+                      onClick={() => downloadBook(book?.id)}
                     >
                       Descargar
                     </button>
