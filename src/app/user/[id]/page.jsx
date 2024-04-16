@@ -214,6 +214,7 @@ const page = ({ params }) => {
 
     if (data?.username == usernameLs) {
       setProfileUpdate(data?.profile);
+      setPortadaImage(data?.portada);
       setIsActualizado(true);
     }
   }, [data]);
@@ -354,9 +355,7 @@ const page = ({ params }) => {
     try {
       await deleteFollower(id);
       getUserInformation(params.id);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const handleEditCancel = () => {
@@ -432,6 +431,7 @@ const page = ({ params }) => {
 
   const handleDeletePortada = () => {
     setIsDeletePortada(true);
+    setFileInputPortadaKey(Date.now());
     setIsPortadaUpdate(!isPortadaUpdate);
     setIsNotDisable(false);
     setPortadaImage(null);
