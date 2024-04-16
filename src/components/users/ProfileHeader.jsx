@@ -22,11 +22,7 @@ const ProfileHeader = ({
   });
 
   return (
-    <div
-      className={`flex flex-col justify-center ${
-        portada ? "text-white" : "text-black"
-      }`}
-    >
+    <div className={`flex flex-col justify-center text-white`}>
       <div
         className="w-full h-full bg-cover bg-center"
         style={{
