@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useEffect } from "react";
+import React, { useEffect } from "react";
 import NavBar from "../NavBar";
 import { usePathname } from "next/navigation";
 import { ignorePaths } from "@/utils/ignoreNavbarAndFooter";
@@ -10,7 +10,8 @@ const Layout = ({ children }) => {
 
   const shouldRenderNavBar =
     !ignorePaths.some((path) => router.startsWith(path)) &&
-    !(pathSegments[1] === "books" && pathSegments[3] === "chapters");
+    !(pathSegments[1] === "books" && pathSegments[3] === "chapters") &&
+    !(pathSegments[1] === "books" && pathSegments[3] === "read");
 
   return (
     <div>
