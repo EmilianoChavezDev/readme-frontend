@@ -117,7 +117,7 @@ export default function BookDetails({ params }) {
     );
   };
 
-  const reportBoot = async () => {
+  const reportBook = async () => {
     toast.error("Falta implementar en la API");
     setShowReportModal(false);
   };
@@ -166,12 +166,19 @@ export default function BookDetails({ params }) {
     const pdfBlob = await pdf(doc).toBlob();
     saveAs(pdfBlob, `${bookTitle}.pdf`);
   };
+
+
+
+const handleDownloadBook = async(id) =>{
+    
+}
+
   return (
     <>
       <Modal
         open={Boolean(showReportModal)}
         onHide={() => setShowReportModal(false)}
-        onSave={reportBoot}
+        onSave={reportBook}
         title="Denunciar Libro"
       >
         <div className="flex flex-col gap-2">
@@ -280,7 +287,7 @@ export default function BookDetails({ params }) {
                     </button>
                     <button
                       className="h-9 rounded-md bg-gray-500 hover:brightness-90"
-                      onClick={() => downloadBook(book?.id)}
+                      onClick={() => handleDownloadBook(book?.id)}
                     >
                       Descargar
                     </button>
