@@ -276,9 +276,7 @@ const page = ({ params }) => {
 
   useEffect(() => {
     if (!arrBooks) return;
-    console.log(arrBooks);
     const findedLibros = arrBooks?.data ?? [];
-    console.log(findedLibros);
     setCantLibros(arrBooks?.total_items ?? 0);
     setAllLibros((prevLibros) => {
       const prevIds = new Set(prevLibros.map((libro) => libro.id));
@@ -305,7 +303,6 @@ const page = ({ params }) => {
   // si elimino la foto seteo todo los contenedores relacionados
   useEffect(() => {
     if (!isDeleteProfile) return;
-    console.log("entro aca");
     setIsNotDisable(false);
     setProfileImage(null);
     setFileInputKey(Date.now());
@@ -324,7 +321,6 @@ const page = ({ params }) => {
       user_id: id,
     };
     const bookData = await getAllBooks(option);
-    console.log(bookData);
     setArrBooks(bookData);
   };
 
@@ -340,18 +336,14 @@ const page = ({ params }) => {
     try {
       await follow(id);
       getUserInformation(params.id);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const handleUnfollow = async (id) => {
     try {
       await unfollow(id);
       getUserInformation(params.id);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const handleFollowedNextPage = () => {
@@ -422,7 +414,6 @@ const page = ({ params }) => {
 
   const handlePortadaChange = (event) => {
     setIsChangePortada(true);
-    console.log(event.target.files);
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
