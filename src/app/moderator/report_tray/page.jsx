@@ -194,108 +194,117 @@ export default function Page() {
                                 )}</tbody>
                             </table>
                             <div className='flex justify-center'>
-                                <Pagination currentPage={currentPage}
-                                    totalPages={reportsData?.total_pages}
-                                    onPageChange={setCurrentPage} />
+                                {Boolean(reportsData?.data?.length) &&
+                                    <Pagination currentPage={currentPage}
+                                        totalPages={reportsData?.total_pages}
+                                        onPageChange={setCurrentPage} />
+                                }
                             </div>
                         </div>
                     </div>
                     <div className='w-96 flex flex-col gap-6'>
-                        <div className='flex items-center'>
-                            <h2 className='font-bold text-gray-800 text-xl leading-7'>Detalle del Reporte</h2>
-                        </div>
-                        <div className='flex gap-1 items-center'>
-                            <span className='font-semibold'>Estado:</span>
-                            {reportSelected?.estado === 'rechazado'?
-                                <span className='h-9 px-2 rounded-2xl flex items-center bg-cyan-700 text-white'>
-                                    Rechazado
-                                </span> :
-                                reportSelected?.estado === 'resuelto'?
-                                    <span className='h-9 px-2 rounded-2xl flex items-center bg-red-900 text-white'>
-                                        Resuelto
-                                    </span> :
-                                    <>
-                                        <button onClick={() => handleUpdateReportStatus('pendiente')}
-                                            className={`h-9 px-2 rounded-2xl flex items-center hover:brightness-90 ${reportSelected?.estado === 'pendiente'? 'bg-colorPrimario text-white' : 'border border-colorPrimario text-colorPrimario'}`}>
-                                            Pendiente
-                                        </button>
-                                        <button onClick={() => handleUpdateReportStatus('en_revision')}
-                                            className={`h-9 px-2 rounded-2xl flex items-center hover:brightness-90 ${reportSelected?.estado === 'en_revision'? 'bg-colorPrimario text-white' : 'border border-colorPrimario text-colorPrimario'}`}>
-                                            En Revisión
-                                        </button>
-                                        <button onClick={() => handleUpdateReportStatus('aceptado')}
-                                            className={`h-9 px-2 rounded-2xl flex items-center hover:brightness-90 ${reportSelected?.estado === 'aceptado'? 'bg-colorPrimario text-white' : 'border border-colorPrimario text-colorPrimario'}`}>
-                                            Aceptado
-                                        </button>
-                                    </>
-                            }
-                        </div>
-                        <div className='border border-gray-300 rounded-md p-3 flex flex-col gap-3'>
-                            <span className='font-semibold text-lg'>{`Reporte de ${reportSelected?.tipo ?? ''}`}</span>
-                            {Boolean(reportSelected?.titulo_de_libro?.length) &&
-                                <div className='flex gap-1'>
-                                    <span className='font-semibold'>Libro:</span>
-                                    <span className='text-gray-700'>{reportSelected?.titulo_de_libro}</span>
+                        {reportSelected?
+                            <>
+                                <div className='flex items-center'>
+                                    <h2 className='font-bold text-gray-800 text-xl leading-7'>Detalle del Reporte</h2>
                                 </div>
-                            }
-                            {Boolean(reportSelected?.comentario) &&
-                                <div className='flex gap-1'>
-                                    <span className='font-semibold'>Comentario:</span>
-                                    <span className='text-gray-700'>{reportSelected?.comentario?.comentario}</span>
+                                <div className='flex gap-1 items-center'>
+                                    <span className='font-semibold'>Estado:</span>
+                                    {reportSelected?.estado === 'rechazado'?
+                                        <span className='h-9 px-2 rounded-2xl flex items-center bg-cyan-700 text-white'>
+                                            Rechazado
+                                        </span> :
+                                        reportSelected?.estado === 'resuelto'?
+                                            <span className='h-9 px-2 rounded-2xl flex items-center bg-red-900 text-white'>
+                                                Resuelto
+                                            </span> :
+                                            <>
+                                                <button onClick={() => handleUpdateReportStatus('pendiente')}
+                                                    className={`h-9 px-2 rounded-2xl flex items-center hover:brightness-90 ${reportSelected?.estado === 'pendiente'? 'bg-colorPrimario text-white' : 'border border-colorPrimario text-colorPrimario'}`}>
+                                                    Pendiente
+                                                </button>
+                                                <button onClick={() => handleUpdateReportStatus('en_revision')}
+                                                    className={`h-9 px-2 rounded-2xl flex items-center hover:brightness-90 ${reportSelected?.estado === 'en_revision'? 'bg-colorPrimario text-white' : 'border border-colorPrimario text-colorPrimario'}`}>
+                                                    En Revisión
+                                                </button>
+                                                <button onClick={() => handleUpdateReportStatus('aceptado')}
+                                                    className={`h-9 px-2 rounded-2xl flex items-center hover:brightness-90 ${reportSelected?.estado === 'aceptado'? 'bg-colorPrimario text-white' : 'border border-colorPrimario text-colorPrimario'}`}>
+                                                    Aceptado
+                                                </button>
+                                            </>
+                                    }
                                 </div>
-                            }
-                            {Boolean(reportSelected?.usuario_reportado) &&
-                                <div className='flex gap-1'>
-                                    <span className='font-semibold'>Usuario Reportado:</span>
-                                    <span className='text-gray-700'>{reportSelected?.usuario_reportado?.username}</span>
+                                <div className='border border-gray-300 rounded-md p-3 flex flex-col gap-3'>
+                                    <span className='font-semibold text-lg'>{`Reporte de ${reportSelected?.tipo ?? ''}`}</span>
+                                    {Boolean(reportSelected?.titulo_de_libro?.length) &&
+                                        <div className='flex gap-1'>
+                                            <span className='font-semibold'>Libro:</span>
+                                            <span className='text-gray-700'>{reportSelected?.titulo_de_libro}</span>
+                                        </div>
+                                    }
+                                    {Boolean(reportSelected?.comentario) &&
+                                        <div className='flex gap-1'>
+                                            <span className='font-semibold'>Comentario:</span>
+                                            <span className='text-gray-700'>{reportSelected?.comentario?.comentario}</span>
+                                        </div>
+                                    }
+                                    {Boolean(reportSelected?.usuario_reportado) &&
+                                        <div className='flex gap-1'>
+                                            <span className='font-semibold'>Usuario Reportado:</span>
+                                            <span className='text-gray-700'>{reportSelected?.usuario_reportado?.username}</span>
+                                        </div>
+                                    }
+                                    <div className='flex gap-1'>
+                                        <span className='font-semibold'>Estado:</span>
+                                        <span className='capitalize text-gray-700'>{reportSelected?.estado}</span>
+                                    </div>
+                                    <div className='flex flex-col gap-1 border-t border-colorPrimario pt-2'>
+                                        <span className='font-semibold'>Motivo:</span>
+                                        <p className='text-gray-700'>{reportSelected?.motivo}</p>
+                                    </div>
+                                    {(reportSelected?.estado === 'rechazado' || reportSelected?.estado === 'resuelto') &&
+                                        <div className='flex flex-col gap-1 border-t border-colorPrimario pt-2'>
+                                            <span className='font-semibold'>Conclusiones:</span>
+                                            <p className='text-gray-700'>{reportSelected?.conclusion}</p>
+                                        </div>
+                                    }
                                 </div>
-                            }
-                            <div className='flex gap-1'>
-                                <span className='font-semibold'>Estado:</span>
-                                <span className='capitalize text-gray-700'>{reportSelected?.estado}</span>
-                            </div>
-                            <div className='flex flex-col gap-1 border-t border-colorPrimario pt-2'>
-                                <span className='font-semibold'>Motivo:</span>
-                                <p className='text-gray-700'>{reportSelected?.motivo}</p>
-                            </div>
-                            {(reportSelected?.estado === 'rechazado' || reportSelected?.estado === 'resuelto') &&
-                                <div className='flex flex-col gap-1 border-t border-colorPrimario pt-2'>
-                                    <span className='font-semibold'>Conclusiones:</span>
-                                    <p className='text-gray-700'>{reportSelected?.conclusion}</p>
-                                </div>
-                            }
-                        </div>
-                        <div className='flex justify-between text-white'>
-                            <div className='flex gap-2'>
-                                {(reportSelected?.estado !== 'rechazado' && reportSelected?.estado !== 'resuelto') &&
-                                    <button className='h-10 rounded-md px-2 bg-red-900 hover:brightness-90' 
-                                        onClick={() => setShowReportApproveModal(true)}>
-                                        {reportSelected?.tipo === 'Comentario'? 'Eliminar Comentario' :
-                                            reportSelected?.tipo === 'Usuario'? 'Desactivar Perfil' :
-                                                'Desactivar Libro'
+                                <div className='flex justify-between text-white'>
+                                    <div className='flex gap-2'>
+                                        {(reportSelected?.estado !== 'rechazado' && reportSelected?.estado !== 'resuelto') &&
+                                            <button className='h-10 rounded-md px-2 bg-red-900 hover:brightness-90' 
+                                                onClick={() => setShowReportApproveModal(true)}>
+                                                {reportSelected?.tipo === 'Comentario'? 'Eliminar Comentario' :
+                                                    reportSelected?.tipo === 'Usuario'? 'Desactivar Perfil' :
+                                                        'Desactivar Libro'
+                                                }
+                                            </button>
                                         }
-                                    </button>
-                                }
-                                {(reportSelected?.estado !== 'rechazado' && reportSelected?.estado !== 'resuelto') &&
-                                    <button className='h-10 rounded-md px-2 bg-cyan-700 hover:brightness-90' 
-                                        onClick={() => setShowReportRejectModal(true)}>
-                                        Rechazar
-                                    </button>
-                                }
-                            </div>
-                            {reportSelected?.tipo === 'Usuario'?
-                                <Link href={`/user/${reportSelected?.usuario_reportado?.username}`}>
-                                    <button className='h-10 bg-colorPrimario hover:bg-colorHoverPrimario rounded-md px-2'>
-                                        Ver Perfil
-                                    </button>
-                                </Link> :
-                                <Link href={`/books/${reportSelected?.libro_id}`}>
-                                    <button className='h-10 bg-colorPrimario hover:bg-colorHoverPrimario rounded-md px-2'>
-                                        Ver Libro
-                                    </button>
-                                </Link>
-                            }
-                        </div>
+                                        {(reportSelected?.estado !== 'rechazado' && reportSelected?.estado !== 'resuelto') &&
+                                            <button className='h-10 rounded-md px-2 bg-cyan-700 hover:brightness-90' 
+                                                onClick={() => setShowReportRejectModal(true)}>
+                                                Rechazar
+                                            </button>
+                                        }
+                                    </div>
+                                    {reportSelected?.tipo === 'Usuario' &&
+                                        <Link href={`/user/${reportSelected?.usuario_reportado?.username}`}>
+                                            <button className='h-10 bg-colorPrimario hover:bg-colorHoverPrimario rounded-md px-2'>
+                                                Ver Perfil
+                                            </button>
+                                        </Link>
+                                    }
+                                    {Boolean(reportSelected?.libro_id) &&
+                                        <Link href={`/books/${reportSelected?.libro_id}`}>
+                                            <button className='h-10 bg-colorPrimario hover:bg-colorHoverPrimario rounded-md px-2'>
+                                                Ver Libro
+                                            </button>
+                                        </Link>
+                                    }
+                                </div>
+                            </> :
+                            <span>No se ha seleccionado ningún reporte</span>
+                        }
                     </div>
                 </div>
             </div>
