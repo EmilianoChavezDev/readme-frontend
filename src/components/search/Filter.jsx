@@ -19,7 +19,7 @@ const Filter = ({
             <Typography variant="h6" color="blue-gray">
               Categoría
             </Typography>
-            <div className="z-10">
+            <div className="z-[8]">
               <Select
                 options={categories}
                 value={selectedCategories}

@@ -10,7 +10,6 @@ import Editor from "@/components/chapters/Editor";
 import { useUser } from "@/contexts/UserProvider";
 import TitleInput from "@/components/chapters/TitleInput";
 import ChapterEditorHeader from "@/components/chapters/ChapterEditorHeader";
-
 export default function ChapterForm({
   bookId,
   chapter,
@@ -49,6 +48,12 @@ export default function ChapterForm({
     if (!file || !(file instanceof Blob)) {
       return;
     }
+
+    if (!file.name.toLowerCase().endsWith(".pdf")) {
+      toast.error("Por favor, selecciona un archivo PDF.");
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = async (e) => {
       const arrayBuffer = e.target.result;

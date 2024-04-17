@@ -74,9 +74,7 @@ const UserOption = ({
       setErrorMotive(true);
       return;
     }
-    toast.success(
-      "Usuario Reportado"
-    );
+    toast.success("Usuario Reportado");
     fnCreateReportUser();
     setCategorySelectReportUser("");
     setReasonForReporting("");
