@@ -10,7 +10,6 @@ import Editor from "@/components/chapters/Editor";
 import { useUser } from "@/contexts/UserProvider";
 import TitleInput from "@/components/chapters/TitleInput";
 import ChapterEditorHeader from "@/components/chapters/ChapterEditorHeader";
-import toast from "react-hot-toast";
 export default function ChapterForm({
   bookId,
   chapter,
