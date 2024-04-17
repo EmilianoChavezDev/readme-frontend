@@ -23,6 +23,7 @@ import CommentsSection from "@/components/books/CommentsSection";
 import { Document, Page, Text, StyleSheet, pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import { convert } from "html-to-text";
+import useDenuncias from "@/hooks/useDenuncias";
 
 const styles = StyleSheet.create({
   page: {
@@ -61,6 +62,38 @@ export default function BookDetails({ params }) {
   const [readBook, setReadBook] = useState(null);
   const [showReportModal, setShowReportModal] = useState(false);
   const [reasonForReporting, setReasonForReporting] = useState("");
+  const { getReportBookCategory, createReportBook } = useDenuncias();
+  const [categoryBookReport, setCategoryBookReport] = useState([]);
+  const [categorySelectBookReport, setCategorySelectBookReport] = useState("");
+  const [errorMotive, setErrorMotive] = useState(false);
+  const fetchBookCategoryReport = async () => {
+    try {
+      const categoriesData = await getReportBookCategory();
+      setCategoryBookReport(categoriesData);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const fnCreateReportBook = async () => {
+    try {
+      await createReportBook({
+        libro_id: book.id,
+        reporte: {
+          motivo: reasonForReporting,
+          estado: "pendiente",
+          categoria: categorySelectBookReport,
+        },
+      });
+    } catch (error) {
+      console.error("Error report create:", error);
+    }
+  };
+
+  const handleReportBook = () => {
+    fetchBookCategoryReport();
+    setShowReportModal(true);
+  };
 
   const fetchBook = async () => {
     const result = await getBookByID(params.id);
@@ -119,16 +152,23 @@ export default function BookDetails({ params }) {
 
   const reportBook = async () => {
     if (!reasonForReporting || !categorySelectBookReport) {
-      setErrorCommentMotivo(true);
+      setErrorMotive(true);
       return;
     }
-    toast.success(
-      "Libro Reportado"
-    );
+    toast.success("Libro Reportado");
     fnCreateReportBook();
     setCategorySelectBookReport("");
     setReasonForReporting("");
     setShowReportModal(false);
+    setErrorMotive(false);
+  };
+
+  const handleCancelReportBook = () => {
+    setShowReportModal(false);
+    setCategorySelectBookReport("");
+    setReasonForReporting("");
+    setShowReportModal(false);
+    setErrorMotive(false);
   };
 
   useEffect(() => {
@@ -179,8 +219,8 @@ export default function BookDetails({ params }) {
     <>
       <Modal
         open={Boolean(showReportModal)}
-        onHide={() => setShowReportModal(false)}
-        onSave={reportBoot}
+        onHide={handleCancelReportBook}
+        onSave={reportBook}
         title="Denunciar Libro"
       >
         <div className="flex flex-col gap-2">
@@ -191,6 +231,24 @@ export default function BookDetails({ params }) {
             onChange={(event) => setReasonForReporting(event.target.value)}
             rows={2}
           />
+
+          <select
+            className="text-xs border rounded-lg p-2 py-2 border-gray-400 outline-none"
+            value={categorySelectBookReport}
+            onChange={(e) => setCategorySelectBookReport(e.target.value)}
+          >
+            <option value="">Selecciona el motivo del reporte</option>
+            {categoryBookReport?.map((category) => (
+              <option key={category.id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          {errorMotive && (
+            <div className="text-red-500">
+              Por favor, describe y selecciona un motivo.
+            </div>
+          )}
         </div>
       </Modal>
       {error ? (
@@ -304,7 +362,7 @@ export default function BookDetails({ params }) {
               </div>
               <button
                 className="absolute bottom-5 right-10 bg-none outline-none border-none text-red-600 flex gap-1"
-                onClick={() => setShowReportModal(true)}
+                onClick={handleReportBook}
               >
                 <span>
                   <PiWarningBold />
