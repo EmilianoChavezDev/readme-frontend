@@ -11,7 +11,6 @@ import { PiWarningBold } from "react-icons/pi";
 import { GoListUnordered } from "react-icons/go";
 
 import useBook from "@/hooks/useBook";
-import NavBar from "@/components/NavBar";
 import { addNumberFormat } from "@/utils";
 import useReview from "@/hooks/useReview";
 import Modal from "@/components/common/modal";
@@ -24,6 +23,7 @@ import { Document, Page, Text, StyleSheet, pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import { convert } from "html-to-text";
 import useDenuncias from "@/hooks/useDenuncias";
+import useChapter from "@/hooks/useChapter";
 
 const styles = StyleSheet.create({
   page: {
@@ -47,7 +47,6 @@ export default function BookDetails({ params }) {
   const {
     downloadBook,
     data: capitulos,
-    isDownloading,
     getContentChapter,
     contentChapter,
   } = useReadBooks();
@@ -55,6 +54,7 @@ export default function BookDetails({ params }) {
     useReview();
   const { getFavoriteByUserAndBook, createFavorite, updateFavorite } =
     useFavorite();
+  const { getChapterByBook } = useChapter();
 
   const [book, setBook] = useState(null);
   const [review, setReview] = useState(null);
@@ -66,6 +66,9 @@ export default function BookDetails({ params }) {
   const [categoryBookReport, setCategoryBookReport] = useState([]);
   const [categorySelectBookReport, setCategorySelectBookReport] = useState("");
   const [errorMotive, setErrorMotive] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [chapters, setChapters] = useState([]);
+
   const fetchBookCategoryReport = async () => {
     try {
       const categoriesData = await getReportBookCategory();
@@ -97,7 +100,9 @@ export default function BookDetails({ params }) {
 
   const fetchBook = async () => {
     const result = await getBookByID(params.id);
+    const chapters = await getChapterByBook(params.id);
     setBook(result);
+    setChapters(chapters);
   };
 
   const fetchReview = async () => {
@@ -159,6 +164,7 @@ export default function BookDetails({ params }) {
     fnCreateReportBook();
     setCategorySelectBookReport("");
     setReasonForReporting("");
+
     setShowReportModal(false);
     setErrorMotive(false);
   };
@@ -185,19 +191,26 @@ export default function BookDetails({ params }) {
 
   useEffect(() => {
     if (!isDownloading) return;
-    generatePdf(book?.titulo, capitulos);
-  }, [isDownloading]);
+    generatePdf(book?.titulo, chapters);
+  }, [isDownloading, capitulos]);
+
+  const downloadChapterContent = async (contenidoUrl) => {
+    try {
+      const response = await fetch(contenidoUrl);
+      const htmlText = await response.text();
+      return htmlText;
+    } catch (error) {
+      toast.error("No se pudo obtener el contenido del capítulo");
+    }
+  };
 
   const generatePdf = async (bookTitle, chaptersData) => {
     const downloadedChapters = [];
-
-    const downloadChapterContent = async (contenidoUrl) => {
-      await getContentChapter(contenidoUrl);
-      console.log(contentChapter);
-      downloadedChapters.push(contentChapter);
-    };
     await Promise.all(
-      chaptersData.map((chapter) => downloadChapterContent(chapter.contenido))
+      chaptersData.map(async (chapter) => {
+        const data = await downloadChapterContent(chapter.contenido);
+        downloadedChapters.push(data);
+      })
     );
     const cleanedChapters = downloadedChapters?.map(convert);
 
@@ -214,7 +227,13 @@ export default function BookDetails({ params }) {
 
     const pdfBlob = await pdf(doc).toBlob();
     saveAs(pdfBlob, `${bookTitle}.pdf`);
+    setIsDownloading(false);
   };
+
+  const handleDownloadBook = async () => {
+    setIsDownloading(true);
+  };
+
   return (
     <>
       <Modal
@@ -347,7 +366,7 @@ export default function BookDetails({ params }) {
                     </button>
                     <button
                       className="h-9 rounded-md bg-gray-500 hover:brightness-90"
-                      onClick={() => downloadBook(book?.id)}
+                      onClick={() => handleDownloadBook()}
                     >
                       Descargar
                     </button>
