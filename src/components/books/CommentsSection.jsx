@@ -30,7 +30,11 @@ export default function xCommentsSection({ bookId }) {
     updateComment,
   } = useComment();
 
-  const { getReportCommentCategory, createReportComment } = useDenuncias();
+  const {
+    getReportCommentCategory,
+    createReportComment,
+    error: ErrorDenuncia,
+  } = useDenuncias();
 
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState({ list: [] });
@@ -42,7 +46,7 @@ export default function xCommentsSection({ bookId }) {
     useState(null);
   const [commentSelectToReport, setCommentSelectToReport] = useState(null);
   const [categoryCommentReport, setCategoryCommentReport] = useState([]);
-  const [errorCommentMotivo, setErrorCommentMotivo] = useState(false);
+  const [errorCommentMotive, setErrorCommentMotive] = useState(false);
 
   const fetchComments = async () => {
     const data = await getCommentsByUserAndBook({
@@ -146,7 +150,7 @@ export default function xCommentsSection({ bookId }) {
 
   const handleCommentReport = () => {
     if (!commentDescriptionToReport || !commentSelectToReport) {
-      setErrorCommentMotivo(true);
+      setErrorCommentMotive(true);
       return;
     }
     toast.success("Comentario Reportado");
@@ -154,14 +158,14 @@ export default function xCommentsSection({ bookId }) {
     setCommentIdToReport("");
     setCommentDescriptionToReport("");
     setCommentSelectToReport("");
-    setErrorCommentMotivo(false);
+    setErrorCommentMotive(false);
   };
 
   const handleCancelCommentReport = () => {
     setCommentIdToReport("");
     setCommentDescriptionToReport("");
     setCommentSelectToReport("");
-    setErrorCommentMotivo(false);
+    setErrorCommentMotive(false);
   };
 
   const handleReport = (id) => {
@@ -326,7 +330,7 @@ export default function xCommentsSection({ bookId }) {
                               </option>
                             ))}
                           </select>
-                          {errorCommentMotivo && (
+                          {errorCommentMotive && (
                             <div className="text-red-500">
                               Por favor, describe y selecciona un motivo.
                             </div>
