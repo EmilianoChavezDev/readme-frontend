@@ -51,7 +51,7 @@ const Options = ({ categories = () => {} }) => {
         />
       </div>
       {/**Comienzo del padre */}
-      <div className="_md:flex _lg:gap-3 _xl:text-sm _lg:text-xs _lg:text-nowrap hidden _lg:items-center ">
+      <div className="_md:flex _lg:gap-3 _xl:text-sm _lg:text-xs _lg:text-nowrap hidden _lg:items-center  ">
         <div>
           <Popover
             open={showPopoverExplorar}
@@ -78,7 +78,7 @@ const Options = ({ categories = () => {} }) => {
               </button>
             </PopoverHandler>
 
-            <PopoverContent className="z-60 w-96">
+            <PopoverContent className="z-60 w-96 text-gray-800 text-md">
               <ul className="text-nowrap _lg:my-2 _lg:gap-4 lg:gap-x-4 _lg:grid _lg:grid-cols-3 col-span-1">
                 {categories?.map((category, i) => (
                   <li
@@ -129,7 +129,7 @@ const Options = ({ categories = () => {} }) => {
               </button>
             </PopoverHandler>
 
-            <PopoverContent className="z-60 w-60 buttom-3">
+            <PopoverContent className="z-60 w-52 buttom-3 text-gray-800 text-md">
               <ul className="my-2">
                 <li
                   className=" mb-4 pb-2 border-b border-gray-200 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
