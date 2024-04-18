@@ -324,8 +324,6 @@ const page = ({ params }) => {
     setArrBooks(bookData);
   };
 
-  useEffect(() => {});
-
   // funciones
 
   const handleSelectOption = (option) => {

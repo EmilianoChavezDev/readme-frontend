@@ -13,14 +13,15 @@ import {
 
 import useUserInfo from "@/hooks/useUser";
 import ProfileView from "@/components/common/ProfileView";
+import { useUser } from "@/contexts/UserProvider";
 
 export default function UserOptions({ username, logout }) {
   const router = useRouter();
   const { getUserInformation, data } = useUserInfo();
+  const { profileUpdate, isActualizado } = useUser();
 
   const [userRole, setUserRole] = useState("");
   const [showPopover, setShowPopover] = useState(false);
-  const [storageProfile, setStorageProfile] = useState(null);
 
   const navigateTo = (path) => {
     router.push(path);
@@ -33,12 +34,12 @@ export default function UserOptions({ username, logout }) {
   };
 
   useEffect(() => {
-    if (username) getUserInformation(username);
-  }, [username]);
+    if (!username) return;
+    getUserInformation(username);
+  }, [username, isActualizado]);
 
   useEffect(() => {
     if (data) {
-      setStorageProfile(data?.profile || localStorage.getItem("profile"));
       setUserRole(data?.role || localStorage.getItem("role"));
     }
   }, [data]);
@@ -52,7 +53,7 @@ export default function UserOptions({ username, logout }) {
       >
         <PopoverHandler>
           <button className="group flex items-center gap-2">
-            <ProfileView username={username} imagen={storageProfile} size={8} />
+            <ProfileView username={username} imagen={profileUpdate} size={8} />
             <span className="cursor-pointer text-white _lg:text-sm text-lg">
               {username}
             </span>
