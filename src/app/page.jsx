@@ -234,11 +234,11 @@ export default function BackgroundBlogCard() {
                 </>
               )}
 
-              <div className="mb-32">
-                <div className="my-12"></div>
+              <div className="mb-32 my-12">
+    
                 <div>
                   <h2 className="text-3xl text-center px-4 _sm:text-left font-bold mb-4 ">
-                    Categorías
+                    Navega por nuestras categorías
                   </h2>
                 </div>
                 <div>
@@ -247,7 +247,6 @@ export default function BackgroundBlogCard() {
                     bookData={libros.data}
                   />
                   <BookForCategory category={"Terror"} bookData={libros.data} />
-
                   <BookForCategory
                     category={"Infantil"}
                     bookData={libros.data}

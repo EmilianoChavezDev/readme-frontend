@@ -15,18 +15,7 @@ const BookForCategory = ({ category, bookData }) => {
   return (
     <div class="py-4">
       {filteredBooks?.length === 0 || filteredBooks === undefined ? (
-        <>
-          <div>
-            <h2 className="text-2xl text-center px-4 _sm:text-left font-bold mb-4 ">
-              {category}
-            </h2>
-          </div>
-          <BookNotFound
-            message={
-              "Lo siento, no hay libros disponibles en esta categoría en este momento."
-            }
-          />
-        </>
+        <></>
       ) : (
         <div>
           <h2 className="text-2xl text-center px-4 _sm:text-left font-bold mb-4 ">
@@ -76,9 +65,7 @@ const BookForCategory = ({ category, bookData }) => {
                           lineHeight: "1.5em",
                         }}
                       >
-                        <p className="text-base">
-                          {filteredBooks[0]?.sinopsis}
-                        </p>
+                        <p className="text-sm">{filteredBooks[0]?.sinopsis}</p>
                       </div>
                     </div>
                   </div>
