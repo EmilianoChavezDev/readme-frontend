@@ -12,6 +12,7 @@ import Loading from "@/components/common/Loading";
 import UsernameInput from "@/components/common/InputUsername";
 import PasswordInput from "@/components/common/InputPassword";
 import DateInput from "@/components/common/DateInput";
+import EmailInput from "@/components/common/EmailInput";
 
 const defaultValues = {
   username: "",
@@ -27,6 +28,7 @@ const page = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
   const [isFocusedDate, setIsFocusedDate] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [isFocusedPasswordConfirm, setIsFocusedPasswordConfirm] =
@@ -53,6 +55,7 @@ const page = () => {
       !formData.username ||
       !formData.password ||
       !formData.password_confirmation ||
+      !formData.email ||
       !formData.fecha_nacimiento
     ) {
       setIsError(true);
@@ -149,6 +152,7 @@ const page = () => {
   const passwordValue = watch("password", "");
   const passwordConfirmationValue = watch("password_confirmation", "");
   const usernameValue = watch("username", "");
+  const emailValue = watch("email","")
   const dateValue = watch("fecha_nacimiento", "");
 
   return (
@@ -217,6 +221,21 @@ const page = () => {
                   errors={errors}
                   placeholder={"*Nombre de usuario"}
                   date={"username"}
+                />
+              </div>
+
+              <div>
+                <EmailInput
+                  isFocused={isFocusedEmail}
+                  emailValue={emailValue}
+                  styles={style}
+                  register={register}
+                  trigger={trigger}
+                  handleBlur={handleBlur}
+                  handleFocus={handleFocus}
+                  errors={errors}
+                  placeholder={"*Email"}
+                  date={"email"}
                 />
               </div>
 

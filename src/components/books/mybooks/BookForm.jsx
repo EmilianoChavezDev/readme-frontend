@@ -17,7 +17,7 @@ const BookForm = ({ book }) => {
   const { data: categories, fetchCategories } = useCategory();
 
   const [image, setImage] = useState({});
-  const [loadingPortada, setLoadingPortada] = useState(false);
+  const [loadingPortada] = useState(false);
   const [errors, setErrors] = useState({
     titulo: "",
     sinopsis: "",
@@ -31,7 +31,7 @@ const BookForm = ({ book }) => {
     adulto: false,
   });
 
-  const { titulo, sinopsis, categoria, portada, adulto } = info;
+  const { titulo, sinopsis, categoria, adulto } = info;
 
   const formatCategories = () => {
     if (!categories) return [];

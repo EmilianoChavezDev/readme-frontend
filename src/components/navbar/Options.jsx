@@ -1,38 +1,31 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { FaPlusCircle, FaListUl, FaFileAlt } from "react-icons/fa";
+import { FaPlusCircle, FaListUl } from "react-icons/fa";
+import {
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+} from "@material-tailwind/react";
 
-const Options = () => {
-  const [isOpenEscribir, setIsOpenEscribir] = useState(false);
-  const [isOpenExplorar, setIsOpenExplorar] = useState(false);
+const Options = ({ categories = () => {} }) => {
+  const [showPopover, setShowPopover] = useState(false);
+  const [showPopoverExplorar, setShowPopoverExplorar] = useState(false);
 
   const router = useRouter();
 
-  const toggleDropdownEscribir = () => {
-    setIsOpenEscribir(!isOpenEscribir);
-    setIsOpenExplorar(false);
-  };
-  const toggleDropdownExplorar = () => {
-    setIsOpenExplorar(!isOpenExplorar);
-    setIsOpenEscribir(false);
+  const handleSearchByCategory = (category) => {
+    const newRoute =
+      "/search?category=" + category[0] + "&categoryTagName=" + category[1];
+    window.location.replace(newRoute);
   };
 
-  const handleNewBook = () => {
-    router.push("/books/create");
-  };
-
-  const handleDraft = () => {
-    router.push("/books/mybooks");
-  };
-
-  const handleHomeClick = () => {
-    setIsOpenExplorar(false);
-    setIsOpenEscribir(false);
-    router.push("/");
+  const navigateTo = (path) => {
+    router.push(path);
+    setShowPopover(false);
+    setShowPopoverExplorar(false);
   };
 
   return (
@@ -46,7 +39,7 @@ const Options = () => {
         transition-all duration-100 hover:scale-105
         hover:cursor-pointer
         "
-        onClick={() => handleHomeClick()}
+        onClick={() => navigateTo("/")}
       >
         <Image
           width={0}
@@ -59,96 +52,102 @@ const Options = () => {
       </div>
       {/**Comienzo del padre */}
       <div className="_md:flex _lg:gap-3 _xl:text-sm _lg:text-xs _lg:text-nowrap hidden _lg:items-center ">
-        <div className="relative">
-          <div
-            className="_lg:flex _lg:items-center
-            transition-all duration-100 hover:scale-105
-            hover:cursor-pointer
-            hover:text-white
-          "
-            onClick={() => toggleDropdownExplorar()}
+        <div>
+          <Popover
+            open={showPopoverExplorar}
+            handler={setShowPopoverExplorar}
+            placement="bottom-end"
           >
-            <p>Explorar</p>
-            <button
-              type="button"
-              className={`_lg:flex _lg:items-center _lg:justify-center transition-all duration-200 transform ${
-                isOpenExplorar ? "rotate-180" : "rotate-0"
-              }`}
-              style={{ transition: "transform 0.3s" }}
-            >
-              <IoMdArrowDropdown size={18} />
-            </button>
-          </div>
-          {isOpenExplorar && (
-            <div
-              className="_lg:absolute _lg:z-10 bg-white border border-gray-200 shadow-lg p-2 top-11 text-black _lg:w-96 md:w-60
-          
-          "
-            >
-              <ul className="_lg:my-2 _lg:gap-4 lg:gap-x-4 _lg:grid _lg:grid-cols-3 col-span-1">
-                <li className="hover:cursor-pointer hover:font-bold transition-all duration-300">
-                  Proximamente
-                </li>
+            <PopoverHandler>
+              <button
+                className="group flex items-center  
+             transition-all duration-100 hover:scale-105
+             hover:cursor-pointer
+             hover:text-white"
+              >
+                <span className="cursor-pointer  _lg:text-sm text-lg">
+                  Explorar
+                </span>
+                <span
+                  className={`text-white transition-all duration-200 transform ${
+                    showPopoverExplorar ? "rotate-180" : "rotate-0"
+                  }`}
+                >
+                  <IoMdArrowDropdown />
+                </span>
+              </button>
+            </PopoverHandler>
+
+            <PopoverContent className="z-60 w-96">
+              <ul className="text-nowrap _lg:my-2 _lg:gap-4 lg:gap-x-4 _lg:grid _lg:grid-cols-3 col-span-1">
+                {categories?.map((category, i) => (
+                  <li
+                    onClick={() => handleSearchByCategory(category)}
+                    key={i}
+                    className="hover:cursor-pointer hover:font-bold transition-all duration-300"
+                  >
+                    {category[1]}
+                  </li>
+                ))}
               </ul>
-            </div>
-          )}
+            </PopoverContent>
+          </Popover>
         </div>
 
         <div>
-          <Link
+          <span
             className="_lg:flex _lg:items-center
              transition-all duration-100 hover:scale-105
              hover:cursor-pointer
              hover:text-white
         "
-            href={"/favorites"}
+            onClick={() => navigateTo("/favorites")}
           >
             Mis Favoritos
-          </Link>
+          </span>
         </div>
 
-        <div className="_lg:relative">
-          <div
-            className="_lg:flex _lg:items-center
-            transition-all duration-100 hover:scale-105
-            hover:cursor-pointer
-            hover:text-white"
-            onClick={() => toggleDropdownEscribir()}
-          >
-            <p>Escribe</p>
-            <button
-              type="button"
-              className={`_lg:flex _lg:items-center _lg:justify-center transition-all duration-200 transform ${
-                isOpenEscribir ? "rotate-180" : "rotate-0"
-              }`}
-              style={{ transition: "transform 0.3s" }}
-            >
-              <IoMdArrowDropdown size={18} />
-            </button>
-          </div>
-          {isOpenEscribir && (
-            <div
-              className="_lg:absolute _lg:z-10 bg-white border md:border-gray-200 _lg:shadow-lg _lg:p-2 _lg:top-11 text-black _lg:w-48
-          "
-            >
+        <div className="flex items-center">
+          <Popover open={showPopover} handler={setShowPopover}>
+            <PopoverHandler>
+              <button
+                className="group flex items-center  
+             transition-all duration-100 hover:scale-105
+             hover:cursor-pointer
+             hover:text-white"
+              >
+                <span className="cursor-pointer _lg:text-sm text-lg">
+                  Escribe
+                </span>
+                <span
+                  className={`text-white transition-all duration-200 transform ${
+                    showPopover ? "rotate-180" : "rotate-0"
+                  }`}
+                >
+                  <IoMdArrowDropdown />
+                </span>
+              </button>
+            </PopoverHandler>
+
+            <PopoverContent className="z-60 w-60 buttom-3">
               <ul className="my-2">
                 <li
-                  className=" mb-4 pb-2 border-b border-gray-200 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                  onClick={() => handleNewBook()}
+                  className=" mb-4 pb-2 border-b border-gray-200 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
+                  onClick={() => navigateTo("/books/create")}
                 >
                   <FaPlusCircle className="inline-block mr-2" />
                   Crear nuevo libro
                 </li>
                 <li
-                  className=" mb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                  onClick={() => handleDraft()}
+                  className=" mb-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
+                  onClick={() => navigateTo("/books/mybooks")}
                 >
                   <FaListUl className="inline-block mr-2" />
                   Mis libros
                 </li>
               </ul>
-            </div>
-          )}
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
     </div>

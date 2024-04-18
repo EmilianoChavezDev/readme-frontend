@@ -1,109 +1,105 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { Tooltip } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { MdRemoveModerator } from "react-icons/md";
+import { FaUserCircle, FaSignOutAlt, FaUser } from "react-icons/fa";
+import {
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+} from "@material-tailwind/react";
+
 import useUserInfo from "@/hooks/useUser";
-import { useUser } from "@/contexts/UserProvider";
+import ProfileView from "@/components/common/ProfileView";
 
-const UserOptions = ({ username, logout }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [storageProfile, setStorageProfile] = useState(null);
-  const { getUserInformation, data, currentData } = useUserInfo();
+export default function UserOptions({ username, logout }) {
   const router = useRouter();
-  const initials = username
-    ?.split(" ")
-    ?.map((word) => word[0])
-    ?.join("")
-    ?.toUpperCase();
+  const { getUserInformation, data } = useUserInfo();
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  const [userRole, setUserRole] = useState("");
+  const [showPopover, setShowPopover] = useState(false);
+  const [storageProfile, setStorageProfile] = useState(null);
+
+  const navigateTo = (path) => {
+    router.push(path);
+    setShowPopover(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setShowPopover(false);
   };
 
   useEffect(() => {
-    if (!username) return;
-    getUserInformation(username);
+    if (username) getUserInformation(username);
   }, [username]);
 
   useEffect(() => {
     if (data) {
       setStorageProfile(data?.profile || localStorage.getItem("profile"));
+      setUserRole(data?.role || localStorage.getItem("role"));
     }
   }, [data]);
 
-  useEffect(() => {
-    if (currentData) {
-      setStorageProfile(currentData?.profile);
-    }
-  }, [currentData]);
-
   return (
-    <div
-      className="flex items-center border-b border-transparent text-white
-    _lg:hover:cursor-pointer
-  "
-    >
-      {storageProfile ? (
-        <Image
-          src={storageProfile}
-          alt="User"
-          className="h-8 w-8 rounded-full mr-2"
-          width={200}
-          height={200}
-        />
-      ) : (
-        <div className="h-8 w-8 flex items-center justify-center bg-blue-500 text-white rounded-full mr-2">
-          {initials}
-        </div>
-      )}
-      <div className="flex items-center gap-x-1" onClick={toggleDropdown}>
-        <span className="cursor-pointer _lg:text-sm text-lg">{username}</span>
-        <button
-          type="button"
-          className={`_lg:flex items-center justify-center hidden 
-          transition-all duration-200 transform ${
-            isOpen ? "rotate-180" : "rotate-0"
-          }
-          `}
-        >
-          <IoMdArrowDropdown size={18} />
-        </button>
-        <div className="ml-4 items-center _lg:hidden transform transition-all hover:scale-110 duration-200">
-          <Tooltip content="Cerrar sesion">
-            <button>
-              <FaSignOutAlt size={25} onClick={() => logout()} />
-            </button>
-          </Tooltip>
-        </div>
-      </div>
-
-      <div className="relative">
-        {isOpen && (
-          <div className="_lg:absolute z-10 bg-white border border-gray-200 shadow-lg p-2 mt-2 -right-2 top-7 text-black w-40 ">
-            <ul className="my-2">
+    <div className="flex items-center">
+      <Popover
+        open={showPopover}
+        handler={setShowPopover}
+        placement="bottom-end"
+      >
+        <PopoverHandler>
+          <button className="group flex items-center gap-2">
+            <ProfileView username={username} imagen={storageProfile} size={8} />
+            <span className="cursor-pointer text-white _lg:text-sm text-lg">
+              {username}
+            </span>
+            <span
+              className={`text-white transition-all duration-200 transform ${
+                showPopover ? "rotate-180" : "rotate-0"
+              }`}
+            >
+              <IoMdArrowDropdown />
+            </span>
+          </button>
+        </PopoverHandler>
+        <PopoverContent className="z-60 w-44">
+          <ul className="flex flex-col gap-2 text-gray-800 text-md gap-y-2">
+            <li
+              className="flex pb-2 border-b gap-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
+              onClick={() => navigateTo(`/user/${username}`)}
+            >
+              <FaUser />
+              <span>Mi Perfil</span>
+            </li>
+            <li
+              className="flex pb-2 border-b gap-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
+              onClick={() => navigateTo(`/accounts`)}
+            >
+              <FaUserCircle />
+              <span>Mi Cuenta</span>
+            </li>
+            {userRole === "moderador" && (
               <li
-                className="mb-4  border-b border-gray-200 pb-2 hover:cursor-pointer hover:font-bold transition-all duration-300"
-                onClick={() => router.push(`/accounts`)}
+                className="flex pb-2 border-b gap-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
+                onClick={() => navigateTo(`/moderator/report_tray`)}
               >
-                <FaUserCircle className="inline-block mr-2" />
-                Mi cuenta
+                <MdRemoveModerator />
+                <span>Ir a Moderador</span>
               </li>
-
-              <li
-                className="hover:cursor-pointer hover:font-bold transition-all duration-300"
-                onClick={() => logout()}
-              >
-                <FaSignOutAlt className="inline-block mr-2" />
-                Cerrar sesión
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
+            )}
+            <li
+              className="flex gap-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
+              onClick={handleLogout}
+            >
+              <FaSignOutAlt />
+              <span>Cerrar Sesión</span>
+            </li>
+          </ul>
+        </PopoverContent>
+      </Popover>
     </div>
   );
-};
-
-export default UserOptions;
+}

@@ -22,9 +22,6 @@ export default function ReadBook({ params }) {
 
   return (
     <>
-      <div className="hidden">
-        <NavBar />
-      </div>
       {isLoading ? (
         <Loader />
       ) : data.length > 0 ? (

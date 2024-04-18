@@ -10,7 +10,6 @@ import Loading from "@/components/common/Loading";
 import PasswordInput from "@/components/common/InputPassword";
 import UsernameInput from "@/components/common/InputUsername";
 
-
 const defaultValues = {
   username: "",
   password: "",
@@ -21,7 +20,6 @@ const Page = () => {
 
   const [isFocused, setIsFocused] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
-
 
   const { data, error, loading, login } = useAuth();
   const { login: saveUser } = useUser();
@@ -66,7 +64,6 @@ const Page = () => {
 
   const usernameValue = watch("username", "");
 
-
   return (
     <div className={styles.content}>
       <div className={styles.content_image}>
@@ -79,14 +76,12 @@ const Page = () => {
       </div>
       <div className={styles.content_login}>
         <div className={styles.content_detalle}>
-
           <div className={styles.content_logo}>
             <Image
               src={"/image/g2.png"}
               alt="imagen logo"
               width={250}
               height={250}
-
             />
           </div>
           {error && (
@@ -95,7 +90,6 @@ const Page = () => {
             </p>
           )}
           <div>
-
             <UsernameInput
               isFocused={isFocused}
               usernameValue={usernameValue}
@@ -107,7 +101,6 @@ const Page = () => {
               errors={errors}
               date={"username"}
               placeholder={"Nombre de usuario"}
-              message={"*Debe ingresar su nombre de usuario"}
             />
 
             {/*parte del password */}
@@ -123,7 +116,6 @@ const Page = () => {
               trigger={trigger}
               styles={styles}
               date={"password"}
-              message={"*Debe ingresar su contraseña"}
               placeholder={"Contraseña"}
             />
           </div>

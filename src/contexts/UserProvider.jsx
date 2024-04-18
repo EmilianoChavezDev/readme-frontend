@@ -9,12 +9,15 @@ export const UserProvider = ({ children }) => {
 
   const [token, setToken] = useState(null);
   const [expiration, setExpiration] = useState(null);
+
   const [fecha_nacimiento, setFecha_nacimiento] = useState(null);
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isActualizado, setIsActualizado] = useState(false);
+  const [profileUpdate, setProfileUpdate] = useState(false);
 
   const login = (data) => {
     setToken(data?.token);
@@ -23,6 +26,7 @@ export const UserProvider = ({ children }) => {
     setRole(data?.role);
     setUserId(data.userId);
     setProfile(data.profile);
+    setProfileUpdate(data.profile);
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
     router.push("/");
@@ -58,7 +62,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
-      setToken(storedToken);
+      setToken(storedToken ?? "");
     }
 
     const storedExpiration = localStorage.getItem("expiration");
@@ -101,6 +105,11 @@ export const UserProvider = ({ children }) => {
         profile,
         isOpen,
         setIsOpen,
+        profile,
+        isActualizado,
+        setIsActualizado,
+        setProfileUpdate,
+        profileUpdate,
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react'
 
-export default function Modal({ open, onHide, onSave, title, size='xs', children }) {
+export default function Modal({ open, onHide, onSave, title, size='xs', children, variant, disableSubmit }) {
         
     return (
         <Dialog open={open} handler={onHide} size={size}>
@@ -10,10 +10,10 @@ export default function Modal({ open, onHide, onSave, title, size='xs', children
             </DialogBody>
             <DialogFooter>
                 <div className='flex justify-end gap-2'>
-                    <Button className='border border-colorPrimario bg-white text-colorPrimario brightness-90' onClick={onHide} >
+                    <Button className={` border bg-white brightness-90 ${variant === 'danger'? 'border-red-900 text-red-900' : 'border-colorPrimario text-colorPrimario'}`} onClick={onHide} >
                         <span>Cancelar</span>
                     </Button>
-                    <Button className='bg-colorPrimario hover:brightness-90' onClick={onSave}>
+                    <Button className={`hover:brightness-90 ${variant === 'danger'? 'bg-red-900' : 'bg-colorPrimario'}`} disabled={disableSubmit} onClick={onSave}>
                         <span>Aceptar</span>
                     </Button>
                 </div>

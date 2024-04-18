@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   env: {
-    API_URL: "https://readmeapp.fly.dev",
+    API_URL: "https://readme-backend.fly.dev",
   },
   experimental: {
     missingSuspenseWithCSRBailout: false,
@@ -14,6 +14,12 @@ const nextConfig = {
         hostname: "**",
       },
     ],
+  },
+
+  webpack: (config) => {
+    config.resolve.alias.canvas = false;
+
+    return config;
   },
 };
 
