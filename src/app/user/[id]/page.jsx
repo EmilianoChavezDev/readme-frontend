@@ -455,7 +455,7 @@ const page = ({ params }) => {
 
   return (
     <>
-      {userLoading && arrBooks ? (
+      {!data && arrBooks ? (
         <Loader />
       ) : (
         <div className="flex flex-col min-h-screen bg-gray-100">
