@@ -65,7 +65,7 @@ export default function UserOptions({ username, logout }) {
             </span>
           </button>
         </PopoverHandler>
-        <PopoverContent className="z-60 w-44">
+        <PopoverContent className="z-60 w-48">
           <ul className="flex flex-col gap-2 text-gray-800 text-md gap-y-2">
             <li
               className="flex pb-2 border-b gap-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
@@ -87,7 +87,7 @@ export default function UserOptions({ username, logout }) {
                 onClick={() => navigateTo(`/moderator/report_tray`)}
               >
                 <MdRemoveModerator />
-                <span>Ir a Moderador</span>
+                <span className="text-nowrap">Panel del Moderador</span>
               </li>
             )}
             <li
