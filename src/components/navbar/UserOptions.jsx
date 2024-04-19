@@ -18,7 +18,7 @@ import { useUser } from "@/contexts/UserProvider";
 export default function UserOptions({ username, logout }) {
   const router = useRouter();
   const { getUserInformation, data } = useUserInfo();
-  const { profileUpdate, isActualizado } = useUser();
+  const { profileUpdate, isActualizado, setProfileUpdate } = useUser();
 
   const [userRole, setUserRole] = useState("");
   const [showPopover, setShowPopover] = useState(false);
@@ -41,6 +41,7 @@ export default function UserOptions({ username, logout }) {
   useEffect(() => {
     if (data) {
       setUserRole(data?.role || localStorage.getItem("role"));
+      setProfileUpdate(data?.profile);
     }
   }, [data]);
 
