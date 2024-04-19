@@ -31,12 +31,8 @@ const defaultValues = {
 
 const page = ({ params }) => {
   const { setIsActualizado, setProfileUpdate } = useUser();
-  const { getUserInformation, data, isLoading: userLoading } = useUserInfo();
-  const {
-    getFollowFollowers,
-    data: seguidoresSeguidos,
-    isLoading: isFollowers,
-  } = useUserInfo();
+  const { getUserInformation, data } = useUserInfo();
+  const { getFollowFollowers, data: seguidoresSeguidos } = useUserInfo();
   const {
     getUserLecturas,
     data: lecturas,
@@ -46,26 +42,10 @@ const page = ({ params }) => {
   const { follow } = useUserInfo();
   const { unfollow } = useUserInfo();
   const { getAllBooks, isLoading: librosLoading } = useBook();
-  const {
-    updateProfile,
-    data: updProfile,
-    isLoading: profileLoading,
-  } = useUserInfo();
-  const {
-    data: dltProfile,
-    deleteProfile,
-    isLoading: deleteProfileLoading,
-  } = useUserInfo();
-  const {
-    data: updPortada,
-    updatePortada,
-    isLoading: portadaLoading,
-  } = useUserInfo();
-  const {
-    data: dltPortada,
-    deletePortada,
-    isLoading: deletePortadaLoading,
-  } = useUserInfo();
+  const { updateProfile, data: updProfile } = useUserInfo();
+  const { data: dltProfile, deleteProfile } = useUserInfo();
+  const { data: updPortada, updatePortada } = useUserInfo();
+  const { data: dltPortada, deletePortada } = useUserInfo();
 
   const {
     updateUserInformation,
