@@ -9,6 +9,7 @@ import { useUser } from "@/contexts/UserProvider";
 import Loading from "@/components/common/Loading";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import InputField from "@/components/common/InputField";
+import { Error } from "@/components/common/Error";
 
 const defaultValues = {
   email: "",
@@ -17,11 +18,14 @@ const defaultValues = {
 
 const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const { data, error, loading, login } = useAuth();
+  const { data, error, loading, errorResponse, login } = useAuth();
   const { login: saveUser } = useUser();
 
-  const { register, handleSubmit } = useForm({ defaultValues });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
     login(formData);
@@ -31,6 +35,10 @@ const Page = () => {
     if (!data || error) return;
     saveUser(data);
   }, [data]);
+
+  useEffect(() => {
+    if (!errorResponse) return;
+  }, [errorResponse]);
 
   const handleBlur = () => {
     setIsFocused(false);
@@ -56,12 +64,14 @@ const Page = () => {
               height={250}
             />
           </div>
-          {error && (
+
+          {errorResponse?.error && (
             <Error>
-              <p>Usuario o contraseña no valido</p>
+              <p>{errorResponse.error}</p>
             </Error>
           )}
-          <div className="flex flex-col gap-y-3">
+
+          <div className="flex flex-col gap-y-2">
             {/*parte del email */}
             <InputField
               label={"*Email"}
@@ -72,6 +82,12 @@ const Page = () => {
               required={true}
               className="bg-white"
             />
+
+            {errors.email && (
+              <p className="text-red-500 text-2xs px-3">
+                *Este campo es requerido
+              </p>
+            )}
 
             {/*parte del password */}
             <div className="relative">
@@ -92,14 +108,20 @@ const Page = () => {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
+
+            {errors.password && (
+              <p className="text-red-500 text-2xs px-3">
+                *Este campo es requerido
+              </p>
+            )}
           </div>
 
           <div className={styles.content_button}>
             <button
-              type="button"
+              type="submit"
+              onClick={handleSubmit(onSubmit)}
               id="login-btn"
               disabled={loading}
-              onClick={handleSubmit(onSubmit)}
             >
               {loading ? <Loading /> : "Iniciar Sesión"}
             </button>

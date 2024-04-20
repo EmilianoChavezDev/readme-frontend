@@ -5,6 +5,7 @@ const useAuth = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [errorResponse, setErrorResponse] = useState([]);
 
   const login = async (body) => {
     setLoading(true);
@@ -21,8 +22,10 @@ const useAuth = () => {
       const data = await response.data;
       setData(data);
       setError(false);
+      setErrorResponse([]);
     } catch (error) {
       setError(true);
+      setErrorResponse(error.response.data);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -44,15 +47,17 @@ const useAuth = () => {
       const data = await response.data;
       setData(data);
       setError(false);
+      setErrorResponse([]);
     } catch (error) {
       setError(true);
+      setErrorResponse(error.response.data);
       setLoading(false);
     } finally {
       setLoading(false);
     }
   };
 
-  return { data, loading, error, login, register };
+  return { data, loading, error, errorResponse, login, register };
 };
 
 export default useAuth;

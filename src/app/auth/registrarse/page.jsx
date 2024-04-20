@@ -21,18 +21,14 @@ const defaultValues = {
 };
 
 const Page = () => {
-  const [isError, setIsError] = useState(false);
-  const [isErrorFecha, setIsErrorFecha] = useState(false);
-  const [isPasswordError, setIsPasswordError] = useState(false);
-  const [isNumeroError, setIsNumeroError] = useState(false);
-  const [isErrorEmail, setIsErrorEmail] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
 
-  const { data, error, loading, register: registro } = useAuth();
+  const { data, error, loading, errorResponse, register: registro } = useAuth();
   const { login: saveUser } = useUser();
+
   const router = useRouter();
 
   useEffect(() => {
@@ -40,7 +36,15 @@ const Page = () => {
     saveUser(data);
   }, [data]);
 
-  const { register, handleSubmit } = useForm({ defaultValues });
+  useEffect(() => {
+    if (!errorResponse) return;
+  }, [errorResponse]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
     if (
@@ -50,72 +54,24 @@ const Page = () => {
       !formData.email ||
       !formData.fecha_nacimiento
     ) {
-      setIsError(true);
-      setIsNumeroError(false);
-      setIsErrorFecha(false);
-      setIsErrorEmail(false);
       return;
     }
 
-    setIsError(false);
-
-    if (formData.password !== formData.password_confirmation) {
-      setIsPasswordError(true);
-      setIsNumeroError(false);
-      setIsErrorFecha(false);
-      setIsErrorEmail(false);
+    if (!validarLongitudEmail(formData.email)) {
+      errorResponse.error = ["Longitud de email invalida"];
       return;
     }
-
-    setIsPasswordError(false);
-
-    if (!/\d/.test(formData.password)) {
-      setIsNumeroError(true);
-      setIsPasswordError(false);
-      setIsErrorFecha(false);
-      setIsErrorEmail(false);
-      return;
-    }
-
-    setIsNumeroError(false);
-
-    if (formData.password.length < 8) {
-      setIsNumeroError(true);
-      setIsPasswordError(false);
-      setIsErrorFecha(false);
-      setIsErrorEmail(false);
-      return;
-    }
-
-    setIsNumeroError(false);
 
     if (!validarFechaNacimiento(formData.fecha_nacimiento)) {
-      setIsErrorFecha(true);
-      setIsPasswordError(false);
-      setIsNumeroError(false);
-      setIsErrorEmail(false);
+      errorResponse.error = [
+        "Debes tener al menos 12 años y no mas de 120 años",
+      ];
       return;
     }
-
-    setIsErrorFecha(false);
-
-    if (!validarEmail(formData.email)) {
-      setIsErrorEmail(true);
-      setIsPasswordError(false);
-      setIsNumeroError(false);
-      setIsErrorFecha(false);
-      return;
-    }
-
-    setIsErrorEmail(false);
 
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
     formData.fecha_nacimiento = fecha;
-    setIsPasswordError(false);
-    setIsError(false);
-    setIsNumeroError(false);
-    setIsErrorFecha(false);
     registro(formData);
 
     // Redirigir a la pagina de confirmacion de correo electronico
@@ -129,18 +85,20 @@ const Page = () => {
   const validarFechaNacimiento = (fechaNacimiento) => {
     const currentDate = new Date();
     const minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear() - 15);
+    minDate.setFullYear(minDate.getFullYear() - 12);
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 120);
     const fechaNacimientoDate = new Date(fechaNacimiento);
 
     const diferenciaAnhos =
       (currentDate - fechaNacimientoDate) / (1000 * 60 * 60 * 24 * 365);
 
-    return diferenciaAnhos >= 15;
+    return diferenciaAnhos >= 12 && diferenciaAnhos <= 120;
   };
 
-  const validarEmail = (email) => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    return emailRegex.test(email);
+  const validarLongitudEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]{6,}/;
+    return regex.test(email);
   };
 
   return (
@@ -165,46 +123,15 @@ const Page = () => {
           </div>
           <div className={styles.content_informacion}>
             <div>
-              {isError && (
+              {errorResponse?.error && (
                 <Error>
-                  <p>Por favor complete todos los campos</p>
-                </Error>
-              )}
-
-              {isPasswordError && (
-                <Error>
-                  <p>Las contraseñas no coinciden</p>
-                </Error>
-              )}
-
-              {error && (
-                <Error>
-                  <p>Nombre de usuario en uso</p>
-                </Error>
-              )}
-
-              {isNumeroError && (
-                <Error>
-                  <p>La contraseña debe tener</p>
-                  <p>8 caracteres minimo</p>
-                  <p>debe contener al menos 1 numero</p>
-                </Error>
-              )}
-
-              {isErrorFecha && (
-                <Error>
-                  <p>Debes tener 15 o mas para</p>
-                  <p>registrarte</p>
-                </Error>
-              )}
-
-              {isErrorEmail && (
-                <Error>
-                  <p>El email ingresado no es valido</p>
+                  {errorResponse.error.map((error) => (
+                    <p key={error}>{error}</p>
+                  ))}
                 </Error>
               )}
             </div>
-            <div className="flex flex-col gap-y-3">
+            <div className="flex flex-col gap-y-2">
               {/*parte del username */}
               <InputField
                 label={"*Nombre de usuario"}
@@ -215,6 +142,11 @@ const Page = () => {
                 required={true}
                 className={"bg-white"}
               />
+              {errors.username && (
+                <p className="px-3 text-red-500 text-2xs">
+                  *Este campo es requerido
+                </p>
+              )}
 
               <div>
                 {/*parte del email */}
@@ -228,6 +160,12 @@ const Page = () => {
                   className="bg-white"
                 />
               </div>
+
+              {errors.email && (
+                <p className="px-3 text-red-500 text-2xs">
+                  *Este campo es requerido
+                </p>
+              )}
 
               <div className="relative">
                 {/*parte del password */}
@@ -249,6 +187,12 @@ const Page = () => {
                 </button>
               </div>
 
+              {errors.password && (
+                <p className="px-3 text-red-500 text-2xs">
+                  *Este campo es requerido
+                </p>
+              )}
+
               <div className="relative">
                 {/*parte del confirm password */}
                 <InputField
@@ -260,6 +204,7 @@ const Page = () => {
                   required={true}
                   className="bg-white"
                 />
+
                 <button
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
                   onClick={() =>
@@ -269,6 +214,13 @@ const Page = () => {
                   {showPasswordConfirmation ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
+
+              {errors.password_confirmation && (
+                <p className="px-4 text-red-500 text-start text-2xs">
+                  *Este campo es requerido
+                </p>
+              )}
+
               {/*parte de la fecha de nacimiento */}
               <InputField
                 label={"*Fecha de nacimiento"}
@@ -284,8 +236,8 @@ const Page = () => {
           <div className={styles.content_button_submit}>
             <button
               type="submit"
-              id="register-btn"
               onClick={handleSubmit(onSubmit)}
+              id="register-btn"
               disabled={loading}
             >
               {loading ? <Loading /> : "Registrarte"}
