@@ -81,6 +81,15 @@
   margin-top: 3rem;
 }
 
+.content_cambiar_contrasena {
+  display: flex;
+  text-align: left;
+  font-size: 14px;
+  justify-content: right;
+  margin-top: 1rem;
+  color: var(--colorPrimario);
+}
+
 .content_crear_cuenta a {
   margin-left: 4px;
   color: var(--colorPrimario);
@@ -164,5 +173,4 @@
   justify-content: center;
   font-size: small;
   color: #ff0000;
-
 }

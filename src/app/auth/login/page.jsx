@@ -1,14 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styles from "./styles/Inicio.module.css";
-import Image from "next/image";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import useAuth from "@/hooks/useAuth";
-import { useUser } from "@/contexts/UserProvider";
-import Loading from "@/components/common/Loading";
 import PasswordInput from "@/components/common/InputPassword";
 import UsernameInput from "@/components/common/InputUsername";
+import Loading from "@/components/common/Loading";
+import { useUser } from "@/contexts/UserProvider";
+import useAuth from "@/hooks/useAuth";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import styles from "./styles/Inicio.module.css";
 
 const defaultValues = {
   username: "",
@@ -118,6 +118,11 @@ const Page = () => {
               date={"password"}
               placeholder={"Contraseña"}
             />
+            <div className={styles.content_cambiar_contrasena}>
+              <Link href={"/auth/forgot_password"}>
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </div>
           </div>
           <div className={styles.content_button}>
             <button
@@ -129,8 +134,8 @@ const Page = () => {
               {loading ? <Loading /> : "Iniciar Sesión"}
             </button>
             <div className={styles.content_crear_cuenta}>
-              <span>No tienes cuenta?</span>{" "}
-              <Link href={"/auth/registrarse"}>Registrate!</Link>
+              <span>¿No tienes cuenta?</span>{" "}
+              <Link href={"/auth/registrarse"}>¡Registrate!</Link>
             </div>
           </div>
         </div>
