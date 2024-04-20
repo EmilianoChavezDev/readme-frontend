@@ -1,54 +1,46 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./styles/Registrarse.module.css";
-import style from "../login/styles/Inicio.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import moment from "moment";
 import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
-import moment from "moment";
 import Loading from "@/components/common/Loading";
-import UsernameInput from "@/components/common/InputUsername";
-import PasswordInput from "@/components/common/InputPassword";
-import DateInput from "@/components/common/DateInput";
-import EmailInput from "@/components/common/EmailInput";
+import InputField from "@/components/common/InputField";
+import { Error } from "@/components/common/Error";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const defaultValues = {
   username: "",
+  email: "",
   password: "",
   password_confirmation: "",
 };
 
-const page = () => {
+const Page = () => {
   const [isError, setIsError] = useState(false);
   const [isErrorFecha, setIsErrorFecha] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [isNumeroError, setIsNumeroError] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [isErrorEmail, setIsErrorEmail] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
-  const [isFocusedDate, setIsFocusedDate] = useState(false);
-  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
-  const [isFocusedPasswordConfirm, setIsFocusedPasswordConfirm] =
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
 
   const { data, error, loading, register: registro } = useAuth();
   const { login: saveUser } = useUser();
+  const router = useRouter();
 
   useEffect(() => {
     if (!data || error) return;
     saveUser(data);
   }, [data]);
 
-  const {
-    register,
-    handleSubmit,
-    trigger,
-    watch,
-    formState: { errors },
-  } = useForm({ defaultValues });
+  const { register, handleSubmit } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
     if (
@@ -59,37 +51,63 @@ const page = () => {
       !formData.fecha_nacimiento
     ) {
       setIsError(true);
-      setIsPasswordError(false);
       setIsNumeroError(false);
-
+      setIsErrorFecha(false);
+      setIsErrorEmail(false);
       return;
     }
+
+    setIsError(false);
 
     if (formData.password !== formData.password_confirmation) {
       setIsPasswordError(true);
-      setIsError(false);
       setIsNumeroError(false);
+      setIsErrorFecha(false);
+      setIsErrorEmail(false);
       return;
     }
+
+    setIsPasswordError(false);
 
     if (!/\d/.test(formData.password)) {
       setIsNumeroError(true);
       setIsPasswordError(false);
-      setIsError(false);
+      setIsErrorFecha(false);
+      setIsErrorEmail(false);
       return;
     }
 
+    setIsNumeroError(false);
+
     if (formData.password.length < 8) {
-      setIsPasswordError(false);
-      setIsError(false);
       setIsNumeroError(true);
+      setIsPasswordError(false);
+      setIsErrorFecha(false);
+      setIsErrorEmail(false);
       return;
     }
+
+    setIsNumeroError(false);
 
     if (!validarFechaNacimiento(formData.fecha_nacimiento)) {
       setIsErrorFecha(true);
+      setIsPasswordError(false);
+      setIsNumeroError(false);
+      setIsErrorEmail(false);
       return;
     }
+
+    setIsErrorFecha(false);
+
+    if (!validarEmail(formData.email)) {
+      setIsErrorEmail(true);
+      setIsPasswordError(false);
+      setIsNumeroError(false);
+      setIsErrorFecha(false);
+      return;
+    }
+
+    setIsErrorEmail(false);
 
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
@@ -99,42 +117,13 @@ const page = () => {
     setIsNumeroError(false);
     setIsErrorFecha(false);
     registro(formData);
-  };
 
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-  const handleShowPasswordConfirm = () => {
-    setShowPasswordConfirm(!showPasswordConfirm);
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
+    // Redirigir a la pagina de confirmacion de correo electronico
+    //router.push("/auth/confirmacion");
   };
 
   const handleBlur = () => {
     setIsFocused(false);
-  };
-  const handleFocusPassword = () => {
-    setIsFocusedPassword(true);
-  };
-
-  const handleBlurPassword = () => {
-    setIsFocusedPassword(false);
-  };
-  const handleFocusPasswordConfirm = () => {
-    setIsFocusedPasswordConfirm(true);
-  };
-
-  const handleBlurPasswordConfirm = () => {
-    setIsFocusedPasswordConfirm(false);
-  };
-  const handleFocusDate = () => {
-    setIsFocusedDate(true);
-  };
-
-  const handleBlurDate = () => {
-    setIsFocusedDate(false);
   };
 
   const validarFechaNacimiento = (fechaNacimiento) => {
@@ -149,15 +138,14 @@ const page = () => {
     return diferenciaAnhos >= 15;
   };
 
-  const passwordValue = watch("password", "");
-  const passwordConfirmationValue = watch("password_confirmation", "");
-  const usernameValue = watch("username", "");
-  const emailValue = watch("email","")
-  const dateValue = watch("fecha_nacimiento", "");
+  const validarEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailRegex.test(email);
+  };
 
   return (
-    <div className={styles.content}>
-      <div className={styles.content_image}>
+    <div>
+      <div>
         <Image
           src="/image/img_inicio.png"
           width={400}
@@ -165,7 +153,7 @@ const page = () => {
           alt="imagen presentacion"
         />
       </div>
-      <div className={styles.content_registrarse}>
+      <div>
         <div className={styles.content_detalle}>
           <div className={styles.content_logo}>
             <Image
@@ -176,109 +164,120 @@ const page = () => {
             />
           </div>
           <div className={styles.content_informacion}>
-            <div className={styles.content_errores}>
+            <div>
               {isError && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
-                  Por favor complete todos los campos
-                </p>
+                <Error>
+                  <p>Por favor complete todos los campos</p>
+                </Error>
               )}
+
               {isPasswordError && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
-                  Las contraseñas no coinciden
-                </p>
+                <Error>
+                  <p>Las contraseñas no coinciden</p>
+                </Error>
               )}
 
               {error && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
-                  Nombre de usuario en uso
-                </p>
+                <Error>
+                  <p>Nombre de usuario en uso</p>
+                </Error>
               )}
 
               {isNumeroError && (
-                <div className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
+                <Error>
                   <p>La contraseña debe tener</p>
                   <p>8 caracteres minimo</p>
                   <p>debe contener al menos 1 numero</p>
-                </div>
+                </Error>
               )}
+
               {isErrorFecha && (
-                <div className="bg-red-500 p-2 text-white font-bold mb-5 mx-0 text-center">
+                <Error>
                   <p>Debes tener 15 o mas para</p>
                   <p>registrarte</p>
-                </div>
+                </Error>
+              )}
+
+              {isErrorEmail && (
+                <Error>
+                  <p>El email ingresado no es valido</p>
+                </Error>
               )}
             </div>
-            <div className="flex flex-col gap-y-1">
-              <div>
-                <UsernameInput
-                  isFocused={isFocused}
-                  usernameValue={usernameValue}
-                  styles={style}
-                  register={register}
-                  trigger={trigger}
-                  handleBlur={handleBlur}
-                  handleFocus={handleFocus}
-                  errors={errors}
-                  placeholder={"*Nombre de usuario"}
-                  date={"username"}
-                />
-              </div>
-
-              <div>
-                <EmailInput
-                  isFocused={isFocusedEmail}
-                  emailValue={emailValue}
-                  styles={style}
-                  register={register}
-                  trigger={trigger}
-                  handleBlur={handleBlur}
-                  handleFocus={handleFocus}
-                  errors={errors}
-                  placeholder={"*Email"}
-                  date={"email"}
-                />
-              </div>
-
-              <div>
-                <PasswordInput
-                  isFocusedPassword={isFocusedPassword}
-                  passwordValue={passwordValue}
-                  showPassword={showPassword}
-                  errors={errors}
-                  handleBlurPassword={handleBlurPassword}
-                  handleFocusPassword={handleFocusPassword}
-                  handleShowPassword={handleShowPassword}
-                  register={register}
-                  trigger={trigger}
-                  styles={style}
-                  placeholder={"*Contraseña"}
-                  date={"password"}
-                />
-              </div>
-
-              <div className="mt-4 mb-2">
-                <PasswordInput
-                  isFocusedPassword={isFocusedPasswordConfirm}
-                  passwordValue={passwordConfirmationValue}
-                  showPassword={showPasswordConfirm}
-                  errors={errors}
-                  handleBlurPassword={handleBlurPasswordConfirm}
-                  handleFocusPassword={handleFocusPasswordConfirm}
-                  handleShowPassword={handleShowPasswordConfirm}
-                  register={register}
-                  trigger={trigger}
-                  styles={style}
-                  placeholder={"*Confirmar contraseña"}
-                  date={"password_confirmation"}
-                />
-              </div>
-              <DateInput
+            <div className="flex flex-col gap-y-3">
+              {/*parte del username */}
+              <InputField
+                label={"*Nombre de usuario"}
+                type={"text"}
+                onBlur={handleBlur}
                 register={register}
-                styles={styles}
-                isFocusedDate={isFocusedDate}
-                dateValue={dateValue}
-                handleFocusDate={handleFocusDate}
-                handleBlurDate={handleBlurDate}
+                name={"username"}
+                required={true}
+                className={"bg-white"}
+              />
+
+              <div>
+                {/*parte del email */}
+                <InputField
+                  label={"*Email"}
+                  type={"email"}
+                  onBlur={handleBlur}
+                  register={register}
+                  name={"email"}
+                  required={true}
+                  className="bg-white"
+                />
+              </div>
+
+              <div className="relative">
+                {/*parte del password */}
+                <InputField
+                  label={"*Contraseña"}
+                  type={showPassword ? "text" : "password"}
+                  onBlur={handleBlur}
+                  register={register}
+                  name={"password"}
+                  required={true}
+                  className="bg-white"
+                />
+
+                <button
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              <div className="relative">
+                {/*parte del confirm password */}
+                <InputField
+                  label={"*Confirmar contraseña"}
+                  type={showPasswordConfirmation ? "text" : "password"}
+                  onBlur={handleBlur}
+                  register={register}
+                  name={"password_confirmation"}
+                  required={true}
+                  className="bg-white"
+                />
+                <button
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                  onClick={() =>
+                    setShowPasswordConfirmation(!showPasswordConfirmation)
+                  }
+                >
+                  {showPasswordConfirmation ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+              {/*parte de la fecha de nacimiento */}
+              <InputField
+                label={"*Fecha de nacimiento"}
+                type={"date"}
+                onBlur={handleBlur}
+                register={register}
+                name={"fecha_nacimiento"}
+                required={true}
+                className="bg-white"
               />
             </div>
           </div>
@@ -308,4 +307,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
