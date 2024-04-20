@@ -13,14 +13,15 @@ import {
 
 import useUserInfo from "@/hooks/useUser";
 import ProfileView from "@/components/common/ProfileView";
+import { useUser } from "@/contexts/UserProvider";
 
 export default function UserOptions({ username, logout }) {
   const router = useRouter();
   const { getUserInformation, data } = useUserInfo();
+  const { profileUpdate, isActualizado, setProfileUpdate } = useUser();
 
   const [userRole, setUserRole] = useState("");
   const [showPopover, setShowPopover] = useState(false);
-  const [storageProfile, setStorageProfile] = useState(null);
 
   const navigateTo = (path) => {
     router.push(path);
@@ -33,13 +34,14 @@ export default function UserOptions({ username, logout }) {
   };
 
   useEffect(() => {
-    if (username) getUserInformation(username);
-  }, [username]);
+    if (!username) return;
+    getUserInformation(username);
+  }, [username, isActualizado]);
 
   useEffect(() => {
     if (data) {
-      setStorageProfile(data?.profile || localStorage.getItem("profile"));
       setUserRole(data?.role || localStorage.getItem("role"));
+      setProfileUpdate(data?.profile);
     }
   }, [data]);
 
@@ -52,7 +54,7 @@ export default function UserOptions({ username, logout }) {
       >
         <PopoverHandler>
           <button className="group flex items-center gap-2">
-            <ProfileView username={username} imagen={storageProfile} size={8} />
+            <ProfileView username={username} imagen={profileUpdate} size={8} />
             <span className="cursor-pointer text-white _lg:text-sm text-lg">
               {username}
             </span>
@@ -65,7 +67,7 @@ export default function UserOptions({ username, logout }) {
             </span>
           </button>
         </PopoverHandler>
-        <PopoverContent className="z-60 w-44">
+        <PopoverContent className="z-60 w-48">
           <ul className="flex flex-col gap-2 text-gray-800 text-md gap-y-2">
             <li
               className="flex pb-2 border-b gap-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
@@ -87,7 +89,7 @@ export default function UserOptions({ username, logout }) {
                 onClick={() => navigateTo(`/moderator/report_tray`)}
               >
                 <MdRemoveModerator />
-                <span>Ir a Moderador</span>
+                <span className="text-nowrap">Panel del Moderador</span>
               </li>
             )}
             <li

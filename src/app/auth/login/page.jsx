@@ -8,28 +8,27 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import styles from "./styles/Inicio.module.css";
+import useAuth from "@/hooks/useAuth";
+import { useUser } from "@/contexts/UserProvider";
+import Loading from "@/components/common/Loading";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import InputField from "@/components/common/InputField";
+import { Error } from "@/components/common/Error";
 
 const defaultValues = {
-  username: "",
+  email: "",
   password: "",
 };
 
 const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const [isFocused, setIsFocused] = useState(false);
-  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
-
-  const { data, error, loading, login } = useAuth();
+  const { data, error, loading, errorResponse, login } = useAuth();
   const { login: saveUser } = useUser();
 
   const {
     register,
     handleSubmit,
-    trigger,
     formState: { errors },
-    watch,
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
@@ -41,32 +40,17 @@ const Page = () => {
     saveUser(data);
   }, [data]);
 
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
+  useEffect(() => {
+    if (!errorResponse) return;
+  }, [errorResponse]);
 
   const handleBlur = () => {
     setIsFocused(false);
   };
-  const handleFocusPassword = () => {
-    setIsFocusedPassword(true);
-  };
-
-  const handleBlurPassword = () => {
-    setIsFocusedPassword(false);
-  };
-
-  const passwordValue = watch("password", "");
-
-  const usernameValue = watch("username", "");
 
   return (
-    <div className={styles.content}>
-      <div className={styles.content_image}>
+    <div>
+      <div>
         <Image
           src="/image/img_inicio.png"
           width={400}
@@ -74,7 +58,7 @@ const Page = () => {
           alt="Imagen de inicio"
         />
       </div>
-      <div className={styles.content_login}>
+      <div>
         <div className={styles.content_detalle}>
           <div className={styles.content_logo}>
             <Image
@@ -84,52 +68,64 @@ const Page = () => {
               height={250}
             />
           </div>
-          {error && (
-            <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
-              Usuario o contraseña no valido
-            </p>
+
+          {errorResponse?.error && (
+            <Error>
+              <p>{errorResponse.error}</p>
+            </Error>
           )}
-          <div>
-            <UsernameInput
-              isFocused={isFocused}
-              usernameValue={usernameValue}
-              styles={styles}
+
+          <div className="flex flex-col gap-y-2">
+            {/*parte del email */}
+            <InputField
+              label={"*Email"}
+              type={"email"}
+              onBlur={handleBlur}
               register={register}
-              trigger={trigger}
-              handleBlur={handleBlur}
-              handleFocus={handleFocus}
-              errors={errors}
-              date={"username"}
-              placeholder={"Nombre de usuario"}
+              name={"email"}
+              required={true}
+              className="bg-white"
             />
 
+            {errors.email && (
+              <p className="text-red-500 text-2xs px-3">
+                *Este campo es requerido
+              </p>
+            )}
+
             {/*parte del password */}
-            <PasswordInput
-              isFocusedPassword={isFocusedPassword}
-              passwordValue={passwordValue}
-              showPassword={showPassword}
-              errors={errors}
-              handleBlurPassword={handleBlurPassword}
-              handleFocusPassword={handleFocusPassword}
-              handleShowPassword={handleShowPassword}
-              register={register}
-              trigger={trigger}
-              styles={styles}
-              date={"password"}
-              placeholder={"Contraseña"}
-            />
-            <div className={styles.content_cambiar_contrasena}>
-              <Link href={"/auth/forgot_password"}>
-                ¿Olvidaste tu contraseña?
-              </Link>
+            <div className="relative">
+              <InputField
+                label={"*Contraseña"}
+                type={showPassword ? "text" : "password"}
+                onBlur={handleBlur}
+                register={register}
+                name={"password"}
+                required={true}
+                className="bg-white"
+              />
+
+              <button
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
             </div>
+
+            {errors.password && (
+              <p className="text-red-500 text-2xs px-3">
+                *Este campo es requerido
+              </p>
+            )}
           </div>
+
           <div className={styles.content_button}>
             <button
-              type="button"
+              type="submit"
+              onClick={handleSubmit(onSubmit)}
               id="login-btn"
               disabled={loading}
-              onClick={handleSubmit(onSubmit)}
             >
               {loading ? <Loading /> : "Iniciar Sesión"}
             </button>

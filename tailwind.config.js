@@ -12,6 +12,10 @@ module.exports = withMT({
 
   theme: {
     extend: {
+      fontSize: {
+        "2xs": "0.625rem", // 10px,
+      },
+
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -40,17 +44,17 @@ module.exports = withMT({
       },
     },
     zIndex: {
-      '0': 0,
-      '10': 10,
-      '20': 20,
-      '30': 30,
-      '40': 40,
-      '50': 50,
-      '60': 60,
-      '70': 70,
-      '80': 80,
-      '90': 90,
-      '100': 100,
+      0: 0,
+      10: 10,
+      20: 20,
+      30: 30,
+      40: 40,
+      50: 50,
+      60: 60,
+      70: 70,
+      80: 80,
+      90: 90,
+      100: 100,
     },
     screens: {
       // small resolutions
