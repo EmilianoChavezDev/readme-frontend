@@ -1,12 +1,8 @@
 "use client";
-import PasswordInput from "@/components/common/InputPassword";
-import UsernameInput from "@/components/common/InputUsername";
-import Loading from "@/components/common/Loading";
-import { useUser } from "@/contexts/UserProvider";
-import useAuth from "@/hooks/useAuth";
+import React, { useEffect, useState } from "react";
+import styles from "./styles/Inicio.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
@@ -118,6 +114,10 @@ const Page = () => {
                 *Este campo es requerido
               </p>
             )}
+            <div className={styles.content_cambiar_contrasena}>
+              
+              <Link href={"/auth/forgot_password"}>¿Olvidaste tu contraseña?</Link>
+            </div>
           </div>
 
           <div className={styles.content_button}>

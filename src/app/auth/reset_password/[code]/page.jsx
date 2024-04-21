@@ -1,44 +1,46 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styles from "./styles/Registrarse.module.css";
+import { Error } from "@/components/common/Error";
+import InputField from "@/components/common/InputField";
+import Loading from "@/components/common/Loading";
+import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import moment from "moment";
-import useAuth from "@/hooks/useAuth";
-import { useUser } from "@/contexts/UserProvider";
-import Loading from "@/components/common/Loading";
-import InputField from "@/components/common/InputField";
-import { Error } from "@/components/common/Error";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import styles from "../../registrarse/styles/Registrarse.module.css";
 const defaultValues = {
-  username: "",
-  email: "",
+  reset_password_code: "",
   password: "",
   password_confirmation: "",
 };
 
-const Page = () => {
+const Page = ({ params }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
-
-  const { data, error, loading, errorResponse, register: registro } = useAuth();
-  const { login: saveUser } = useUser();
+  const [code, setCode] = useState("");
 
   const router = useRouter();
+  const { error, loading, errorResponse, requestCompleted, resetPassword } =
+    useAuth();
 
   useEffect(() => {
-    if (!data || error) return;
-    saveUser(data);
-  }, [data]);
+    if (!params.code) return;
+    setCode(params.code);
+  }, [params.code]);
 
   useEffect(() => {
     if (!errorResponse) return;
   }, [errorResponse]);
+
+  useEffect(() => {
+    if (requestCompleted && !error) {
+      router.push("/auth/login");
+    }
+  }, [requestCompleted, error]);
 
   const {
     register,
@@ -47,58 +49,27 @@ const Page = () => {
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
-    if (
-      !formData.username ||
-      !formData.password ||
-      !formData.password_confirmation ||
-      !formData.email ||
-      !formData.fecha_nacimiento
-    ) {
+    if (formData.password !== formData.password_confirmation) {
+      errorResponse.error = "Las contraseñas no coinciden";
       return;
     }
 
-    if (!validarLongitudEmail(formData.email)) {
-      errorResponse.error = ["Longitud de email invalida"];
+    if (!validarContrasenha(formData.password)) {
+      errorResponse.error =
+        "La contraseña debe tener al menos 8 caracteres, una letra y un número";
       return;
     }
 
-    if (!validarFechaNacimiento(formData.fecha_nacimiento)) {
-      errorResponse.error = [
-        "Debes tener al menos 12 años y no mas de 120 años",
-      ];
-      return;
-    }
+    resetPassword(formData);
+  };
 
-    formData.role = "usuario";
-    const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
-    formData.fecha_nacimiento = fecha;
-    registro(formData);
-
-    // Redirigir a la pagina de confirmacion de correo electronico
-    //router.push("/auth/confirmacion");
+  const validarContrasenha = (contrasenha) => {
+    const regex = /^(?=.*\d)[a-zA-Z0-9._%+-]{8,}$/;
+    return regex.test(contrasenha);
   };
 
   const handleBlur = () => {
     setIsFocused(false);
-  };
-
-  const validarFechaNacimiento = (fechaNacimiento) => {
-    const currentDate = new Date();
-    const minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear() - 12);
-    const maxDate = new Date();
-    maxDate.setFullYear(maxDate.getFullYear() - 120);
-    const fechaNacimientoDate = new Date(fechaNacimiento);
-
-    const diferenciaAnhos =
-      (currentDate - fechaNacimientoDate) / (1000 * 60 * 60 * 24 * 365);
-
-    return diferenciaAnhos >= 12 && diferenciaAnhos <= 120;
-  };
-
-  const validarLongitudEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._%+-]{6,}/;
-    return regex.test(email);
   };
 
   return (
@@ -129,46 +100,30 @@ const Page = () => {
                 </Error>
               )}
             </div>
-            <div className="flex flex-col gap-y-2">
-              {/*parte del username */}
-              <InputField
-                label={"*Nombre de usuario"}
-                type={"text"}
-                onBlur={handleBlur}
-                register={register}
-                name={"username"}
-                required={true}
-                className={"bg-white"}
-              />
-              {errors.username && (
-                <p className="px-3 text-red-500 text-2xs">
-                  *Este campo es requerido
-                </p>
-              )}
 
-              <div>
-                {/*parte del email */}
+            {/*parte del codigo de verificacion*/}
+            <div className="flex flex-col gap-y-2">
+              <div className="relative">
                 <InputField
-                  label={"*Email"}
-                  type={"email"}
+                  label={"*Codigo de verificacion"}
                   onBlur={handleBlur}
                   register={register}
-                  name={"email"}
+                  name={"reset_password_code"}
                   required={true}
+                  value={code}
                   className="bg-white"
                 />
               </div>
-
-              {errors.email && (
+              {errors.code && (
                 <p className="px-3 text-red-500 text-2xs">
                   *Este campo es requerido
                 </p>
               )}
 
+              {/*parte de la nueva contraseña */}
               <div className="relative">
-                {/*parte del password */}
                 <InputField
-                  label={"*Contraseña"}
+                  label={"*Nueva Contraseña"}
                   type={showPassword ? "text" : "password"}
                   onBlur={handleBlur}
                   register={register}
@@ -176,7 +131,6 @@ const Page = () => {
                   required={true}
                   className="bg-white"
                 />
-
                 <button
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
@@ -184,15 +138,14 @@ const Page = () => {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-
               {errors.password && (
                 <p className="px-3 text-red-500 text-2xs">
                   *Este campo es requerido
                 </p>
               )}
 
+              {/*parte del confirmar contraseña*/}
               <div className="relative">
-                {/*parte del confirm password */}
                 <InputField
                   label={"*Confirmar contraseña"}
                   type={showPasswordConfirmation ? "text" : "password"}
@@ -202,7 +155,6 @@ const Page = () => {
                   required={true}
                   className="bg-white"
                 />
-
                 <button
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
                   onClick={() =>
@@ -212,23 +164,11 @@ const Page = () => {
                   {showPasswordConfirmation ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-
               {errors.password_confirmation && (
                 <p className="px-4 text-red-500 text-start text-2xs">
                   *Este campo es requerido
                 </p>
               )}
-
-              {/*parte de la fecha de nacimiento */}
-              <InputField
-                label={"*Fecha de nacimiento"}
-                type={"date"}
-                onBlur={handleBlur}
-                register={register}
-                name={"fecha_nacimiento"}
-                required={true}
-                className="bg-white"
-              />
             </div>
           </div>
           <div className={styles.content_button_submit}>
@@ -238,14 +178,13 @@ const Page = () => {
               id="register-btn"
               disabled={loading}
             >
-              {loading ? <Loading /> : "Registrarte"}
+              {loading ? <Loading /> : "Cambiar contraseña"}
             </button>
           </div>
-
           <div />
           <div className={styles.content_button}>
             <div>
-              <p>¿Tienes una cuenta?</p>
+              <p>¿Recordaste tu contraseña?</p>
             </div>
             <div className={styles.content_link}>
               <Link href={"/auth/login "}>Iniciar Sesion</Link>

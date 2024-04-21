@@ -1,78 +1,72 @@
 "use client";
-import EmailInput from "@/components/common/EmailInput";
+import { Error } from "@/components/common/Error";
+import InputField from "@/components/common/InputField";
 import Loading from "@/components/common/Loading";
-import { useUser } from "@/contexts/UserProvider";
+import { Success } from "@/components/common/Success";
 import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import style from "../login/styles/Inicio.module.css";
-import styles from "../registrarse/styles/Registrarse.module.css";
+import styles from "../login/styles/Inicio.module.css";
 
 const defaultValues = {
   email: "",
 };
 
-const page = () => {
-  const [isError, setIsError] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
+const Page = () => {
+  const [isDisplayed, setIsDisplayed] = useState(false);
 
   const {
     data,
     error,
     loading,
-    register: registro,
+    errorResponse,
+    successResponse,
     forgotPassword,
+    resendPassword,
   } = useAuth();
-  const { login: saveUser } = useUser();
-
-  useEffect(() => {
-    if (!data || error) return;
-    saveUser(data);
-  }, [data]);
 
   const {
     register,
     handleSubmit,
-    trigger,
-    watch,
     formState: { errors },
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
-    if (!formData.email) {
-      setIsError(true);
-      return;
-    }
-
-    formData.role = "usuario";
-    setIsError(false);
-    await forgotPassword(formData.email);
+    forgotPassword(formData);
+    setIsDisplayed(true);
   };
+
+  const resendPasswordCode = async (formData) => {
+    resendPassword(formData);
+  };
+
+  console.log(successResponse);
+
+  useEffect(() => {
+    if (!errorResponse) return;
+  }, [errorResponse]);
+
+  useEffect(() => {
+    if (!successResponse) return;
+  }, [successResponse]);
 
   const handleBlur = () => {
     setIsFocused(false);
   };
 
-  const handleFocusEmail = () => {
-    setIsFocusedEmail(true);
-  };
-
-  const emailValue = watch("email", "");
-
   return (
-    <div className={styles.content}>
-      <div className={styles.content_image}>
+    <div>
+      <div>
         <Image
           src="/image/img_inicio.png"
           width={400}
           height={200}
-          alt="imagen presentacion"
+          alt="Imagen de inicio"
         />
       </div>
-      <div className={styles.content_registrarse}>
+      <div>
         <div className={styles.content_detalle}>
           <div className={styles.content_logo}>
             <Image
@@ -82,53 +76,60 @@ const page = () => {
               height={250}
             />
           </div>
-          <div className={styles.content_informacion}>
-            <div className={styles.content_errores}>
-              {isError && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
-                  Por favor complete todos los campos
-                </p>
-              )}
-              {error && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
-                  El correo electrónico proporcionado no existe.
-                </p>
-              )}
-            </div>
-            <div className="flex flex-col gap-y-1">
-              <div className="mt-4 mb-2">
-                <EmailInput
-                  isFocusedEmail={isFocusedEmail}
-                  emailValue={emailValue}
-                  styles={style}
-                  register={register}
-                  trigger={trigger}
-                  handleBlur={handleBlur}
-                  handleFocusEmail={handleFocusEmail}
-                  errors={errors}
-                  placeholder={"*Email"}
-                  date={"email"}
-                />
-              </div>
-            </div>
+
+          {errorResponse?.error && (
+            <Error>
+              <p>{errorResponse.error}</p>
+            </Error>
+          )}
+
+          {successResponse.length >= 1 && (
+            <Success>
+              <p>{successResponse}</p>
+            </Success>
+          )}
+
+          <div className="flex flex-col gap-y-2">
+            {/*parte del email */}
+            <InputField
+              label={"*Email"}
+              type={"email"}
+              onBlur={handleBlur}
+              register={register}
+              name={"email"}
+              required={true}
+              className="bg-white"
+            />
+
+            {errors.email && (
+              <p className="text-red-500 text-2xs px-3">
+                *Este campo es requerido
+              </p>
+            )}
           </div>
-          <div className={styles.content_button_submit}>
+
+          <div className={styles.content_button}>
             <button
               type="submit"
-              id="register-btn"
               onClick={handleSubmit(onSubmit)}
+              id="login-btn"
               disabled={loading}
             >
-              {loading ? <Loading /> : "Registrarte"}
+              {loading ? <Loading /> : "Enviar correo de recuperación"}
             </button>
-          </div>
-          <div />
-          <div className={styles.content_button}>
-            <div>
-              <p>¿Tienes una cuenta?</p>
-            </div>
-            <div className={styles.content_link}>
-              <Link href={"/auth/login "}>Iniciar Sesion</Link>
+
+            {successResponse.length >= 1 && (
+              <a
+                className=" text-green-700 underline hover:text-green-500 cursor-pointer"
+                onClick={handleSubmit(resendPasswordCode)}
+              >
+                Reenviar codigo
+              </a>
+            )}
+
+            <div className={styles.content_crear_cuenta}>
+              <span>¿Ya tienes una cuenta?</span>{" "}
+              <Link href={"/auth/login"}>¡Inicia Sesion!</Link>
             </div>
           </div>
         </div>
@@ -137,4 +138,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
