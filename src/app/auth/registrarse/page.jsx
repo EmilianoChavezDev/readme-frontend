@@ -58,14 +58,12 @@ const Page = () => {
     }
 
     if (!validarLongitudEmail(formData.email)) {
-      errorResponse.error = ["Longitud de email invalida"];
+      errorResponse.error = "Longitud de email invalida";
       return;
     }
 
     if (!validarFechaNacimiento(formData.fecha_nacimiento)) {
-      errorResponse.error = [
-        "Debes tener al menos 12 años y no mas de 120 años",
-      ];
+      errorResponse.error = "Debes tener al menos 12 años y no mas de 120 años";
       return;
     }
 
@@ -101,6 +99,11 @@ const Page = () => {
     return regex.test(email);
   };
 
+  const formatErrorMessage = (message) => {
+    const keywordIndex = message.indexOf(" ");
+    return message.substring(keywordIndex + 1);
+  };
+
   return (
     <div>
       <div>
@@ -125,7 +128,11 @@ const Page = () => {
             <div>
               {errorResponse?.error && (
                 <Error>
-                  <p>{errorResponse.error}</p>
+                  {Array.isArray(errorResponse.error) ? (
+                    formatErrorMessage(errorResponse.error[0])
+                  ) : (
+                    <p>{errorResponse.error}</p>
+                  )}
                 </Error>
               )}
             </div>
