@@ -6,7 +6,7 @@ import { Success } from "@/components/common/Success";
 import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../login/styles/Inicio.module.css";
 
@@ -15,11 +15,7 @@ const defaultValues = {
 };
 
 const Page = () => {
-  const [isDisplayed, setIsDisplayed] = useState(false);
-
   const {
-    data,
-    error,
     loading,
     errorResponse,
     successResponse,
@@ -35,14 +31,11 @@ const Page = () => {
 
   const onSubmit = async (formData) => {
     forgotPassword(formData);
-    setIsDisplayed(true);
   };
 
   const resendPasswordCode = async (formData) => {
     resendPassword(formData);
   };
-
-  console.log(successResponse);
 
   useEffect(() => {
     if (!errorResponse) return;
