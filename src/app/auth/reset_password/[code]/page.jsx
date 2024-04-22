@@ -59,7 +59,7 @@ const Page = ({ params }) => {
         "La contraseña debe tener al menos 8 caracteres, una letra y un número";
       return;
     }
-
+    formData.reset_password_code = code;
     resetPassword(formData);
   };
 
@@ -103,23 +103,6 @@ const Page = ({ params }) => {
 
             {/*parte del codigo de verificacion*/}
             <div className="flex flex-col gap-y-2">
-              <div className="relative">
-                <InputField
-                  label={"*Codigo de verificacion"}
-                  onBlur={handleBlur}
-                  register={register}
-                  name={"reset_password_code"}
-                  required={true}
-                  value={code}
-                  className="bg-white"
-                />
-              </div>
-              {errors.code && (
-                <p className="px-3 text-red-500 text-2xs">
-                  *Este campo es requerido
-                </p>
-              )}
-
               {/*parte de la nueva contraseña */}
               <div className="relative">
                 <InputField
