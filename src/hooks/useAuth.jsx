@@ -86,7 +86,7 @@ const useAuth = () => {
     }
   };
 
-  const resendPassword = async ({ email }) => {
+  const resendEmail = async ({ email }) => {
     setLoading(true);
     console.log(email);
     try {
@@ -160,7 +160,7 @@ const useAuth = () => {
     login,
     register,
     forgotPassword,
-    resendPassword,
+    resendEmail,
     resetPassword,
   };
 };

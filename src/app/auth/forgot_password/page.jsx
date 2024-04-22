@@ -22,7 +22,6 @@ const Page = () => {
     errorResponse,
     successResponse,
     forgotPassword,
-    resendPassword,
   } = useAuth();
 
   const {
@@ -36,9 +35,7 @@ const Page = () => {
     setIsDisplayed(true);
   };
 
-  const resendPasswordCode = async (formData) => {
-    resendPassword(formData);
-  };
+  
 
   useEffect(() => {
     if (!errorResponse) return;
@@ -113,15 +110,7 @@ const Page = () => {
             >
               {loading ? <Loading /> : "Enviar correo de recuperación"}
             </button>
-
-            {successResponse.length >= 1 && (
-              <a
-                className=" text-green-700 underline hover:text-green-500 cursor-pointer"
-                onClick={handleSubmit(resendPasswordCode)}
-              >
-                Reenviar codigo
-              </a>
-            )}
+            
 
             <div className={styles.content_crear_cuenta}>
               <span>¿Ya tienes una cuenta?</span>{" "}

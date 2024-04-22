@@ -1,20 +1,20 @@
 "use client";
 
+import AccordionField from "@/components/accounts/Accordion";
+import InputField from "@/components/common/InputField";
+import ProfileView from "@/components/common/ProfileView";
 import Loader from "@/components/common/loader";
+import { useUser } from "@/contexts/UserProvider";
+import useUserInfo from "@/hooks/useUser";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import InputField from "@/components/common/InputField";
-import useUserInfo from "@/hooks/useUser";
-import { useUser } from "@/contexts/UserProvider";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import AccordionField from "@/components/accounts/Accordion";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
-import Link from "next/link";
 import { VscChevronRight } from "react-icons/vsc";
-import ProfileView from "@/components/common/ProfileView";
-
+import styles from "../../../auth/login/styles/Inicio.module.css";
 const defaultValues = {
   username: "",
   oldPassword: "",
@@ -278,6 +278,11 @@ const page = ({ params }) => {
                         <span>Este campo es obligatorio</span>
                       </div>
                     )}
+                  </div>
+                  <div className={styles.content_cambiar_contrasena}>
+                    <Link href={"/auth/forgot_password"}>
+                      ¿Olvidaste tu contraseña?
+                    </Link>
                   </div>
                   <div>
                     <AccordionField>
