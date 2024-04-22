@@ -58,7 +58,7 @@ const Page = () => {
     }
 
     if (!validarLongitudEmail(formData.email)) {
-      errorResponse.error = "Longitud Longitud de email invalida";
+      errorResponse.error = "Longitud de email invalida";
       return;
     }
 
