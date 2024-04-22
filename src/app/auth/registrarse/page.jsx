@@ -1,17 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styles from "./styles/Registrarse.module.css";
+import { Error } from "@/components/common/Error";
+import InputField from "@/components/common/InputField";
+import Loading from "@/components/common/Loading";
+import { useUser } from "@/contexts/UserProvider";
+import useAuth from "@/hooks/useAuth";
+import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import moment from "moment";
-import useAuth from "@/hooks/useAuth";
-import { useUser } from "@/contexts/UserProvider";
-import Loading from "@/components/common/Loading";
-import InputField from "@/components/common/InputField";
-import { Error } from "@/components/common/Error";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import styles from "./styles/Registrarse.module.css";
 
 const defaultValues = {
   username: "",
