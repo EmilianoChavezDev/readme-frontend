@@ -19,6 +19,14 @@
   margin-top: 3rem;
 }
 
+.content_cambiar_contrasena {
+  display: flex;
+  text-align: center;
+  font-size: 14px;
+  justify-content: center;
+  color: var(--colorPrimario);
+}
+
 .content_crear_cuenta a {
   margin-left: 4px;
   color: var(--colorPrimario);
@@ -36,6 +44,7 @@
   border-radius: 1rem;
   color: aliceblue;
   margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .content_button button:hover {
