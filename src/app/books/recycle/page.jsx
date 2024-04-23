@@ -9,34 +9,38 @@ import {
 } from "@material-tailwind/react";
 import { BsBook, BsPerson } from "react-icons/bs";
 import RecycledBookItem from "@/components/recycle/RecycledBookItem";
-import useBook from "@/hooks/useBook";
+import useRecycle from "@/hooks/useRecycle";
 import { useEffect, useState } from "react";
 import { Spinner } from "@material-tailwind/react";
 import Pagination from "@/components/common/Pagination";
+import RecycledChapterItem from "@/components/recycle/RecycledChapterItem";
 import RecycledBookItem from "@/components/recycle/RecycledBookItem";
 
 const RecycleBin = () => {
-  const { getAllBooks, isLoading } = useBook();
+  const { getRecycledBooks, isLoading } = useRecycle();
   const [recycledBooks, setRecycledBooks] = useState([]);
+  const [recycledChapters, setRecycledChapters] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const fetchBooks = async () => {
+    const books = await getRecycledBooks({ page: currentPage });
+    setRecycledBooks(books.data);
+    setRecycledChapters(
+      books.data.flatMap((book) => book.capitulos_eliminados)
+    );
+    setTotalPages(books.total_pages);
+  };
 
   useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const books = await getAllBooks({ page: currentPage });
-        setRecycledBooks(books.data);
-        setTotalPages(books.total_pages);
-      } catch (error) {
-        console.error("Error al obtener los libros:", error);
-      }
-    };
     fetchBooks();
   }, [currentPage]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+  const recycledBooksFiltered = recycledBooks.filter(
+    (book) => book.deleted === true
+  );
 
   return (
     <div className="flex flex-col">
@@ -64,7 +68,7 @@ const RecycleBin = () => {
                     <Spinner className="h-12 w-12" />
                   </div>
                 ) : (
-                  recycledBooks.map((book, index) => (
+                  recycledBooksFiltered.map((book, index) => (
                     <RecycledBookItem key={index} book={book} />
                   ))
                 )}
@@ -79,7 +83,28 @@ const RecycleBin = () => {
                 </div>
               </div>
             </TabPanel>
-            {/*logica para mostrar capitulos*/}
+            <TabPanel value="capitulos">
+              <div className="flex justify-center flex-col gap-5 px-10">
+                {isLoading ? (
+                  <div className="flex justify-center items-center">
+                    <Spinner className="h-12 w-12" />
+                  </div>
+                ) : (
+                  recycledChapters.map((chapters, index) => (
+                    <RecycledChapterItem key={index} chapters={chapters} />
+                  ))
+                )}
+              </div>
+              <div className="flex justify-center p-3 my-4">
+                <div className="transform scale-125 shadow">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
+                </div>
+              </div>
+            </TabPanel>
           </TabsBody>
         </Tabs>
       </div>

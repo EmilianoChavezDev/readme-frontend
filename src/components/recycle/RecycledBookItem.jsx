@@ -2,16 +2,21 @@
 import { Button, Typography } from "@material-tailwind/react";
 import Image from "next/image";
 import BookStatistics from "@/components/search/BookStatistics";
+import useRecycle from "@/hooks/useRecycle";
+import toast from "react-hot-toast";
 
 const RecycledBookItem = ({ book }) => {
-  const handleRestore = () => {
-    console.log("Restaurar libro:", book);
+  const { restoreBook, isLoading } = useRecycle();
+
+  const handleRestore = async () => {
+    await restoreBook(book.id);
+    toast.success("Libro restaurado con éxito");
   };
 
   return (
     <div className="flex justify-between bg-buttonColorGray shadow-lg p-2 gap-4">
       <div className="flex gap-3">
-        <div class="flex-grow">
+        <div className="flex-grow">
           <Image
             src={
               book.portada.length ? book.portada : "/image/template_libro.png"
@@ -49,7 +54,7 @@ const RecycledBookItem = ({ book }) => {
                 />
               </Typography>
             </div>
-            <div class="line-clamp-3">{book.sinopsis}</div>
+            <div className="line-clamp-3">{book.sinopsis}</div>
           </div>
         </div>
       </div>
@@ -58,6 +63,7 @@ const RecycledBookItem = ({ book }) => {
           size="sm"
           className="bg-gray-700 capitalize"
           onClick={handleRestore}
+          disabled={isLoading}
         >
           Restaurar
         </Button>
