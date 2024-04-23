@@ -1,25 +1,28 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styles from "./styles/Inicio.module.css";
+import { Error } from "@/components/common/Error";
+import InputField from "@/components/common/InputField";
+import Loading from "@/components/common/Loading";
+import { Success } from "@/components/common/Success";
+import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import useAuth from "@/hooks/useAuth";
-import { useUser } from "@/contexts/UserProvider";
-import Loading from "@/components/common/Loading";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import InputField from "@/components/common/InputField";
-import { Error } from "@/components/common/Error";
+import styles from "../login/styles/Inicio.module.css";
 
 const defaultValues = {
   email: "",
-  password: "",
 };
 
 const Page = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const { data, error, loading, errorResponse, login } = useAuth();
-  const { login: saveUser } = useUser();
+  const [isDisplayed, setIsDisplayed] = useState(false);
+
+  const {
+    loading,
+    errorResponse,
+    successResponse,
+    forgotPassword,
+  } = useAuth();
 
   const {
     register,
@@ -28,17 +31,19 @@ const Page = () => {
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
-    login(formData);
+    forgotPassword(formData);
+    setIsDisplayed(true);
   };
 
-  useEffect(() => {
-    if (!data || error) return;
-    saveUser(data);
-  }, [data]);
+  
 
   useEffect(() => {
     if (!errorResponse) return;
   }, [errorResponse]);
+
+  useEffect(() => {
+    if (!successResponse) return;
+  }, [successResponse]);
 
   const handleBlur = () => {
     setIsFocused(false);
@@ -71,6 +76,12 @@ const Page = () => {
             </Error>
           )}
 
+          {successResponse.length >= 1 && (
+            <Success>
+              <p>{successResponse}</p>
+            </Success>
+          )}
+
           <div className="flex flex-col gap-y-2">
             {/*parte del email */}
             <InputField
@@ -88,36 +99,6 @@ const Page = () => {
                 *Este campo es requerido
               </p>
             )}
-
-            {/*parte del password */}
-            <div className="relative">
-              <InputField
-                label={"*Contraseña"}
-                type={showPassword ? "text" : "password"}
-                onBlur={handleBlur}
-                register={register}
-                name={"password"}
-                required={true}
-                className="bg-white"
-              />
-
-              <button
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-
-            {errors.password && (
-              <p className="text-red-500 text-2xs px-3">
-                *Este campo es requerido
-              </p>
-            )}
-            <div className={styles.content_cambiar_contrasena}>
-              
-              <Link href={"/auth/forgot_password"}>¿Olvidaste tu contraseña?</Link>
-            </div>
           </div>
 
           <div className={styles.content_button}>
@@ -127,11 +108,13 @@ const Page = () => {
               id="login-btn"
               disabled={loading}
             >
-              {loading ? <Loading /> : "Iniciar Sesión"}
+              {loading ? <Loading /> : "Enviar correo de recuperación"}
             </button>
+            
+
             <div className={styles.content_crear_cuenta}>
-              <span>¿No tienes cuenta?</span>{" "}
-              <Link href={"/auth/registrarse"}>¡Registrate!</Link>
+              <span>¿Ya tienes una cuenta?</span>{" "}
+              <Link href={"/auth/login"}>¡Inicia Sesion!</Link>
             </div>
           </div>
         </div>
