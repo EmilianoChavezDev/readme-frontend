@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ModeToggle } from "@/components/common/ToggleMode";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { MdRemoveModerator } from "react-icons/md";
 import { FaUserCircle, FaSignOutAlt, FaUser } from "react-icons/fa";
@@ -83,6 +84,9 @@ export default function UserOptions({ username, logout }) {
               <FaUserCircle />
               <span>Mi Cuenta</span>
             </li>
+
+            <ModeToggle />
+
             {userRole === "moderador" && (
               <li
                 className="flex pb-2 border-b gap-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"

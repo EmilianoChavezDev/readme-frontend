@@ -22,6 +22,7 @@ const Editor = ({ chapterContent, onChange }) => {
         onChange={onChange}
         placeholder="Escriba su capitulo aqui..."
         theme="snow"
+        className="dark:bg-dark-darkColorItems"
         modules={{
           toolbar: toolbarOptions,
         }}

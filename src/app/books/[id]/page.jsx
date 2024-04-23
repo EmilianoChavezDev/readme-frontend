@@ -275,13 +275,13 @@ export default function BookDetails({ params }) {
           <h1>Libro no encontrado</h1>
         </div>
       ) : (
-        <div className="flex flex-col gap-3 relative">
+        <div className="flex flex-col gap-3 relative ">
           {isLoading && <Loader />}
           <section className="flex flex-grow flex-wrap shadow-lg">
             <div className="flex justify-center items-center min-w-96 w-full _lg:w-1/2">
-              <div className="flex gap-5 p-10 flex-col _sm:flex-row _sm:p-3 _md:p-12 _xl:p-16">
-                <div className="flex justify-center items-center bg-colorPrimario">
-                  <div className="flex justify-center items-center w-44 h-42 !min-h-42 text-white">
+              <div className="flex gap-5 p-10 flex-col _sm:flex-row _sm:p-3 _md:p-12 _xl:p-16 dark:bg-dark-darkColorItems dark:rounded-lg dark:mt-10">
+                <div className="flex justify-center items-center bg-colorPrimario  dark:bg-purple-400">
+                  <div className="flex justify-center items-center w-44 h-42 !min-h-42 text-white ">
                     {book?.portada ? (
                       <Image
                         src={book.portada}
@@ -344,7 +344,7 @@ export default function BookDetails({ params }) {
                   </div>
                   <div className="flex flex-col gap-3 text-white text-xs">
                     <Link href={`/books/${params.id}/read`}>
-                      <button className="h-9 rounded-md bg-colorPrimario w-full hover:bg-colorHoverPrimario">
+                      <button className="h-9 rounded-md bg-colorPrimario w-full hover:bg-colorHoverPrimario  dark:bg-purple-600 dark:hover:bg-purple-400">
                         {readBook?.terminado
                           ? "Volver a leer"
                           : readBook
@@ -355,7 +355,7 @@ export default function BookDetails({ params }) {
                     <button
                       className={
                         favorite?.favorito
-                          ? "h-9 rounded-md bg-colorPrimario text-white hover:bg-colorHoverPrimario"
+                          ? "h-9 rounded-md bg-colorPrimario text-white hover:bg-colorHoverPrimario dark:bg-purple-400 dark:hover:bg-purple-200 "
                           : "h-9 rounded-md bg-gray-500 hover:brightness-90"
                       }
                       onClick={toggleFavorite}
@@ -374,7 +374,7 @@ export default function BookDetails({ params }) {
                 </div>
               </div>
             </div>
-            <div className="relative flex justify-center items-center min-w-96 w-full _lg:w-1/2">
+            <div className="relative flex justify-center items-center min-w-96 w-full _lg:w-1/2 dark:bg-dark-darkColorItems dark:mt-10 dark:rounded-lg ">
               <div className="flex flex-col gap-2 p-9 _lg:p-16">
                 <h2 className="font-semibold">Sinopsis:</h2>
                 <p className="text-sm">{book?.sinopsis}</p>

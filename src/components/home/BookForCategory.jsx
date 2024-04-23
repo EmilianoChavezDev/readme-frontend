@@ -13,7 +13,7 @@ const BookForCategory = ({ category, bookData }) => {
   }, [category, bookData]);
 
   return (
-    <div class="py-4">
+    <div className="py-4">
       {filteredBooks?.length === 0 || filteredBooks === undefined ? (
         <></>
       ) : (

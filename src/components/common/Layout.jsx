@@ -1,8 +1,9 @@
 "use client";
-import React, { useEffect } from "react";
+
 import NavBar from "../NavBar";
 import { usePathname } from "next/navigation";
 import { ignorePaths } from "@/utils/ignoreNavbarAndFooter";
+import { ThemeProvider } from "./ThemeProvider";
 
 const Layout = ({ children }) => {
   const router = usePathname();
@@ -13,12 +14,12 @@ const Layout = ({ children }) => {
     !(pathSegments[1] === "books" && pathSegments[3] === "chapters");
 
   return (
-    <div>
+    <ThemeProvider attribute="class" defaultTheme="light">
       <div className="sticky top-0 z-50">
         {shouldRenderNavBar && <NavBar />}
       </div>
       <div>{children}</div>
-    </div>
+    </ThemeProvider>
   );
 };
 
