@@ -15,9 +15,12 @@ import { Spinner } from "@material-tailwind/react";
 import Pagination from "@/components/common/Pagination";
 import RecycledChapterItem from "@/components/recycle/RecycledChapterItem";
 import RecycledBookItem from "@/components/recycle/RecycledBookItem";
+import toast from "react-hot-toast";
+import Loader from "@/components/common/loader";
 
 const RecycleBin = () => {
-  const { getRecycledBooks, isLoading } = useRecycle();
+  const { getRecycledBooks, restoreBook, restoreChatper, isLoading } =
+    useRecycle();
   const [recycledBooks, setRecycledBooks] = useState([]);
   const [recycledChapters, setRecycledChapters] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,9 +29,33 @@ const RecycleBin = () => {
     const books = await getRecycledBooks({ page: currentPage });
     setRecycledBooks(books.data);
     setRecycledChapters(
-      books.data.flatMap((book) => book.capitulos_eliminados)
+      books.data.flatMap((book) =>
+        book.capitulos_eliminados.map((chapter) => ({
+          ...chapter,
+          tituloLibro: book.titulo,
+          libroPortada: book.portada,
+        }))
+      )
     );
     setTotalPages(books.total_pages);
+  };
+  const handleRestoreBook = async (book) => {
+    const result = await restoreBook(book.id);
+    if (result) {
+      toast.success("Libro restaurado con éxito");
+      fetchBooks();
+    } else {
+      toast.error("Error al restaurar el libro");
+    }
+  };
+  const handleRestoreChapter = async (chapter) => {
+    const result = await restoreChatper(chapter.id);
+    if (result) {
+      toast.success("Capitulo restaurado con éxito");
+      fetchBooks();
+    } else {
+      toast.error("Error al restaurar el Capitulo");
+    }
   };
 
   useEffect(() => {
@@ -62,46 +89,50 @@ const RecycleBin = () => {
           </TabsHeader>
           <TabsBody>
             <TabPanel value="libros">
-              <div className="flex justify-center flex-col gap-5 px-10">
-                {isLoading ? (
-                  <div className="flex justify-center items-center">
-                    <Spinner className="h-12 w-12" />
-                  </div>
-                ) : (
-                  recycledBooksFiltered.map((book, index) => (
-                    <RecycledBookItem key={index} book={book} />
-                  ))
-                )}
+              <div className="flex justify-center flex-col gap-5 px-10 h-full">
+                {isLoading && <Loader />}
+                {recycledBooksFiltered.map((book, index) => (
+                  <RecycledBookItem
+                    key={index}
+                    book={book}
+                    onRestore={() => handleRestoreBook(book)}
+                    disableButton={isLoading}
+                  />
+                ))}
               </div>
               <div className="flex justify-center p-3 my-4">
                 <div className="transform scale-125 shadow">
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                  />
+                  {Boolean(recycledBooksFiltered?.length) && (
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
+                  )}
                 </div>
               </div>
             </TabPanel>
             <TabPanel value="capitulos">
               <div className="flex justify-center flex-col gap-5 px-10">
-                {isLoading ? (
-                  <div className="flex justify-center items-center">
-                    <Spinner className="h-12 w-12" />
-                  </div>
-                ) : (
-                  recycledChapters.map((chapters, index) => (
-                    <RecycledChapterItem key={index} chapters={chapters} />
-                  ))
-                )}
+                {isLoading && <Loader />}
+                {recycledChapters.map((chapter, index) => (
+                  <RecycledChapterItem
+                    key={index}
+                    chapter={chapter}
+                    onRestore={() => handleRestoreChapter(chapter)}
+                    disableButton={isLoading}
+                  />
+                ))}
               </div>
               <div className="flex justify-center p-3 my-4">
                 <div className="transform scale-125 shadow">
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                  />
+                  {Boolean(recycledChapters?.length) && (
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
+                  )}
                 </div>
               </div>
             </TabPanel>

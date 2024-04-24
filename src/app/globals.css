@@ -298,3 +298,6 @@
 .truncate-lines {
   -webkit-line-clamp: 2;
 }
+.aspect-portada {
+  aspect-ratio: 2 / 3;
+}

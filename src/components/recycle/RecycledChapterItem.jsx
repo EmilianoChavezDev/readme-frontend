@@ -1,25 +1,36 @@
+"use client";
 import { Button, Typography } from "@material-tailwind/react";
-import useRecycle from "@/hooks/useRecycle";
-import toast from "react-hot-toast";
+import Image from "next/image";
 
-const RecycledBookItem = ({ chapters }) => {
-  const { restoreChatper, isLoading } = useRecycle();
-
-  const handleRestore = async () => {
-    await restoreChatper(chapters.id);
-    toast.success("Libro restaurado con éxito");
-  };
+const RecycledBookItem = ({ chapter, onRestore, disableButton }) => {
   return (
     <div className="flex justify-between bg-buttonColorGray shadow-lg p-2 gap-4">
       <div className="flex gap-3">
-        <div className="col-span-12 _md:col-span-7">
-          <div className="flex flex-col">
-            <div>hola bb</div>
-            <div>
-              <Typography variant="h5" color="blue-gray">
-                {chapters.titulo}
-              </Typography>
-            </div>
+        <div className="flex-grow">
+          <Image
+            src={
+              chapter.libroPortada.length
+                ? chapter.libroPortada
+                : "/image/template_libro.png"
+            }
+            width={120}
+            height={160}
+            alt="Portada De Libro"
+            priority={true}
+            className=""
+            style={{ height: "190px", maxWidth: "350px" }}
+          />
+        </div>
+        <div className="flex flex-col">
+          <div>
+            <Typography variant="h5" color="blue-gray">
+              Libro: {chapter.tituloLibro}
+            </Typography>
+          </div>
+          <div>
+            <Typography variant="h5" color="blue-gray">
+              Titulo del capitulo: {chapter.titulo}
+            </Typography>
           </div>
         </div>
       </div>
@@ -27,8 +38,8 @@ const RecycledBookItem = ({ chapters }) => {
         <Button
           size="sm"
           className="bg-gray-700 capitalize"
-          onClick={handleRestore}
-          disabled={isLoading}
+          onClick={onRestore}
+          disabled={disableButton}
         >
           Restaurar
         </Button>
