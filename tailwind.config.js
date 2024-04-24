@@ -34,6 +34,7 @@ module.exports = withMT({
         textHeaderColorGray: "#484848",
         textInformationColor: "#222222",
         colorBorderGray: "#89979B",
+        colorFondo: "#e9ecef",
       },
 
       width: {

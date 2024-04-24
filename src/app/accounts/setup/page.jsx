@@ -36,8 +36,8 @@ export default function SetUp() {
         />
       </div>
 
-      <div className="bg-colorFondo p-3 rounded-2xs absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/5 h-3/5 rounded-xl">
-        <div className="flex justify-center py-2">
+      <div className="bg-colorFondo p-3 rounded-2xs absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/4 h-2/3 rounded-xl">
+        <div className="flex justify-center pt-4">
           <Image
             src={"/image/g2.png"}
             alt="imagen logo"
@@ -46,19 +46,19 @@ export default function SetUp() {
           />
         </div>
 
-        <div className="text-center font-bold text-gray-700 pb-5">
+        <div className="text-center font-bold text-gray-700 pt-4">
           <p>Para obtener la mejor experiencia ReadMe,</p>
           <p>¡Cuéntanos sobre ti!</p>
         </div>
 
-        <div className="flex flex-col gap-y-4 items-center">
+        <div className="flex flex-col gap-y-4 items-center pt-7">
           <InputField
             label={"Nombre"}
             type={"text"}
             onBlur={handleBlur}
             register={register}
             name={"username"}
-            className={`bg-white rounded-full`}
+            className={`bg-white `}
           />
 
           <InputField
@@ -67,7 +67,7 @@ export default function SetUp() {
             onBlur={handleBlur}
             register={register}
             name={"lastname"}
-            className={`bg-white rounded-full`}
+            className={`bg-white `}
           />
 
           <InputField
@@ -76,7 +76,7 @@ export default function SetUp() {
             onBlur={handleBlur}
             register={register}
             name={"direction"}
-            className={`bg-white rounded-full`}
+            className={`bg-white `}
           />
 
           <InputField
@@ -85,17 +85,21 @@ export default function SetUp() {
             onBlur={handleBlur}
             register={register}
             name={"nationality"}
-            className={`bg-white rounded-full`}
+            className={`bg-white `}
           />
 
           <InputField
             label={"Descripcion"}
-            type={"text"}
+            type={"textarea"}
             onBlur={handleBlur}
             register={register}
             name={"description"}
-            className={`bg-white rounded-full`}
+            className={`bg-white rounded-xl h-32`}
           />
+
+          <div>
+            <button>ASDa</button>
+          </div>
         </div>
       </div>
     </div>
