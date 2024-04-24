@@ -79,7 +79,7 @@ const Options = ({ categories = () => {} }) => {
             </PopoverHandler>
 
             <PopoverContent
-              className="z-60 w-96 text-gray-800 text-md dark:text-white dark:bg-dark-darkColorItems  
+              className="z-60 w-96 text-gray-800 text-md
             "
             >
               <ul className="text-nowrap _lg:my-2 _lg:gap-4 lg:gap-x-4 _lg:grid _lg:grid-cols-3 col-span-1">
@@ -87,7 +87,7 @@ const Options = ({ categories = () => {} }) => {
                   <li
                     onClick={() => handleSearchByCategory(category)}
                     key={i}
-                    className="hover:cursor-pointer hover:font-bold transition-all duration-300  dark:hover:text-blue-gray-200"
+                    className="hover:cursor-pointer hover:font-bold transition-all duration-300  "
                   >
                     {category[1]}
                   </li>
@@ -132,17 +132,17 @@ const Options = ({ categories = () => {} }) => {
               </button>
             </PopoverHandler>
 
-            <PopoverContent className="z-60 w-52 buttom-3 text-gray-800 text-md dark:bg-dark-darkColorItems">
+            <PopoverContent className="z-60 w-52 buttom-3 text-gray-800 text-md ">
               <ul className="my-2">
                 <li
-                  className=" mb-4 pb-2 border-b border-gray-200 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black dark:text-white dark:hover:text-blue-gray-200"
+                  className=" mb-4 pb-2 border-b border-gray-200 items-center cursor-pointer transform transition-all hover:scale-105"
                   onClick={() => navigateTo("/books/create")}
                 >
                   <FaPlusCircle className="inline-block mr-2" />
                   Crear nuevo libro
                 </li>
                 <li
-                  className=" mb-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black dark:text-white dark:hover:text-blue-gray-200"
+                  className=" mb-2 items-center cursor-pointer transform transition-all hover:scale-105"
                   onClick={() => navigateTo("/books/mybooks")}
                 >
                   <FaListUl className="inline-block mr-2" />

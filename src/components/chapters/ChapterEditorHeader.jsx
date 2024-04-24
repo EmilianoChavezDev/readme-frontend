@@ -42,7 +42,7 @@ const ChapterEditorHeader = ({
           />
           <label
             htmlFor="fileInput"
-            className="bg-gray-600 text-white py-2 px-4 md:px-7 rounded-lg disabled:cursor-not-allowed inline-block cursor-pointe dark:bg-purple-400 dark:hover:bg-purple-200 cursor-pointer"
+            className="bg-gray-600 text-white py-2 px-4 md:px-7 rounded-lg disabled:cursor-not-allowed inline-block cursor-pointe dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover cursor-pointer"
           >
             Subir PDF
           </label>
@@ -51,14 +51,14 @@ const ChapterEditorHeader = ({
         <button
           disabled={disableButtons}
           onClick={onSave}
-          className={`bg-gray-600 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed dark:bg-purple-400 dark:hover:bg-purple-200`}
+          className={`bg-gray-600 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover`}
         >
           Guardar
         </button>
         <button
           disabled={disableButtons}
           onClick={onPublish}
-          className={`bg-cyan-800 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed dark:bg-purple-600 dark:hover:bg-purple-400`}
+          className={`bg-cyan-800 text-white py-2 px-7 rounded-lg disabled:cursor-not-allowed dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover`}
         >
           Publicar
         </button>

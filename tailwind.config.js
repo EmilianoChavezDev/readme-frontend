@@ -34,10 +34,10 @@ module.exports = withMT({
       colors: {
         //Dark mode colors
         dark: {
-          darkColorText: "#e9e9ea",
           darkColorNavBar: "#23252B",
-          darkColorItems: "#191A1E",
-          darkColorFocus: "#23252B",
+          darkColorItems: "#030712",
+          darkColorButtons: "#6d28d9",
+          darkColorHover: "#6225C5",
         },
 
         colorPrimario: "#167574",

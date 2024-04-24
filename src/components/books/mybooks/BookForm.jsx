@@ -132,13 +132,13 @@ const BookForm = ({ book }) => {
         <div className="flex gap-4">
           <Link
             href="/"
-            className="bg-BooksCreateCancelarButton text-gray-700 py-2 px-5 rounded-lg dark:bg-purple-400 dark:hover:bg-purple-200 dark:text-white"
+            className="bg-BooksCreateCancelarButton text-gray-700 py-2 px-5 rounded-lg dark:no-underline dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
           >
             Cancelar
           </Link>
           <button
             onClick={handleSubmit}
-            className={`bg-BooksCreateSeguirButton hover:bg-BooksCreateImageHover dark:bg-purple-600 dark:hover:bg-purple-400 text-white py-2 px-7 rounded-lg ${
+            className={`bg-BooksCreateSeguirButton hover:bg-BooksCreateImageHover text-white py-2 px-7 rounded-lg dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover ${
               isLoading || loadingPortada ? "opacity-50 cursor-wait " : ""
             }`}
             disabled={isLoading || loadingPortada}
@@ -157,7 +157,7 @@ const BookForm = ({ book }) => {
         )}
       </div>
 
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center dark:bg-dark-darkColorItems dark:rounded-lg">
+      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center">
         <form encType="multipart/form-data" className="group relative">
           {image.current || image.preview ? (
             <img
@@ -166,7 +166,7 @@ const BookForm = ({ book }) => {
               alt="Portada de Libro"
             />
           ) : (
-            <label className="bg-ChaptearHeader text-BooksCreateImageBackground w-72 h-96 flex justify-center items-center rounded-md cursor-pointer dark:bg-purple-400 dark:hover:bg-purple-200 ">
+            <label className="bg-ChaptearHeader text-BooksCreateImageBackground w-72 h-96 flex justify-center items-center rounded-md cursor-pointer dark:bg-dark-darkColorButtons ">
               <input
                 type="file"
                 accept="image/*"
@@ -186,14 +186,14 @@ const BookForm = ({ book }) => {
           )}
           <label
             htmlFor="portada"
-            className="block text-lg font-semibold mb-2 text-gray-900 my-11 text-center dark:text-white"
+            className="block text-lg font-semibold mb-2 text-gray-900 my-11 text-center"
           >
             {book ? "Actualizar portada" : "Añadir una portada"}
           </label>
           {(image.current || image.preview) && (
             <Tooltip content="Eliminar Imagen">
               <div
-                className="absolute -top-1 -right-1 bg-colorPrimario text-white w-8 h-8 hidden group-hover:flex justify-center items-center rounded-full cursor-pointer"
+                className="absolute -top-1 -right-1 w-8 h-8 hidden group-hover:flex justify-center items-center rounded-full cursor-pointer   "
                 onClick={handleRemoveImage}
               >
                 <HiXMark size={36} />
@@ -202,22 +202,22 @@ const BookForm = ({ book }) => {
           )}
         </form>
 
-        <div className="w-full md:w-4/6 mx-4 md:mx-16 my-4 md:my-14">
+        <div className="w-full md:w-4/6 mx-4 md:mx-16 my-4 md:my-14 ">
           <div className="w-full p-8 flex flex-col gap-3">
-            <h1 className="text-3xl font-bold mb-2 text-gray-900 mx-6 dark:text-white">
+            <h1 className="text-3xl font-bold mb-2 text-gray-900 mx-6">
               Detalle del libro
             </h1>
             <div className="mb-2 w-full px-6 md:px-16">
               <label
                 htmlFor="titulo"
-                className="block text-2xl font-semibold mb-2 text-gray-900 dark:text-white"
+                className="block text-2xl font-semibold mb-2 text-gray-900"
               >
                 Título
               </label>
               <input
                 id="titulo"
                 type="text"
-                className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 dark:focus:border-purple-400 text-gray-900 dark:text-white"
+                className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900"
                 value={info.titulo}
                 onChange={handleInputChange}
                 disabled={isLoading}
@@ -232,13 +232,13 @@ const BookForm = ({ book }) => {
             <div className="mb-2 w-full px-6 md:px-16">
               <label
                 htmlFor="sinopsis"
-                className="block text-2xl font-semibold py-2 text-gray-900 dark:text-white"
+                className="block text-2xl font-semibold py-2 text-gray-900"
               >
                 Descripción
               </label>
               <textarea
                 id="sinopsis"
-                className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900 h-44 dark:text-white  dark:focus:border-purple-400"
+                className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900 h-44"
                 value={sinopsis}
                 onChange={handleInputChange}
                 disabled={isLoading}
@@ -251,13 +251,13 @@ const BookForm = ({ book }) => {
             <div className="mb-2 w-full flex items-center gap-3 px-6 md:px-16">
               <label
                 htmlFor="categoria"
-                className="block font-semibold py-2 text-gray-900 pt-2 text-2xl dark:text-white"
+                className="block font-semibold py-2 text-gray-900 pt-2 text-2xl"
               >
                 Categoría
               </label>
               <select
                 id="categoria"
-                className="border p-2 rounded focus:outline-none text-gray-500 font-semibold overflow-y-auto max-h-60 dark:focus:border-purple-400 "
+                className="border p-2 rounded focus:outline-none text-gray-500 font-semibold overflow-y-auto max-h-60"
                 value={categoria}
                 onChange={handleInputChange}
                 disabled={isLoading}
@@ -279,7 +279,7 @@ const BookForm = ({ book }) => {
             <div className="mb-2 w-full flex items-center gap-3 px-6 md:px-16">
               <label
                 htmlFor="adulto"
-                className="text-2xl font-semibold text-gray-900 dark:text-white"
+                className="text-2xl font-semibold text-gray-900"
               >
                 ¿Es para adultos?
               </label>
@@ -287,7 +287,7 @@ const BookForm = ({ book }) => {
                 id="adulto"
                 type="checkbox"
                 checked={adulto}
-                className="leading-tight transform scale-150 dark:accent-purple-400"
+                className="leading-tight transform scale-150"
                 onChange={handleInputChange}
               />
             </div>
