@@ -203,7 +203,10 @@ const page = ({ params }) => {
           <div className="flex flex-col _md:w-5/6 mx-auto w-full _md:py-9">
             <div className="flex flex-col gap-y-2 items-center justify-center _md:items-start">
               <div className="flex gap-2 items-center mt-4 _sm:mt-0">
-                <Link href="/accounts" className="font-semibold text-gray-800">
+                <Link
+                  href="/accounts"
+                  className="font-semibold text-gray-800 dark:no-underline"
+                >
                   Cuenta
                 </Link>
                 <span>

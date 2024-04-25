@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./styles/mybooks.module.css";
-import NavBar from "@/components/NavBar";
 import MyBooksContainer from "@/components/books/mybooks/BooksContainer";
 import Loader from "@/components/common/loader";
 import Link from "next/link";
@@ -99,7 +98,11 @@ const PageMyBooks = () => {
             <p className={styles.title_drafts}>Mis Libros</p>
           </div>
           <div>
-            <Link className={styles.btn_new_book} href="/books/create">
+            <Link
+              id="new-book"
+              className={styles.btn_new_book}
+              href="/books/create"
+            >
               + Nuevo Libro
             </Link>
           </div>
@@ -110,20 +113,13 @@ const PageMyBooks = () => {
               id="category"
               options={selectOptions}
               onChange={handleCategoryChange}
+              className="my-react-select-container"
+              classNamePrefix="my-react-select"
               maxMenuHeight={150}
               placeholder="Categorias"
               value={selectOptions.find(
                 (option) => option.value === selectBooks
               )}
-              styles={{
-                ...styles,
-                control: (base, state) => ({
-                  ...base,
-                  "&:hover": { borderColor: "#125e55" },
-                  border: "1px solid lightgray",
-                  boxShadow: "none",
-                }),
-              }}
             />
           </div>
           <div>

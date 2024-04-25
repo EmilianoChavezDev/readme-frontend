@@ -42,7 +42,7 @@ const Filter = ({
           <Button
             color="gray"
             onClick={onFilter}
-            className="flex justify-between items-center gap-3"
+            className="flex justify-between items-center gap-3 dark:bg-dark-darkColorButtons "
           >
             Aplicar Filtros
             <FaSearch />

@@ -412,8 +412,24 @@
     @apply dark:bg-dark-darkColorItems;
   }
 
-  /*  */
-  .ql-toolbar.ql-snow {
-    @apply dark:text-white;
+  /* Mis libros */
+  #container-options {
+    @apply dark:bg-dark-darkColorItems;
+  }
+
+  #modal-content {
+    @apply dark:bg-dark-darkColorItems;
+  }
+
+  #modal-content button {
+    @apply dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover;
+  }
+
+  #new-book {
+    @apply dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover dark:no-underline;
+  }
+
+  .my-react-select-container .my-react-select__control {
+    @apply dark:bg-dark-darkColorItems dark:placeholder:bg-white dark:text-white;
   }
 }
