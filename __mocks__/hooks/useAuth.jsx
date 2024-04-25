@@ -27,12 +27,7 @@ const useAuth = () => {
       setErrorResponse([]);
     } catch (error) {
       setError(true);
-      if (error.response) {
-        setErrorResponse(error.response.data);
-      } else {
-        // Manejar el caso en el que no hay una respuesta de error definida
-        console.error("No hay respuesta de error definida");
-      }      
+      setErrorResponse(error.response.data);
       setLoading(false);
     } finally {
       setLoading(false);

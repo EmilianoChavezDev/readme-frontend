@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { UserProvider } from "../../contexts/UserProvider";
-import Page from "../../app/auth/login/page";
+import { UserProvider } from "../../../contexts/UserProvider";
+import Page from "../../../app/auth/login/page";
 
 jest.mock("next/router");
 
