@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 const UserContext = createContext();
