@@ -10,7 +10,8 @@ const Layout = ({ children }) => {
 
   const shouldRenderNavBar =
     !ignorePaths.some((path) => router.startsWith(path)) &&
-    !(pathSegments[1] === "books" && pathSegments[3] === "chapters");
+    !(pathSegments[1] === "books" && pathSegments[3] === "chapters") &&
+    !(pathSegments[1] === "books" && pathSegments[3] === "read");
 
   return (
     <div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { UseRead } from "@/contexts/ReadProvider";
+import { Tooltip } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
 const CapMenu = ({ capitulo }) => {
@@ -21,11 +22,11 @@ const CapMenu = ({ capitulo }) => {
             onClick={() =>
               getCurrentChapterById(capitulo?.libro_id, capitulo?.id, false)
             }
-            className={` col-span-1 hover:font-semibold hover:cursor-pointer ${
+            className={` col-span-1 hover:font-semibold hover:cursor-pointer truncate ${
               index === capMapp.length - 1 ? "" : "border-b-2 pb-2"
             }`}
           >
-            {capitulo?.titulo}
+            <Tooltip content={capitulo?.titulo}>{capitulo?.titulo}</Tooltip>
           </li>
         ))}
       </ul>
