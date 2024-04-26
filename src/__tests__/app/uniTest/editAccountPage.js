@@ -2,12 +2,10 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { useUser } from "../../../contexts/UserProvider";
 import Page from "../../../app/accounts/edit/[id]/page";
+import mockRouter from "next-router-mock";
 
-jest.mock("next/router", () => ({
-  useRouter: jest.fn(() => ({
-    push: jest.fn(), // Mock de la función push
-  })),
-}));
+jest.mock("next/router", () => require("next-router-mock"));
+
 
 // Mock de las dependencias necesarias
 jest.mock("../../../contexts/UserProvider", () => ({
@@ -34,13 +32,14 @@ jest.mock("../../../hooks/useUser", () =>
   }))
 );
 
-jest.mock("next/router", () => ({
-  useRouter: jest.fn(() => ({
-    push: jest.fn(),
-  })),
-}));
-
 describe("Edit Profile Page", () => {
+  // Mock del hook useRouter dentro del ámbito de este describe
+  jest.mock("next/router", () => ({
+    useRouter: jest.fn(() => ({
+      push: jest.fn(),
+    })),
+  }));
+
   it("renders the user information edit page", async () => {
     render(<Page params={{ id: "test_user" }} />);
 
