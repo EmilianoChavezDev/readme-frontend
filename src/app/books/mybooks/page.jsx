@@ -124,6 +124,7 @@ const PageMyBooks = () => {
           </div>
           <div>
             <input
+              id="input-mybooks"
               className={styles.search}
               type="search"
               placeholder="Buscar por Titulo"

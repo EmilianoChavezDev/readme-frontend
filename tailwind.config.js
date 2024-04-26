@@ -39,6 +39,7 @@ module.exports = withMT({
           darkColorButtons: "#6d28d9",
           darkColorHover: "#6225C5",
           darkColorDiabled: "#381776",
+          darkColorNeutral: "#404040",
         },
 
         colorPrimario: "#167574",

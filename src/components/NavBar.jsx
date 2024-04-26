@@ -7,6 +7,7 @@ import Options from "./navbar/Options";
 import UserOptions from "./navbar/UserOptions";
 import MobileMenu from "./navbar/MobileMenu";
 import useCategory from "@/hooks/useCategory";
+import { ModeToggle } from "./common/ToggleMode";
 
 const NavBar = ({ onSearch }) => {
   const { username, logout, expiration, isOpen, setIsOpen } = useUser();
@@ -87,6 +88,7 @@ const NavBar = ({ onSearch }) => {
       <div className="_lg:justify-between _md:px-5 bg-colorPrimario _md:py-4  _lg:flex hidden dark:bg-dark-darkColorNavBar">
         {/* parte de las opciones */}
         <Options categories={categories} />
+
         {/* parte del buscador */}
         <InputSearch
           value={search}
@@ -96,6 +98,7 @@ const NavBar = ({ onSearch }) => {
         {/* parte del usuario */}
 
         <UserOptions username={usernameStorage} logout={logout} />
+        <ModeToggle />
       </div>
 
       <div className="sticky top-0 z-50">
@@ -103,7 +106,7 @@ const NavBar = ({ onSearch }) => {
           <button
             onClick={toggleMenu}
             type="button"
-            className="text-white hover:text-white focus:outline-none focus:text-white transform transition-all hover:scale-110 duration-200"
+            className="text-white hover:text-white focus:outline-none focus:text-white transform transition-all hover:scale-110 duration-200 "
           >
             <svg
               className="h-8 w-8"

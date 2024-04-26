@@ -37,7 +37,7 @@ const MyBooksContainer = ({
   });
 
   return (
-    <div className={styles.container_drafts}>
+    <div id="book-container" className={styles.container_drafts}>
       <Link href={`/books/${libroId}`}>
         <div className={styles.image_book_container}>
           <Image
@@ -109,6 +109,7 @@ const MyBooksContainer = ({
           </div>
           <div>
             <Link
+              id="continue-writing"
               className={styles.btn_continue_writting}
               href={`/books/${libroId}/chapters/write`}
             >

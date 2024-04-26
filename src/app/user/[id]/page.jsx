@@ -438,7 +438,7 @@ const page = ({ params }) => {
       {!data && arrBooks ? (
         <Loader />
       ) : (
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="flex flex-col min-h-screen bg-gray-100 ">
           {isEdit && (
             <div className="w-4/6 mx-auto flex justify-between items-center py-2">
               <div>Estas editando tu perfil ahora</div>
@@ -527,7 +527,7 @@ const page = ({ params }) => {
                 read={lecturas?.total_items}
                 buttonProps={{
                   info: (
-                    <div className="flex items-center gap-x-1">
+                    <div className="flex items-center gap-x-1 ">
                       {" "}
                       <BsPersonFillGear size={18} />
                       <span>Editar Perfil</span>

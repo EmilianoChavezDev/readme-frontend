@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const SearchItem = ({ book }) => {
   return (
-    <div className="flex justify-between bg-buttonColorGray shadow-lg p-2 gap-4">
+    <div className="flex justify-between bg-buttonColorGray shadow-lg p-2 gap-4 dark:bg-dark-darkColorNeutral">
       <div className="flex gap-3">
         <div class="flex-grow">
           <Image
@@ -61,11 +61,21 @@ const SearchItem = ({ book }) => {
         </div>
       </div>
       <div className="col-span-12 _md:col-span-3 flex justify-end gap-3 items-end text-nowrap">
-        <Button size="sm" className="bg-gray-700 capitalize">
-          <Link href={"/books/" + book.id}>Ver Detalles</Link>
+        <Button
+          size="sm"
+          className="bg-gray-700 capitalize dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
+        >
+          <Link id="view-more" href={"/books/" + book.id}>
+            Ver Detalles
+          </Link>
         </Button>
-        <Button size="sm" className="bg-cyan-800 capitalize">
-          <Link href={"/books/" + book.id + "/read"}>Leer Libro</Link>
+        <Button
+          size="sm"
+          className="bg-cyan-800 capitalize dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
+        >
+          <Link id="read-book" href={"/books/" + book.id + "/read"}>
+            Leer Libro
+          </Link>
         </Button>
       </div>
     </div>

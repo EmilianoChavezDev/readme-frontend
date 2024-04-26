@@ -88,7 +88,7 @@ const UserOption = ({
 
   return (
     <>
-      <div>
+      <div className="dark:bg-dark-darkColorNeutral">
         <Modal
           open={Boolean(showReportModal)}
           onHide={handleCancelReportUser}
@@ -125,10 +125,10 @@ const UserOption = ({
         <div className="flex _sm:justify-between justify-center items-center _sm:w-5/6 mx-auto pt-3">
           <div className="flex _sm:text-xl text-sm text-nowrap gap-x-4 font-semibold">
             <span
-              className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 hover:border-colorPrimario 
+              className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 hover:border-colorPrimario dark:hover:border-dark-darkColorButtons
               ${
                 selectedOption === "misLibros"
-                  ? "border-colorPrimario"
+                  ? "border-colorPrimario dark:border-dark-darkColorButtons"
                   : "border-transparent"
               }`}
               onClick={() => onSelectOption("misLibros")}
@@ -136,10 +136,10 @@ const UserOption = ({
               {isOwner ? "Mis libros" : "Libros"}
             </span>
             <span
-              className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 hover:border-colorPrimario
+              className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 hover:border-colorPrimario dark:hover:border-dark-darkColorButtons
               ${
                 selectedOption === "listaLectura"
-                  ? "border-colorPrimario"
+                  ? "border-colorPrimario dark:border-dark-darkColorButtons"
                   : "border-transparent"
               }`}
               onClick={() => onSelectOption("listaLectura")}
@@ -148,10 +148,10 @@ const UserOption = ({
             </span>
             {usernameLs === username && (
               <span
-                className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 pb-2 hover:border-colorPrimario
+                className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 pb-2 hover:border-colorPrimario dark:hover:border-dark-darkColorButtons
                 ${
                   selectedOption === "seguidos"
-                    ? "border-colorPrimario"
+                    ? "border-colorPrimario dark:border-dark-darkColorButtons"
                     : "border-transparent"
                 }`}
                 onClick={() => onSelectOption("seguidos")}
@@ -160,10 +160,10 @@ const UserOption = ({
               </span>
             )}
             <span
-              className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 pb-2 hover:border-colorPrimario
+              className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 pb-2 hover:border-colorPrimario dark:hover:border-dark-darkColorButtons
               ${
                 selectedOption === "seguidores"
-                  ? "border-colorPrimario"
+                  ? "border-colorPrimario dark:border-dark-darkColorButtons"
                   : "border-transparent"
               }`}
               onClick={() => onSelectOption("seguidores")}

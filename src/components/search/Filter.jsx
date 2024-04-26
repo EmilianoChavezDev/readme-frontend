@@ -21,6 +21,8 @@ const Filter = ({
             </Typography>
             <div className="z-[8]">
               <Select
+                className="my-react-select-container"
+                classNamePrefix="my-react-select"
                 options={categories}
                 value={selectedCategories}
                 onChange={onChangeCategory}
