@@ -98,7 +98,7 @@
   textarea,
   input,
   select {
-    @apply dark:bg-dark-darkColorNeutral dark:text-white;
+    @apply dark:bg-dark-darkColorNeutral dark:text-white dark:placeholder:text-white dark:focus:placeholder-opacity-50;
   }
 
   :checked {
@@ -123,6 +123,12 @@
   .text-colorPrimario {
     @apply dark:border-dark-darkColorButtons dark:text-dark-darkColorButtons;
   }
+
+  .w-full.max-h-96.bg-white.p-3.border.border-blue-gray-50.rounded-md.shadow-lg.font-sans.text-sm.font-normal.text-blue-gray-500.overflow-auto {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*-----------------------------*/
 
   /* Desactivar libro modal */
   .align-middle.select-none.font-sans.font-bold.text-center.uppercase.transition-all.text-xs.py-3.px-6.rounded-lg.shadow-md.border.bg-white.brightness-90.border-red-900.text-red-900 {
