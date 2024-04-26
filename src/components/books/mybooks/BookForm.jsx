@@ -233,12 +233,12 @@ const BookForm = ({ book }) => {
               )}
             </div>
 
-            <div className="mb-2 w-full px-6 md:px-16">
+            <div className="mb-2 w-full px-6 md:px-16 relative">
               <label
                 htmlFor="sinopsis"
                 className="block text-2xl font-semibold py-2 text-gray-900"
               >
-                Descripción
+                Sinopsis
               </label>
               <textarea
                 id="sinopsis"
@@ -246,7 +246,11 @@ const BookForm = ({ book }) => {
                 value={sinopsis}
                 onChange={handleInputChange}
                 disabled={isLoading}
+                maxLength={1600}
               />
+              <span className="absolute bottom-3 right-20 text-xs text-gray-400">
+                {sinopsis.length}/1600
+              </span>
               {errors.sinopsis && (
                 <p className="text-red-500 font-semibold">{errors.sinopsis}</p>
               )}
