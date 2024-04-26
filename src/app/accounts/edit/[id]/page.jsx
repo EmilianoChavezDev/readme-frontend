@@ -7,7 +7,7 @@ import Loader from "@/components/common/loader";
 import { useUser } from "@/contexts/UserProvider";
 import useUserInfo from "@/hooks/useUser";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -76,10 +76,10 @@ const page = ({ params }) => {
   }, [isDirty]);
 
   // si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
-  useEffect(() => {
-    if (!currentData || !isRefresh) return;
-    refresh(currentData);
-  }, [currentData, isRefresh]);
+  // useEffect(() => {
+  //   if (!currentData || !isRefresh) return;
+  //   refresh(currentData);
+  // }, [currentData, isRefresh]);
 
   // traer los datos del usuario
   useEffect(() => {

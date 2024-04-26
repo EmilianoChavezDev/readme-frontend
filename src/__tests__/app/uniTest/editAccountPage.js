@@ -2,10 +2,8 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { useUser } from "../../../contexts/UserProvider";
 import Page from "../../../app/accounts/edit/[id]/page";
-import mockRouter from "next-router-mock";
-
-jest.mock("next/router", () => require("next-router-mock"));
-
+import { useRouter } from "next/navigation";
+import { act  } from "react-dom/test-utils";
 
 // Mock de las dependencias necesarias
 jest.mock("../../../contexts/UserProvider", () => ({
@@ -32,16 +30,18 @@ jest.mock("../../../hooks/useUser", () =>
   }))
 );
 
-describe("Edit Profile Page", () => {
-  // Mock del hook useRouter dentro del ámbito de este describe
-  jest.mock("next/router", () => ({
-    useRouter: jest.fn(() => ({
-      push: jest.fn(),
-    })),
-  }));
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+  })),
+}));
 
+describe("Edit Profile Page", () => {
   it("renders the user information edit page", async () => {
-    render(<Page params={{ id: "test_user" }} />);
+    await act(async () => {
+      render(<Page params={{ id: "test_user" }} />);
+    });
+  
 
     // Verifica que la página de carga no esté presente
     const loader = screen.queryByTestId("loader");
@@ -87,5 +87,9 @@ describe("Edit Profile Page", () => {
     // Verifica que las funciones de actualización se hayan llamado correctamente
     const { updateUsername } = useUser();
     expect(updateUsername).toHaveBeenCalledWith("new_test_user", "");
+
+    // Verifica que se haya llamado a la función push del router
+    const { push } = useRouter();
+    expect(push).toHaveBeenCalled();
   });
 });
