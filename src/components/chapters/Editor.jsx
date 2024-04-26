@@ -18,11 +18,11 @@ const Editor = ({ chapterContent, onChange }) => {
   return (
     <div className={`editor-container mt-10 px-10 md:px-52`}>
       <QuillEditor
+        id="quill"
         value={chapterContent}
         onChange={onChange}
         placeholder="Escriba su capitulo aqui..."
         theme="snow"
-        className="dark:bg-dark-darkColorItems"
         modules={{
           toolbar: toolbarOptions,
         }}

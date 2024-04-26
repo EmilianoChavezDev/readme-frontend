@@ -136,14 +136,14 @@ const Search = ({}) => {
 
         <div>
           <Tabs value="libros">
-            <TabsHeader className="sticky top-2 dark:bg-dark-darkColorNeutral">
-              <Tab value="libros" className="dark:bg-dark-darkColorNeutral">
+            <TabsHeader className="sticky top-2 ">
+              <Tab value="libros">
                 <div className="flex items-center gap-2 ">
                   <BsBook />
                   Libros
                 </div>
               </Tab>
-              <Tab value="usuarios" className="dark:bg-dark-darkColorNeutral">
+              <Tab value="usuarios">
                 <div className="flex items-center gap-2 ">
                   <BsPerson />
                   Usuarios

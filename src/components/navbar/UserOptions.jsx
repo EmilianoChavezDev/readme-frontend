@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ModeToggle } from "@/components/common/ToggleMode";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { MdRemoveModerator } from "react-icons/md";
 import { FaUserCircle, FaSignOutAlt, FaUser } from "react-icons/fa";
@@ -15,6 +14,7 @@ import {
 import useUserInfo from "@/hooks/useUser";
 import ProfileView from "@/components/common/ProfileView";
 import { useUser } from "@/contexts/UserProvider";
+import { ModeToggle } from "../common/ToggleMode";
 
 export default function UserOptions({ username, logout }) {
   const router = useRouter();
@@ -53,6 +53,7 @@ export default function UserOptions({ username, logout }) {
         handler={setShowPopover}
         placement="bottom-end"
       >
+        <ModeToggle />
         <PopoverHandler>
           <button className="group flex items-center gap-2">
             <ProfileView username={username} imagen={profileUpdate} size={8} />

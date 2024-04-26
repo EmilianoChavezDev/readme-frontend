@@ -97,8 +97,7 @@ const NavBar = ({ onSearch }) => {
         />
         {/* parte del usuario */}
 
-        <UserOptions username={usernameStorage} logout={logout} />
-        <ModeToggle />
+        <UserOptions  username={usernameStorage} logout={logout} />
       </div>
 
       <div className="sticky top-0 z-50">

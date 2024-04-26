@@ -17,9 +17,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>{/* Aquí puedes incluir tus metadatos */}</head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class" defaultTheme="light">
           <UserProvider>
             <ReadProvider>
               <Toaster position="top-center" />

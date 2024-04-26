@@ -132,13 +132,13 @@ const BookForm = ({ book }) => {
         <div className="flex gap-4">
           <Link
             href="/"
-            className="bg-BooksCreateCancelarButton text-gray-700 py-2 px-5 rounded-lg dark:no-underline dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
+            className="bg-BooksCreateCancelarButton text-gray-700 py-2 px-5 rounded-lg dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
           >
             Cancelar
           </Link>
           <button
             onClick={handleSubmit}
-            className={`bg-BooksCreateSeguirButton hover:bg-BooksCreateImageHover text-white py-2 px-7 rounded-lg dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover ${
+            className={`bg-colorPrimario hover:bg-colorHoverPrimario text-white py-2 px-7 rounded-lg ${
               isLoading || loadingPortada ? "opacity-50 cursor-wait " : ""
             }`}
             disabled={isLoading || loadingPortada}
@@ -223,7 +223,7 @@ const BookForm = ({ book }) => {
                 disabled={isLoading}
               />
               {errors.titulo && (
-                <p className="text-red-500 font-semibold py-2">
+                <p className="text-red-500 font-semibold py-2 dark:text-red-500">
                   {errors.titulo}
                 </p>
               )}
@@ -244,7 +244,9 @@ const BookForm = ({ book }) => {
                 disabled={isLoading}
               />
               {errors.sinopsis && (
-                <p className="text-red-500 font-semibold">{errors.sinopsis}</p>
+                <p className="text-red-500 font-semibold dark:text-red-500">
+                  {errors.sinopsis}
+                </p>
               )}
             </div>
 
@@ -272,7 +274,9 @@ const BookForm = ({ book }) => {
                 ))}
               </select>
               {errors.categoria && (
-                <p className="text-red-500 font-semibold">{errors.categoria}</p>
+                <p className="text-red-500 font-semibold dark:text-red-500">
+                  {errors.categoria}
+                </p>
               )}
             </div>
 

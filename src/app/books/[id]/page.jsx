@@ -5,9 +5,8 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { LuEye } from "react-icons/lu";
 import { useEffect, useState } from "react";
-import { PiStarThin } from "react-icons/pi";
+import { PiStarThin, PiWarningBold } from "react-icons/pi";
 import { FaRegImage } from "react-icons/fa6";
-import { PiWarningBold } from "react-icons/pi";
 import { GoListUnordered } from "react-icons/go";
 
 import useBook from "@/hooks/useBook";
@@ -279,8 +278,8 @@ export default function BookDetails({ params }) {
           {isLoading && <Loader />}
           <section className="flex flex-grow flex-wrap shadow-lg">
             <div className="flex justify-center items-center min-w-96 w-full _lg:w-1/2">
-              <div className="flex gap-5 p-10 flex-col _sm:flex-row _sm:p-3 _md:p-12 _xl:p-16 dark:bg-dark-darkColorItems dark:rounded-lg dark:mt-10">
-                <div className="flex justify-center items-center bg-colorPrimario  dark:bg-purple-400">
+              <div className="flex gap-5 p-10 flex-col _sm:flex-row _sm:p-3 _md:p-12 _xl:p-16 ">
+                <div className="flex justify-center items-center bg-colorPrimario dark:bg-dark-darkColorButtons">
                   <div className="flex justify-center items-center w-44 h-42 !min-h-42 text-white ">
                     {book?.portada ? (
                       <Image
@@ -344,7 +343,7 @@ export default function BookDetails({ params }) {
                   </div>
                   <div className="flex flex-col gap-3 text-white text-xs">
                     <Link href={`/books/${params.id}/read`}>
-                      <button className="h-9 rounded-md bg-colorPrimario w-full hover:bg-colorHoverPrimario  dark:bg-purple-600 dark:hover:bg-purple-400">
+                      <button className="h-9 rounded-md bg-colorPrimario w-full hover:bg-colorHoverPrimario  ">
                         {readBook?.terminado
                           ? "Volver a leer"
                           : readBook
@@ -355,8 +354,8 @@ export default function BookDetails({ params }) {
                     <button
                       className={
                         favorite?.favorito
-                          ? "h-9 rounded-md bg-colorPrimario text-white hover:bg-colorHoverPrimario dark:bg-purple-400 dark:hover:bg-purple-200 "
-                          : "h-9 rounded-md bg-gray-500 hover:brightness-90"
+                          ? "h-9 rounded-md bg-colorPrimario text-white hover:bg-colorHoverPrimario dark:bg-dark-darkColorButtons "
+                          : "h-9 rounded-md bg-gray-500 hover:brightness-90 dark:bg-dark-darkColorButtons "
                       }
                       onClick={toggleFavorite}
                     >
@@ -365,7 +364,7 @@ export default function BookDetails({ params }) {
                         : "Añadir a Favoritos"}
                     </button>
                     <button
-                      className="h-9 rounded-md bg-gray-500 hover:brightness-90"
+                      className="h-9 rounded-md bg-gray-500 hover:brightness-90 dark:bg-dark-darkColorButtons"
                       onClick={() => handleDownloadBook()}
                     >
                       Descargar
@@ -374,7 +373,7 @@ export default function BookDetails({ params }) {
                 </div>
               </div>
             </div>
-            <div className="relative flex justify-center items-center min-w-96 w-full _lg:w-1/2 dark:bg-dark-darkColorItems dark:mt-10 dark:rounded-lg ">
+            <div className="relative flex justify-center items-center min-w-96 w-full _lg:w-1/2 ">
               <div className="flex flex-col gap-2 p-9 _lg:p-16">
                 <h2 className="font-semibold">Sinopsis:</h2>
                 <p className="text-sm">{book?.sinopsis}</p>
@@ -386,7 +385,7 @@ export default function BookDetails({ params }) {
                 <span>
                   <PiWarningBold />
                 </span>
-                <span className="text-xs whitespace-nowrap">
+                <span className="text-xs whitespace-nowrap  ">
                   Denunciar este libro
                 </span>
               </button>
