@@ -207,7 +207,7 @@ const BookForm = ({ book }) => {
             <h1 className="text-3xl font-bold mb-2 text-gray-900 mx-6">
               Detalle del libro
             </h1>
-            <div className="mb-2 w-full px-6 md:px-16">
+            <div className="mb-2 w-full px-6 md:px-16 relative">
               <label
                 htmlFor="titulo"
                 className="block text-2xl font-semibold mb-2 text-gray-900"
@@ -221,7 +221,11 @@ const BookForm = ({ book }) => {
                 value={info.titulo}
                 onChange={handleInputChange}
                 disabled={isLoading}
+                maxLength={70}
               />
+              <span className="absolute bottom-3 right-20 text-xs text-gray-400">
+                {info.titulo.length}/70
+              </span>
               {errors.titulo && (
                 <p className="text-red-500 font-semibold py-2">
                   {errors.titulo}

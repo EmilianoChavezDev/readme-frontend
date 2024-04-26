@@ -24,6 +24,7 @@ import { saveAs } from "file-saver";
 import { convert } from "html-to-text";
 import useDenuncias from "@/hooks/useDenuncias";
 import useChapter from "@/hooks/useChapter";
+import { Tooltip } from "@material-tailwind/react";
 
 const styles = StyleSheet.create({
   page: {
@@ -296,8 +297,13 @@ export default function BookDetails({ params }) {
                   </div>
                 </div>
                 <div className="flex-grow p-3 flex flex-col gap-3">
-                  <div className="flex flex-col gap-1">
-                    <h1 className="font-extrabold text-xl">{book?.titulo}</h1>
+                  <div className="flex flex-col gap-1 w-1/4">
+                    <Tooltip content={book?.titulo}>
+                      <h1 className="font-bold text-lg line-clamp-1">
+                        {book?.titulo}
+                      </h1>
+                    </Tooltip>
+
                     <div className="flex items-center text-sm gap-2">
                       <span className="font-semibold">Categoria:</span>
                       <span className="font-light">{book?.categoria}</span>
@@ -377,7 +383,7 @@ export default function BookDetails({ params }) {
             <div className="relative flex justify-center items-center min-w-96 w-full _lg:w-1/2">
               <div className="flex flex-col gap-2 p-9 _lg:p-16">
                 <h2 className="font-semibold">Sinopsis:</h2>
-                <p className="text-sm">{book?.sinopsis}</p>
+                <p className="text-sm line-clamp-4">{book?.sinopsis}</p>
               </div>
               <button
                 className="absolute bottom-5 right-10 bg-none outline-none border-none text-red-600 flex gap-1"
