@@ -26,7 +26,7 @@ export default function Modal({
             className={` border bg-white brightness-90 ${
               variant === "danger"
                 ? "border-red-900 text-red-900"
-                : "border-colorPrimario text-colorPrimario dark:bg-dark-darkColorButtons dark:border-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
+                : "border-colorPrimario text-colorPrimario dark:bg-red-600 dark:border-red-600 dark:hover:bg-red-700"
             }`}
             onClick={onHide}
           >

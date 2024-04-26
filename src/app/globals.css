@@ -116,6 +116,20 @@
   }
 
   /*-----------------------------*/
+  /*Moderador Tray*/
+
+  /* Buttons */
+  .dorder-colorPrimario,
+  .text-colorPrimario {
+    @apply dark:border-dark-darkColorButtons dark:text-dark-darkColorButtons;
+  }
+
+  /* Desactivar libro modal */
+  .align-middle.select-none.font-sans.font-bold.text-center.uppercase.transition-all.text-xs.py-3.px-6.rounded-lg.shadow-md.border.bg-white.brightness-90.border-red-900.text-red-900 {
+    @apply dark:bg-dark-darkColorButtons dark:border-dark-darkColorButtons dark:hover:bg-dark-darkColorHover;
+  }
+
+  /*-----------------------------*/
 
   /*Modal reportar*/
   .relative.bg-white.m-4.rounded-lg.shadow-2xl.text-blue-gray-500.antialiased.font-sans.text-base.font-light.leading-relaxed.w-full {
