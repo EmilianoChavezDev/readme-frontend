@@ -17,7 +17,7 @@ const defaultValues = {
 const Page = () => {
   const [isDisplayed, setIsDisplayed] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(20); // 3 minutos en segundos
+  const [timeLeft, setTimeLeft] = useState(120); // 2 minutos en segundos
   const [timerActive, setTimerActive] = useState(false);
 
   const { loading, errorResponse, successResponse, forgotPassword } = useAuth();
@@ -26,7 +26,6 @@ const Page = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
@@ -37,12 +36,10 @@ const Page = () => {
   };
 
   useEffect(() => {
-    if (!errorResponse) return;
-  }, [errorResponse]);
-
-  useEffect(() => {
-    if (!successResponse) return;
-  }, [successResponse]);
+    if (!errorResponse && successResponse) {
+      setIsButtonDisabled(false); // Habilitar el botón solo si es un éxito
+    }
+  }, [errorResponse, successResponse]);
 
   const handleBlur = () => {
     setIsFocused(false);
@@ -54,9 +51,8 @@ const Page = () => {
         setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
       }, 1000);
 
-      // Cuando el temporizador llega a 0, deshabilita el botón y detiene el temporizador
+      // Cuando el temporizador llega a 0, detiene el temporizador
       if (timeLeft === 0) {
-        setIsButtonDisabled(false);
         setTimerActive(false);
         setTimeLeft(20); // Reiniciar el temporizador
       }
@@ -133,7 +129,9 @@ const Page = () => {
               {loading ? <Loading /> : "Enviar correo de recuperación"}
             </button>
             {isButtonDisabled && (
-              <span>Tiempo restante: {formatTime(timeLeft)}</span>
+              <span className="text-gray-700">
+                Volver a enviar el codigo en: {formatTime(timeLeft)}
+              </span>
             )}
             <div className={styles.content_crear_cuenta}>
               <span>¿Ya tienes una cuenta?</span>{" "}
