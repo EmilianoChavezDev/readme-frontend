@@ -23,6 +23,7 @@ import { saveAs } from "file-saver";
 import { convert } from "html-to-text";
 import useDenuncias from "@/hooks/useDenuncias";
 import useChapter from "@/hooks/useChapter";
+import { Tooltip } from "@material-tailwind/react";
 
 const styles = StyleSheet.create({
   page: {
@@ -278,9 +279,9 @@ export default function BookDetails({ params }) {
           {isLoading && <Loader />}
           <section className="flex flex-grow flex-wrap shadow-lg">
             <div className="flex justify-center items-center min-w-96 w-full _lg:w-1/2">
-              <div className="flex gap-5 p-10 flex-col _sm:flex-row _sm:p-3 _md:p-12 _xl:p-16 ">
+              <div className="flex gap-5 p-10 flex-col _sm:flex-row _sm:p-3 _md:p-12 _xl:p-16 w-4/6 mx-auto">
                 <div className="flex justify-center items-center bg-colorPrimario dark:bg-dark-darkColorButtons">
-                  <div className="flex justify-center items-center w-44 h-42 !min-h-42 text-white ">
+                  <div className="flex justify-center items-center w-44 h-42 !min-h-42 text-white">
                     {book?.portada ? (
                       <Image
                         src={book.portada}
@@ -294,9 +295,14 @@ export default function BookDetails({ params }) {
                     )}
                   </div>
                 </div>
-                <div className="flex-grow p-3 flex flex-col gap-3">
+                <div className="flex-grow p-3 flex flex-col gap-3 w-4/6 mx-auto">
                   <div className="flex flex-col gap-1">
-                    <h1 className="font-extrabold text-xl">{book?.titulo}</h1>
+                    <Tooltip content={book?.titulo}>
+                      <h1 className="font-bold text-lg truncate">
+                        {book?.titulo}
+                      </h1>
+                    </Tooltip>
+
                     <div className="flex items-center text-sm gap-2">
                       <span className="font-semibold">Categoria:</span>
                       <span className="font-light">{book?.categoria}</span>
@@ -373,10 +379,12 @@ export default function BookDetails({ params }) {
                 </div>
               </div>
             </div>
-            <div className="relative flex justify-center items-center min-w-96 w-full _lg:w-1/2 ">
-              <div className="flex flex-col gap-2 p-9 _lg:p-16">
+            <div className="relative flex justify-center items-center min-w-96 w-full _lg:w-1/2">
+              <div className="flex flex-col gap-2 p-9 _lg:p-16 w-4/6">
                 <h2 className="font-semibold">Sinopsis:</h2>
-                <p className="text-sm">{book?.sinopsis}</p>
+                <Tooltip content={book?.sinopsis}>
+                  <p className="text-sm line-clamp-4">{book?.sinopsis}</p>
+                </Tooltip>
               </div>
               <button
                 className="absolute bottom-5 right-10 bg-none outline-none border-none text-red-600 flex gap-1"

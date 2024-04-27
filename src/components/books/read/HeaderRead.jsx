@@ -53,11 +53,13 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
             </div>
           </button>
         </div>
-        <div className="flex text-center items-center">
-          <h1 className="_md:text-3xl text-colorPrimario text-center font-semibold text-lg">
-            {titulo}
-          </h1>
-        </div>
+        <Tooltip content={titulo}>
+          <div className="flex text-center items-center w-2/3 truncate">
+            <h1 className="mx-auto md:text-3xl text-colorPrimario text-center font-semibold text-lg truncate">
+              {titulo}
+            </h1>
+          </div>
+        </Tooltip>
         <div className="flex justify-center items-center">
           <div className="relative">
             <Tooltip content="lista de capitulos" className="hidden _lg:block">

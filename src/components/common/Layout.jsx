@@ -10,7 +10,8 @@ const Layout = () => {
 
   const shouldRenderNavBar =
     !ignorePaths.some((path) => router.startsWith(path)) &&
-    !(pathSegments[1] === "books" && pathSegments[3] === "chapters");
+    !(pathSegments[1] === "books" && pathSegments[3] === "chapters") &&
+    !(pathSegments[1] === "books" && pathSegments[3] === "read");
 
   return (
     <div className="sticky top-0 z-50">{shouldRenderNavBar && <NavBar />}</div>
