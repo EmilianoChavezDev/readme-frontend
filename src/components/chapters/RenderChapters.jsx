@@ -28,7 +28,10 @@ export default function RenderCapitules({ cap, bookId }) {
     >
       {/* Mostramos el titulo, si es muy largo se muestra con el Tooltip */}
       <Tooltip content={cap.titulo}>
-        <Link href={`/books/${bookId}/chapters/write/${cap.id}`}>
+        <Link
+          href={`/books/${bookId}/chapters/write/${cap.id}`}
+          className="dark:no-underline"
+        >
           <p className="text-sm font-semibold w-24 truncate">{cap.titulo}</p>
         </Link>
       </Tooltip>

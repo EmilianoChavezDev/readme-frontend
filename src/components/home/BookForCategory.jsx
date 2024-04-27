@@ -13,7 +13,7 @@ const BookForCategory = ({ category, bookData }) => {
   }, [category, bookData]);
 
   return (
-    <div class="py-4">
+    <div className="py-4">
       {filteredBooks?.length === 0 || filteredBooks === undefined ? (
         <></>
       ) : (
@@ -27,7 +27,7 @@ const BookForCategory = ({ category, bookData }) => {
               className="flex justify-center w-auto h-auto"
             >
               <div className="p-10">
-                <div className="container mx-auto px-4 py-8 max-w-screen-xl bg-white rounded-lg shadow-sm border-2 w-[1000px] h-[300px]">
+                <div className="container mx-auto px-4 py-8 max-w-screen-xl rounded-lg shadow-sm border-2 w-[1000px] h-[300px]">
                   <div className="flex">
                     <div className="relative w-64">
                       <div>

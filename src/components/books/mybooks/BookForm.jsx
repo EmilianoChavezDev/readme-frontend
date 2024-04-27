@@ -121,8 +121,8 @@ const BookForm = ({ book }) => {
   }, [book]);
 
   return (
-    <div className="flex flex-col bg-white">
-      <div className="bg-ChaptearHeader h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg">
+    <div className="flex flex-col h-screen ">
+      <div className="bg-ChaptearHeader h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg dark:bg-dark-darkColorNavBar">
         <div className="text-white font-semibold text-lg flex items-center">
           <Link href="/">
             <FaAngleLeft className="text-2xl" />
@@ -132,13 +132,13 @@ const BookForm = ({ book }) => {
         <div className="flex gap-4">
           <Link
             href="/"
-            className="bg-BooksCreateCancelarButton text-gray-700 py-2 px-5 rounded-lg"
+            className="bg-BooksCreateCancelarButton text-gray-700 py-2 px-5 rounded-lg dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
           >
             Cancelar
           </Link>
           <button
             onClick={handleSubmit}
-            className={`bg-BooksCreateSeguirButton text-white py-2 px-7 rounded-lg ${
+            className={`bg-colorPrimario hover:bg-colorHoverPrimario text-white py-2 px-7 rounded-lg ${
               isLoading || loadingPortada ? "opacity-50 cursor-wait " : ""
             }`}
             disabled={isLoading || loadingPortada}
@@ -161,12 +161,12 @@ const BookForm = ({ book }) => {
         <form encType="multipart/form-data" className="group relative">
           {image.current || image.preview ? (
             <img
-              className="object-cover w-72 h-96 rounded-md"
+              className="object-cover w-72 h-96 rounded-md "
               src={image.preview ?? image.current}
               alt="Portada de Libro"
             />
           ) : (
-            <label className="bg-ChaptearHeader text-BooksCreateImageBackground w-72 h-96 flex justify-center items-center rounded-md cursor-pointer">
+            <label className="bg-ChaptearHeader text-BooksCreateImageBackground w-72 h-96 flex justify-center items-center rounded-md cursor-pointer dark:bg-dark-darkColorButtons ">
               <input
                 type="file"
                 accept="image/*"
@@ -193,7 +193,7 @@ const BookForm = ({ book }) => {
           {(image.current || image.preview) && (
             <Tooltip content="Eliminar Imagen">
               <div
-                className="absolute -top-1 -right-1 bg-colorPrimario text-white w-8 h-8 hidden group-hover:flex justify-center items-center rounded-full cursor-pointer"
+                className="absolute -top-1 -right-1 w-8 h-8 hidden group-hover:flex justify-center items-center rounded-full cursor-pointer   "
                 onClick={handleRemoveImage}
               >
                 <HiXMark size={36} />
@@ -202,12 +202,12 @@ const BookForm = ({ book }) => {
           )}
         </form>
 
-        <div className="w-full md:w-4/6 bg-white mx-4 md:mx-16 my-4 md:my-14">
+        <div className="w-full md:w-4/6 mx-4 md:mx-16 my-4 md:my-14 ">
           <div className="w-full p-8 flex flex-col gap-3">
             <h1 className="text-3xl font-bold mb-2 text-gray-900 mx-6">
               Detalle del libro
             </h1>
-            <div className="mb-2 w-full px-6 md:px-16">
+            <div className="mb-2 w-full px-6 md:px-16 relative">
               <label
                 htmlFor="titulo"
                 className="block text-2xl font-semibold mb-2 text-gray-900"
@@ -221,30 +221,40 @@ const BookForm = ({ book }) => {
                 value={info.titulo}
                 onChange={handleInputChange}
                 disabled={isLoading}
+                maxLength={70}
               />
+              <span className="absolute bottom-3 right-20 text-xs text-gray-400">
+                {info.titulo.length}/70
+              </span>
               {errors.titulo && (
-                <p className="text-red-500 font-semibold py-2">
+                <p className="text-red-500 font-semibold py-2 dark:text-red-500">
                   {errors.titulo}
                 </p>
               )}
             </div>
 
-            <div className="mb-2 w-full px-6 md:px-16">
+            <div className="mb-2 w-full px-6 md:px-16 relative">
               <label
                 htmlFor="sinopsis"
                 className="block text-2xl font-semibold py-2 text-gray-900"
               >
-                Descripción
+                Sinopsis
               </label>
               <textarea
                 id="sinopsis"
-                className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900 h-44 "
+                className="w-full border border-gray-300 p-2 rounded focus:outline-none focus:border-blue-500 text-gray-900 h-44"
                 value={sinopsis}
                 onChange={handleInputChange}
                 disabled={isLoading}
+                maxLength={1600}
               />
+              <span className="absolute bottom-3 right-20 text-xs text-gray-400">
+                {sinopsis.length}/1600
+              </span>
               {errors.sinopsis && (
-                <p className="text-red-500 font-semibold">{errors.sinopsis}</p>
+                <p className="text-red-500 font-semibold dark:text-red-500">
+                  {errors.sinopsis}
+                </p>
               )}
             </div>
 
@@ -272,7 +282,9 @@ const BookForm = ({ book }) => {
                 ))}
               </select>
               {errors.categoria && (
-                <p className="text-red-500 font-semibold">{errors.categoria}</p>
+                <p className="text-red-500 font-semibold dark:text-red-500">
+                  {errors.categoria}
+                </p>
               )}
             </div>
 

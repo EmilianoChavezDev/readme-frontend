@@ -55,15 +55,18 @@ export default function Chapters({ bookId }) {
   }, [bookId]);
 
   return (
-    <div className="max-w-72 rounded-md shadow-xl flex flex-col py-5">
+    <div className="max-w-72 rounded-lg shadow-xl flex flex-col py-5 ">
       <div className="flex flex-row py-5 px-8">
-        <VscNewFile className="h-10 active:bg-black" />
-        <button onClick={handleAddNewChapter} className="p-2 text-sm">
+        <VscNewFile className="h-10 active:bg-black dark:text-white " />
+        <button
+          onClick={handleAddNewChapter}
+          className="p-2 text-sm dark:text-white"
+        >
           Agregar nuevo capitulo
         </button>
       </div>
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <div className="max-h-36 overflow-y-scroll px-5">
+        <div className="max-h-36 overflow-y-scroll px-5 dark:text-white">
           <SortableContext
             items={chapters}
             strategy={verticalListSortingStrategy}
