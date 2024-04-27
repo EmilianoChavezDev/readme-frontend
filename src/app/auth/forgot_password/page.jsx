@@ -16,26 +16,25 @@ const defaultValues = {
 
 const Page = () => {
   const [isDisplayed, setIsDisplayed] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(20); // 3 minutos en segundos
+  const [timerActive, setTimerActive] = useState(false);
 
-  const {
-    loading,
-    errorResponse,
-    successResponse,
-    forgotPassword,
-  } = useAuth();
+  const { loading, errorResponse, successResponse, forgotPassword } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
     forgotPassword(formData);
     setIsDisplayed(true);
+    setIsButtonDisabled(true);
+    setTimerActive(true); // Iniciar el temporizador
   };
-
-  
 
   useEffect(() => {
     if (!errorResponse) return;
@@ -47,6 +46,29 @@ const Page = () => {
 
   const handleBlur = () => {
     setIsFocused(false);
+  };
+
+  useEffect(() => {
+    if (timerActive) {
+      const timer = setTimeout(() => {
+        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+      }, 1000);
+
+      // Cuando el temporizador llega a 0, deshabilita el botón y detiene el temporizador
+      if (timeLeft === 0) {
+        setIsButtonDisabled(false);
+        setTimerActive(false);
+        setTimeLeft(20); // Reiniciar el temporizador
+      }
+
+      return () => clearTimeout(timer);
+    }
+  }, [timeLeft, timerActive]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
   return (
@@ -106,12 +128,13 @@ const Page = () => {
               type="submit"
               onClick={handleSubmit(onSubmit)}
               id="login-btn"
-              disabled={loading}
+              disabled={loading || isButtonDisabled}
             >
               {loading ? <Loading /> : "Enviar correo de recuperación"}
             </button>
-            
-
+            {isButtonDisabled && (
+              <span>Tiempo restante: {formatTime(timeLeft)}</span>
+            )}
             <div className={styles.content_crear_cuenta}>
               <span>¿Ya tienes una cuenta?</span>{" "}
               <Link href={"/auth/login"}>¡Inicia Sesion!</Link>
