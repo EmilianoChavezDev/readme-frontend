@@ -52,7 +52,48 @@ const BookForm = ({ book }) => {
   };
 
   const handleAddImage = async (file) => {
-    setImage({ current: "", preview: URL.createObjectURL(file), file });
+    const resizedImage = await resizeImage(file);
+    setImage({
+      current: "",
+      preview: URL.createObjectURL(resizedImage),
+      file: resizedImage,
+    });
+  };
+  const resizeImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        let newWidth, newHeight;
+
+        if (img.width / img.height > 2 / 3) {
+          newHeight = img.height;
+          newWidth = (newHeight * 2) / 3;
+        } else {
+          newWidth = img.width;
+          newHeight = (newWidth * 3) / 2;
+        }
+
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+        canvas.toBlob(
+          (blob) => {
+            resolve(new File([blob], file.name, { type: file.type }));
+          },
+          file.type,
+          1
+        );
+      };
+
+      img.onerror = (error) => {
+        reject(error);
+      };
+    });
   };
 
   const handleRemoveImage = async () => {
@@ -161,12 +202,12 @@ const BookForm = ({ book }) => {
         <form encType="multipart/form-data" className="group relative">
           {image.current || image.preview ? (
             <img
-              className="object-cover w-72 h-96 rounded-md "
+              className="object-cover  w-72 aspect-portada rounded-md"
               src={image.preview ?? image.current}
               alt="Portada de Libro"
             />
           ) : (
-            <label className="bg-ChaptearHeader text-BooksCreateImageBackground w-72 h-96 flex justify-center items-center rounded-md cursor-pointer dark:bg-dark-darkColorButtons ">
+            <label className="bg-ChaptearHeader text-BooksCreateImageBackground w-72 aspect-portada flex justify-center items-center rounded-md cursor-pointer dark:bg-dark-darkColorButtons">
               <input
                 type="file"
                 accept="image/*"
