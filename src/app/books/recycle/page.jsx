@@ -7,38 +7,48 @@ import {
   TabsBody,
   TabPanel,
 } from "@material-tailwind/react";
-import { BsBook, BsPerson } from "react-icons/bs";
-import RecycledBookItem from "@/components/recycle/RecycledBookItem";
+import Link from "next/link";
+import toast from "react-hot-toast";
+import { BsBook } from "react-icons/bs";
 import useRecycle from "@/hooks/useRecycle";
 import { useEffect, useState } from "react";
-import { Spinner } from "@material-tailwind/react";
-import Pagination from "@/components/common/Pagination";
-import RecycledChapterItem from "@/components/recycle/RecycledChapterItem";
-import RecycledBookItem from "@/components/recycle/RecycledBookItem";
-import toast from "react-hot-toast";
+import { GrChapterAdd } from "react-icons/gr";
 import Loader from "@/components/common/loader";
+import { VscChevronRight } from "react-icons/vsc";
+import Pagination from "@/components/common/Pagination";
+import RecycledBookItem from "@/components/recycle/RecycledBookItem";
+import RecycledChapterItem from "@/components/recycle/RecycledChapterItem";
 
 const RecycleBin = () => {
-  const { getRecycledBooks, restoreBook, restoreChatper, isLoading } =
-    useRecycle();
+  const {
+    getRecycledBooks,
+    restoreBook,
+    restoreChatper,
+    getRecycledChapters,
+    isLoading,
+  } = useRecycle();
   const [recycledBooks, setRecycledBooks] = useState([]);
   const [recycledChapters, setRecycledChapters] = useState([]);
+
+  const [currentChapter, setCurrentChapter] = useState(1);
+  const [totalChapters, setTotalChapters] = useState(0);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+
   const fetchBooks = async () => {
     const books = await getRecycledBooks({ page: currentPage });
     setRecycledBooks(books.data);
-    setRecycledChapters(
-      books.data.flatMap((book) =>
-        book.capitulos_eliminados.map((chapter) => ({
-          ...chapter,
-          tituloLibro: book.titulo,
-          libroPortada: book.portada,
-        }))
-      )
-    );
     setTotalPages(books.total_pages);
+    window.scrollTo(0, 0);
   };
+  const fetchChapters = async () => {
+    const chapters = await getRecycledChapters({ page: currentChapter });
+    setRecycledChapters(chapters.data);
+    setTotalChapters(chapters.total_pages);
+    window.scrollTo(0, 0);
+  };
+
   const handleRestoreBook = async (book) => {
     const result = await restoreBook(book.id);
     if (result) {
@@ -52,25 +62,37 @@ const RecycleBin = () => {
     const result = await restoreChatper(chapter.id);
     if (result) {
       toast.success("Capitulo restaurado con éxito");
-      fetchBooks();
+      fetchChapters();
     } else {
       toast.error("Error al restaurar el Capitulo");
     }
   };
 
-  useEffect(() => {
-    fetchBooks();
-  }, [currentPage]);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
   const recycledBooksFiltered = recycledBooks.filter(
     (book) => book.deleted === true
   );
 
+  useEffect(() => {
+    fetchBooks();
+    fetchChapters();
+  }, [currentPage, currentChapter]);
+
   return (
-    <div className="flex flex-col">
+    <div className="relative flex flex-col gap-3 px-20 py-9">
+      <div className="flex gap-2 items-center">
+        <Link href="/accounts" className="font-semibold text-gray-800">
+          Cuenta
+        </Link>
+        <span>
+          <VscChevronRight />
+        </span>
+        <span className="font-semibold text-gray-800">
+          Papelera de reciclaje
+        </span>
+      </div>
+      <div className="flex justify-between">
+        <h1 className="font-bold text-gray-800 text-3xl leading-8">Papelera</h1>
+      </div>
       <div className="flex flex-col mt-5">
         <Tabs value="libros">
           <TabsHeader className="sticky top-2">
@@ -82,7 +104,7 @@ const RecycleBin = () => {
             </Tab>
             <Tab value="capitulos">
               <div className="flex items-center gap-2">
-                <BsPerson />
+                <GrChapterAdd />
                 Capitulos
               </div>
             </Tab>
@@ -96,7 +118,6 @@ const RecycleBin = () => {
                     key={index}
                     book={book}
                     onRestore={() => handleRestoreBook(book)}
-                    disableButton={isLoading}
                   />
                 ))}
               </div>
@@ -104,9 +125,9 @@ const RecycleBin = () => {
                 <div className="transform scale-125 shadow">
                   {Boolean(recycledBooksFiltered?.length) && (
                     <Pagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={handlePageChange}
+                      currentPage={currentPage ?? 1}
+                      totalPages={totalPages ?? 0}
+                      onPageChange={setCurrentPage}
                     />
                   )}
                 </div>
@@ -120,7 +141,6 @@ const RecycleBin = () => {
                     key={index}
                     chapter={chapter}
                     onRestore={() => handleRestoreChapter(chapter)}
-                    disableButton={isLoading}
                   />
                 ))}
               </div>
@@ -128,9 +148,9 @@ const RecycleBin = () => {
                 <div className="transform scale-125 shadow">
                   {Boolean(recycledChapters?.length) && (
                     <Pagination
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={handlePageChange}
+                      currentPage={currentChapter ?? 1}
+                      totalPages={totalChapters ?? 0}
+                      onPageChange={setCurrentChapter}
                     />
                   )}
                 </div>

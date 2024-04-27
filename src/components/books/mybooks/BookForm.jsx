@@ -52,7 +52,48 @@ const BookForm = ({ book }) => {
   };
 
   const handleAddImage = async (file) => {
-    setImage({ current: "", preview: URL.createObjectURL(file), file });
+    const resizedImage = await resizeImage(file);
+    setImage({
+      current: "",
+      preview: URL.createObjectURL(resizedImage),
+      file: resizedImage,
+    });
+  };
+  const resizeImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        let newWidth, newHeight;
+
+        if (img.width / img.height > 2 / 3) {
+          newHeight = img.height;
+          newWidth = (newHeight * 2) / 3;
+        } else {
+          newWidth = img.width;
+          newHeight = (newWidth * 3) / 2;
+        }
+
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+        canvas.toBlob(
+          (blob) => {
+            resolve(new File([blob], file.name, { type: file.type }));
+          },
+          file.type,
+          1
+        );
+      };
+
+      img.onerror = (error) => {
+        reject(error);
+      };
+    });
   };
 
   const handleRemoveImage = async () => {

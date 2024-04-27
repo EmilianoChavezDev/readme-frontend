@@ -25,13 +25,24 @@ const useRecycle = () => {
   };
 
   // Functions to interact with the API
-  const getRecycledBooks = async () => {
+  const getRecycledBooks = async (params) => {
     return handleRequest(() =>
       api.get(RECYCLE_ENDPOINT, {
+        params,
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
     );
   };
+
+  const getRecycledChapters = async (params) => {
+    return handleRequest(() =>
+      api.get(`${RECYCLE_ENDPOINT}/capitulos`, {
+        params,
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+    );
+  };
+
   const restoreBook = async (id) => {
     return handleRequest(() =>
       api.put(
@@ -43,6 +54,7 @@ const useRecycle = () => {
       )
     );
   };
+
   const restoreChatper = async (id) => {
     return handleRequest(() =>
       api.put(
@@ -54,6 +66,13 @@ const useRecycle = () => {
       )
     );
   };
-  return { getRecycledBooks, restoreBook, restoreChatper, error, isLoading };
+  return {
+    getRecycledBooks,
+    restoreBook,
+    restoreChatper,
+    getRecycledChapters,
+    error,
+    isLoading,
+  };
 };
 export default useRecycle;

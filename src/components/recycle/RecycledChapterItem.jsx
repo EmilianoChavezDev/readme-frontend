@@ -1,16 +1,17 @@
 "use client";
-import { Button, Typography } from "@material-tailwind/react";
+import moment from "moment";
 import Image from "next/image";
+import { Button, Typography } from "@material-tailwind/react";
 
-const RecycledBookItem = ({ chapter, onRestore, disableButton }) => {
+const RecycledBookItem = ({ chapter, onRestore }) => {
   return (
     <div className="flex justify-between bg-buttonColorGray shadow-lg p-2 gap-4">
       <div className="flex gap-3">
         <div className="flex-grow">
           <Image
             src={
-              chapter.libroPortada.length
-                ? chapter.libroPortada
+              chapter.portada.length
+                ? chapter.portada
                 : "/image/template_libro.png"
             }
             width={120}
@@ -22,14 +23,20 @@ const RecycledBookItem = ({ chapter, onRestore, disableButton }) => {
           />
         </div>
         <div className="flex flex-col">
-          <div>
+          <div className="line-clamp-3">
             <Typography variant="h5" color="blue-gray">
-              Libro: {chapter.tituloLibro}
+              Capitulo del libro: {chapter.titulo_libro}
+            </Typography>
+          </div>
+          <div className="line-clamp-3">
+            <Typography variant="h5" color="blue-gray">
+              Titulo del capitulo: {chapter.titulo}
             </Typography>
           </div>
           <div>
-            <Typography variant="h5" color="blue-gray">
-              Titulo del capitulo: {chapter.titulo}
+            <Typography variant="h6" color="blue-gray">
+              Eliminado en fecha:{" "}
+              {moment(chapter?.updated_at).format("DD/MM/YYYY")}
             </Typography>
           </div>
         </div>
@@ -37,9 +44,8 @@ const RecycledBookItem = ({ chapter, onRestore, disableButton }) => {
       <div className="col-span-12 _md:col-span-3 flex justify-end gap-3 items-end text-nowrap">
         <Button
           size="sm"
-          className="bg-gray-700 capitalize"
+          className="bg-gray-700 capitalize hover:bg-gray-800 shadow-md transition duration-300 ease-in-out"
           onClick={onRestore}
-          disabled={disableButton}
         >
           Restaurar
         </Button>

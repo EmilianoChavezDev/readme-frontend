@@ -1,9 +1,10 @@
 "use client";
-import { Button, Typography } from "@material-tailwind/react";
+import moment from "moment";
 import Image from "next/image";
+import { Button, Typography } from "@material-tailwind/react";
 import BookStatistics from "@/components/search/BookStatistics";
 
-const RecycledBookItem = ({ book, onRestore, disableButton }) => {
+const RecycledBookItem = ({ book, onRestore }) => {
   return (
     <div className="flex justify-between bg-buttonColorGray shadow-lg p-2 gap-4">
       <div className="flex gap-3">
@@ -23,9 +24,15 @@ const RecycledBookItem = ({ book, onRestore, disableButton }) => {
 
         <div className="col-span-12 _md:col-span-7">
           <div className="flex flex-col">
-            <div>
+            <div className="truncate-ellipsis w-full max-w-[800px] line-clamp-3">
               <Typography variant="h5" color="blue-gray">
                 {book.titulo}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="h6" color="blue-gray">
+                Eliminado en fecha:{" "}
+                {moment(book?.updated_at).format("DD/MM/YYYY")}
               </Typography>
             </div>
             <div className="-mt-2">
@@ -52,9 +59,8 @@ const RecycledBookItem = ({ book, onRestore, disableButton }) => {
       <div className="col-span-12 _md:col-span-3 flex justify-end gap-3 items-end text-nowrap">
         <Button
           size="sm"
-          className="bg-gray-700 capitalize"
+          className="bg-gray-700 capitalize hover:bg-gray-800 shadow-md transition duration-300 ease-in-out"
           onClick={onRestore}
-          disabled={disableButton}
         >
           Restaurar
         </Button>

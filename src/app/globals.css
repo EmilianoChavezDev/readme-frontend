@@ -301,3 +301,9 @@
 .aspect-portada {
   aspect-ratio: 2 / 3;
 }
+
+.truncate-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
