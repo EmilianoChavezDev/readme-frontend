@@ -189,27 +189,43 @@ export default function xCommentsSection({ bookId }) {
         onSave={handleUpdateComment}
         title="Editar Comentario"
       >
-        <textarea
-          className="border rounded-lg p-3 w-full border-gray-400 outline-none"
-          value={commentToEdit?.comentario ?? ""}
-          onChange={(event) => handleCommentToUpdateChange(event.target.value)}
-          rows={5}
-        />
+        <div className="relative">
+          <textarea
+            className="border rounded-lg p-3 w-full border-gray-400 outline-none"
+            value={commentToEdit?.comentario ?? ""}
+            onChange={(event) =>
+              handleCommentToUpdateChange(event.target.value)
+            }
+            rows={5}
+            maxLength={500}
+          />
+          <span className="absolute bottom-2 right-2 text-xs text-gray-400">
+            {commentToEdit?.comentario.length ?? 0}/500
+          </span>
+        </div>
       </Modal>
       <section className="flex flex-wrap">
         <div className="w-full _lg:w-1/2 px-9 _lg:px-16 min-w-96 py-4 flex flex-col gap-3">
           <span className="font-extrabold text-xl">Comentarios</span>
           <div className="flex gap-2 flex-wrap justify-end">
-            <div className="flex gap-2 min-w-80 flex-grow">
+            <div className="flex gap-2 min-w-80 flex-grow relative">
               <ProfileView username={username} imagen={profile} size={8} />
               <textarea
                 className="text-xs border rounded-lg p-3 flex-grow border-gray-400 outline-none"
-                placeholder="Añadir un comment"
+                placeholder="Añadir un comentario"
                 rows={5}
                 value={comment}
-                onChange={(event) => setComment(event.target.value)}
+                maxLength={500}
+                onChange={(event) => {
+                  if (event.target.value.length <= 700) {
+                    setComment(event.target.value);
+                  }
+                }}
                 onFocus={(event) => event.target.select()}
               />
+              <span className="absolute top-2 right-2 text-xs text-gray-400">
+                {comment.length}/500
+              </span>
             </div>
             <button
               className="bg-colorPrimario text-white h-9 px-3 rounded-lg disabled:cursor-not-allowed"
@@ -353,7 +369,7 @@ export default function xCommentsSection({ bookId }) {
                       </div>
                     </div>
                   </header>
-                  <p>{item?.comentario}</p>
+                  <p className="line-clamp-5">{item?.comentario}</p>
                 </div>
               </li>
             ))}
