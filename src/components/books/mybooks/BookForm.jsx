@@ -52,7 +52,48 @@ const BookForm = ({ book }) => {
   };
 
   const handleAddImage = async (file) => {
-    setImage({ current: "", preview: URL.createObjectURL(file), file });
+    const resizedImage = await resizeImage(file);
+    setImage({
+      current: "",
+      preview: URL.createObjectURL(resizedImage),
+      file: resizedImage,
+    });
+  };
+  const resizeImage = (file) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        let newWidth, newHeight;
+
+        if (img.width / img.height > 2 / 3) {
+          newHeight = img.height;
+          newWidth = (newHeight * 2) / 3;
+        } else {
+          newWidth = img.width;
+          newHeight = (newWidth * 3) / 2;
+        }
+
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+        canvas.toBlob(
+          (blob) => {
+            resolve(new File([blob], file.name, { type: file.type }));
+          },
+          file.type,
+          1
+        );
+      };
+
+      img.onerror = (error) => {
+        reject(error);
+      };
+    });
   };
 
   const handleRemoveImage = async () => {
@@ -161,12 +202,12 @@ const BookForm = ({ book }) => {
         <form encType="multipart/form-data" className="group relative">
           {image.current || image.preview ? (
             <img
-              className="object-cover w-72 h-96 rounded-md"
+              className="object-cover  w-72 aspect-portada rounded-md"
               src={image.preview ?? image.current}
               alt="Portada de Libro"
             />
           ) : (
-            <label className="bg-ChaptearHeader text-BooksCreateImageBackground w-72 h-96 flex justify-center items-center rounded-md cursor-pointer">
+            <label className="bg-ChaptearHeader text-BooksCreateImageBackground w-72 aspect-portada flex justify-center items-center rounded-md cursor-pointer">
               <input
                 type="file"
                 accept="image/*"
@@ -207,7 +248,7 @@ const BookForm = ({ book }) => {
             <h1 className="text-3xl font-bold mb-2 text-gray-900 mx-6">
               Detalle del libro
             </h1>
-            <div className="mb-2 w-full px-6 md:px-16">
+            <div className="mb-2 w-full px-6 md:px-16 relative">
               <label
                 htmlFor="titulo"
                 className="block text-2xl font-semibold mb-2 text-gray-900"
@@ -221,7 +262,11 @@ const BookForm = ({ book }) => {
                 value={info.titulo}
                 onChange={handleInputChange}
                 disabled={isLoading}
+                maxLength={70}
               />
+              <span className="absolute bottom-3 right-20 text-xs text-gray-400">
+                {info.titulo.length}/70
+              </span>
               {errors.titulo && (
                 <p className="text-red-500 font-semibold py-2">
                   {errors.titulo}
@@ -229,12 +274,12 @@ const BookForm = ({ book }) => {
               )}
             </div>
 
-            <div className="mb-2 w-full px-6 md:px-16">
+            <div className="mb-2 w-full px-6 md:px-16 relative">
               <label
                 htmlFor="sinopsis"
                 className="block text-2xl font-semibold py-2 text-gray-900"
               >
-                Descripción
+                Sinopsis
               </label>
               <textarea
                 id="sinopsis"
@@ -242,7 +287,11 @@ const BookForm = ({ book }) => {
                 value={sinopsis}
                 onChange={handleInputChange}
                 disabled={isLoading}
+                maxLength={1600}
               />
+              <span className="absolute bottom-3 right-20 text-xs text-gray-400">
+                {sinopsis.length}/1600
+              </span>
               {errors.sinopsis && (
                 <p className="text-red-500 font-semibold">{errors.sinopsis}</p>
               )}
