@@ -75,11 +75,11 @@ const page = ({ params }) => {
     setIsNotDisable(false);
   }, [isDirty]);
 
-  // si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
-  // useEffect(() => {
-  //   if (!currentData || !isRefresh) return;
-  //   refresh(currentData);
-  // }, [currentData, isRefresh]);
+  //si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
+  useEffect(() => {
+    if (!currentData || !isRefresh) return;
+    refresh(currentData);
+  }, [currentData, isRefresh]);
 
   // traer los datos del usuario
   useEffect(() => {
