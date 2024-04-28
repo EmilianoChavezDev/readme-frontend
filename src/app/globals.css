@@ -4,16 +4,305 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --fuentePrincipal: "Open Sans", sans-serif;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142.1 76.2% 36.3%;
+    --radius: 0.5rem;
 
-  --colorPrimario: #167574;
-  --colorHoverPrimario: #0b5755;
-  --blanco: #fff;
-  --negro: #000;
-  --colorFondo: #e9ecef;
-  --colorLink: #353434a1;
-  --colorError: #b91c1c;
+    --fuentePrincipal: "Open Sans", sans-serif;
+
+    --colorPrimario: #167574;
+    --colorHoverPrimario: #0b5755;
+    --blanco: #fff;
+    --negro: #000;
+    --colorFondo: #e9ecef;
+    --colorLink: #353434a1;
+    --colorError: #b91c1c;
+    --colorButtons: #6d28d9;
+  }
+
+  .dark {
+    --background: 216 18% 16%;
+    --foreground: 216 18% 16%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 142.1 70.6% 45.3%;
+    --primary-foreground: 144.9 80.4% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 240 5.9% 90%;
+    --input: 240 3.7% 15.9%;
+    --ring: 142.4 71.8% 29.2%;
+    --radius: 0.5rem;
+  }
+  * {
+    @apply border-border dark:text-white;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  [tabindex="0"] {
+    @apply dark:text-black;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  th,
+  td,
+  a,
+  label {
+    @apply dark:text-white dark:no-underline;
+  }
+
+  tbody tr {
+    @apply dark:hover:bg-dark-darkColorHover;
+  }
+
+  tr {
+    @apply dark:text-white dark:border-b-dark-darkColorButtons;
+  }
+
+  textarea,
+  input,
+  select {
+    @apply dark:bg-dark-darkColorNeutral dark:text-white dark:placeholder:text-white dark:focus:placeholder-opacity-50;
+  }
+
+  :checked {
+    @apply dark:accent-dark-darkColorButtons;
+  }
+
+  button.bg-colorPrimario,
+  .bg-gray-600,
+  .bg-cyan-800 {
+    @apply dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover dark:disabled:bg-dark-darkColorDisabled;
+  }
+
+  label.bg-gray-600 {
+    @apply dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover;
+  }
+
+  /*-----------------------------*/
+  /*Moderador Tray*/
+
+  /* Buttons */
+  .dorder-colorPrimario,
+  .text-colorPrimario {
+    @apply dark:border-dark-darkColorButtons dark:text-dark-darkColorButtons;
+  }
+
+  .w-full.max-h-96.bg-white.p-3.border.border-blue-gray-50.rounded-md.shadow-lg.font-sans.text-sm.font-normal.text-blue-gray-500.overflow-auto {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*-----------------------------*/
+
+  /* Desactivar libro modal */
+  .align-middle.select-none.font-sans.font-bold.text-center.uppercase.transition-all.text-xs.py-3.px-6.rounded-lg.shadow-md.border.bg-white.brightness-90.border-red-900.text-red-900 {
+    @apply dark:bg-dark-darkColorButtons dark:border-dark-darkColorButtons dark:hover:bg-dark-darkColorHover;
+  }
+
+  /*-----------------------------*/
+
+  /*Modal reportar*/
+  .relative.bg-white.m-4.rounded-lg.shadow-2xl.text-blue-gray-500.antialiased.font-sans.text-base.font-light.leading-relaxed.w-full {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*-----------------------------*/
+
+  /*Apartado de opciones del navbar*/
+  .bg-white.p-4.border.border-blue-gray-50.rounded-lg.shadow-lg.font-sans.font-normal.break-words.whitespace-normal.z-60.w-52,
+  .bg-white.p-4.border.border-blue-gray-50.rounded-lg.shadow-lg.font-sans.font-normal.break-words.whitespace-normal.z-60.w-96.text-gray-800.text-md,
+  .bg-white.p-4.border.border-blue-gray-50.rounded-lg.shadow-lg {
+    @apply dark:bg-dark-darkColorNeutral dark:text-white;
+  }
+
+  /*-----------------------------*/
+
+  /*Aplicando el color del navbar a todos los layouts*/
+  .bg-ChaptearHeader {
+    @apply dark:bg-dark-darkColorNavBar;
+  }
+
+  /*-----------------------------*/
+
+  /* Estadisticas */
+  .border.rounded-md.border-gray-300.w-full.flex.flex-col.gap-6.items-center.p-5 {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  .border.rounded-md.border-gray-300.p-3,
+  .border.rounded-md.border-gray-300.p-5 {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*-----------------------------*/
+
+  /* Parte de mi cuenta */
+  .flex.items-center.gap-x-3.py-4.px-2 {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*-----------------------------*/
+
+  /* Mis libros */
+  #container-options,
+  #modal-content {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  #modal-content button {
+    @apply dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover;
+  }
+
+  #new-book,
+  #continue-writing {
+    @apply dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover dark:no-underline;
+  }
+
+  #book-container {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*-----------------------------*/
+
+  /* .my-react-select-container {
+  } */
+  .my-react-select-container .my-react-select__control {
+    @apply dark:bg-dark-darkColorNeutral dark:border-white;
+  }
+
+  .my-react-select-container .my-react-select__menu {
+    @apply dark:bg-dark-darkColorNeutral border-2;
+  }
+
+  .my-react-select-container .my-react-select__option {
+    @apply dark:hover:bg-dark-darkColorHover dark:bg-dark-darkColorNeutral;
+  }
+
+  /* Multi-value container and labels */
+  .my-react-select-container .my-react-select__multi-value {
+    @apply dark:bg-dark-darkColorNeutral dark:placeholder:text-white;
+  }
+  .my-react-select-container .my-react-select__multi-value__label,
+  .my-react-select-container .my-react-select__single-value {
+    @apply dark:text-white;
+  }
+
+  .my-react-select-container .my-react-select__input-container {
+    @apply dark:placeholder:text-white;
+  }
+
+  /*-----------------------------*/
+
+  /* Apartado de busqueda del navbar */
+  #input-mybooks {
+    @apply dark:placeholder:text-white;
+  }
+
+  #view-more,
+  #read-book {
+    @apply dark:no-underline;
+  }
+
+  .absolute.inset-0.z-10.h-full.bg-white.rounded-md.shadow {
+    @apply dark:bg-dark-darkColorButtons;
+  }
+
+  .sticky.top-2 {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*-----------------------------*/
+
+  /* Capitulos */
+  /*Componente de capitulos*/
+  .max-w-72.rounded-lg.shadow-xl.flex.flex-col.py-5,
+  .absolute.left-0.mt-1.w-full.z-50 {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  span.ql-picker-label {
+    @apply dark:underline;
+  }
+
+  /*Titulo del capitulo*/
+  .text-2xl.font-semibold.border-none.bg-transparent.outline-none.text-center {
+    @apply dark:hover:bg-blue-gray-900;
+  }
+
+  #quill {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*-----------------------------*/
+
+  /*Partes de leer libro*/
+  .absolute.z-10.bg-white.border.border-gray-200.rounded-md {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*Porcentaje leido*/
+  .bg-colorPrimario {
+    @apply dark:bg-dark-darkColorButtons;
+  }
+  .fixed.bottom-0.bg-white.z-10.p-4.w-full,
+  .sticky.top-0.bg-white.z-10.p-2,
+  .flex.justify-between.sticky.top-0bg-white.z-10 {
+    @apply dark:bg-dark-darkColorBackground;
+  }
+  .bg-colorHoverPrimario {
+    @apply dark:bg-dark-darkColorHover;
+  }
+
+  /*Apartado de editar perfil*/
+  .flex.flex-col.mx-auto.items-center.justify-center.min-h-full.rounded-lg {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*Apartado de busqueda de usuarios*/
+  .relative.flex.flex-col.bg-clip-border.text-gray-700.mt-6.w-52.min-h-36.py-4.overflow-hidden.bg-buttonColorGray.rounded-3xl.shadow-xl {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
+  /*Toaster*/
+  div[style*="animation: 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) 0s 1 normal forwards running go3223188581;"] {
+    @apply dark:bg-dark-darkColorBackground dark:text-white;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -30,6 +319,15 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--colorPrimario);
+}
+
+/* Estilos para el scrollbar en modo oscuro */
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--colorButtons);
+  border-radius: 10px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--colorButtons);
 }
 
 .dot-spinner {
@@ -297,4 +595,13 @@
 }
 .truncate-lines {
   -webkit-line-clamp: 2;
+}
+.aspect-portada {
+  aspect-ratio: 2 / 3;
+}
+
+.truncate-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

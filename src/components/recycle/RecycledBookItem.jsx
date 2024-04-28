@@ -1,14 +1,14 @@
-import { Button, Typography } from "@material-tailwind/react";
+"use client";
+import moment from "moment";
 import Image from "next/image";
-import BookStatistics from "./BookStatistics";
-import { FaUser } from "react-icons/fa";
-import Link from "next/link";
+import { Button, Typography } from "@material-tailwind/react";
+import BookStatistics from "@/components/search/BookStatistics";
 
-const SearchItem = ({ book }) => {
+const RecycledBookItem = ({ book, onRestore }) => {
   return (
-    <div className="flex justify-between bg-buttonColorGray shadow-lg p-2 gap-4 dark:bg-dark-darkColorNeutral">
+    <div className="flex justify-between bg-buttonColorGray shadow-lg p-2 gap-4">
       <div className="flex gap-3">
-        <div class="flex-grow">
+        <div className="flex-grow">
           <Image
             src={
               book.portada.length ? book.portada : "/image/template_libro.png"
@@ -24,9 +24,15 @@ const SearchItem = ({ book }) => {
 
         <div className="col-span-12 _md:col-span-7">
           <div className="flex flex-col">
-            <div>
+            <div className="truncate-ellipsis w-full max-w-[800px] line-clamp-3">
               <Typography variant="h5" color="blue-gray">
                 {book.titulo}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="h6" color="blue-gray">
+                Eliminado en fecha:{" "}
+                {moment(book?.updated_at).format("DD/MM/YYYY")}
               </Typography>
             </div>
             <div className="-mt-2">
@@ -35,16 +41,6 @@ const SearchItem = ({ book }) => {
                   {book.cantidad_capitulos_publicados}
                 </span>{" "}
                 partes publicadas
-              </Typography>
-            </div>
-            <div className="mt-1">
-              <Typography
-                variant="h6"
-                color="blue-gray"
-                className="flex flex-row gap-1 justify-start items-center"
-              >
-                <FaUser />
-                {book.autorUsername}
               </Typography>
             </div>
             <div>
@@ -56,30 +52,21 @@ const SearchItem = ({ book }) => {
                 />
               </Typography>
             </div>
-            <div class="line-clamp-3">{book.sinopsis}</div>
+            <div className="line-clamp-3">{book.sinopsis}</div>
           </div>
         </div>
       </div>
       <div className="col-span-12 _md:col-span-3 flex justify-end gap-3 items-end text-nowrap">
         <Button
           size="sm"
-          className="bg-gray-700 capitalize dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
+          className="bg-gray-700 capitalize hover:bg-gray-800 shadow-md transition duration-300 ease-in-out"
+          onClick={onRestore}
         >
-          <Link id="view-more" href={"/books/" + book.id}>
-            Ver Detalles
-          </Link>
-        </Button>
-        <Button
-          size="sm"
-          className="bg-cyan-800 capitalize dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
-        >
-          <Link id="read-book" href={"/books/" + book.id + "/read"}>
-            Leer Libro
-          </Link>
+          Restaurar
         </Button>
       </div>
     </div>
   );
 };
 
-export default SearchItem;
+export default RecycledBookItem;

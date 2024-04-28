@@ -39,7 +39,7 @@ export default function ReadBook({ params }) {
             <BodyRead />
           </div>
           {/**footer */}
-          <div className="fixed bottom-0 bg-white z-10 p-4 w-full">
+          <div className="fixed bottom-0 bg-white z-10 p-4 w-full ">
             <ProgressBar percentage={chapterData?.progreso * 100} />
           </div>
         </div>
