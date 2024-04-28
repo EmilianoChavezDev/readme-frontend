@@ -38,9 +38,10 @@ const RecycledBookItem = ({ book, onRestore }) => {
             <div className="-mt-2">
               <Typography variant="h6" color="blue-gray">
                 <span className="font-semibold">
-                  {book.cantidad_capitulos_publicados}
-                </span>{" "}
-                partes publicadas
+                  {book.cantidad_capitulos_publicados === 1
+                    ? "1 parte publicada"
+                    : `${book.cantidad_capitulos_publicados} partes publicadas`}
+                </span>
               </Typography>
             </div>
             <div>
