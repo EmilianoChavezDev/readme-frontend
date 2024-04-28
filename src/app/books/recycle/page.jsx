@@ -18,6 +18,7 @@ import { VscChevronRight } from "react-icons/vsc";
 import Pagination from "@/components/common/Pagination";
 import RecycledBookItem from "@/components/recycle/RecycledBookItem";
 import RecycledChapterItem from "@/components/recycle/RecycledChapterItem";
+import NotFound from "@/components/common/NotFound";
 
 const RecycleBin = () => {
   const {
@@ -113,13 +114,20 @@ const RecycleBin = () => {
             <TabPanel value="libros">
               <div className="flex justify-center flex-col gap-5 px-10 h-full">
                 {isLoading && <Loader />}
-                {recycledBooksFiltered.map((book, index) => (
-                  <RecycledBookItem
-                    key={index}
-                    book={book}
-                    onRestore={() => handleRestoreBook(book)}
+                {Boolean(recycledBooksFiltered?.length) ? (
+                  recycledBooksFiltered.map((book, index) => (
+                    <RecycledBookItem
+                      key={index}
+                      book={book}
+                      onRestore={() => handleRestoreBook(book)}
+                    />
+                  ))
+                ) : (
+                  <NotFound
+                    message="¡Vaya! Parece que no tienes ningún libro eliminado."
+                    butMessage="Pero no te preocupes, puedes seguir navegando a través de la página."
                   />
-                ))}
+                )}
               </div>
               <div className="flex justify-center p-3 my-4">
                 <div className="transform scale-125 shadow">
@@ -136,13 +144,20 @@ const RecycleBin = () => {
             <TabPanel value="capitulos">
               <div className="flex justify-center flex-col gap-5 px-10">
                 {isLoading && <Loader />}
-                {recycledChapters.map((chapter, index) => (
-                  <RecycledChapterItem
-                    key={index}
-                    chapter={chapter}
-                    onRestore={() => handleRestoreChapter(chapter)}
+                {Boolean(recycledChapters?.length) ? (
+                  recycledChapters.map((chapter, index) => (
+                    <RecycledChapterItem
+                      key={index}
+                      chapter={chapter}
+                      onRestore={() => handleRestoreChapter(chapter)}
+                    />
+                  ))
+                ) : (
+                  <NotFound
+                    message="¡Vaya! Parece que no tienes ningún capítulo eliminado."
+                    butMessage="Pero no te preocupes, puedes seguir navegando a través de la página."
                   />
-                ))}
+                )}
               </div>
               <div className="flex justify-center p-3 my-4">
                 <div className="transform scale-125 shadow">
