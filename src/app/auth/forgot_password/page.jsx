@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../login/styles/Inicio.module.css";
+import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
   email: "",
@@ -17,12 +18,7 @@ const defaultValues = {
 const Page = () => {
   const [isDisplayed, setIsDisplayed] = useState(false);
 
-  const {
-    loading,
-    errorResponse,
-    successResponse,
-    forgotPassword,
-  } = useAuth();
+  const { loading, errorResponse, successResponse, forgotPassword } = useAuth();
 
   const {
     register,
@@ -34,8 +30,6 @@ const Page = () => {
     forgotPassword(formData);
     setIsDisplayed(true);
   };
-
-  
 
   useEffect(() => {
     if (!errorResponse) return;
@@ -50,7 +44,7 @@ const Page = () => {
   };
 
   return (
-    <div>
+    <PageTheme>
       <div>
         <Image
           src="/image/img_inicio.png"
@@ -110,7 +104,6 @@ const Page = () => {
             >
               {loading ? <Loading /> : "Enviar correo de recuperación"}
             </button>
-            
 
             <div className={styles.content_crear_cuenta}>
               <span>¿Ya tienes una cuenta?</span>{" "}
@@ -119,7 +112,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageTheme>
   );
 };
 

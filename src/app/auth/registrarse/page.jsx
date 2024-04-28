@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "./styles/Registrarse.module.css";
+import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
   username: "",
@@ -105,7 +106,7 @@ const Page = () => {
   };
 
   return (
-    <div>
+    <PageTheme>
       <div>
         <Image
           src="/image/img_inicio.png"
@@ -260,7 +261,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageTheme>
   );
 };
 
