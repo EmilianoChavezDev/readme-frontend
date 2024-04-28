@@ -54,6 +54,7 @@ module.exports = withMT({
         textHeaderColorGray: "#484848",
         textInformationColor: "#222222",
         colorBorderGray: "#89979B",
+        colorFondo: "#e9ecef",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
