@@ -101,8 +101,6 @@ export default function SetUp() {
       return;
     }
 
-    console.log(image);
-
     await updateProfile(image.file);
 
     if (!isError) {
