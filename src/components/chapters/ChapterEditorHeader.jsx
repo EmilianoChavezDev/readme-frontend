@@ -14,7 +14,7 @@ const ChapterEditorHeader = ({
   const [showChapters, setShowChapters] = useState(false);
 
   return (
-    <div className="bg-ChaptearHeader h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg sticky top-0 z-50">
+    <div className="bg-ChaptearHeader h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg sticky top-0 z-50 ">
       <div className="text-white font-semibold text-lg flex items-center relative">
         <Link href={`/books/${bookId}`}>
           <FaAngleLeft className="text-2xl" />
@@ -42,7 +42,7 @@ const ChapterEditorHeader = ({
           />
           <label
             htmlFor="fileInput"
-            className="bg-gray-600 text-white py-2 px-4 md:px-7 rounded-lg disabled:cursor-not-allowed inline-block cursor-pointer"
+            className="bg-gray-600 text-white py-2 px-4 md:px-7 rounded-lg disabled:cursor-not-allowed inline-block cursor-pointe cursor-pointer"
           >
             Subir PDF
           </label>

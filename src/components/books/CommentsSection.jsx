@@ -267,13 +267,13 @@ export default function xCommentsSection({ bookId }) {
                         <PopoverContent className="shadow-lg p-1 border-gray-400">
                           <div className="p-1 flex flex-col text-xs text-black">
                             <span
-                              className="cursor-pointer h-7 flex items-center text-gray-700 hover:text-black hover:bg-gray-100 rounded-sm px-2"
+                              className="cursor-pointer h-7 flex items-center text-gray-700 hover:text-black hover:bg-gray-100 rounded-sm px-2 "
                               onClick={() => setCommentIdToRemove(item.id)}
                             >
                               Eliminar
                             </span>
                             <span
-                              className="cursor-pointer h-7 flex items-center text-gray-700 hover:text-black hover:bg-gray-100 rounded-sm px-2"
+                              className="cursor-pointer h-7 flex items-center text-gray-700 hover:text-black hover:bg-gray-100 rounded-sm px-2 dark:hover:bg-none"
                               onClick={() => setCommentToEdit(item)}
                             >
                               Editar
