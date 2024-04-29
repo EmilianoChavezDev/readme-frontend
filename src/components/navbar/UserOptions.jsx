@@ -14,6 +14,7 @@ import {
 import useUserInfo from "@/hooks/useUser";
 import ProfileView from "@/components/common/ProfileView";
 import { useUser } from "@/contexts/UserProvider";
+import { ModeToggle } from "../common/ToggleMode";
 
 export default function UserOptions({ username, logout }) {
   const router = useRouter();
@@ -52,6 +53,7 @@ export default function UserOptions({ username, logout }) {
         handler={setShowPopover}
         placement="bottom-end"
       >
+        <ModeToggle />
         <PopoverHandler>
           <button className="group flex items-center gap-2">
             <ProfileView username={username} imagen={profileUpdate} size={8} />
@@ -83,6 +85,7 @@ export default function UserOptions({ username, logout }) {
               <FaUserCircle />
               <span>Mi Cuenta</span>
             </li>
+
             {userRole === "moderador" && (
               <li
                 className="flex pb-2 border-b gap-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"

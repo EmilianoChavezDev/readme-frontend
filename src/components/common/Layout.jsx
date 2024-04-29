@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
+
 import NavBar from "../NavBar";
 import { usePathname } from "next/navigation";
 import { ignorePaths } from "@/utils/ignoreNavbarAndFooter";
 
-const Layout = ({ children }) => {
+const Layout = () => {
   const router = usePathname();
   const pathSegments = router.split("/");
 
@@ -14,12 +14,7 @@ const Layout = ({ children }) => {
     !(pathSegments[1] === "books" && pathSegments[3] === "read");
 
   return (
-    <div>
-      <div className="sticky top-0 z-50">
-        {shouldRenderNavBar && <NavBar />}
-      </div>
-      <div>{children}</div>
-    </div>
+    <div className="sticky top-0 z-50">{shouldRenderNavBar && <NavBar />}</div>
   );
 };
 

@@ -1,5 +1,4 @@
 "use client";
-import NavBar from "@/components/NavBar";
 import { useUser } from "@/contexts/UserProvider";
 import { FaUser, FaChartBar } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
@@ -11,7 +10,7 @@ const page = () => {
   return (
     <>
       <div className="flex flex-col">
-        <div className="m-5 font-bold _lg:text-2xl _lg:my-8 _lg:ml-20 text-textHeaderColorGray">
+        <div className="m-5 font-bold _lg:text-2xl _lg:my-8 _lg:ml-20 text-textHeaderColorGray dark:text-white">
           Mi cuenta
         </div>
         <div>

@@ -135,11 +135,11 @@ export default function ChapterForm({
   return (
     <>
       {bookError ? (
-        <div className="flex justify-center items-center h-">
+        <div className="flex justify-center items-center">
           <h1>El capítulo de este libro no fue encontrado</h1>
         </div>
       ) : (
-        <div className="flex flex-col bg-white">
+        <div className="flex flex-col h-screen">
           {isBookLoading && <Loader />}
           <ChapterEditorHeader
             bookId={bookId}
@@ -151,7 +151,7 @@ export default function ChapterForm({
             onPublish={handlePublish}
             disableButtons={isLoading}
           />
-          <div className="flex flex-col justify-center lg:py-6">
+          <div className="flex flex-col justify-center lg:py-6 ">
             <div className="d-flex justify-center w-full">
               <TitleInput
                 value={chapterTitle}

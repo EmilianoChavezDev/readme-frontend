@@ -49,7 +49,10 @@ export default function RenderCapitules({ cap, bookId }) {
       style={style}
     >
       <Tooltip content={cap.titulo}>
-        <Link href={`/books/${bookId}/chapters/write/${cap.id}`}>
+        <Link
+          href={`/books/${bookId}/chapters/write/${cap.id}`}
+          className="dark:no-underline"
+        >
           <p className="text-sm font-semibold w-24 truncate">{cap.titulo}</p>
         </Link>
       </Tooltip>

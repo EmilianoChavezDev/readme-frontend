@@ -10,6 +10,7 @@ import Loading from "@/components/common/Loading";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import InputField from "@/components/common/InputField";
 import { Error } from "@/components/common/Error";
+import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
   email: "",
@@ -45,7 +46,7 @@ const Page = () => {
   };
 
   return (
-    <div>
+    <PageTheme>
       <div>
         <Image
           src="/image/img_inicio.png"
@@ -74,7 +75,7 @@ const Page = () => {
           <div className="flex flex-col gap-y-2">
             {/*parte del email */}
             <InputField
-              label={"*Email"}
+              label={"Email"}
               type={"email"}
               onBlur={handleBlur}
               register={register}
@@ -92,7 +93,7 @@ const Page = () => {
             {/*parte del password */}
             <div className="relative">
               <InputField
-                label={"*Contraseña"}
+                label={"Contraseña"}
                 type={showPassword ? "text" : "password"}
                 onBlur={handleBlur}
                 register={register}
@@ -115,8 +116,9 @@ const Page = () => {
               </p>
             )}
             <div className={styles.content_cambiar_contrasena}>
-              
-              <Link href={"/auth/forgot_password"}>¿Olvidaste tu contraseña?</Link>
+              <Link href={"/auth/forgot_password"}>
+                ¿Olvidaste tu contraseña?
+              </Link>
             </div>
           </div>
 
@@ -136,7 +138,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageTheme>
   );
 };
 

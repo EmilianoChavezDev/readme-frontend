@@ -8,7 +8,12 @@ import { MdMoreVert } from "react-icons/md";
 import { FaStar, FaEye, FaComment } from "react-icons/fa";
 import OptionBooks from "@/components/books/mybooks/OptionsMenuBooks";
 
-const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted, canEdit=true }) => {
+const MyBooksContainer = ({
+  libroData,
+  isDeleted,
+  setIsDeleted,
+  canEdit = true,
+}) => {
   const [showOptionMenu, setShowOptionMenu] = useState(false);
 
   const {
@@ -32,59 +37,56 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted, canEdit=true }) 
   });
 
   return (
-    <>
-      <div className={styles.container_drafts}>
-        <Link href={`/books/${libroId}`}>
-          <div className={styles.image_book_container}>
-            <Image
-              src={portada ? portada : "/image/template_libro.png"}
-              width={120}
-              height={160}
-              className={styles.image_port}
-              alt="Portada De Libro"
-              priority={true}
-            />
-          </div>
-        </Link>
-        <div className={styles.books_data_container}>
-          <p className={styles.title_book}>
-            <Link href={"/books/"+libroId}>
-             {titulo}  
-            </Link>
-           
-            </p>
-          <p className={styles.txt_public_parts}>
-            {Number(publicados) === 1
-              ? `${publicados} parte publicada`
-              : `${publicados} partes publicadas`}{" "}
-          </p>
-          <p className={styles.txt_category}>Categoria: {categoria}</p>
-          {isMyBook && (
-            <p className={styles.txt_category}>Autor: {autorUsername}</p>
-          )}
+    <div id="book-container" className={styles.container_drafts}>
+      <Link href={`/books/${libroId}`}>
+        <div className={styles.image_book_container}>
+          <Image
+            src={portada ? portada : "/image/template_libro.png"}
+            width={120}
+            height={160}
+            className={styles.image_port}
+            alt="Portada De Libro"
+            priority={true}
+          />
+        </div>
+      </Link>
+      <div className={styles.books_data_container}>
+        <p className={styles.title_book}>
+          <Link href={"/books/" + libroId}>{titulo}</Link>
+        </p>
+        <p className={styles.txt_public_parts}>
+          {Number(publicados) === 1
+            ? `${publicados} parte publicada`
+            : `${publicados} partes publicadas`}{" "}
+        </p>
+        <p className={styles.txt_category}>Categoria: {categoria}</p>
+        {isMyBook && (
+          <p className={styles.txt_category}>Autor: {autorUsername}</p>
+        )}
 
-          <div className={styles.data_FCV}>
-            <div className={styles.dataFCV_container}>
-              <FaEye size={15} color="black" className={styles.img_icons} />
-              <p className={styles.puntuation}>
-                {formatNumber({ value: cantidad_lecturas })}
-              </p>
-            </div>
-            <div className={styles.dataFCV_container}>
-              <FaStar size={15} color="black" className={styles.img_icons} />
-              <p className={styles.puntuation}>
-                {formatNumber({ value: puntuacion_media })}
-              </p>
-            </div>
-            <div className={styles.dataFCV_container}>
-              <FaComment size={15} color="black" className={styles.img_icons} />
-              <p className={styles.puntuation}>
-                {formatNumber({ value: cantidad_comentarios })}
-              </p>
-            </div>
+        <div className={styles.data_FCV}>
+          <div className={styles.dataFCV_container}>
+            <FaEye size={15} color="black" className={styles.img_icons} />
+            <p className={styles.puntuation}>
+              {formatNumber({ value: cantidad_lecturas })}
+            </p>
+          </div>
+          <div className={styles.dataFCV_container}>
+            <FaStar size={15} color="black" className={styles.img_icons} />
+            <p className={styles.puntuation}>
+              {formatNumber({ value: puntuacion_media })}
+            </p>
+          </div>
+          <div className={styles.dataFCV_container}>
+            <FaComment size={15} color="black" className={styles.img_icons} />
+            <p className={styles.puntuation}>
+              {formatNumber({ value: cantidad_comentarios })}
+            </p>
           </div>
         </div>
-        {canEdit &&  <div className={styles.write_content}>
+      </div>
+      {canEdit && (
+        <div className={styles.write_content}>
           <div className={styles.menu_container}>
             <div>
               {showOptionMenu && (
@@ -107,15 +109,16 @@ const MyBooksContainer = ({ libroData, isDeleted, setIsDeleted, canEdit=true }) 
           </div>
           <div>
             <Link
+              id="continue-writing"
               className={styles.btn_continue_writting}
               href={`/books/${libroId}/chapters/write`}
             >
               <span>Seguir escribiendo</span>
             </Link>
           </div>
-        </div>}
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 };
 

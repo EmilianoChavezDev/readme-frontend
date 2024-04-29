@@ -2,12 +2,16 @@
 
 import moment from "moment";
 import Link from "next/link";
+import { saveAs } from "file-saver";
+import toast from "react-hot-toast";
 import { Line } from "react-chartjs-2";
+import { pdf } from "@react-pdf/renderer";
 import { BsDownload } from "react-icons/bs";
 import { FaRegComment } from "react-icons/fa";
 import { AiOutlineStar } from "react-icons/ai";
 import { VscChevronRight } from "react-icons/vsc";
 import { LuCalendar, LuEye } from "react-icons/lu";
+import { IoIosArrowRoundUp } from "react-icons/io";
 import { useEffect, useMemo, useState } from "react";
 import { Input, Option, Select } from "@material-tailwind/react";
 import {
@@ -26,8 +30,7 @@ import useReport from "@/hooks/useReport";
 import useCategory from "@/hooks/useCategory";
 import Loader from "@/components/common/loader";
 import Pagination from "@/components/common/Pagination";
-import { IoIosArrowRoundUp } from "react-icons/io";
-
+import StatisticPdf from "@/components/accounts/StatisticPdf";
 
 ChartJS.register(
   CategoryScale,
@@ -53,8 +56,62 @@ export default function Page() {
   const [statistics, setStatistics] = useState(null);
   const [titleToSearch, setTitleToSearch] = useState("");
   const [bookSelected, setBookSelected] = useState(null);
+  const [statisticsLoading, setStatisticsLoading] = useState(false);
   const [dailyReadingsPerBook, setDailyReadingsPerBook] = useState({});
   const [categorySelectedToSearch, setCategorySelectedToSearch] = useState("");
+
+  const getPdfData = async () => {
+    try {
+      const result = await getAllBooks({ user_id: localStorage.getItem("user_id") });
+      const books_list = [...result];
+      for (let index = 0; index < books_list.length; index++) {
+        const book = books_list[index];
+        const params = {
+          fecha_inicio: moment().subtract(7, "days").format("YYYY-MM-DD"),
+          fecha_fin: moment().format("YYYY-MM-DD"),
+          libro_id: book?.id
+        };
+        const readingsResult = await getDailyReadingsPerBook(params);
+        const startDate = moment().subtract(7, "days");
+        const endDate = moment();
+        const values = {};
+        let currentDate = moment(startDate);
+        while (currentDate.isSameOrBefore(endDate, "day")) {
+          const formattedDate = currentDate.format("YYYY-MM-DD");
+          values[formattedDate] = readingsResult?.[formattedDate] || 0;
+          currentDate = currentDate.add(1, "day");
+        }
+        books_list[index] = { ...book, statistics: values };
+      }
+      return books_list;
+    } catch (error) {
+      throw new Error('Error al obtener los libros y las estadísticas de lectura.');
+    }
+  };
+  
+  const generatePdf = async () => {
+    try {
+      setStatisticsLoading(true)
+      const pdfDataPromise = getPdfData();
+      toast.promise(
+        pdfDataPromise,
+        {
+          loading: 'Generando Informe...',
+          success: 'Informe generado exitosamente',
+          error: 'El informe no se pudo entregar',
+        }
+      );
+      const result = await pdfDataPromise;
+      setStatisticsLoading(false);
+
+      const doc = StatisticPdf({statistics, list: result, cardPercentages: getCardPercentages()})
+
+      const pdfBlob = await pdf(doc).toBlob();
+      saveAs(pdfBlob, `Informe ${localStorage.getItem("username")}-${moment().format('DD-MM-YY')}.pdf`);
+    } catch (error) {
+      toast.error('Error al descargar el informe.');
+    }
+  };
 
   const fetchStatistics = async () => {
     const result = await getUserStatistics();
@@ -68,7 +125,6 @@ export default function Page() {
       libro_id: bookSelected?.id,
     };
     const result = await getDailyReadingsPerBook(params);
-    setDailyReadingsPerBook(result);
 
     const startDate = moment().subtract(7, "days");
     const endDate = moment();
@@ -94,7 +150,7 @@ export default function Page() {
       categorias: categorySelectedToSearch,
       user_id: localStorage.getItem("user_id"),
       ...values,
-    };
+    }; 
     const result = await getAllBooks(params);
     setBooksData(result);
     if (result?.data?.length) {
@@ -147,7 +203,6 @@ export default function Page() {
       fetchDailyReadingsPerBook();
     }
   }, [bookSelected]);
-
 
   useEffect(() => {
     if (categoriesArray?.length) {
@@ -207,8 +262,8 @@ export default function Page() {
 
   return (
     <>
+      {((isLoading && !statisticsLoading) || loading) && <Loader />}
       <div className="relative flex flex-col gap-3 px-20 py-9">
-        {(isLoading || loading) && <Loader />}
         <div className="flex gap-2 items-center">
           <Link href="/accounts" className="font-semibold text-gray-800">
             Cuenta
@@ -224,7 +279,7 @@ export default function Page() {
           <h1 className="font-bold text-gray-800 text-3xl leading-8">
             Estadísticas
           </h1>
-          <button className="flex items-center text-sm gap-1 h-9 px-3 rounded-md bg-colorPrimario hover:bg-colorHoverPrimario text-white">
+          <button className="flex items-center text-sm gap-1 h-9 px-3 rounded-md bg-colorPrimario hover:bg-colorHoverPrimario text-white" onClick={generatePdf}>
             <span>
               <BsDownload size={18} />
             </span>
@@ -236,7 +291,8 @@ export default function Page() {
             {categories.length && (
               <Select
                 label="Categoría"
-                className="!max-w-40"
+                className="my-react-select-container"
+                classNamePrefix="my-react-select"
                 containerProps={{ className: "!min-w-40 !max-w-40" }}
                 labelProps={{ className: "!max-w-40" }}
                 value={categorySelectedToSearch}
