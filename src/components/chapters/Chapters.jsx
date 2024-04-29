@@ -1,15 +1,25 @@
 "use client";
 import useChapter from "@/hooks/useChapter";
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  DndContext,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+
 import {
   SortableContext,
-  verticalListSortingStrategy,
   arrayMove,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { VscNewFile } from "react-icons/vsc";
 import RenderCapitules from "./RenderChapters";
-import { useRouter } from "next/navigation";
 
 export default function Chapters({ bookId }) {
   const [chapters, setChapters] = useState([]);
@@ -40,7 +50,22 @@ export default function Chapters({ bookId }) {
     const newOrder = arrayMove(chapters, oldIndex, newIndex);
     setChapters(newOrder);
   };
-
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 6,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
   //Redirijimos a la pagina de creacion de capitulos
   const router = useRouter();
 
@@ -62,7 +87,11 @@ export default function Chapters({ bookId }) {
           Agregar nuevo capitulo
         </button>
       </div>
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+        sensors={sensors}
+      >
         <div className="max-h-36 overflow-y-scroll px-5">
           <SortableContext
             items={chapters}
