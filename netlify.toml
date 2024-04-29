@@ -1,2 +1,2 @@
 [[plugins]]
-  package = { name = "netlify-custom-headers", version = "1.0.0" }
+  package = "netlify-custom-headers@1.0.0"
