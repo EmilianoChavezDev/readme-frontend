@@ -22,7 +22,7 @@ const MobileMenu = ({ isOpen, setIsOpen }) => {
 
   return (
     <div
-      className={`_lg:hidden fixed top-0 left-0 w-full h-full z-50 bg-colorPrimario transform ${
+      className={`_lg:hidden fixed top-0 left-0 w-full h-full z-50 bg-colorPrimario transform dark:bg-dark-darkColorNavBar  ${
         isOpen ? "" : "-translate-x-full"
       } transition-transform duration-500 overflow-y-hidden`}
     >
