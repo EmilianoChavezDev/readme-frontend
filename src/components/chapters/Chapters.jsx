@@ -92,7 +92,7 @@ export default function Chapters({ bookId }) {
         onDragEnd={handleDragEnd}
         sensors={sensors}
       >
-        <div className="max-h-36 overflow-y-scroll px-5">
+        <div className="max-h-36 overflow-y-scroll px-5 dark:text-white">
           <SortableContext
             items={chapters}
             strategy={verticalListSortingStrategy}
