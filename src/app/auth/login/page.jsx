@@ -115,8 +115,9 @@ const Page = () => {
               </p>
             )}
             <div className={styles.content_cambiar_contrasena}>
-              
-              <Link href={"/auth/forgot_password"}>¿Olvidaste tu contraseña?</Link>
+              <Link href={"/auth/forgot_password"}>
+                ¿Olvidaste tu contraseña?
+              </Link>
             </div>
           </div>
 
