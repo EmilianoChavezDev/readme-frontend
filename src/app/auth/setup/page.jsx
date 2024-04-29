@@ -489,7 +489,7 @@ export default function SetUp() {
             <div className="flex flex-col lg:flex-row justify-center mb-40 mt-9">
               <button
                 type="submit"
-                onClick={() => router.push("/auth/login")}
+                onClick={() => router.push("/")}
                 className="py-2 px-3 mx-6 text-white bg-colorPrimario rounded-md "
               >
                 Finalizar
