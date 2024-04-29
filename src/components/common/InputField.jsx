@@ -9,6 +9,7 @@ const InputField = ({
   required,
   value,
   className = "",
+  maxLength,
 }) => {
   return (
     <div className={`w-72`}>
@@ -20,6 +21,7 @@ const InputField = ({
         {...register(name, { required })}
         className={`${className}`}
         aria-label={label}
+        maxLength={maxLength}
       />
     </div>
   );
