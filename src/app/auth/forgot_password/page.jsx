@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../login/styles/Inicio.module.css";
+import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
   email: "",
@@ -68,7 +69,7 @@ const Page = () => {
   };
 
   return (
-    <div>
+    <PageTheme>
       <div>
         <Image
           src="/image/img_inicio.png"
@@ -140,7 +141,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageTheme>
   );
 };
 
