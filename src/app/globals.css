@@ -289,6 +289,11 @@
     @apply dark:bg-dark-darkColorHover;
   }
 
+  /*Comentarios*/
+  .bg-white.border.rounded-lg.font-sans.text-sm.font-normal.text-blue-gray-500.break-words.whitespace-normal.shadow-lg.p-1.border-gray-400 {
+    @apply dark:bg-dark-darkColorNeutral;
+  }
+
   /*Apartado de editar perfil*/
   .flex.flex-col.mx-auto.items-center.justify-center.min-h-full.rounded-lg {
     @apply dark:bg-dark-darkColorNeutral;
