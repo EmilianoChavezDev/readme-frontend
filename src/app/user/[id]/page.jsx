@@ -23,6 +23,8 @@ import { BsPersonFillGear } from "react-icons/bs";
 import { CiCamera } from "react-icons/ci";
 import toast from "react-hot-toast";
 import OptionsUpdate from "@/components/users/OptionsUpdate";
+import Link from "next/link";
+import NotExist from "@/components/common/NotExist";
 
 const defaultValues = {
   username: "",
@@ -31,7 +33,7 @@ const defaultValues = {
 
 const page = ({ params }) => {
   const { setIsActualizado, setProfileUpdate } = useUser();
-  const { getUserInformation, data } = useUserInfo();
+  const { getUserInformation, data, isError: userNotFound } = useUserInfo();
   const { getFollowFollowers, data: seguidoresSeguidos } = useUserInfo();
   const {
     getUserLecturas,
@@ -432,6 +434,11 @@ const page = ({ params }) => {
   const handleUpdate = () => {
     setIsPortadaUpdate((prevState) => !prevState);
   };
+  
+  if(userNotFound)
+    return <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-background text-center">
+        <NotExist message={<p className="font-normal">Lo sentimos, no hemos encontrado el usuario  <span className="font-bold">{params.id}</span></p>} butMessage={""}/>
+    </div>
 
   return (
     <>

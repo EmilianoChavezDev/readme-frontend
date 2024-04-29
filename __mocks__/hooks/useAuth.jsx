@@ -27,12 +27,7 @@ const useAuth = () => {
       setErrorResponse([]);
     } catch (error) {
       setError(true);
-      if (error.response) {
-        setErrorResponse(error.response.data);
-      } else {
-        // Manejar el caso en el que no hay una respuesta de error definida
-        console.error("No hay respuesta de error definida");
-      }      
+      setErrorResponse(error.response.data);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -66,6 +61,7 @@ const useAuth = () => {
 
   const forgotPassword = async ({ email }) => {
     setLoading(true);
+    console.log(email);
     try {
       const response = await axios.get(
         `${process.env.API_URL}/auth/forgot_password?email=${email}`
@@ -92,6 +88,7 @@ const useAuth = () => {
 
   const resendEmail = async ({ email }) => {
     setLoading(true);
+    console.log(email);
     try {
       const response = await axios.get(
         `${process.env.API_URL}/auth/resent_email_confirmation?email=${email}`
@@ -121,6 +118,7 @@ const useAuth = () => {
     password,
     password_confirmation,
   }) => {
+    console.log(reset_password_code, password, password_confirmation);
     setLoading(true);
     try {
       const response = await axios.post(
@@ -143,6 +141,7 @@ const useAuth = () => {
       setErrorResponse([]);
       setRequestCompleted(true);
     } catch (error) {
+      console.log("aqui");
       setError(true);
       setSuccessResponse([]);
       setErrorResponse(error.response.data);
