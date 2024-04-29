@@ -23,6 +23,8 @@ import { BsPersonFillGear } from "react-icons/bs";
 import { CiCamera } from "react-icons/ci";
 import toast from "react-hot-toast";
 import OptionsUpdate from "@/components/users/OptionsUpdate";
+import Link from "next/link";
+import NotExist from "@/components/common/NotExist";
 
 const defaultValues = {
   username: "",
@@ -31,7 +33,7 @@ const defaultValues = {
 
 const page = ({ params }) => {
   const { setIsActualizado, setProfileUpdate } = useUser();
-  const { getUserInformation, data } = useUserInfo();
+  const { getUserInformation, data, isError: userNotFound } = useUserInfo();
   const { getFollowFollowers, data: seguidoresSeguidos } = useUserInfo();
   const {
     getUserLecturas,
@@ -432,26 +434,31 @@ const page = ({ params }) => {
   const handleUpdate = () => {
     setIsPortadaUpdate((prevState) => !prevState);
   };
+  
+  if(userNotFound)
+    return <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-background text-center">
+        <NotExist message={<p className="font-normal">Lo sentimos, no hemos encontrado el usuario  <span className="font-bold">{params.id}</span></p>} butMessage={""}/>
+    </div>
 
   return (
     <>
       {!data && arrBooks ? (
         <Loader />
       ) : (
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-background ">
           {isEdit && (
             <div className="w-4/6 mx-auto flex justify-between items-center py-2">
               <div>Estas editando tu perfil ahora</div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 ">
                 <Button
-                  className="px-2 py-2 flex text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
+                  className="px-2 py-2 flex text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white dark:border-dark-darkColorButtons dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover dark:disabled:bg-dark-darkColorDisabled"
                   onClick={handleSubmit(onSubmit)}
                   disabled={isNotDisable}
                 >
-                  <span className="flex items-center">Guardar Cambios</span>
+                  <span className="flex items-center ">Guardar Cambios</span>
                 </Button>
                 <Button
-                  className="px-2 py-2 flex text-black border border-textColorGray bg-white hover:bg-textHeaderColorGray hover:text-white"
+                  className="px-2 py-2 flex text-black border border-textColorGray bg-white hover:bg-textHeaderColorGray hover:text-white dark:border-dark-darkColorButtons dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
                   onClick={handleEditCancel}
                 >
                   <span className="flex items-center">Cancelar</span>
@@ -478,7 +485,7 @@ const page = ({ params }) => {
                     <div className="inline-block">
                       <Button
                         onClick={handleUpdate}
-                        className="rounded-lg mt-2 ml-2 px-2 py-2 flex items-center gap-1 text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white"
+                        className="rounded-lg mt-2 ml-2 px-2 py-2 flex items-center gap-1 text-black border border-colorPrimario bg-white hover:bg-colorHoverPrimario hover:text-white dark:border-dark-darkColorButtons dark:bg-dark-darkColorButtons"
                       >
                         <CiCamera size={18} />
                         <span>Editar foto de portada</span>
@@ -527,7 +534,7 @@ const page = ({ params }) => {
                 read={lecturas?.total_items}
                 buttonProps={{
                   info: (
-                    <div className="flex items-center gap-x-1">
+                    <div className="flex items-center gap-x-1 ">
                       {" "}
                       <BsPersonFillGear size={18} />
                       <span>Editar Perfil</span>
@@ -571,7 +578,7 @@ const page = ({ params }) => {
             <div
               className={`${
                 isEdit ? "hidden" : "block"
-              } flex flex-col mx-auto h-full rounded-xl _lg:p-6 bg-white shadow-lg _lg:w-full w-full lg:pl-4`}
+              } flex flex-col mx-auto h-full rounded-xl _lg:p-6 bg-white shadow-lg _lg:w-full w-full lg:pl-4 dark:bg-dark-darkColorNeutral`}
             >
               {selectedOption === "misLibros" && (
                 <div>

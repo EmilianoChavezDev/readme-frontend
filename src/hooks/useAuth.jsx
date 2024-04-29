@@ -66,7 +66,6 @@ const useAuth = () => {
 
   const forgotPassword = async ({ email }) => {
     setLoading(true);
-    console.log(email);
     try {
       const response = await axios.get(
         `${process.env.API_URL}/auth/forgot_password?email=${email}`
@@ -93,7 +92,6 @@ const useAuth = () => {
 
   const resendEmail = async ({ email }) => {
     setLoading(true);
-    console.log(email);
     try {
       const response = await axios.get(
         `${process.env.API_URL}/auth/resent_email_confirmation?email=${email}`
@@ -123,7 +121,6 @@ const useAuth = () => {
     password,
     password_confirmation,
   }) => {
-    console.log(reset_password_code, password, password_confirmation);
     setLoading(true);
     try {
       const response = await axios.post(
@@ -146,7 +143,6 @@ const useAuth = () => {
       setErrorResponse([]);
       setRequestCompleted(true);
     } catch (error) {
-      console.log("aqui");
       setError(true);
       setSuccessResponse([]);
       setErrorResponse(error.response.data);

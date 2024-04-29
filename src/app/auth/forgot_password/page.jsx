@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styles from "../login/styles/Inicio.module.css";
+import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
   email: "",
@@ -16,13 +17,11 @@ const defaultValues = {
 
 const Page = () => {
   const [isDisplayed, setIsDisplayed] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(120); // 2 minutos en segundos
+  const [timerActive, setTimerActive] = useState(false);
 
-  const {
-    loading,
-    errorResponse,
-    successResponse,
-    forgotPassword,
-  } = useAuth();
+  const { loading, errorResponse, successResponse, forgotPassword } = useAuth();
 
   const {
     register,
@@ -33,24 +32,44 @@ const Page = () => {
   const onSubmit = async (formData) => {
     forgotPassword(formData);
     setIsDisplayed(true);
+    setIsButtonDisabled(true);
+    setTimerActive(true); // Iniciar el temporizador
   };
 
-  
-
   useEffect(() => {
-    if (!errorResponse) return;
-  }, [errorResponse]);
-
-  useEffect(() => {
-    if (!successResponse) return;
-  }, [successResponse]);
+    if (!errorResponse && successResponse) {
+      setIsButtonDisabled(false); // Habilitar el botón solo si es un éxito
+    }
+  }, [errorResponse, successResponse]);
 
   const handleBlur = () => {
     setIsFocused(false);
   };
 
+  useEffect(() => {
+    if (timerActive) {
+      const timer = setTimeout(() => {
+        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+      }, 1000);
+
+      // Cuando el temporizador llega a 0, detiene el temporizador
+      if (timeLeft === 0) {
+        setTimerActive(false);
+        setTimeLeft(20); // Reiniciar el temporizador
+      }
+
+      return () => clearTimeout(timer);
+    }
+  }, [timeLeft, timerActive]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+
   return (
-    <div>
+    <PageTheme>
       <div>
         <Image
           src="/image/img_inicio.png"
@@ -106,12 +125,15 @@ const Page = () => {
               type="submit"
               onClick={handleSubmit(onSubmit)}
               id="login-btn"
-              disabled={loading}
+              disabled={loading || isButtonDisabled}
             >
               {loading ? <Loading /> : "Enviar correo de recuperación"}
             </button>
-            
-
+            {isButtonDisabled && (
+              <span className="text-gray-700">
+                Volver a enviar el codigo en: {formatTime(timeLeft)}
+              </span>
+            )}
             <div className={styles.content_crear_cuenta}>
               <span>¿Ya tienes una cuenta?</span>{" "}
               <Link href={"/auth/login"}>¡Inicia Sesion!</Link>
@@ -119,7 +141,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageTheme>
   );
 };
 
