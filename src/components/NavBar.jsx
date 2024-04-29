@@ -7,7 +7,6 @@ import Options from "./navbar/Options";
 import UserOptions from "./navbar/UserOptions";
 import MobileMenu from "./navbar/MobileMenu";
 import useCategory from "@/hooks/useCategory";
-import { ModeToggle } from "./common/ToggleMode";
 
 const NavBar = ({ onSearch }) => {
   const { username, logout, expiration, isOpen, setIsOpen } = useUser();
@@ -97,7 +96,7 @@ const NavBar = ({ onSearch }) => {
         />
         {/* parte del usuario */}
 
-        <UserOptions  username={usernameStorage} logout={logout} />
+        <UserOptions username={usernameStorage} logout={logout} />
       </div>
 
       <div className="sticky top-0 z-50">
