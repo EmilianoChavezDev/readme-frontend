@@ -75,7 +75,7 @@ const Page = () => {
           <div className="flex flex-col gap-y-2">
             {/*parte del email */}
             <InputField
-              label={"*Email"}
+              label={"Email"}
               type={"email"}
               onBlur={handleBlur}
               register={register}
@@ -93,7 +93,7 @@ const Page = () => {
             {/*parte del password */}
             <div className="relative">
               <InputField
-                label={"*Contraseña"}
+                label={"Contraseña"}
                 type={showPassword ? "text" : "password"}
                 onBlur={handleBlur}
                 register={register}

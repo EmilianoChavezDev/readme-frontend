@@ -19,6 +19,7 @@ const InputField = ({
         value={value}
         {...register(name, { required })}
         className={`${className}`}
+        aria-label={label}
       />
     </div>
   );
