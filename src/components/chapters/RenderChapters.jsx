@@ -34,7 +34,7 @@ export default function RenderCapitules({ cap, bookId }) {
       const loadedChapters = await fetchChaptersFromAPI();
       setChapters(loadedChapters);
     } catch (error) {
-      console.error("Error al cargar los capítulos:", error);
+      toast.error("Error al cargar los capítulos:", error);
     }
   };
 
