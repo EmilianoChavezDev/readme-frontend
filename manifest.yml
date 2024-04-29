@@ -1,0 +1,5 @@
+# netlify-plugin.js
+name: netlify-custom-headers
+description: Plugin para añadir encabezados de seguridad personalizados a Netlify
+version: 1.0.0
+main: netlify-plugin.js
