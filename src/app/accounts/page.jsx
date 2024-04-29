@@ -14,8 +14,8 @@ const page = () => {
           Mi cuenta
         </div>
         <div>
-          <ul className="flex flex-col _lg:flex-row _lg:justify-around _lg:mx-16 mx-7 gap-y-4 _lg:gap-x-0">
-            <li className="hover:cursor-pointer rounded-lg hover:shadow-lg transition-all transform duration-300 hover:scale-105">
+          <ul className="flex flex-col _lg:flex-row _lg:justify-around _lg:mx-16 mx-7 gap-y-4 _lg:gap-x-3 _xl:gap-x-3 ">
+            <li className="hover:cursor-pointer rounded-lg hover:shadow-lg transition-all transform duration-300 hover:scale-105 ">
               <button
                 onClick={() => router.push(`/accounts/edit/${username}`)}
                 className="flex items-center gap-x-3  py-4 px-2  _lg:py-6 _lg:flex-col _lg:text-left _lg:items-start _lg:gap-y-4 _lg:px-4"

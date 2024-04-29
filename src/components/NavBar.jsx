@@ -100,7 +100,7 @@ const NavBar = ({ onSearch }) => {
       </div>
 
       <div className="sticky top-0 z-50">
-        <div className="flex justify-between items-center _lg:hidden bg-colorPrimario">
+        <div className="flex justify-between items-center _lg:hidden bg-colorPrimario dark:bg-dark-darkColorNavBar">
           <button
             onClick={toggleMenu}
             type="button"
