@@ -289,20 +289,35 @@
     @apply dark:bg-dark-darkColorHover;
   }
 
+  /*-----------------------------*/
+
   /*Comentarios*/
   .bg-white.border.rounded-lg.font-sans.text-sm.font-normal.text-blue-gray-500.break-words.whitespace-normal.shadow-lg.p-1.border-gray-400 {
     @apply dark:bg-dark-darkColorNeutral;
   }
+
+  /*-----------------------------*/
 
   /*Apartado de editar perfil*/
   .flex.flex-col.mx-auto.items-center.justify-center.min-h-full.rounded-lg {
     @apply dark:bg-dark-darkColorNeutral;
   }
 
+  /*-----------------------------*/
+
+  /*Apartado de seguidores y seguidos*/
+  .align-middle.select-none.font-sans.font-bold.text-center.uppercase.transition-all.rounded-lg.shadow-md.border.py-2.px-1.border-colorPrimario.bg-buttonColorGray.text-xs.text-nowrap {
+    @apply dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover dark:border-dark-darkColorButtons;
+  }
+
+  /*-----------------------------*/
+
   /*Apartado de busqueda de usuarios*/
   .relative.flex.flex-col.bg-clip-border.text-gray-700.mt-6.w-52.min-h-36.py-4.overflow-hidden.bg-buttonColorGray.rounded-3xl.shadow-xl {
     @apply dark:bg-dark-darkColorNeutral;
   }
+
+  /*-----------------------------*/
 
   /*Toaster*/
   div[style*="animation: 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) 0s 1 normal forwards running go3223188581;"] {
