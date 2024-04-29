@@ -24,28 +24,20 @@ export default function RenderCapitules({ cap, bookId }) {
   };
 
   useEffect(() => {
-    // Cargar los capítulos inicialmente
-    loadChapters();
-  }, []);
-
-  const loadChapters = async () => {
-    // Cargar los capítulos desde la fuente de datos
-    try {
-      const loadedChapters = await fetchChaptersFromAPI();
-      setChapters(loadedChapters);
-    } catch (error) {
-      toast.error("Error al cargar los capítulos:", error);
-    }
-  };
+    setChapters((prevChapters) =>
+      prevChapters.filter((ch) => ch.id !== cap.id)
+    );
+  }, [cap]);
 
   const handleDelete = async () => {
-    try {
-      await deleteChapter(cap.id);
-      toast.success("Tu capítulo se movió a la papelera de reciclaje.");
-      loadChapters();
-    } catch (error) {
-      toast.error("Ocurrió un error al eliminar el capítulo.");
-    }
+    await deleteChapter(cap.id);
+    toast.success(
+      "Tu capitulo se movio a la papelera de reciclaje."
+    );
+    // Actualizar los capítulos después de eliminar uno
+    setChapters((prevChapters) =>
+      prevChapters.filter((ch) => ch.id !== cap.id)
+    );
   };
 
   return (
