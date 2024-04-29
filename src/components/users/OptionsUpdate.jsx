@@ -7,7 +7,8 @@ const OptionsUpdate = ({
   return (
     <div
       className="absolute z-10 bg-white border border-gray-200 rounded-md shadow-lg p-2 text-black w-52 overflow-y-auto max-h-60
-sm:text-sm  sm:right-auto left-2 mt-1 dark:bg-dark-darkColorItems
+sm:text-sm  sm:right-auto left-2 mt-1
+
 "
     >
       <ul className="my-2 flex flex-col gap-y-4">

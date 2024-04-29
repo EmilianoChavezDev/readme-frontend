@@ -39,8 +39,8 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
 
   return (
     <div className="sm:w-2/3 mx-auto w-full">
-      <div className="flex justify-between sticky top-0bg-white z-10 ">
-        <div className="flex items-center justify-center ">
+      <div className="flex justify-between sticky top-0 bg-white z-10">
+        <div className="flex items-center justify-center">
           <button onClick={() => previousPage()}>
             <div className="flex justify-center items-center gap-2">
               <div className="sm:w-8 sm:h-10 w-3 h-3 relative transition-all duration-200 transform hover:scale-110 group hover:cursor-pointer">
@@ -53,13 +53,11 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
             </div>
           </button>
         </div>
-        <Tooltip content={titulo}>
-          <div className="flex text-center items-center w-2/3 truncate">
-            <h1 className="mx-auto md:text-3xl text-colorPrimario text-center font-semibold text-lg truncate">
-              {titulo}
-            </h1>
-          </div>
-        </Tooltip>
+        <div className="flex text-center items-center">
+          <h1 className="_md:text-3xl text-colorPrimario text-center font-semibold text-lg">
+            {titulo}
+          </h1>
+        </div>
         <div className="flex justify-center items-center">
           <div className="relative">
             <Tooltip content="lista de capitulos" className="hidden _lg:block">

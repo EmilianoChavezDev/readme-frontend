@@ -414,42 +414,7 @@ const useUserInfo = () => {
       setData(response.data);
       setMessage("Datos actualizado con exito");
     } catch (error) {
-      setIsTrue(false);
-      setIsError(true);
-      setMessage(error.response.data.error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateUserInformation2 = async (data) => {
-    setLoading(true);
-    setIsTrue(false);
-    setIsError(false);
-
-    const url = `${process.env.API_URL}/users/information`;
-    const token = localStorage.getItem("token");
-
-    try {
-      const response = await axios.put(
-        url,
-        {
-          direccion: data.direccion,
-          descripcion: data.descripcion,
-          nacionalidad: data.nacionalidad,
-          nombre: data.nombre,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setIsTrue(true);
-      setIsError(false);
-      setData(response.data);
-      setMessage("Datos actualizado con exito");
-    } catch (error) {
+      console.log(error);
       setIsTrue(false);
       setIsError(true);
       setMessage(error.response.data.error);
@@ -590,7 +555,6 @@ const useUserInfo = () => {
     getFollowers,
     getFollowed,
     updateUserInformation,
-    updateUserInformation2,
     updatePortada,
     deletePortada,
     deleteUser,

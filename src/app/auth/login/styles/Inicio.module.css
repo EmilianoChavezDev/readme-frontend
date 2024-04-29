@@ -1,4 +1,13 @@
 /* Inicio.module.css */
+.content {
+  display: flex;
+}
+
+.content_login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .content_detalle {
   background-color: var(--colorFondo);
@@ -11,6 +20,59 @@
   box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
 }
 
+.content_detalle h1 {
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-family: var(--fuentePrincipal);
+}
+
+.content_detalle p {
+  text-align: center;
+}
+
+/*comienza css de los inputs*/
+.content_title_correo {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.content_detalle label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #1b0000;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.content_detalle input {
+  width: 100%;
+  padding: 10px;
+
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.active label {
+  top: -13px;
+  left: 10;
+  font-size: 12px;
+  color: #1b0000;
+  font-size: small;
+  font-weight: bold;
+  background-color: var(--colorFondo);
+  border-radius: 15px;
+  padding: 0 5px;
+}
+
+.active {
+  padding-top: 0;
+}
+
+.noactive label {
+  opacity: 0;
+}
+
 .content_crear_cuenta {
   display: flex;
   text-align: center;
@@ -19,17 +81,10 @@
   margin-top: 3rem;
 }
 
-.content_cambiar_contrasena {
-  display: flex;
-  text-align: center;
-  font-size: 14px;
-  justify-content: center;
-  color: var(--colorPrimario);
-}
-
 .content_crear_cuenta a {
   margin-left: 4px;
   color: var(--colorPrimario);
+  margin-left: 4px;
 }
 
 .content_button {
@@ -44,7 +99,6 @@
   border-radius: 1rem;
   color: aliceblue;
   margin-top: 2rem;
-  margin-bottom: 1rem;
 }
 
 .content_button button:hover {
@@ -60,9 +114,55 @@
   text-decoration: underline;
 }
 
+.error_msg {
+  color: var(--colorError);
+}
+
+.content_password {
+  position: relative;
+  width: 300px;
+}
+
+.password {
+  padding-right: 35px;
+  width: calc(100% - 35px);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 40px;
+}
+
+.eye {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  cursor: pointer;
+  color: #000;
+}
+.eyes {
+  position: absolute;
+  top: 38%;
+  transform: translateY(-50%);
+  right: 10px;
+  cursor: pointer;
+  color: #000;
+}
+
+.eye:focus {
+  color: #000;
+}
+
 .content_logo {
   display: flex;
   justify-content: center;
   margin-bottom: 3rem;
   align-items: center;
+}
+
+.errors {
+  display: flex;
+  justify-content: center;
+  font-size: small;
+  color: #ff0000;
+
 }

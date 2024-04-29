@@ -6,9 +6,6 @@ const ignorePaths = [
   "/books/search",
   "/search",
   "/books/edit",
-  "/auth/forgot_password",
-  "/auth/reset_password",
-  "/auth/setup",
 ];
 
 export { ignorePaths };

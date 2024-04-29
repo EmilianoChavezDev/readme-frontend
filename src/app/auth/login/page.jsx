@@ -7,25 +7,29 @@ import { useForm } from "react-hook-form";
 import useAuth from "@/hooks/useAuth";
 import { useUser } from "@/contexts/UserProvider";
 import Loading from "@/components/common/Loading";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import InputField from "@/components/common/InputField";
-import { Error } from "@/components/common/Error";
-import PageTheme from "@/components/common/PageTheme";
+import PasswordInput from "@/components/common/InputPassword";
+import UsernameInput from "@/components/common/InputUsername";
 
 const defaultValues = {
-  email: "",
+  username: "",
   password: "",
 };
 
 const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { data, error, loading, errorResponse, login } = useAuth();
+
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+
+  const { data, error, loading, login } = useAuth();
   const { login: saveUser } = useUser();
 
   const {
     register,
     handleSubmit,
+    trigger,
     formState: { errors },
+    watch,
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
@@ -37,17 +41,32 @@ const Page = () => {
     saveUser(data);
   }, [data]);
 
-  useEffect(() => {
-    if (!errorResponse) return;
-  }, [errorResponse]);
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
 
   const handleBlur = () => {
     setIsFocused(false);
   };
+  const handleFocusPassword = () => {
+    setIsFocusedPassword(true);
+  };
+
+  const handleBlurPassword = () => {
+    setIsFocusedPassword(false);
+  };
+
+  const passwordValue = watch("password", "");
+
+  const usernameValue = watch("username", "");
 
   return (
-    <PageTheme>
-      <div>
+    <div className={styles.content}>
+      <div className={styles.content_image}>
         <Image
           src="/image/img_inicio.png"
           width={400}
@@ -55,7 +74,7 @@ const Page = () => {
           alt="Imagen de inicio"
         />
       </div>
-      <div>
+      <div className={styles.content_login}>
         <div className={styles.content_detalle}>
           <div className={styles.content_logo}>
             <Image
@@ -65,80 +84,58 @@ const Page = () => {
               height={250}
             />
           </div>
-
-          {errorResponse?.error && (
-            <Error>
-              <p>{errorResponse.error}</p>
-            </Error>
+          {error && (
+            <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
+              Usuario o contraseña no valido
+            </p>
           )}
-
-          <div className="flex flex-col gap-y-2">
-            {/*parte del email */}
-            <InputField
-              label={"*Email"}
-              type={"email"}
-              onBlur={handleBlur}
+          <div>
+            <UsernameInput
+              isFocused={isFocused}
+              usernameValue={usernameValue}
+              styles={styles}
               register={register}
-              name={"email"}
-              required={true}
-              className="bg-white"
+              trigger={trigger}
+              handleBlur={handleBlur}
+              handleFocus={handleFocus}
+              errors={errors}
+              date={"username"}
+              placeholder={"Nombre de usuario"}
             />
 
-            {errors.email && (
-              <p className="text-red-500 text-2xs px-3">
-                *Este campo es requerido
-              </p>
-            )}
-
             {/*parte del password */}
-            <div className="relative">
-              <InputField
-                label={"*Contraseña"}
-                type={showPassword ? "text" : "password"}
-                onBlur={handleBlur}
-                register={register}
-                name={"password"}
-                required={true}
-                className="bg-white"
-              />
-
-              <button
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-
-            {errors.password && (
-              <p className="text-red-500 text-2xs px-3">
-                *Este campo es requerido
-              </p>
-            )}
-            <div className={styles.content_cambiar_contrasena}>
-              <Link href={"/auth/forgot_password"}>
-                ¿Olvidaste tu contraseña?
-              </Link>
-            </div>
+            <PasswordInput
+              isFocusedPassword={isFocusedPassword}
+              passwordValue={passwordValue}
+              showPassword={showPassword}
+              errors={errors}
+              handleBlurPassword={handleBlurPassword}
+              handleFocusPassword={handleFocusPassword}
+              handleShowPassword={handleShowPassword}
+              register={register}
+              trigger={trigger}
+              styles={styles}
+              date={"password"}
+              placeholder={"Contraseña"}
+            />
           </div>
-
           <div className={styles.content_button}>
             <button
-              type="submit"
-              onClick={handleSubmit(onSubmit)}
+              type="button"
               id="login-btn"
               disabled={loading}
+              onClick={handleSubmit(onSubmit)}
             >
               {loading ? <Loading /> : "Iniciar Sesión"}
             </button>
             <div className={styles.content_crear_cuenta}>
-              <span>¿No tienes cuenta?</span>{" "}
-              <Link href={"/auth/registrarse"}>¡Registrate!</Link>
+              <span>No tienes cuenta?</span>{" "}
+              <Link href={"/auth/registrarse"}>Registrate!</Link>
             </div>
           </div>
         </div>
       </div>
-    </PageTheme>
+    </div>
   );
 };
 

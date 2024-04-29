@@ -28,7 +28,7 @@ const OptionBooks = ({
 
   return (
     <>
-      <div id="container-options" className={styles.menu_container_options}>
+      <div className={styles.menu_container_options}>
         <div className={styles.container_option}>
           <MdModeEdit size={20} onClick={handleEdit} />
           <div className={styles.container_btn_options}>

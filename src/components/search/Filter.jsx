@@ -21,8 +21,6 @@ const Filter = ({
             </Typography>
             <div className="z-[8]">
               <Select
-                className="my-react-select-container"
-                classNamePrefix="my-react-select"
                 options={categories}
                 value={selectedCategories}
                 onChange={onChangeCategory}
@@ -44,7 +42,7 @@ const Filter = ({
           <Button
             color="gray"
             onClick={onFilter}
-            className="flex justify-between items-center gap-3 dark:bg-dark-darkColorButtons "
+            className="flex justify-between items-center gap-3"
           >
             Aplicar Filtros
             <FaSearch />

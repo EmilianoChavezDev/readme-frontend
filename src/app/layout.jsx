@@ -5,7 +5,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import UserProvider from "@/contexts/UserProvider";
 import ReadProvider from "@/contexts/ReadProvider";
-import { ThemeProvider } from "next-themes";
 import Layout from "@/components/common/Layout";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,18 +16,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system">
-          <UserProvider>
-            <ReadProvider>
+    <UserProvider>
+      <ReadProvider>
+        <html lang="en">
+          <body className={inter.className}>
+            <Layout>
               <Toaster position="top-center" />
-              <Layout />
-              {children}
-            </ReadProvider>
-          </UserProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+              <div>{children}</div>
+            </Layout>
+          </body>
+        </html>
+      </ReadProvider>
+    </UserProvider>
   );
 }
