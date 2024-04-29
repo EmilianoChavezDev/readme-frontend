@@ -1,15 +1,25 @@
 "use client";
 import useChapter from "@/hooks/useChapter";
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  DndContext,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+
 import {
   SortableContext,
-  verticalListSortingStrategy,
   arrayMove,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { VscNewFile } from "react-icons/vsc";
 import RenderCapitules from "./RenderChapters";
-import { useRouter } from "next/navigation";
 
 export default function Chapters({ bookId }) {
   const [chapters, setChapters] = useState([]);
@@ -40,7 +50,22 @@ export default function Chapters({ bookId }) {
     const newOrder = arrayMove(chapters, oldIndex, newIndex);
     setChapters(newOrder);
   };
-
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 6,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
   //Redirijimos a la pagina de creacion de capitulos
   const router = useRouter();
 
@@ -55,17 +80,18 @@ export default function Chapters({ bookId }) {
   }, [bookId]);
 
   return (
-    <div className="max-w-72 rounded-lg shadow-xl flex flex-col py-5 ">
+    <div className="max-w-72 rounded-md shadow-xl flex flex-col py-5">
       <div className="flex flex-row py-5 px-8">
-        <VscNewFile className="h-10 active:bg-black dark:text-white " />
-        <button
-          onClick={handleAddNewChapter}
-          className="p-2 text-sm dark:text-white"
-        >
+        <VscNewFile className="h-10 active:bg-black" />
+        <button onClick={handleAddNewChapter} className="p-2 text-sm">
           Agregar nuevo capitulo
         </button>
       </div>
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+        sensors={sensors}
+      >
         <div className="max-h-36 overflow-y-scroll px-5 dark:text-white">
           <SortableContext
             items={chapters}
