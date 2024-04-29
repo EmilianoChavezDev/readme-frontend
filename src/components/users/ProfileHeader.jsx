@@ -65,7 +65,7 @@ const ProfileHeader = ({
           <div className="flex items-end justify-end mb-2 mx-2 ">
             <button
               className="flex rounded-lg items-center px-1 py-2
-             border border-colorPrimario bg-transparent hover:bg-colorHoverPrimario gap-x-2"
+             border border-colorPrimario bg-transparent hover:bg-colorHoverPrimario gap-x-2 dark:border-dark-darkColorButtons"
               onClick={onClick}
             >
               {info}

@@ -64,14 +64,13 @@ const BookCardList = ({ books }) => {
                 </Typography>
 
                 <Tooltip content={libro.titulo}>
-                    <Typography
-                  variant="h5"
-                  color="black"
-                  className="mb-2 font-bold leading-[1.5] text-lg w-48 truncate"
-                >
+                  <Typography
+                    variant="h5"
+                    color="black"
+                    className="mb-2 font-bold leading-[1.5] text-lg w-48 truncate"
+                  >
                     {libro.titulo}
-                </Typography>
-                  
+                  </Typography>
                 </Tooltip>
               </CardBody>
             </Card>

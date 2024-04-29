@@ -1,52 +1,49 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styles from "./styles/Registrarse.module.css";
-import style from "../login/styles/Inicio.module.css";
+import { Error } from "@/components/common/Error";
+import InputField from "@/components/common/InputField";
+import Loading from "@/components/common/Loading";
+import { useUser } from "@/contexts/UserProvider";
+import useAuth from "@/hooks/useAuth";
+import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import useAuth from "@/hooks/useAuth";
-import { useUser } from "@/contexts/UserProvider";
-import moment from "moment";
-import Loading from "@/components/common/Loading";
-import UsernameInput from "@/components/common/InputUsername";
-import PasswordInput from "@/components/common/InputPassword";
-import DateInput from "@/components/common/DateInput";
-import EmailInput from "@/components/common/EmailInput";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import styles from "./styles/Registrarse.module.css";
+import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
   username: "",
+  email: "",
   password: "",
   password_confirmation: "",
 };
 
-const page = () => {
-  const [isError, setIsError] = useState(false);
-  const [isErrorFecha, setIsErrorFecha] = useState(false);
-  const [isPasswordError, setIsPasswordError] = useState(false);
-  const [isNumeroError, setIsNumeroError] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+const Page = () => {
   const [isFocused, setIsFocused] = useState(false);
-  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
-  const [isFocusedDate, setIsFocusedDate] = useState(false);
-  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
-  const [isFocusedPasswordConfirm, setIsFocusedPasswordConfirm] =
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
 
-  const { data, error, loading, register: registro } = useAuth();
+  const { data, error, loading, errorResponse, register: registro } = useAuth();
   const { login: saveUser } = useUser();
+
+  const router = useRouter();
 
   useEffect(() => {
     if (!data || error) return;
     saveUser(data);
   }, [data]);
 
+  useEffect(() => {
+    if (!errorResponse) return;
+  }, [errorResponse]);
+
   const {
     register,
     handleSubmit,
-    trigger,
-    watch,
     formState: { errors },
   } = useForm({ defaultValues });
 
@@ -58,106 +55,59 @@ const page = () => {
       !formData.email ||
       !formData.fecha_nacimiento
     ) {
-      setIsError(true);
-      setIsPasswordError(false);
-      setIsNumeroError(false);
-
       return;
     }
 
-    if (formData.password !== formData.password_confirmation) {
-      setIsPasswordError(true);
-      setIsError(false);
-      setIsNumeroError(false);
-      return;
-    }
-
-    if (!/\d/.test(formData.password)) {
-      setIsNumeroError(true);
-      setIsPasswordError(false);
-      setIsError(false);
-      return;
-    }
-
-    if (formData.password.length < 8) {
-      setIsPasswordError(false);
-      setIsError(false);
-      setIsNumeroError(true);
+    if (!validarLongitudEmail(formData.email)) {
+      errorResponse.error = "Longitud de email invalida";
       return;
     }
 
     if (!validarFechaNacimiento(formData.fecha_nacimiento)) {
-      setIsErrorFecha(true);
+      errorResponse.error = "Debes tener al menos 12 años y no mas de 120 años";
       return;
     }
 
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
     formData.fecha_nacimiento = fecha;
-    setIsPasswordError(false);
-    setIsError(false);
-    setIsNumeroError(false);
-    setIsErrorFecha(false);
     registro(formData);
-  };
 
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-  const handleShowPasswordConfirm = () => {
-    setShowPasswordConfirm(!showPasswordConfirm);
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
+    // Redirigir a la pagina de confirmacion de correo electronico
+    //router.push("/auth/confirmacion");
   };
 
   const handleBlur = () => {
     setIsFocused(false);
   };
-  const handleFocusPassword = () => {
-    setIsFocusedPassword(true);
-  };
-
-  const handleBlurPassword = () => {
-    setIsFocusedPassword(false);
-  };
-  const handleFocusPasswordConfirm = () => {
-    setIsFocusedPasswordConfirm(true);
-  };
-
-  const handleBlurPasswordConfirm = () => {
-    setIsFocusedPasswordConfirm(false);
-  };
-  const handleFocusDate = () => {
-    setIsFocusedDate(true);
-  };
-
-  const handleBlurDate = () => {
-    setIsFocusedDate(false);
-  };
 
   const validarFechaNacimiento = (fechaNacimiento) => {
     const currentDate = new Date();
     const minDate = new Date();
-    minDate.setFullYear(minDate.getFullYear() - 15);
+    minDate.setFullYear(minDate.getFullYear() - 12);
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 120);
     const fechaNacimientoDate = new Date(fechaNacimiento);
 
     const diferenciaAnhos =
       (currentDate - fechaNacimientoDate) / (1000 * 60 * 60 * 24 * 365);
 
-    return diferenciaAnhos >= 15;
+    return diferenciaAnhos >= 12 && diferenciaAnhos <= 120;
   };
 
-  const passwordValue = watch("password", "");
-  const passwordConfirmationValue = watch("password_confirmation", "");
-  const usernameValue = watch("username", "");
-  const emailValue = watch("email","")
-  const dateValue = watch("fecha_nacimiento", "");
+  const validarLongitudEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]{6,}/;
+    return regex.test(email);
+  };
+
+  const formatErrorMessage = (message) => {
+    const keywordIndex = message.indexOf(" ");
+    return message.substring(keywordIndex + 1);
+  };
 
   return (
-    <div className={styles.content}>
-      <div className={styles.content_image}>
+    <PageTheme>
+      <div>
         <Image
           src="/image/img_inicio.png"
           width={400}
@@ -165,7 +115,7 @@ const page = () => {
           alt="imagen presentacion"
         />
       </div>
-      <div className={styles.content_registrarse}>
+      <div>
         <div className={styles.content_detalle}>
           <div className={styles.content_logo}>
             <Image
@@ -176,117 +126,124 @@ const page = () => {
             />
           </div>
           <div className={styles.content_informacion}>
-            <div className={styles.content_errores}>
-              {isError && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
-                  Por favor complete todos los campos
-                </p>
-              )}
-              {isPasswordError && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
-                  Las contraseñas no coinciden
-                </p>
-              )}
-
-              {error && (
-                <p className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
-                  Nombre de usuario en uso
-                </p>
-              )}
-
-              {isNumeroError && (
-                <div className="bg-red-500 p-2 text-white font-bold mb-5 mx-0">
-                  <p>La contraseña debe tener</p>
-                  <p>8 caracteres minimo</p>
-                  <p>debe contener al menos 1 numero</p>
-                </div>
-              )}
-              {isErrorFecha && (
-                <div className="bg-red-500 p-2 text-white font-bold mb-5 mx-0 text-center">
-                  <p>Debes tener 15 o mas para</p>
-                  <p>registrarte</p>
-                </div>
+            <div>
+              {errorResponse?.error && (
+                <Error>
+                  {Array.isArray(errorResponse.error) ? (
+                    formatErrorMessage(errorResponse.error[0])
+                  ) : (
+                    <p>{errorResponse.error}</p>
+                  )}
+                </Error>
               )}
             </div>
-            <div className="flex flex-col gap-y-1">
-              <div>
-                <UsernameInput
-                  isFocused={isFocused}
-                  usernameValue={usernameValue}
-                  styles={style}
-                  register={register}
-                  trigger={trigger}
-                  handleBlur={handleBlur}
-                  handleFocus={handleFocus}
-                  errors={errors}
-                  placeholder={"*Nombre de usuario"}
-                  date={"username"}
-                />
-              </div>
-
-              <div>
-                <EmailInput
-                  isFocused={isFocusedEmail}
-                  emailValue={emailValue}
-                  styles={style}
-                  register={register}
-                  trigger={trigger}
-                  handleBlur={handleBlur}
-                  handleFocus={handleFocus}
-                  errors={errors}
-                  placeholder={"*Email"}
-                  date={"email"}
-                />
-              </div>
-
-              <div>
-                <PasswordInput
-                  isFocusedPassword={isFocusedPassword}
-                  passwordValue={passwordValue}
-                  showPassword={showPassword}
-                  errors={errors}
-                  handleBlurPassword={handleBlurPassword}
-                  handleFocusPassword={handleFocusPassword}
-                  handleShowPassword={handleShowPassword}
-                  register={register}
-                  trigger={trigger}
-                  styles={style}
-                  placeholder={"*Contraseña"}
-                  date={"password"}
-                />
-              </div>
-
-              <div className="mt-4 mb-2">
-                <PasswordInput
-                  isFocusedPassword={isFocusedPasswordConfirm}
-                  passwordValue={passwordConfirmationValue}
-                  showPassword={showPasswordConfirm}
-                  errors={errors}
-                  handleBlurPassword={handleBlurPasswordConfirm}
-                  handleFocusPassword={handleFocusPasswordConfirm}
-                  handleShowPassword={handleShowPasswordConfirm}
-                  register={register}
-                  trigger={trigger}
-                  styles={style}
-                  placeholder={"*Confirmar contraseña"}
-                  date={"password_confirmation"}
-                />
-              </div>
-              <DateInput
+            <div className="flex flex-col gap-y-2">
+              {/*parte del username */}
+              <InputField
+                label={"*Nombre de usuario"}
+                type={"text"}
+                onBlur={handleBlur}
                 register={register}
-                styles={styles}
-                isFocusedDate={isFocusedDate}
-                dateValue={dateValue}
-                handleFocusDate={handleFocusDate}
-                handleBlurDate={handleBlurDate}
+                name={"username"}
+                required={true}
+                className={"bg-white"}
+              />
+              {errors.username && (
+                <p className="px-3 text-red-500 text-2xs">
+                  *Este campo es requerido
+                </p>
+              )}
+
+              <div>
+                {/*parte del email */}
+                <InputField
+                  label={"*Email"}
+                  type={"email"}
+                  onBlur={handleBlur}
+                  register={register}
+                  name={"email"}
+                  required={true}
+                  className="bg-white"
+                />
+              </div>
+
+              {errors.email && (
+                <p className="px-3 text-red-500 text-2xs">
+                  *Este campo es requerido
+                </p>
+              )}
+
+              <div className="relative">
+                {/*parte del password */}
+                <InputField
+                  label={"*Contraseña"}
+                  type={showPassword ? "text" : "password"}
+                  onBlur={handleBlur}
+                  register={register}
+                  name={"password"}
+                  required={true}
+                  className="bg-white"
+                />
+
+                <button
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              {errors.password && (
+                <p className="px-3 text-red-500 text-2xs">
+                  *Este campo es requerido
+                </p>
+              )}
+
+              <div className="relative">
+                {/*parte del confirm password */}
+                <InputField
+                  label={"*Confirmar contraseña"}
+                  type={showPasswordConfirmation ? "text" : "password"}
+                  onBlur={handleBlur}
+                  register={register}
+                  name={"password_confirmation"}
+                  required={true}
+                  className="bg-white"
+                />
+
+                <button
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                  onClick={() =>
+                    setShowPasswordConfirmation(!showPasswordConfirmation)
+                  }
+                >
+                  {showPasswordConfirmation ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              {errors.password_confirmation && (
+                <p className="px-4 text-red-500 text-start text-2xs">
+                  *Este campo es requerido
+                </p>
+              )}
+
+              {/*parte de la fecha de nacimiento */}
+              <InputField
+                label={"*Fecha de nacimiento"}
+                type={"date"}
+                onBlur={handleBlur}
+                register={register}
+                name={"fecha_nacimiento"}
+                required={true}
+                className="bg-white"
               />
             </div>
           </div>
           <div className={styles.content_button_submit}>
             <button
               type="submit"
-              id="register-btn"
               onClick={handleSubmit(onSubmit)}
+              id="register-btn"
               disabled={loading}
             >
               {loading ? <Loading /> : "Registrarte"}
@@ -304,8 +261,8 @@ const page = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageTheme>
   );
 };
 
-export default page;
+export default Page;

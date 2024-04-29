@@ -7,6 +7,7 @@ const InputField = ({
   register,
   name,
   required,
+  value,
   className = "",
 }) => {
   return (
@@ -15,6 +16,7 @@ const InputField = ({
         label={label}
         type={type}
         onBlur={onBlur}
+        value={value}
         {...register(name, { required })}
         className={`${className}`}
       />
