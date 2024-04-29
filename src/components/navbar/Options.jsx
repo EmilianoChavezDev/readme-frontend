@@ -63,13 +63,13 @@ const Options = ({ categories = () => {} }) => {
                 className="group flex items-center  
              transition-all duration-100 hover:scale-105
              hover:cursor-pointer
-             hover:text-white"
+             hover:text-white "
               >
                 <span className="cursor-pointer  _lg:text-sm text-lg">
                   Explorar
                 </span>
                 <span
-                  className={`text-white transition-all duration-200 transform ${
+                  className={`text-white transition-all duration-200 transform  ${
                     showPopoverExplorar ? "rotate-180" : "rotate-0"
                   }`}
                 >
@@ -78,13 +78,16 @@ const Options = ({ categories = () => {} }) => {
               </button>
             </PopoverHandler>
 
-            <PopoverContent className="z-60 w-96 text-gray-800 text-md">
+            <PopoverContent
+              className="z-60 w-96 text-gray-800 text-md
+            "
+            >
               <ul className="text-nowrap _lg:my-2 _lg:gap-4 lg:gap-x-4 _lg:grid _lg:grid-cols-3 col-span-1">
                 {categories?.map((category, i) => (
                   <li
                     onClick={() => handleSearchByCategory(category)}
                     key={i}
-                    className="hover:cursor-pointer hover:font-bold transition-all duration-300"
+                    className="hover:cursor-pointer hover:font-bold transition-all duration-300  "
                   >
                     {category[1]}
                   </li>
@@ -129,17 +132,17 @@ const Options = ({ categories = () => {} }) => {
               </button>
             </PopoverHandler>
 
-            <PopoverContent className="z-60 w-52 buttom-3 text-gray-800 text-md">
+            <PopoverContent className="z-60 w-52 buttom-3 text-gray-800 text-md ">
               <ul className="my-2">
                 <li
-                  className=" mb-4 pb-2 border-b border-gray-200 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
+                  className=" mb-4 pb-2 border-b border-gray-200 items-center cursor-pointer transform transition-all hover:scale-105"
                   onClick={() => navigateTo("/books/create")}
                 >
                   <FaPlusCircle className="inline-block mr-2" />
                   Crear nuevo libro
                 </li>
                 <li
-                  className=" mb-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
+                  className=" mb-2 items-center cursor-pointer transform transition-all hover:scale-105"
                   onClick={() => navigateTo("/books/mybooks")}
                 >
                   <FaListUl className="inline-block mr-2" />

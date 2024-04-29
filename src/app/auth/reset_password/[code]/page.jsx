@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "../../registrarse/styles/Registrarse.module.css";
+import PageTheme from "@/components/common/PageTheme";
+
 const defaultValues = {
   reset_password_code: "",
   password: "",
@@ -73,7 +75,7 @@ const Page = ({ params }) => {
   };
 
   return (
-    <div>
+    <PageTheme>
       <div>
         <Image
           src="/image/img_inicio.png"
@@ -175,7 +177,7 @@ const Page = ({ params }) => {
           </div>
         </div>
       </div>
-    </div>
+    </PageTheme>
   );
 };
 

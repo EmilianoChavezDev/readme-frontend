@@ -24,28 +24,26 @@ const ModalDelete = ({
   };
 
   return (
-    <>
-      <div className={styles.modal_overlay}>
-        <div className={styles.modal_content}>
-          <p>¿Estás seguro de que deseas eliminar el libro?</p>
-          <div className={styles.option_content_delete}>
-            <div>
-              <button onClick={onClose} className={styles.btn_cancel_delete}>
-                Cancelar
-              </button>
-            </div>
-            <div>
-              <button
-                onClick={deleteBookHandler}
-                className={styles.btn_confirm_delete}
-              >
-                Eliminar
-              </button>
-            </div>
+    <div className={styles.modal_overlay}>
+      <div id="modal-content" className={styles.modal_content}>
+        <p>¿Estás seguro de que deseas eliminar el libro?</p>
+        <div className={styles.option_content_delete}>
+          <div>
+            <button onClick={onClose} className={styles.btn_cancel_delete}>
+              Cancelar
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={deleteBookHandler}
+              className={styles.btn_confirm_delete}
+            >
+              Eliminar
+            </button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

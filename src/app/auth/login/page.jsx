@@ -10,6 +10,7 @@ import Loading from "@/components/common/Loading";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import InputField from "@/components/common/InputField";
 import { Error } from "@/components/common/Error";
+import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
   email: "",
@@ -45,7 +46,7 @@ const Page = () => {
   };
 
   return (
-    <div>
+    <PageTheme>
       <div>
         <Image
           src="/image/img_inicio.png"
@@ -137,7 +138,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageTheme>
   );
 };
 
