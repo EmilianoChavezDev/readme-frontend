@@ -374,7 +374,7 @@ export default function Page() {
                             : "text-gray-800"
                         }`}
                       >
-                        {book?.titulo}
+                        {book?.titulo?.length > 75? `${book?.titulo.substring(0, 75)}...` : book?.titulo}
                       </td>
                       <td
                         className={`text-start font-normal ${
