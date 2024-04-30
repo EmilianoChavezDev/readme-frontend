@@ -62,7 +62,7 @@ export default function Page() {
 
   const getPdfData = async () => {
     try {
-      const result = await getAllBooks({ user_id: localStorage.getItem("user_id") });
+      const result = await getAllBooks({ user_id: localStorage.getItem("user_id"), categorias: categorySelectedToSearch, titulo: titleToSearch });
       const books_list = [...result];
       for (let index = 0; index < books_list.length; index++) {
         const book = books_list[index];
@@ -374,7 +374,7 @@ export default function Page() {
                             : "text-gray-800"
                         }`}
                       >
-                        {book?.titulo}
+                        {book?.titulo?.length > 75? `${book?.titulo.substring(0, 75)}...` : book?.titulo}
                       </td>
                       <td
                         className={`text-start font-normal ${
