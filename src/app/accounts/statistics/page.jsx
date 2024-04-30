@@ -62,7 +62,7 @@ export default function Page() {
 
   const getPdfData = async () => {
     try {
-      const result = await getAllBooks({ user_id: localStorage.getItem("user_id") });
+      const result = await getAllBooks({ user_id: localStorage.getItem("user_id"), categorias: categorySelectedToSearch, titulo: titleToSearch });
       const books_list = [...result];
       for (let index = 0; index < books_list.length; index++) {
         const book = books_list[index];
