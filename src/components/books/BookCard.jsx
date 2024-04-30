@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { TbBook } from 'react-icons/tb'
 import { IoIosStar } from 'react-icons/io'
 import { useRouter } from 'next/navigation'
@@ -14,7 +15,12 @@ export default function BookCard({ book }) {
     return (
         <div className='min-w-56 max-w-56' onClick={() => router.push(`/books/${book.id}`)}>
             <div className='group relative flex flex-col gap-2 cursor-pointer'>
-                <img src={book?.portada} className='object-cover aspect-portada' alt='Portada de Libro' />
+                {book?.portada?
+                    <img src={book?.portada} className='object-cover aspect-portada' alt='Portada de Libro' /> :
+                    <div className='aspect-portada bg-colorPrimario flex justify-center items-center'>
+                        <Image src='/image/g3.png' width={150} height={150} alt='Portada de Libro' />
+                    </div>
+                }
                 <p>{book.titulo}</p>
                 <div className='absolute text-xs max-w-56 h-full transition-transform duration-300 text-white opacity-0 hover:opacity-100 hover:scale-105 bg-black bg-opacity-60 backdrop-blur-lg p-2 flex flex-col gap-1'>
                     <p className='font-bold'>{book.titulo}</p>
