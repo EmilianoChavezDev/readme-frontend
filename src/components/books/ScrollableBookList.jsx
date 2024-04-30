@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go'
 
-export default function ScrollableBookList({ children, alt }) {
+export default function ScrollableBookList({ children }) {
 
     const [scrollLeftVisible, setScrollLeftVisible] = useState(false)
     const [scrollRightVisible, setScrollRightVisible] = useState(false)

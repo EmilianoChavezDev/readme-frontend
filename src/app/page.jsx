@@ -37,7 +37,7 @@ const ColoredDivsList = () => {
         <div className='flex flex-col gap-10 py-10'>
             <div className={`${books?.length? 'flex' : 'hidden'} flex-col`}>
                 <h2 className='text-3xl leading-7 font-bold pl-9'>Novedades</h2>
-                <ScrollableBookList alt={true}>
+                <ScrollableBookList>
                     {books?.map((book, index) => (
                         <BookCard key={index} book={book} />
                     ))}
@@ -45,7 +45,7 @@ const ColoredDivsList = () => {
             </div>
             <div className={`${dataContinueReading?.libros?.length? 'flex' : 'hidden'} flex-col`}>
                 <h2 className='text-3xl leading-7 font-bold pl-9'>Seguir Leyendo</h2>
-                <ScrollableBookList alt={false}>
+                <ScrollableBookList>
                     {dataContinueReading?.libros?.map((book, index) => (
                         <BookCard key={index} book={book} />
                     ))}
