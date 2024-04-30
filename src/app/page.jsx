@@ -1,255 +1,82 @@
-"use client";
+'use client'
 
-import Loader from "@/components/common/loader";
-import useGetLibros from "@/hooks/useGetLibros";
-import { useEffect } from "react";
-import { IconButton } from "@material-tailwind/react";
-import BookCardList from "@/components/home/BookCardList";
-import BookCardContinueReading from "@/components/home/BookCardContinueReading";
-import BookForCategory from "@/components/home/BookForCategory";
+import { useRouter } from 'next/navigation'
+import { useState, useEffect, useMemo } from 'react'
 
-export default function BackgroundBlogCard() {
-  const {
-    getBooks,
-    data: libros,
-    loading,
-    getContinueReading,
-    dataContinueReading,
-  } = useGetLibros();
+import useBook from '@/hooks/useBook'
+import useGetLibros from '@/hooks/useGetLibros'
+import BookCard from '@/components/books/BookCard'
+import ScrollableBookList from '@/components/books/ScrollableBookList'
 
-  useEffect(() => {
-    getContinueReading({ page: 1 });
-    getBooks({ page: 1 });
-  }, []);
+const ColoredDivsList = () => {
 
-  //Botones de Scroll
-  const handleScrollLeft = (containerId) => {
-    const container = document.getElementById(containerId);
-    if (container) {
-      container.scrollTo({
-        left: container.scrollLeft - 150,
-        behavior: "smooth",
-      });
+    const router = useRouter()
+
+    const { getAllBooks } = useBook()
+    const { getContinueReading, dataContinueReading } = useGetLibros()
+
+    const [books, setBooks] = useState([])
+
+    const fetchNews = async () => {
+        const result = await getAllBooks({ page: 1 })
+        setBooks(result?.data)
     }
-  };
 
-  const handleScrollRight = (containerId) => {
-    const container = document.getElementById(containerId);
-    if (container) {
-      container.scrollTo({
-        left: container.scrollLeft + 150,
-        behavior: "smooth",
-      });
-    }
-  };
+    const existingCategories = useMemo(() => {
+        return books?.length? books?.map(book => book.categoria)?.filter((valor, indice, self) => {
+            return self.indexOf(valor) === indice
+        }) : []
+    }, [books])
 
-  return (
-    <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="container-fluid h-full mx-2">
-          {libros?.data?.length > 0 && (
-            <>
-              <div className="my-12"></div>
-              <h2 className="text-3xl text-center px-4 _sm:text-left font-bold mb-4 ">
-                Novedades
-              </h2>
-              <div>
-                <div className="flex items-center ">
-                  <div
-                    id="scroll-container-1"
-                    className="flex items-center overflow-x-auto p-6 h-full"
-                    style={{
-                      scrollbarWidth: "none",
-                      msOverflowStyle: "none",
-                    }}
-                  >
-                    <BookCardList books={libros.data} />
-                  </div>
-                  <button
-                    onClick={() => handleScrollLeft("scroll-container-1")}
-                    style={{
-                      backgroundColor: "#167574",
-                      position: "absolute",
-                      zIndex: 10,
-                      top: "380px",
-                      left: "5px",
-                    }}
-                  >
-                    <IconButton
-                      variant="text"
-                      color="white"
-                      size="lg"
-                      className="!absolute top-2/4 left-4 -translate-y-2/4 rounded-full bg-transparent"
-                      style={{ backgroundColor: "#167574" }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="h-6 w-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M15 19l-7-7 7-7"
-                        />
-                      </svg>
-                    </IconButton>
-                  </button>
-                  <button
-                    onClick={() => handleScrollRight("scroll-container-1")}
-                    className="!absolute !right-4 -translate-y-2/4 rounded-full bg-transparent"
-                    style={{
-                      backgroundColor: "#167574",
-                      position: "absolute",
-                      zIndex: 10,
-                      top: "380px",
-                    }}
-                  >
-                    <IconButton
-                      variant="text"
-                      color="white"
-                      size="lg"
-                      className="rounded-full bg-transparent"
-                      style={{ backgroundColor: "#167574" }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="h-6 w-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </IconButton>
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
+    useEffect(() => {
+        fetchNews()
+        getContinueReading()
+    }, [])
 
-          <div className="mb-32">
-            {dataContinueReading?.libros?.length > 0 && (
-              <>
-                <h2 className="text-2xl text-center pt-8 px-4 _sm:text-left font-bold mb-4">
-                  Seguir Leyendo
-                </h2>
-
-                <div style={{ width: "100%", overflowX: "hidden" }}>
-                  <div
-                    id="scroll-container-2"
-                    className="flex items-center overflow-x-auto p-6 h-full"
-                    style={{
-                      scrollbarWidth: "none",
-                      msOverflowStyle: "none",
-                    }}
-                  >
-                    <BookCardContinueReading
-                      libros={dataContinueReading.libros}
-                    />
-                  </div>
-                  <button
-                    onClick={() => handleScrollLeft("scroll-container-2")}
-                    style={{
-                      backgroundColor: "#167574",
-                      position: "absolute",
-                      zIndex: 10,
-                      top: "850px",
-                      left: "5px",
-                    }}
-                  >
-                    <IconButton
-                      variant="text"
-                      color="white"
-                      size="lg"
-                      className="!absolute top-3 left-4 -translate-y-2/4 rounded-full bg-transparent"
-                      style={{ backgroundColor: "#167574" }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="h-6 w-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M15 19l-7-7 7-7"
-                        />
-                      </svg>
-                    </IconButton>
-                  </button>
-
-                  <button
-                    onClick={() => handleScrollRight("scroll-container-2")}
-                    className="!absolute !right-4 -translate-y-2/4 rounded-full bg-transparent"
-                    style={{
-                      backgroundColor: "#167574",
-                      position: "absolute",
-                      zIndex: 10,
-                      top: "850px",
-                    }}
-                  >
-                    <IconButton
-                      variant="text"
-                      color="white"
-                      size="lg"
-                      className="rounded-full bg-transparent"
-                      style={{ backgroundColor: "#167574" }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="h-6 w-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </IconButton>
-                  </button>
-                </div>
-              </>
-            )}
-
-            <div className="mb-32 my-12">
-              <div>
-                <h2 className="text-3xl text-center px-4 _sm:text-left font-bold mb-4 ">
-                  Navega por nuestras categorías
-                </h2>
-              </div>
-              <div>
-                <BookForCategory category={"Fantasia"} bookData={libros.data} />
-                <BookForCategory category={"Terror"} bookData={libros.data} />
-                <BookForCategory category={"Infantil"} bookData={libros.data} />
-                <BookForCategory category={"Aventura"} bookData={libros.data} />
-                <BookForCategory category={"Juvenil"} bookData={libros.data} />
-              </div>
+    return (
+        <div className='flex flex-col gap-10 py-10'>
+            <div className={`${books?.length? 'flex' : 'hidden'} flex-col`}>
+                <h2 className='text-3xl leading-7 font-bold pl-9'>Novedades</h2>
+                <ScrollableBookList alt={true}>
+                    {books?.map((book, index) => (
+                        <BookCard key={index} book={book} />
+                    ))}
+                </ScrollableBookList>
             </div>
-          </div>
+            <div className={`${dataContinueReading?.libros?.length? 'flex' : 'hidden'} flex-col`}>
+                <h2 className='text-3xl leading-7 font-bold pl-9'>Seguir Leyendo</h2>
+                <ScrollableBookList alt={false}>
+                    {dataContinueReading?.libros?.map((book, index) => (
+                        <BookCard key={index} book={book} />
+                    ))}
+                </ScrollableBookList>
+            </div>
+            <div className={`${dataContinueReading?.libros?.length? 'flex' : 'hidden'} flex-col gap-3`}>
+                <h2 className='text-3xl leading-7 font-bold pl-9'>Navega por nuestras categorías</h2>
+                <div className='flex flex-col gap-3 pl-12'>
+                    {existingCategories?.map((category, index) => 
+                        <div key={index} className='flex flex-col gap-2'>
+                            <h3 className='text-2xl font-semibold'>{category}</h3>
+                            <div className='flex justify-center items-center py-3 px-60 cursor-pointer' onClick={() => router.push(`/books/${books?.filter(book => book.categoria === category)[0]?.id}`)}>
+                                <div className='flex gap-5 p-3 border border-gray-300 rounded-md'>
+                                    <img src={books?.filter(book => book.categoria === category)[0]?.portada} className='object-cover min-w-56 max-w-56 aspect-portada' alt='Portada de Libro' />
+                                    <div className='flex flex-col justify-center gap-3'>
+                                        <h3 className='text-xl font-bold'>{books?.filter(book => book.categoria === category)[0]?.titulo}</h3>
+                                        <p>{books?.filter(book => book.categoria === category)[0]?.sinopsis}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <ScrollableBookList>
+                                {books?.filter(book => book.categoria === category)?.map((book, index) => (
+                                    <BookCard key={index} book={book} />
+                                ))}
+                            </ScrollableBookList>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
-      )}
-    </>
-  );
+    )
 }
+
+export default ColoredDivsList
