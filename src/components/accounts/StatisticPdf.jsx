@@ -1,7 +1,7 @@
 'use client'
 
 import moment from "moment"
-import { Document, Page, Text, StyleSheet, View } from "@react-pdf/renderer"
+import { Document, Page, Text, StyleSheet, View, Image } from "@react-pdf/renderer"
 
 export default function StatisticPdf({ statistics, list, cardPercentages }) {
 
@@ -14,6 +14,7 @@ export default function StatisticPdf({ statistics, list, cardPercentages }) {
         header: {
             flexDirection: "row",
             justifyContent: 'space-between',
+            alignItems: 'end',
             marginBottom: 15
         },
         card: {
@@ -29,6 +30,7 @@ export default function StatisticPdf({ statistics, list, cardPercentages }) {
         <Document>
           <Page style={styles.page}>
             <View style={styles.header}>
+              <Image style={{ height: '20px' }} src={`/image/g2.png`} />
               <Text style={{ color: 'black' }}>Estadísticas de Cuenta {localStorage.getItem("username")}</Text>
               <Text>{moment().format('DD-MM-YYYY')}</Text>
             </View>
@@ -66,7 +68,7 @@ export default function StatisticPdf({ statistics, list, cardPercentages }) {
             {list.map((book, index) => (
               <View style={styles.card} key={index}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #ccc' }}>
-                  <Text style={{ color: 'black', fontSize: 14, marginBottom: 5 }}>{book.titulo}</Text>
+                  <Text style={{ color: 'black', fontSize: 14, marginBottom: 5 }}>{book.titulo?.length > 65? `${book.titulo.substring(0, 65)}...` : book.titulo}</Text>
                   <View style={{ flexDirection: 'row', gap: 5, marginBottom: 5 }}>
                     <Text style={{ color: 'black' }}>Calificación:</Text>
                     <Text>{book.puntuacion_media}</Text>

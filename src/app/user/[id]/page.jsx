@@ -437,7 +437,7 @@ const page = ({ params }) => {
   
   if(userNotFound)
     return <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-background text-center">
-        <NotExist message={<p className="font-normal">Lo sentimos, no hemos encontrado el usuario  <span className="font-bold">{params.id}</span></p>} butMessage={""}/>
+        <NotExist message={"Lo sentimos, no hemos encontrado el usuario"} butMessage={""}/>
     </div>
 
   return (
