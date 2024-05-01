@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect, useMemo } from 'react'
 
@@ -8,6 +7,7 @@ import useBook from '@/hooks/useBook'
 import useGetLibros from '@/hooks/useGetLibros'
 import BookCard from '@/components/books/BookCard'
 import ScrollableBookList from '@/components/books/ScrollableBookList'
+import BookListPerCategory from '@/components/books/BookListPerCategory'
 
 const ColoredDivsList = () => {
 
@@ -56,28 +56,9 @@ const ColoredDivsList = () => {
                 <h2 className='text-3xl leading-7 font-bold pl-9'>Navega por nuestras categorías</h2>
                 <div className='flex flex-col gap-3 pl-12'>
                     {existingCategories?.map((category, index) => 
-                        <div key={index} className='flex flex-col gap-2'>
-                            <h3 className='text-2xl font-semibold'>{category}</h3>
-                            <div className='flex justify-center items-center py-3 px-60 cursor-pointer' onClick={() => router.push(`/books/${books?.filter(book => book.categoria === category)[0]?.id}`)}>
-                                <div className='flex gap-5 p-3 border border-gray-300 rounded-md'>
-                                    {books?.filter(book => book.categoria === category)[0]?.portada?
-                                        <img src={books?.filter(book => book.categoria === category)[0]?.portada} className='object-cover min-w-56 max-w-56 aspect-portada' alt='Portada de Libro' /> :
-                                        <div className='min-w-56 max-w-56 aspect-portada bg-colorPrimario flex justify-center items-center'>
-                                            <Image src='/image/g3.png' width={150} height={150} alt='Portada de Libro' />
-                                        </div>
-                                    }
-                                    <div className='flex flex-col justify-center gap-3'>
-                                        <h3 className='text-xl font-bold'>{books?.filter(book => book.categoria === category)[0]?.titulo}</h3>
-                                        <p>{books?.filter(book => book.categoria === category)[0]?.sinopsis}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <ScrollableBookList>
-                                {books?.filter(book => book.categoria === category)?.map((book, index) => (
-                                    <BookCard key={index} book={book} />
-                                ))}
-                            </ScrollableBookList>
-                        </div>
+                        <BookListPerCategory key={index} 
+                            category={category}
+                            books={books?.filter(book => book.categoria === category)}/>
                     )}
                 </div>
             </div>
