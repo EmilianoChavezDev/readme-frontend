@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "./styles/Registrarse.module.css";
 import PageTheme from "@/components/common/PageTheme";
+import { Watch } from "lucide-react";
 
 const defaultValues = {
   username: "",
@@ -29,23 +30,25 @@ const Page = () => {
 
   const { data, error, loading, errorResponse, register: registro } = useAuth();
   const { login: saveUser } = useUser();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!data || error) return;
-    saveUser(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (!errorResponse) return;
-  }, [errorResponse]);
-
   const {
-    register,
+    register, watch,
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues });
+  const emailValue = watch("email");
+
+  const router = useRouter();
+  useEffect(() => {
+    if (!data || error) return;
+    saveUser(data, emailValue);
+    
+  }, [data]);
+  
+  useEffect(() => {
+    if (!errorResponse) return;
+  }, [errorResponse]);
+  
+  
 
   const onSubmit = async (formData) => {
     if (
@@ -71,10 +74,12 @@ const Page = () => {
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
     formData.fecha_nacimiento = fecha;
-    registro(formData);
+    // registro(formData);
+    const rest = await registro(formData);
 
-    // Redirigir a la pagina de confirmacion de correo electronico
-    //router.push("/auth/confirmacion");
+    console.log(rest);
+      //router.push(`/auth/email_resend/${email}`);
+    
   };
 
   const handleBlur = () => {
