@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import styles from "../login/styles/Inicio.module.css";
+import styles from "@/app/auth/login/styles/Inicio.module.css"
 import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
