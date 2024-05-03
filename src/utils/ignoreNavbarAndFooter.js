@@ -9,8 +9,9 @@ const ignorePaths = [
   "/auth/forgot_password",
   "/auth/reset_password",
   "/auth/setup",
+  
   "/auth/email_confirmation",
-  "/auth/email_resend",
+  "/auth/email_resend"
 ];
 
 export { ignorePaths };
