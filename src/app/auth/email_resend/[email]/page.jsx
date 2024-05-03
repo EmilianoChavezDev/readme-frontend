@@ -1,17 +1,12 @@
 "use client";
 
-
-import InputField from "@/components/common/InputField";
-import Loading from "@/components/common/Loading";
 import { Success2 } from "@/components/common/Succes2";
-
 import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import styles from "../../login/styles/Inicio.module.css";
-import { Tooltip } from "@material-tailwind/react";
+import styles from "@/app/auth/login/styles/Inicio.module.css"
+
 import { AiTwotoneMail } from "react-icons/ai";
 
 const defaultValues = {

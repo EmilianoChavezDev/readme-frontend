@@ -5,15 +5,16 @@ export const Success2 = ({ children }) => {
     <div style={{
       position: "fixed",
       top: "1rem",
-      right: "1rem", // Cambiado a "right" en lugar de "left"
+      right: "1rem", 
       backgroundColor: "#00CC99",
       padding: "1rem",
       color: "white",
       fontSize: "1rem",
       fontWeight: "bold",
       borderRadius: "0.5rem",
-      display: "flex", // Añadido para alinear el icono y el texto horizontalmente
-      alignItems: "center", // Añadido para centrar verticalmente el icono y el texto
+      display: "flex", 
+      alignItems: "center",
+      zIndex: 999 // pone encima de otros elementos
     }}>
       <FcOk style={{ marginRight: "0.5rem" }} /> {/* Icono a la izquierda */}
       <div style={{ flex: 1 }}>{children}</div> {/* Contenido (texto) */}
