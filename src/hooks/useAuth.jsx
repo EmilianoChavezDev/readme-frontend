@@ -103,7 +103,6 @@ const resendEmail = async ({ email }) => {
       if (response.status < 200 || response.status >= 300) {
           throw new Error("Failed to resend email confirmation");
       }
-
       const data = await response.data;
       console.log(data); 
       setData(data);
@@ -118,7 +117,6 @@ const resendEmail = async ({ email }) => {
       setLoading(false);
   }
 };
-
 
   const resetPassword = async ({
     reset_password_code,
@@ -139,7 +137,6 @@ const resendEmail = async ({ email }) => {
       if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to reset password");
       }
-
       const data = await response.data;
       setData(data);
       setSuccessResponse(data.message);
