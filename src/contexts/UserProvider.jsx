@@ -6,10 +6,8 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const router = useRouter();
-
   const [token, setToken] = useState(null);
   const [expiration, setExpiration] = useState(null);
-
   const [fecha_nacimiento, setFecha_nacimiento] = useState(null);
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);
