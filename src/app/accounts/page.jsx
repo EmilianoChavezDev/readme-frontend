@@ -1,8 +1,9 @@
 "use client";
 import { useUser } from "@/contexts/UserProvider";
-import { FaUser, FaChartBar } from "react-icons/fa";
-import { ImBin2 } from "react-icons/im";
 import { useRouter } from "next/navigation";
+import { FaChartBar, FaUser } from "react-icons/fa";
+import { ImBin2 } from "react-icons/im";
+import { MdPrivacyTip } from "react-icons/md";
 
 const page = () => {
   const { username } = useUser();
@@ -70,6 +71,25 @@ const page = () => {
                   <span className="text-textColorGray text-sm">
                     Explora tu historial de eliminaciones para recuperar tus
                     libros y capítulos
+                  </span>
+                </div>
+              </button>
+            </li>
+
+            <li className="hover:cursor-pointer rounded-lg hover:shadow-lg transition-all transform duration-300 hover:scale-105">
+              <button
+                onClick={() => router.push("/about/privacy_policy")}
+                className="flex items-center gap-x-3  py-4 px-2  _lg:py-6 _lg:flex-col _lg:text-left _lg:items-start _lg:gap-y-4 _lg:px-4"
+              >
+                <div>
+                  <MdPrivacyTip size={20} className="_lg:size-10" />
+                </div>
+                <div className="text-left">
+                  <p className="font-semibold text-textInformationColor">
+                    Politicas de Privacidad
+                  </p>
+                  <span className="text-textColorGray text-sm">
+                    Mira nuestras politicas de Privacidad
                   </span>
                 </div>
               </button>
