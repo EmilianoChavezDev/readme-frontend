@@ -6,10 +6,8 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const router = useRouter();
-
   const [token, setToken] = useState(null);
   const [expiration, setExpiration] = useState(null);
-
   const [fecha_nacimiento, setFecha_nacimiento] = useState(null);
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);
@@ -19,7 +17,7 @@ export const UserProvider = ({ children }) => {
   const [isActualizado, setIsActualizado] = useState(false);
   const [profileUpdate, setProfileUpdate] = useState(false);
 
-  const login = (data) => {
+  const login = (data, email) => {
     setToken(data?.token);
     setExpiration(data?.expiration);
     setUsername(data?.username);
@@ -29,7 +27,7 @@ export const UserProvider = ({ children }) => {
     setProfileUpdate(data.profile);
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
-    router.push("/");
+    email?router.push(`/auth/email_resend/${email}`): router.push("/")
   };
 
   const refresh = (data) => {
