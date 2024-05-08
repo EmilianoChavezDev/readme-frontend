@@ -23,6 +23,7 @@ import RenderCapitules from "./RenderChapters";
 
 export default function Chapters({ bookId }) {
   const [chapters, setChapters] = useState([]);
+  const [chapterDeleted, setChapterDeleted] = useState(false);
 
   const { getChapterByBook, swapChapter } = useChapter();
 
@@ -77,7 +78,11 @@ export default function Chapters({ bookId }) {
   //Obtenemos los capitulos de ese libro y los guardamos en el estado capitules
   useEffect(() => {
     fetchChapters();
-  }, [bookId]);
+    if (chapterDeleted) {
+      fetchChapters();
+      setChapterDeleted(false);
+    }
+  }, [bookId, chapterDeleted]);
 
   return (
     <div className="max-w-72 rounded-md shadow-xl flex flex-col py-5">
@@ -98,7 +103,12 @@ export default function Chapters({ bookId }) {
             strategy={verticalListSortingStrategy}
           >
             {chapters?.map((cap) => (
-              <RenderCapitules bookId={bookId} key={cap.id} cap={cap} />
+              <RenderCapitules
+                bookId={bookId}
+                key={cap.id}
+                cap={cap}
+                setChapterDeleted={setChapterDeleted}
+              />
             ))}
           </SortableContext>
         </div>
