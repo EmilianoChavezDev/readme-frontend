@@ -56,6 +56,12 @@ export default function SetUp() {
 
   // Imagenes
   const handleAddImage = async (file) => {
+    //Verificamos si el archivo es una imagen
+    if (!file.type.includes("image")) {
+      toast.error("El archivo seleccionado no es una imagen");
+      return;
+    }
+
     setImage({ current: "", preview: URL.createObjectURL(file), file });
   };
 
@@ -64,6 +70,12 @@ export default function SetUp() {
   };
 
   const handleAddCover = async (file) => {
+    //Verificamos si el archivo es una imagen
+    if (!file.type.includes("image")) {
+      toast.error("El archivo seleccionado no es una imagen");
+      return;
+    }
+
     setCover({ preview: URL.createObjectURL(file), file });
   };
 
