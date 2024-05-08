@@ -12,8 +12,6 @@ export default function RenderCapitules({ cap, bookId, setChapterDeleted }) {
       id: cap.id,
     });
 
-  console.log(cap);
-
   const { deleteChapter } = useChapter();
 
   const [chapters, setChapters] = useState([]);
@@ -29,7 +27,6 @@ export default function RenderCapitules({ cap, bookId, setChapterDeleted }) {
     setChapters((prevChapters) =>
       prevChapters.filter((ch) => ch.id !== cap.id)
     );
-    console.log(chapters);
   }, [cap]);
 
   useEffect(() => {}, [cap]);
