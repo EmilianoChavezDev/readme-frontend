@@ -80,6 +80,7 @@ export default function Chapters({ bookId }) {
     fetchChapters();
     if (chapterDeleted) {
       fetchChapters();
+      handleAddNewChapter();
       setChapterDeleted(false);
     }
   }, [bookId, chapterDeleted]);
