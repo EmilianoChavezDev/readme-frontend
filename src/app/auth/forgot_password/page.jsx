@@ -21,6 +21,7 @@ const Page = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120); // 2 minutos en segundos
   const [timerActive, setTimerActive] = useState(false);
+  const [validEmail, setValidEmail] = useState("");
   const router = useRouter();
   const { loading, errorResponse, successResponse, forgotPassword } = useAuth();
 
@@ -31,10 +32,22 @@ const Page = () => {
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
-    forgotPassword(formData);
+    if (!validateEmail(formData.email)) {
+      setValidEmail("El email no es válido");
+      return;
+    }
+
+    setValidEmail("");
+    await forgotPassword(formData);
     setIsDisplayed(true);
     setIsButtonDisabled(true);
     setTimerActive(true); // Iniciar el temporizador
+  };
+
+  const validateEmail = (email) => {
+    // Tiene que tener 6 caracteres antes del @ y al menos un punto después del @
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
   };
 
   useEffect(() => {
@@ -93,6 +106,12 @@ const Page = () => {
           {errorResponse?.error && (
             <Error>
               <p>{errorResponse.error}</p>
+            </Error>
+          )}
+
+          {validEmail && (
+            <Error>
+              <p>{validEmail}</p>
             </Error>
           )}
 
