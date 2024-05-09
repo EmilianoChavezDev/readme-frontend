@@ -47,6 +47,27 @@
   margin-bottom: 1rem;
 }
 
+.content_button2 {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.content_button button2 {
+  background: aliceblue;
+  padding: 14px;
+  border-radius: 1rem;
+  color: var(--colorPrimario);
+  margin-bottom: 1rem;
+  border: 1px solid var(--colorPrimario);
+  cursor: pointer;
+}
+
+.content_button button2:hover {
+  background-color: lightgray;
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+}
+
 .content_button button:hover {
   background-color: var(--colorHoverPrimario);
   box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
