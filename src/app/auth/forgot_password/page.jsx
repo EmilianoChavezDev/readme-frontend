@@ -1,15 +1,16 @@
 "use client";
+import styles from "@/app/auth/login/styles/Inicio.module.css";
 import { Error } from "@/components/common/Error";
 import InputField from "@/components/common/InputField";
 import Loading from "@/components/common/Loading";
+import PageTheme from "@/components/common/PageTheme";
 import { Success } from "@/components/common/Success";
 import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import styles from "@/app/auth/login/styles/Inicio.module.css"
-import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
   email: "",
@@ -20,7 +21,7 @@ const Page = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120); // 2 minutos en segundos
   const [timerActive, setTimerActive] = useState(false);
-
+  const router = useRouter();
   const { loading, errorResponse, successResponse, forgotPassword } = useAuth();
 
   const {
@@ -129,6 +130,12 @@ const Page = () => {
             >
               {loading ? <Loading /> : "Enviar correo de recuperación"}
             </button>
+            <button2
+              onClick={() => router.back()}
+              className={styles.content_button2}
+            >
+              Cancelar
+            </button2>
             {isButtonDisabled && (
               <span className="text-gray-700">
                 Volver a enviar el codigo en: {formatTime(timeLeft)}
