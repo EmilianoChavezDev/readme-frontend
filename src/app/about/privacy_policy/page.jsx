@@ -1,6 +1,8 @@
 "use client";
 import NavBar from "@/components/NavBar";
+import Link from "next/link";
 import { useEffect } from "react";
+import { VscChevronRight } from "react-icons/vsc";
 
 const PolicyPage = () => {
   const handleClick = (event) => {
@@ -29,10 +31,21 @@ const PolicyPage = () => {
   return (
     <div>
       <NavBar />
-      <div className="sm:px-10 md:px-60 py-10 ">
+      <div className="sm:px-10 md:px-60 py-8 ">
         <div className="sm:block p-4 dark:bg-dark-darkColorNavBar ">
+          <div className="flex gap-2 items-center pb-5">
+            <Link href="/accounts" className="font-semibold text-gray-800">
+              Cuenta
+            </Link>
+            <span>
+              <VscChevronRight />
+            </span>
+            <span className="font-semibold text-gray-800">
+              Políticas de Privacidad
+            </span>
+          </div>
           <h1 className="text-6xl font-bold mb-8">
-            <strong>Política de Privacidad</strong>
+            <strong>Políticas de Privacidad</strong>
           </h1>
           <p>Última actualización: 06/05/2024</p>
           <br></br>
