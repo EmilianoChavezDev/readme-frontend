@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BsTrash } from "react-icons/bs";
 
-export default function RenderCapitules({ cap, bookId }) {
+export default function RenderCapitules({ cap, bookId, setChapterDeleted }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: cap.id,
@@ -29,15 +29,18 @@ export default function RenderCapitules({ cap, bookId }) {
     );
   }, [cap]);
 
+  useEffect(() => {}, [cap]);
+
   const handleDelete = async () => {
     await deleteChapter(cap.id);
-    toast.success(
-      "Tu capitulo se movio a la papelera de reciclaje."
-    );
-    // Actualizar los capítulos después de eliminar uno
+    toast.success("Tu capitulo se movio a la papelera de reciclaje.");
+
+    // Actualizar el componente con Boolean despues de eliminar el capitulo
     setChapters((prevChapters) =>
       prevChapters.filter((ch) => ch.id !== cap.id)
     );
+
+    setChapterDeleted(true);
   };
 
   return (

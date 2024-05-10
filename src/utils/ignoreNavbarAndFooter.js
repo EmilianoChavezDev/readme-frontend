@@ -9,7 +9,7 @@ const ignorePaths = [
   "/auth/forgot_password",
   "/auth/reset_password",
   "/auth/setup",
-  
+  "/about",
   "/auth/email_confirmation",
   "/auth/email_resend"
 ];
