@@ -43,20 +43,24 @@ const MyBooksContainer = ({
     <>
       <div id="book-container" className={styles.container_drafts}>
         <Link href={`/books/${libroId}`}>
-          <div className={styles.image_book_container}>
+          <div className="relative group">
+            <div className={styles.image_book_container}>
+              <Image
+                src={portada ? portada : "/image/template_libro.png"}
+                width={120}
+                height={160}
+                className={styles.image_port}
+                alt="Portada De Libro"
+                priority={true}
+              />
+            </div>
             {adulto && (
-              <div className={styles.adult_icon}>
-                <TbRating18Plus />
+              <div className="absolute top-0 left-0 w-full h-full">
+                <div className="p-2">
+                  <TbRating18Plus className="hidden _ultrasm:block text-5xl text-red-500" />
+                </div>
               </div>
             )}
-            <Image
-              src={portada ? portada : "/image/template_libro.png"}
-              width={120}
-              height={160}
-              className={styles.image_port}
-              alt="Portada De Libro"
-              priority={true}
-            />
           </div>
         </Link>
         <div className={styles.books_data_container}>
