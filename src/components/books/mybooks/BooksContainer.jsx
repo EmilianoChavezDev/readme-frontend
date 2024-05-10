@@ -1,13 +1,14 @@
 "use client";
-import React, { useMemo, useState } from "react";
 import styles from "@/app/books/mybooks/styles/mybooks.module.css";
-import Image from "next/image";
-import formatNumber from "@/utils/formatNumber";
-import Link from "next/link";
-import { MdMoreVert } from "react-icons/md";
-import { FaStar, FaEye, FaComment } from "react-icons/fa";
 import OptionBooks from "@/components/books/mybooks/OptionsMenuBooks";
+import formatNumber from "@/utils/formatNumber";
 import { Tooltip, Typography } from "@material-tailwind/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import { FaComment, FaEye, FaStar } from "react-icons/fa";
+import { MdMoreVert } from "react-icons/md";
+import { TbRating18Plus } from "react-icons/tb";
 
 const MyBooksContainer = ({
   libroData,
@@ -27,6 +28,7 @@ const MyBooksContainer = ({
     cantidad_comentarios,
     categoria,
     autorUsername,
+    adulto,
   } = libroData;
 
   const toggleOptionBooks = () => {
@@ -42,6 +44,11 @@ const MyBooksContainer = ({
       <div id="book-container" className={styles.container_drafts}>
         <Link href={`/books/${libroId}`}>
           <div className={styles.image_book_container}>
+            {adulto && (
+              <div className={styles.adult_icon}>
+                <TbRating18Plus />
+              </div>
+            )}
             <Image
               src={portada ? portada : "/image/template_libro.png"}
               width={120}
