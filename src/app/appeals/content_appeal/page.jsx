@@ -78,6 +78,12 @@ export default function Page() {
     return () => clearTimeout(timeoutId);
   }, [currentPage]);
 
+  const emailValidation = (email) => {
+    // Tiene que tener 6 caracteres antes del @ y un punto despues del @
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailRegex.test(email);
+  };
+
   return (
     <>
       <div className="relative flex flex-col gap-9 px-20 py-9">

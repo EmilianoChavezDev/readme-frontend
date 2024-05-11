@@ -75,6 +75,25 @@ const page = () => {
                 </div>
               </button>
             </li>
+            <li className="hover:cursor-pointer rounded-lg hover:shadow-lg transition-all transform duration-300 hover:scale-105">
+              <button
+                onClick={() => router.push("/appeals/content_appeal")}
+                className="flex items-center gap-x-3  py-4 px-2  _lg:py-6 _lg:flex-col _lg:text-left _lg:items-start _lg:gap-y-4 _lg:px-4"
+              >
+                <div>
+                  <GiThorHammer size={20} className="_lg:size-10" />
+                </div>
+                <div className="text-left">
+                  <p className="font-semibold text-textInformationColor">
+                    Apelaciones
+                  </p>
+                  <span className="text-textColorGray text-sm">
+                    Explora tu historial de sanciones para apelar tus sanciones
+                    de libros y comentarios
+                  </span>
+                </div>
+              </button>
+            </li>
           </ul>
 
           <ul className="flex flex-col _lg:flex-row _lg:justify-around _lg:mx-16 mx-7 gap-y-4 _lg:gap-x-3 _xl:gap-x-3 ">
