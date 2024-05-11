@@ -46,6 +46,11 @@ const useReport = () => {
         return handleRequest(() => api.get(`${REPORTS_ENDPOINT}/find_by`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
 
+    const getReportByUserId = async (id,params ={}) =>{
+        console.log(id,params)
+        return handleRequest(() => api.get(`${REPORTS_ENDPOINT}/user/${id}`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
+    }
+
     const updateBookReport = async (id, params = {}) => {
         return handleRequest(() => api.put(`${BOOK_REPORTS_ENDPOINT}/${id}`, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
@@ -70,7 +75,9 @@ const useReport = () => {
         return handleRequest(() => api.post(`${USER_REPORTS_ENDPOINT}/update_all`, params, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
 
-    return { getDailyReadingsPerBook, getUserStatistics, getReports, updateBookReport, updateCommentReport, updateUserReport, updateAllBookReport,updateAllCommentReport, updateAllUserReport, error, isLoading }
+    
+
+    return { getDailyReadingsPerBook, getUserStatistics,getReportByUserId, getReports, updateBookReport, updateCommentReport, updateUserReport, updateAllBookReport,updateAllCommentReport, updateAllUserReport, error, isLoading }
 }
 
 export default useReport
