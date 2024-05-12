@@ -5,11 +5,18 @@ import { ImBin2 } from "react-icons/im";
 import { FaChartBar, FaUser } from "react-icons/fa";
 import { MdAdminPanelSettings, MdPrivacyTip } from "react-icons/md";
 import { GiThorHammer } from "react-icons/gi";
+import { useMemo } from "react";
 
 import { useUser } from "@/contexts/UserProvider";
 
 const Page = () => {
   const { username } = useUser();
+
+  const userRole = localStorage.getItem("role");
+
+  const checkRole = useMemo(() => {
+    return userRole === "moderador" || userRole === "administrador";
+  });
 
   return (
     <div className="flex p-6 sm:py-8 sm:px-20 flex-col gap-3 sm:gap-10">
@@ -83,23 +90,26 @@ const Page = () => {
             </div>
           </div>
         </Link>
-        <Link
-          href="/accounts/admin/banned_books"
-          className="cursor-pointer rounded-lg border border-gray-100 hover:shadow-lg transition-all transform duration-300 hover:scale-105 w-full"
-        >
-          <div className="flex flex-row sm:flex-col items-center sm:items-start p-3 gap-4">
-            <span className="w-8 h-8">
-              <MdAdminPanelSettings className="size-11" />
-            </span>
-            <div className="flex flex-col gap-1">
-              <h2 className="font-semibold">Administración</h2>
-              <p className="text-sm text-gray-700">
-                Gestiona las cuentas, comentarios y libros baneados por
-                moderadores
-              </p>
+
+        {checkRole && (
+          <Link
+            href="/accounts/admin/banned_books"
+            className="cursor-pointer rounded-lg border border-gray-100 hover:shadow-lg transition-all transform duration-300 hover:scale-105 w-full"
+          >
+            <div className="flex flex-row sm:flex-col items-center sm:items-start p-3 gap-4">
+              <span className="w-8 h-8">
+                <MdAdminPanelSettings className="size-11" />
+              </span>
+              <div className="flex flex-col gap-1">
+                <h2 className="font-semibold">Administración</h2>
+                <p className="text-sm text-gray-700">
+                  Gestiona las cuentas, comentarios y libros baneados por
+                  moderadores
+                </p>
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        )}
 
         <Link
           href="/appeals/content_appeal"

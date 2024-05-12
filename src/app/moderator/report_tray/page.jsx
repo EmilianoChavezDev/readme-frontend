@@ -182,8 +182,10 @@ export default function Page() {
     return () => clearTimeout(timeoutId);
   }, [statusToSearch, currentPage]);
 
+  let userRole = localStorage.getItem("role");
+
   useEffect(() => {
-    if (localStorage.getItem("role") !== "administrador") {
+    if (userRole === "usuario") {
       toast.error("Usuario no autorizado");
       router.push("/");
     }
