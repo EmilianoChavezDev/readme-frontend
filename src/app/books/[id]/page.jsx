@@ -283,6 +283,15 @@ export default function BookDetails({ params }) {
               <div className="flex gap-5 p-10 flex-col _sm:flex-row _sm:p-3 _md:p-12 _xl:p-16 w-4/6 mx-auto">
                 <div className="flex justify-center items-center bg-colorPrimario dark:bg-dark-darkColorButtons">
                   <div className="flex justify-center items-center w-44 h-42 !min-h-42 text-white relative">
+                    {book?.adulto && book?.portada ? (
+                      <div className="absolute top-0 left-0 p-2">
+                        <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />
+                      </div>
+                    ) : book?.adulto && !book?.portada ? (
+                      <div className="absolute bottom-24 left-0 p-2">
+                        <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />
+                      </div>
+                    ) : null}
                     {book?.portada ? (
                       <Image
                         src={book.portada}
@@ -293,11 +302,6 @@ export default function BookDetails({ params }) {
                       />
                     ) : (
                       <FaRegImage size={35} />
-                    )}
-                    {book?.adulto && (
-                      <div className="absolute top-0 left-0 p-2">
-                        <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />
-                      </div>
                     )}
                   </div>
                 </div>
