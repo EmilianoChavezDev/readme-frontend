@@ -4,34 +4,32 @@ import moment from "moment";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Option, Select } from "@material-tailwind/react";
-import useReport from "@/hooks/useReport";
+import { Option, Select, Input } from "@material-tailwind/react";
 import useUnbanAccount from "@/hooks/useUnbanAccount";
 import Modal from "@/components/common/modal";
 import Loader from "@/components/common/loader";
 import Pagination from "@/components/common/Pagination";
+import { debounce } from "lodash";
 
 export default function Page() {
   const STATUS = {
-    pendiente: { key: "pendiente", value: "Pendiente" },
-    en_revision: { key: "en_revision", value: "En Revisión" },
     solicitado: { key: "solicitado", value: "Solicitado" },
     aceptado: { key: "aceptado", value: "Aceptado" },
     rechazado: { key: "rechazado", value: "Rechazado" },
-    resuelto: { key: "resuelto", value: "Resuelto" },
   };
 
   const router = useRouter();
-  const { getUnbanAccount, restoreAccount, rejectAppeal, error } =
+  const { getUnbanAccount, restoreAccount, rejectAppeal, isLoading } =
     useUnbanAccount();
-  const { updateBookReport, updateCommentReport, updateUserReport, isLoading } =
-    useReport();
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [reportsData, setReportsData] = useState(null);
   const [statusToSearch, setStatusToSearch] = useState("");
+  const [usernameToSearch, setUsernameToSearch] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
   const [reportSelected, setReportSelected] = useState(null);
-  const [reportConclusion, setReportConclusion] = useState("");
   const [showReportRejectModal, setShowReportRejectModal] = useState(false);
   const [showReportApproveModal, setShowReportApproveModal] = useState(false);
 
@@ -39,6 +37,8 @@ export default function Page() {
     const result = await getUnbanAccount({
       page: currentPage,
       estado: statusToSearch,
+      username: usernameToSearch,
+      fecha_desde: dateFrom,
     });
     let mappedValues = {
       data: result?.solicitudes_desbaneo,
@@ -53,33 +53,7 @@ export default function Page() {
     } else if (mappedValues?.data?.length) {
       setReportSelected(mappedValues?.data[0]);
     }
-  };
-
-  const handleReloadListValues = (report) => {
-    let listCopy = [...reportsData.data];
-    let itemIndex = listCopy.findIndex((r) => r.id === reportSelected.id);
-    let itemCopy = {
-      ...listCopy[itemIndex],
-      estado: report?.estado,
-      conclusion: report.conclusion,
-    };
-    listCopy[itemIndex] = { ...itemCopy };
-    setReportsData({ ...reportsData, data: listCopy });
-    setReportSelected(itemCopy);
-  };
-
-  const handleUpdateReportStatus = async (estado) => {
-    const result =
-      reportSelected.tipo === "Usuario"
-        ? await updateUserReport(reportSelected.id, { reporte: { estado } })
-        : reportSelected.tipo === "Comentario"
-        ? await updateCommentReport(reportSelected.id, { reporte: { estado } })
-        : await updateBookReport(reportSelected.id, { reporte: { estado } });
-    if (result?.reporte) {
-      handleReloadListValues(result?.reporte);
-    } else {
-      toast.error("No se pudo actualizar el estado");
-    }
+    setTotalPages(result?.total_pages);
   };
 
   const handleApproveReport = async () => {
@@ -94,23 +68,32 @@ export default function Page() {
   };
 
   const handleRejectAccount = async () => {
-    await rejectAppeal(reportSelected?.id);
+    const result = await rejectAppeal(reportSelected?.id);
     if (result?.error) {
-      toast.error("No se pudo rechazar el reporte");
+      toast.error("No se pudo rechazar la solucitud");
     } else {
-      const userResult = await rejectAppeal(reportSelected?.id);
-      !userResult && toast.error("No se pudo rezachar la solicitud");
-      fetchData(reportSelected?.id);
+      toast.success("Solicitud rechazada con éxito");
     }
-    setShowReportApproveModal(false);
+    setShowReportRejectModal(false);
+    fetchData(reportSelected?.id);
   };
+
+  const delayedFetchData = debounce(() => {
+    fetchData();
+  }, 400);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       fetchData();
     }, 300);
     return () => clearTimeout(timeoutId);
-  }, [statusToSearch, currentPage]);
+  }, [statusToSearch, currentPage, usernameToSearch, dateFrom, dateTo]);
+
+  useEffect(() => {
+    delayedFetchData();
+
+    return delayedFetchData.cancel;
+  }, [currentPage, statusToSearch, usernameToSearch]);
 
   useEffect(() => {
     if (localStorage.getItem("role") !== "administrador") {
@@ -123,13 +106,10 @@ export default function Page() {
     <>
       <div className="relative flex flex-col gap-9 px-20 py-9">
         {isLoading && <Loader />}
-        <h1 className="font-bold text-gray-800 text-3xl leading-8">
-          Bandeja de Reportes
-        </h1>
         <div className="flex gap-3">
           <div className="flex grow flex-col gap-3">
-            <div className="flex justify-between">
-              <form className="flex gap-3">
+            <div className="flex flex-row gap-3">
+              <form className="flex gap-3 pr-8">
                 <div className="relative !max-w-32">
                   <Select
                     label="Estado"
@@ -154,18 +134,65 @@ export default function Page() {
                   </Select>
                 </div>
               </form>
+
+              <form className="flex gap-3">
+                <div className="relative">
+                  {/* Buscar usuario con matherial tailwind input */}
+                  <Input
+                    type="text"
+                    placeholder="Buscar por usuario"
+                    value={usernameToSearch}
+                    onChange={(e) => setUsernameToSearch(e.target.value)}
+                    containerProps={{ className: "!min-w-40 !max-w-40" }}
+                    labelProps={{ className: "!max-w-40" }}
+                    label="Username"
+                  />
+                </div>
+              </form>
+
+              <form className="flex gap-3">
+                {/* Feche desde */}
+                <div className="relative">
+                  <Input
+                    type="date"
+                    placeholder="Fecha desde"
+                    value={dateFrom}
+                    containerProps={{ className: "!min-w-40 !max-w-40" }}
+                    labelProps={{ className: "!max-w-40" }}
+                    label="Fecha desde"
+                    onChange={(e) => setDateFrom(e.target.value)}
+                  />
+                </div>
+              </form>
+
+              <form className="flex gap-3">
+                {/* Feche hastas */}
+                <div className="relative">
+                  <Input
+                    type="date"
+                    placeholder="Fecha hasta"
+                    value={dateTo}
+                    containerProps={{ className: "!min-w-40 !max-w-40" }}
+                    labelProps={{ className: "!max-w-40" }}
+                    label="Fecha hasta"
+                    onChange={(e) => setDateTo(e.target.value)}
+                  />
+                </div>
+              </form>
             </div>
             <div className="flex flex-col items-center gap-3 border border-gray-300 rounded-md py-5 px-2">
-              <h1 className="text-xl font-semibold">Lista de Reportes</h1>
+              <h1 className="text-xl font-semibold">
+                Lista de Usuarios baneados
+              </h1>
               <table className="w-full">
                 <thead>
                   <tr className="h-14 border-b border-gray-200">
-                    <th className="text-start font-semibold">Nombre</th>
+                    <th className="text-start font-semibold">Email</th>
                     <th className="text-start font-semibold">Username</th>
                     <th className="text-start font-semibold">
                       Cantidad de reportes
                     </th>
-                    <th className="text-start font-semibold">Baneado por</th>
+                    <th className="text-center font-semibold">Baneado por</th>
                     <th className="text-start font-semibold">Estado</th>
                     <th className="text-start font-semibold">
                       Baneado en Fecha
@@ -190,7 +217,7 @@ export default function Page() {
                             : "text-gray-800"
                         }`}
                       >
-                        {report.nombre}
+                        {report.email}
                       </td>
                       <td
                         className={`text-start font-normal ${
@@ -202,7 +229,7 @@ export default function Page() {
                         {report.username}
                       </td>
                       <td
-                        className={`text-start font-normal ${
+                        className={`text-center font-normal ${
                           report.id === reportSelected.id
                             ? "text-colorPrimario font-semibold"
                             : "text-gray-800"
@@ -245,7 +272,7 @@ export default function Page() {
                 {Boolean(reportsData?.data?.length) && (
                   <Pagination
                     currentPage={currentPage}
-                    totalPages={reportsData?.total_pages}
+                    totalPages={totalPages}
                     onPageChange={setCurrentPage}
                   />
                 )}
@@ -287,29 +314,35 @@ export default function Page() {
                       {reportSelected?.moderador_username}
                     </span>
                   </div>
-                  <div className="flex flex-col gap-1 border-t border-colorPrimario pt-2">
-                    <span className="font-semibold">Justificacion:</span>
-                    <p className="text-gray-700">
+                  <div className="flex gap-1">
+                    <span className="font-semibold">Justificación:</span>
+                    <span className="text-gray-700">
                       {reportSelected?.justificacion}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1 border-t border-colorPrimario pt-2">
+                    <span className="font-semibold">Conclusion:</span>
+                    <p className="text-gray-700">
+                      {reportSelected?.conclusion}
                     </p>
                   </div>
                 </div>
                 <div className="flex justify-between text-white">
                   <div className="flex gap-2">
-                    {reportSelected?.estado !== "aceptado" && (
+                    {reportSelected?.estado === "solicitado" && (
                       <button
                         className="h-10 rounded-md px-2 bg-red-900 hover:brightness-90"
-                        onClick={() => setShowReportApproveModal(true)}
-                      >
-                        Deshacer Baneo
-                      </button>
-                    )}
-                    {reportSelected?.estado === "pendiente" && (
-                      <button
-                        className="h-10 rounded-md px-2 bg-cyan-700 hover:brightness-90"
                         onClick={() => setShowReportRejectModal(true)}
                       >
                         Rechazar
+                      </button>
+                    )}
+                    {reportSelected?.estado !== "aceptado" && (
+                      <button
+                        className="h-10 rounded-md px-2 bg-cyan-700 hover:brightness-90"
+                        onClick={() => setShowReportApproveModal(true)}
+                      >
+                        Deshacer Baneo
                       </button>
                     )}
                   </div>
@@ -323,39 +356,26 @@ export default function Page() {
       </div>
       <Modal
         open={showReportRejectModal}
+        size="md"
+        variant="danger"
         onHide={() => {
           setShowReportRejectModal(false);
-          setReportConclusion("");
         }}
         onSave={handleRejectAccount}
-        disableSubmit={!reportConclusion.length}
         title="Confirmar Acción"
       >
         <div className="flex flex-col gap-3">
-          <p>¿Estás seguro de rechazar esta solicitud?</p>
-          <div className="flex flex-col gap-1">
-            <span>
-              Escribe la conclusión sobre este reporte{" "}
-              <b className="text-red-900">*</b>
-            </span>
-            <textarea
-              className="text-md border rounded-lg p-3 flex-grow text-gray-900 border-gray-400 outline-none"
-              value={reportConclusion}
-              onChange={(event) => setReportConclusion(event.target.value)}
-              rows={2}
-            />
-          </div>
+          <p>
+            ¿Estás seguro de rechazar la solicitud de{" "}
+            <b className="text-colorPrimario">{reportSelected?.username}</b>?{" "}
+          </p>
         </div>
       </Modal>
       <Modal
         open={showReportApproveModal}
-        size="md"
-        variant="danger"
         onHide={() => {
           setShowReportApproveModal(false);
-          setReportConclusion("");
         }}
-        disableSubmit={!reportConclusion.length}
         onSave={handleApproveReport}
         title="Confirmar Acción"
       >
@@ -364,18 +384,6 @@ export default function Page() {
             ¿Estás seguro de desbanear a{" "}
             <b className="text-colorPrimario">{reportSelected?.username}</b>?{" "}
           </p>
-          <div className="flex flex-col gap-1">
-            <span>
-              Escribe la conclusión sobre esta solicitud{" "}
-              <b className="text-red-900">*</b>
-            </span>
-            <textarea
-              className="text-md border rounded-lg p-3 flex-grow text-gray-900 border-gray-400 outline-none"
-              value={reportConclusion}
-              onChange={(event) => setReportConclusion(event.target.value)}
-              rows={2}
-            />
-          </div>
         </div>
       </Modal>
     </>

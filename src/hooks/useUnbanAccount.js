@@ -35,7 +35,6 @@ const useUnbanAccount = () => {
   };
 
   const restoreAccount = async (id) => {
-    console.log("id", id);
     return handleRequest(() =>
       api.post(
         `${UNBAN_ACCOUNT_ENDPOINT}/aceptar/${id}`,
