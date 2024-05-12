@@ -22,3 +22,4 @@ export const AccountProvider = ({
     <AccountContext.Provider value={values}>{children}</AccountContext.Provider>
   );
 };
+    
