@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardBody,
@@ -8,7 +7,7 @@ import {
 } from "@material-tailwind/react";
 import Image from "next/image";
 import Link from "next/link";
-import tooltip from "@material-tailwind/react";
+import { TbRating18Plus } from "react-icons/tb";
 
 const BookCardList = ({ books }) => {
   return (
@@ -35,6 +34,11 @@ const BookCardList = ({ books }) => {
                 color="transparent"
                 className="absolute inset-0 m-0 h-72 w-full object-cover rounded-none bg-cover bg-center"
               >
+                {book.adulto && (
+                  <div className="absolute top-0 left-0 p-2">
+                    <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />
+                  </div>
+                )}
                 <Image
                   src={
                     libro?.portada.length
