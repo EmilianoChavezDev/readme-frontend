@@ -61,19 +61,27 @@ const useContentAppeal = () => {
     );
   };
 
-  const postAcceptAppeal = async (id, params = {}) => {
+  const postAcceptAppeal = async (id) => {
     return handleRequest(() =>
-      api.post(`${APPEAL_ENDPOINT}/aceptar/${id}`, params, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
+      api.post(
+        `${APPEAL_ENDPOINT}/aceptar/${id}`,
+        { id },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
     );
   };
 
-  const postRejectAppeal = async (id, params = {}) => {
+  const postRejectAppeal = async (id) => {
     return handleRequest(() =>
-      api.post(`${APPEAL_ENDPOINT}/rechazar/${id}`, params, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
+      api.post(
+        `${APPEAL_ENDPOINT}/rechazar/${id}`,
+        { id },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
     );
   };
 
