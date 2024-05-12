@@ -3,48 +3,45 @@
 import moment from "moment";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
-
 import useReport from "@/hooks/useReport";
 import Modal from "@/components/common/modal";
 import Loader from "@/components/common/loader";
 import Pagination from "@/components/common/Pagination";
-import useUserInfo from "@/hooks/useUser";
+import { Tooltip } from "@material-tailwind/react";
+import useContentAppeal from "@/hooks/useContentAppeal";
 
 export default function Page() {
   const { getReportByUserId, isLoading } = useReport();
-  const { getUserInformation, isError, data } = useUserInfo();
+  const { postBookAppeal, postCommentAppeal, error, errorResponse } =
+    useContentAppeal();
 
+  const [isSuccess, setIsSuccess] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [reportsData, setReportsData] = useState(null);
   const [reportSelected, setReportSelected] = useState(null);
   const [appealConclusion, setAppealConclusion] = useState("");
   const [showAppealModal, setAppealModal] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
-  const [userId, setUserId] = useState(null);
 
-  const username = localStorage.getItem("username");
-
-  const getUserId = async () => {
-    const user = await getUserInformation(username);
-    setUserId(user.id);
-  };
+  const user_id = localStorage.getItem("user_id");
 
   const fetchData = async (defaultReportSelectedId) => {
-    const result = await getReportByUserId(userId, {
+    const result = await getReportByUserId(user_id, {
       page: currentPage,
     });
+
+    // Filtramos por los ultimos 30 dias
+    result.data = result.data.filter(
+      (report) => moment().diff(moment(report.created_at), "days") <= 30
+    );
 
     let mappedValues = {
       ...result,
       data: result?.data?.map((report) => ({
         ...report,
-        tipo: report.comentario
-          ? "Comentario"
-          : report.usuario_reportado
-          ? "Usuario"
-          : "Libro",
+        tipo: report.comentario ? "Comentario" : "Libro",
       })),
     };
+
     setReportsData(mappedValues);
     if (defaultReportSelectedId) {
       let item = mappedValues?.data?.find(
@@ -57,16 +54,17 @@ export default function Page() {
   };
 
   const handleSubmitAppeal = async () => {
-    let params = {
-      id: reportSelected.id,
-      email: userEmail,
-      justificacion: appealConclusion,
-    };
+    if (reportSelected.tipo === "Comentario") {
+      await postCommentAppeal(reportSelected.comentario.id, {
+        justificacion: appealConclusion,
+      });
+    } else {
+      await postBookAppeal(reportSelected.libro_id, {
+        justificacion: appealConclusion,
+      });
+    }
 
-    console.log(params);
-
-    //Verificar si ya hay una apelacion en proceso, si es asi no se puede enviar otra
-
+    setIsSuccess(true);
     setAppealModal(false);
     setAppealConclusion("");
   };
@@ -76,13 +74,27 @@ export default function Page() {
       fetchData();
     }, 300);
     return () => clearTimeout(timeoutId);
-  }, [currentPage]);
+  }, [currentPage, user_id]);
 
-  const emailValidation = (email) => {
-    // Tiene que tener 6 caracteres antes del @ y un punto despues del @
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    return emailRegex.test(email);
-  };
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted && !isLoading) {
+      if (error) {
+        toast.error(errorResponse?.error);
+        setAppealModal(false);
+        setAppealConclusion("");
+      } else if (isSuccess) {
+        toast.success("La apelación ha sido enviada correctamente");
+        setAppealModal(false);
+        setAppealConclusion("");
+      }
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [error, errorResponse, isLoading, isSuccess]);
 
   return (
     <>
@@ -204,29 +216,28 @@ export default function Page() {
                   </div>
                   <div className="flex flex-col gap-1 border-t border-colorPrimario pt-2">
                     <span className="font-semibold">Motivo:</span>
-                    <p className="text-gray-700">{reportSelected?.motivo}</p>
+                    <p className="text-gray-700 truncate">
+                      <Tooltip content={reportSelected.motivo}>
+                        {reportSelected?.motivo}
+                      </Tooltip>
+                    </p>
                   </div>
-                  {reportSelected?.estado === "resuelto" && (
-                    <div className="flex flex-col gap-1 border-t border-colorPrimario pt-2">
-                      <span className="font-semibold">Conclusiones:</span>
-                      <p className="text-gray-700">
-                        {reportSelected?.conclusion}
-                      </p>
-                    </div>
-                  )}
+
+                  <div className="flex flex-col gap-1 border-t border-colorPrimario pt-2">
+                    <span className="font-semibold">Conclusiones:</span>
+                    <p className="text-gray-700">
+                      {reportSelected?.conclusion}
+                    </p>
+                  </div>
                 </div>
                 <div className="flex justify-between text-white">
                   <div className="flex gap-2">
-                    {reportSelected?.estado === "resuelto" && (
-                      <button
-                        className="h-10 rounded-md px-2 bg-red-900 hover:brightness-90"
-                        onClick={() => setAppealModal(true)}
-                      >
-                        {reportSelected?.tipo === "Comentario"
-                          ? "Apelar sanción"
-                          : "Apelar sanción"}
-                      </button>
-                    )}
+                    <button
+                      className="h-10 rounded-md px-2 bg-red-900 hover:brightness-90"
+                      onClick={() => setAppealModal(true)}
+                    >
+                      Apelar sanción
+                    </button>
                   </div>
                 </div>
               </>

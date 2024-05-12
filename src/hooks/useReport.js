@@ -47,7 +47,6 @@ const useReport = () => {
     }
 
     const getReportByUserId = async (id,params ={}) =>{
-        console.log(id,params)
         return handleRequest(() => api.get(`${REPORTS_ENDPOINT}/user/${id}`, { params, headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }))
     }
 
