@@ -41,7 +41,7 @@ const PolicyPage = () => {
               <VscChevronRight />
             </span>
             <span className="font-semibold text-gray-800">
-              Papelera de reciclaje
+              Política de Privacidad
             </span>
           </div>
           <h1 className="text-6xl font-bold mb-8">
