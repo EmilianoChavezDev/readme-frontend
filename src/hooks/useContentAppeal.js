@@ -20,7 +20,6 @@ const useContentAppeal = () => {
       return res.data;
     } catch (error) {
       setError(true);
-
       setErrorResponse(error.response.data);
     } finally {
       setIsLoading(false);
@@ -30,7 +29,6 @@ const useContentAppeal = () => {
   // Functions to interact with the API
 
   const getAllAppeals = async (params = {}) => {
-    console.log(params);
     return handleRequest(() =>
       api.get(`${APPEAL_ENDPOINT}/`, {
         params,

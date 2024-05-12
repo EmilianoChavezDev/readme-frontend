@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { FaChartBar, FaUser } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
 import { MdPrivacyTip } from "react-icons/md";
+import { GiThorHammer } from "react-icons/gi";
 
 const page = () => {
   const { username } = useUser();
@@ -15,7 +16,7 @@ const page = () => {
           Mi cuenta
         </div>
         <div>
-          <ul className="flex flex-col _lg:flex-row _lg:justify-around _lg:mx-16 mx-7 gap-y-4 _lg:gap-x-3 _xl:gap-x-3 ">
+          <ul className="flex flex-col _lg:flex-row _lg:justify-around _lg:mx-16 mx-7 gap-y-4 _lg:gap-x-4 _xl:gap-x-4 py-4">
             <li className="hover:cursor-pointer rounded-lg hover:shadow-lg transition-all transform duration-300 hover:scale-105 ">
               <button
                 onClick={() => router.push(`/accounts/edit/${username}`)}
@@ -71,6 +72,27 @@ const page = () => {
                   <span className="text-textColorGray text-sm">
                     Explora tu historial de eliminaciones para recuperar tus
                     libros y capítulos
+                  </span>
+                </div>
+              </button>
+            </li>
+          </ul>
+
+          <ul className="flex flex-col _lg:flex-row _lg:justify-around _lg:mx-16 mx-7 gap-y-4 _lg:gap-x-3 _xl:gap-x-3 ">
+            <li className="hover:cursor-pointer rounded-lg hover:shadow-lg transition-all transform duration-300 hover:scale-105">
+              <button
+                onClick={() => router.push("/appeals/content_appeal")}
+                className="flex items-center gap-x-3  py-4 px-2  _lg:py-6 _lg:flex-col _lg:text-left _lg:items-start _lg:gap-y-4 _lg:px-4"
+              >
+                <div>
+                  <GiThorHammer size={20} className="_lg:size-10" />
+                </div>
+                <div className="text-left">
+                  <p className="font-semibold text-textInformationColor">
+                    Apelacion de contenido sancionado
+                  </p>
+                  <span className="text-textColorGray text-sm">
+                    Mira tus contenidos sancionados
                   </span>
                 </div>
               </button>

@@ -1,0 +1,8 @@
+.adult_icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Asegura que esté encima de la portada */
+  padding: 5px;
+}
+

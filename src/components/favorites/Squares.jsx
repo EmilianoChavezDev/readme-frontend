@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import styles from "@/app/favorites/styles/favorites.module.css";
-import updateFavoritos from "@/hooks/updateFavorites";
 import { useUser } from "@/contexts/UserProvider";
-import Link from "next/link";
+import updateFavoritos from "@/hooks/updateFavorites";
 import formatNumber from "@/utils/formatNumber";
-import { FaStar, FaEye, FaComment, FaHeart, FaRegHeart } from "react-icons/fa";
-
+import Link from "next/link";
+import { useState } from "react";
+import { FaComment, FaEye, FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
+import { TbRating18Plus } from "react-icons/tb";
 const Cuadros = ({ data }) => {
   const [favorito, setFavorito] = useState(true);
   const { actualizarFavoritos, error } = updateFavoritos();
@@ -20,6 +20,7 @@ const Cuadros = ({ data }) => {
     cantidad_lecturas: view,
     cantidad_resenhas: star,
     cantidad_comentarios: comment,
+    adulto: adulto,
   } = data;
 
   const fn_btnFavorite = (clickedLibroId) => {
@@ -53,6 +54,13 @@ const Cuadros = ({ data }) => {
       <Link href={`/books/${libroId}`}>
         <div>
           <img src={imageurl ? imageurl : "/image/template_libro.png"} />
+          {adulto && (
+            <div className="absolute top-2 left-2 w-full h-full">
+              <div className="p-2">
+                <TbRating18Plus className="text-5xl text-red-500" />
+              </div>
+            </div>
+          )}
         </div>
       </Link>
       <div>
