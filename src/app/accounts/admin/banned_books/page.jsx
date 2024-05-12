@@ -27,7 +27,9 @@ export default function Page() {
   } = useContentAppeal();
 
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isRejectSuccess, setIsRejectSuccess] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const [reportsData, setReportsData] = useState(null);
   const [reportSelected, setReportSelected] = useState(null);
   const [showAppealModal, setAppealModal] = useState(false);
@@ -47,30 +49,44 @@ export default function Page() {
       estado: statusToSearch,
       username: usernameToSearch,
       fecha_desde: dateFrom,
+      tipo: "libro",
     });
 
-    console.log(result);
+    let mappedValues = {
+      totalPages: result.total_pages,
+      data: result.solicitudes.map((report) => ({
+        ...report,
+      })),
+    };
+    setReportsData(mappedValues);
+    console.log(mappedValues);
+    // setPage(result.total_pages);
 
-    // Filtramos si es de tipo libro
-    result.solicitudes = result.solicitudes.filter(
-      (report) => report.tipo === "Libro"
-    );
-
-    setReportsData(result.solicitudes);
-    console.log(result.solicitudes);
     if (defaultReportSelectedId) {
-      let item = result.solicitudes?.find(
+      let item = mappedValues?.data?.find(
         (r) => r.id === defaultReportSelectedId
       );
       setReportSelected(item);
-      console.log(item);
-    } else if (result.solicitudes?.length) {
-      setReportSelected(result.solicitudes[0]);
+    } else if (mappedValues?.data?.length) {
+      setReportSelected(mappedValues?.data[0]);
     }
   };
 
+  // Recargamos ese reporte seleccionado para actualizar su estado
+  const handleReloadListValues = (report) => {
+    let listCopy = [...reportsData.data];
+    let itemIndex = listCopy.findIndex((r) => r.id === reportSelected.id);
+
+    let itemCopy = {
+      ...listCopy[itemIndex],
+      estado: report,
+    };
+    listCopy[itemIndex] = { ...itemCopy };
+    setReportsData({ ...reportsData, data: listCopy });
+    setReportSelected(itemCopy);
+  };
+
   const handleSubmitAppeal = async () => {
-    console.log(reportSelected.id);
     await postAcceptAppeal(reportSelected.id);
 
     setIsSuccess(true);
@@ -80,7 +96,7 @@ export default function Page() {
   const handleRejectAppeal = async () => {
     await postRejectAppeal(reportSelected.id);
 
-    setIsSuccess(true);
+    setIsRejectSuccess(true);
     setAppealModal(false);
   };
 
@@ -108,9 +124,15 @@ export default function Page() {
       if (error) {
         toast.error(errorResponse?.error);
         setAppealModal(false);
+        setRejectModal(false);
       } else if (isSuccess) {
         toast.success("Sanción revocada con éxito");
+        handleReloadListValues(reportSelected?.estado);
         setAppealModal(false);
+      } else if (isRejectSuccess) {
+        toast.success("Apelación rechazada con éxito");
+        handleReloadListValues(reportSelected?.estado);
+        setRejectModal(false);
       }
     }
 
@@ -123,9 +145,6 @@ export default function Page() {
     <>
       <div className="relative flex flex-col gap-9 px-20 py-9">
         {isLoading && <Loader />}
-        <h1 className="font-bold text-gray-800 text-3xl leading-8">
-          Bandeja de Sanciones
-        </h1>
         <div className="flex gap-3">
           <div className="flex grow flex-col gap-3">
             <div className="flex flex-col gap-3">
@@ -208,7 +227,9 @@ export default function Page() {
             </div>
 
             <div className="flex flex-col items-center gap-3 border border-gray-300 rounded-md py-5 px-2">
-              <h1 className="text-xl font-semibold">Lista de Sanciones</h1>
+              <h1 className="text-xl font-semibold">
+                LISTA DE LIBROS BANEADOS
+              </h1>
               <table className="w-full">
                 <thead>
                   <tr className="h-14 border-b border-gray-200">
@@ -229,7 +250,7 @@ export default function Page() {
                   </tr>
                 </thead>
                 <tbody>
-                  {reportsData?.map((report, index) => (
+                  {reportsData?.data?.map((report, index) => (
                     <tr
                       key={index}
                       className={`h-14 hover:bg-green-100 cursor-pointer ${
@@ -306,7 +327,7 @@ export default function Page() {
                 {Boolean(reportsData?.data?.length) && (
                   <Pagination
                     currentPage={currentPage}
-                    totalPages={reportsData?.total_pages}
+                    totalPages={reportsData.totalPages}
                     onPageChange={setCurrentPage}
                   />
                 )}
@@ -353,7 +374,7 @@ export default function Page() {
                   </div>
 
                   <div className="flex flex-col gap-1 border-t border-colorPrimario pt-2">
-                    <span className="font-semibold">Motivo:</span>
+                    <span className="font-semibold">Motivo del reporte:</span>
                     <p className="text-gray-700 truncate">
                       <Tooltip content={reportSelected.motivo}>
                         {reportSelected?.motivo}
@@ -367,27 +388,39 @@ export default function Page() {
                       {reportSelected?.conclusion}
                     </p>
                   </div>
-                </div>
-                {reportSelected?.estado !== "aceptado" && (
-                  <div className="flex justify-between text-white">
-                    <div className="flex gap-2">
-                      <button
-                        className="h-10 rounded-md px-2 bg-colorPrimario hover:brightness-90"
-                        onClick={() => setAppealModal(true)}
-                      >
-                        Deshacer Baneo
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        className="h-10 rounded-md px-2 bg-red-900 hover:brightness-90"
-                        onClick={() => setRejectModal(true)}
-                      >
-                        Rechazar apelación
-                      </button>
-                    </div>
+
+                  <div className="flex flex-col gap-1 border-t border-colorPrimario pt-2">
+                    <span className="font-semibold">
+                      Justificacion de la apelacion:
+                    </span>
+                    <p className="text-gray-700 truncate">
+                      <Tooltip content={reportSelected.justificacion}>
+                        {reportSelected?.justificacion}
+                      </Tooltip>
+                    </p>
                   </div>
-                )}
+                </div>
+                {reportSelected?.estado !== "aceptado" &&
+                  reportSelected?.estado !== "rechazado" && (
+                    <div className="flex justify-between text-white">
+                      <div className="flex gap-2">
+                        <button
+                          className="h-10 rounded-md px-2 bg-colorPrimario hover:brightness-90"
+                          onClick={() => setAppealModal(true)}
+                        >
+                          Deshacer Baneo
+                        </button>
+                      </div>
+                      <div>
+                        <button
+                          className="h-10 rounded-md px-2 bg-red-900 hover:brightness-90"
+                          onClick={() => setRejectModal(true)}
+                        >
+                          Rechazar apelación
+                        </button>
+                      </div>
+                    </div>
+                  )}
               </>
             ) : (
               <span>No se ha seleccionado ninguna sanción</span>
