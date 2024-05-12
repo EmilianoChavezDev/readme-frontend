@@ -86,7 +86,7 @@ export default function UserOptions({ username, logout }) {
               <span>Mi Cuenta</span>
             </li>
 
-            {userRole === "moderador" && (
+            {userRole === "administrador" && (
               <li
                 className="flex pb-2 border-b gap-2 items-center cursor-pointer transform transition-all hover:scale-105 hover:text-black"
                 onClick={() => navigateTo(`/moderator/report_tray`)}

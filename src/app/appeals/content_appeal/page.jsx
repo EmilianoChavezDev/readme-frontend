@@ -7,10 +7,18 @@ import useReport from "@/hooks/useReport";
 import Modal from "@/components/common/modal";
 import Loader from "@/components/common/loader";
 import Pagination from "@/components/common/Pagination";
-import { Tooltip } from "@material-tailwind/react";
+import { Tooltip, Select, Option } from "@material-tailwind/react";
 import useContentAppeal from "@/hooks/useContentAppeal";
+import Link from "next/link";
+import { VscChevronRight } from "react-icons/vsc";
+import { debounce } from "lodash";
 
 export default function Page() {
+  const TIPOCONTENIDO = {
+    comentario: { key: "comentario", value: "Comentario" },
+    libro: { key: "libro", value: "Libro" },
+  };
+
   const { getReportByUserId, isLoading } = useReport();
   const { postBookAppeal, postCommentAppeal, error, errorResponse } =
     useContentAppeal();
@@ -20,6 +28,7 @@ export default function Page() {
   const [reportsData, setReportsData] = useState(null);
   const [reportSelected, setReportSelected] = useState(null);
   const [appealConclusion, setAppealConclusion] = useState("");
+  const [tipoSearch, setTipoSearch] = useState("");
   const [showAppealModal, setAppealModal] = useState(false);
 
   const user_id = localStorage.getItem("user_id");
@@ -27,6 +36,7 @@ export default function Page() {
   const fetchData = async (defaultReportSelectedId) => {
     const result = await getReportByUserId(user_id, {
       page: currentPage,
+      tipo: tipoSearch,
     });
 
     // Filtramos por los ultimos 30 dias
@@ -69,12 +79,22 @@ export default function Page() {
     setAppealConclusion("");
   };
 
+  const delayedFetchData = debounce(() => {
+    fetchData();
+  }, 400);
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       fetchData();
     }, 300);
     return () => clearTimeout(timeoutId);
   }, [currentPage, user_id]);
+
+  useEffect(() => {
+    delayedFetchData();
+
+    return delayedFetchData.cancel;
+  }, [currentPage, tipoSearch]);
 
   useEffect(() => {
     let isMounted = true;
@@ -100,12 +120,49 @@ export default function Page() {
     <>
       <div className="relative flex flex-col gap-9 px-20 py-9">
         {isLoading && <Loader />}
+        <div className="flex gap-2 items-center">
+          <Link href="/accounts" className="font-semibold text-gray-800">
+            Cuenta
+          </Link>
+          <span>
+            <VscChevronRight />
+          </span>
+          <span className="font-semibold text-gray-800">
+            Bandeja de Sanciones
+          </span>
+        </div>
         <h1 className="font-bold text-gray-800 text-3xl leading-8">
           Bandeja de Sanciones
         </h1>
-        <div className="flex gap-3">
+
+        <div className="flex gap-3 ">
           <div className="flex grow flex-col gap-3">
-            <div className="flex flex-col items-center gap-3 border border-gray-300 rounded-md py-5 px-2">
+            <form className="flex gap-3">
+              <div className="relative !max-w-32">
+                <Select
+                  label="Tipo Contenido"
+                  className="my-react-select-container !max-w-40"
+                  classNamePrefix="my-react-select"
+                  containerProps={{ className: "!min-w-40 !max-w-40" }}
+                  labelProps={{ className: "!max-w-40" }}
+                  value={tipoSearch}
+                  onChange={(value) => {
+                    setTipoSearch(value);
+                    setCurrentPage(1);
+                  }}
+                >
+                  {[
+                    { key: "", value: "Tipo" },
+                    ...Object.values(TIPOCONTENIDO),
+                  ]?.map((state, index) => (
+                    <Option key={index} className="min-h-9" value={state.key}>
+                      {state.value}
+                    </Option>
+                  ))}
+                </Select>
+              </div>
+            </form>
+            <div className="flex flex-col items-center gap-3 border border-gray-300 rounded-md py-5 px-2 ">
               <h1 className="text-xl font-semibold">Lista de Sanciones</h1>
               <table className="w-full">
                 <thead>
@@ -230,16 +287,18 @@ export default function Page() {
                     </p>
                   </div>
                 </div>
-                <div className="flex justify-between text-white">
-                  <div className="flex gap-2">
-                    <button
-                      className="h-10 rounded-md px-2 bg-red-900 hover:brightness-90"
-                      onClick={() => setAppealModal(true)}
-                    >
-                      Apelar sanción
-                    </button>
+                {!reportSelected?.solicitud_desbaneo && (
+                  <div className="flex justify-between text-white">
+                    <div className="flex gap-2">
+                      <button
+                        className="h-10 rounded-md px-2 bg-red-900 hover:brightness-90"
+                        onClick={() => setAppealModal(true)}
+                      >
+                        Apelar sanción
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
               </>
             ) : (
               <span>No se ha seleccionado ninguna sanción</span>

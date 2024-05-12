@@ -183,7 +183,7 @@ export default function Page() {
   }, [statusToSearch, currentPage]);
 
   useEffect(() => {
-    if (localStorage.getItem("role") !== "moderador") {
+    if (localStorage.getItem("role") !== "administrador") {
       toast.error("Usuario no autorizado");
       router.push("/");
     }

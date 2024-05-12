@@ -105,7 +105,7 @@ export default function Page() {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       fetchData();
-    }, 300);
+    }, 400);
     return () => clearTimeout(timeoutId);
   }, [currentPage, user_id]);
 
@@ -143,6 +143,7 @@ export default function Page() {
     <>
       <div className="relative flex flex-col gap-9 px-20 py-9">
         {isLoading && <Loader />}
+
         <div className="flex gap-3">
           <div className="flex grow flex-col gap-3">
             <div className="flex flex-col gap-3">
@@ -231,18 +232,18 @@ export default function Page() {
               <table className="w-full">
                 <thead>
                   <tr className="h-14 border-b border-gray-200">
-                    <th className="text-start font-semibold">
+                    <th className="text-center font-semibold">
                       Nombre del Libro
                     </th>
-                    <th className="text-start font-semibold">
+                    <th className="text-center font-semibold">
                       Autor del comentario
                     </th>
-                    <th className="text-start font-semibold">
+                    <th className="text-center font-semibold">
                       Cantidad de Reportes
                     </th>
-                    <th className="text-start font-semibold">Baneado Por</th>
-                    <th className="text-start font-semibold">Estado</th>
-                    <th className="text-start font-semibold">
+                    <th className="text-center font-semibold">Baneado Por</th>
+                    <th className="text-center font-semibold">Estado</th>
+                    <th className="text-center font-semibold">
                       Baneado en Fecha
                     </th>
                   </tr>
@@ -255,7 +256,7 @@ export default function Page() {
                         report.id === reportSelected.id
                           ? "border-t border-t-gray-400 border-b-2 border-b-colorPrimario"
                           : "border-t border-gray-400"
-                      }`}
+                      } `}
                       onClick={() => setReportSelected(report)}
                     >
                       <td
@@ -269,7 +270,7 @@ export default function Page() {
                       </td>
 
                       <td
-                        className={`text-start font-normal ${
+                        className={`text-center font-normal ${
                           report.id === reportSelected.id
                             ? "text-colorPrimario font-semibold"
                             : "text-gray-800"
@@ -279,7 +280,7 @@ export default function Page() {
                       </td>
 
                       <td
-                        className={`text-start font-normal ${
+                        className={`font-normal text-center  ${
                           report.id === reportSelected.id
                             ? "text-colorPrimario font-semibold"
                             : "text-gray-800"
@@ -289,7 +290,7 @@ export default function Page() {
                       </td>
 
                       <td
-                        className={`text-start font-normal ${
+                        className={`text-center font-normal ${
                           report.id === reportSelected.id
                             ? "text-colorPrimario font-semibold"
                             : "text-gray-800"
@@ -299,7 +300,7 @@ export default function Page() {
                       </td>
 
                       <td
-                        className={`text-start font-normal capitalize ${
+                        className={`text-center font-normal capitalize ${
                           report.id === reportSelected.id
                             ? "text-colorPrimario font-semibold"
                             : "text-gray-800"
@@ -309,13 +310,13 @@ export default function Page() {
                       </td>
 
                       <td
-                        className={`text-start font-normal ${
+                        className={`text-center font-normal ${
                           report.id === reportSelected.id
                             ? "text-colorPrimario font-semibold"
                             : "text-gray-800"
                         }`}
                       >
-                        {moment(report.created_at).format("DD-MM-YYYY")}
+                        {moment(report.fecha_de_baneo).format("DD-MM-YYYY")}
                       </td>
                     </tr>
                   ))}
@@ -360,7 +361,9 @@ export default function Page() {
                   <div className="flex gap-1">
                     <span className="font-semibold">Baneado en Fecha:</span>
                     <span className="capitalize text-gray-700">
-                      {moment(reportSelected?.created_at).format("DD-MM-YYYY")}
+                      {moment(reportSelected?.fecha_de_baneo).format(
+                        "DD-MM-YYYY"
+                      )}
                     </span>
                   </div>
 
