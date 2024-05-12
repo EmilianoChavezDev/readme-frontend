@@ -132,6 +132,8 @@ module.exports = withMT({
     },
 
     screens: {
+      // resoluciones para el boton +18, se hizo esto ya que se necesita resoluciones exactas para que desaparezca el icono +18
+      _ultrasm: "461px",
       // small resolutions
       _sm: "640px",
       _md: "768px",
