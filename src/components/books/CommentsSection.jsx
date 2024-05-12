@@ -323,7 +323,7 @@ export default function xCommentsSection({ bookId }) {
                           </p>
                           <div className="relative">
                             <textarea
-                              className="w-full h-20 mb-4 border border-gray-400 rounded-lg p-2"
+                              className="w-full h-20 mb-4 border border-gray-400 rounded-lg p-2 pr-12"
                               placeholder="Describe el motivo del reporte"
                               value={commentDescriptionToReport}
                               onChange={(e) =>
