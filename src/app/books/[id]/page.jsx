@@ -2,10 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import toast from "react-hot-toast";
 import { FaRegImage } from "react-icons/fa6";
 import { GoListUnordered } from "react-icons/go";
+import { LuEye } from "react-icons/lu";
+import { PiStarThin, PiWarningBold } from "react-icons/pi";
+
+import CommentsSection from "@/components/books/CommentsSection";
+import ReviewSelector from "@/components/books/ReviewSelector";
+import Loader from "@/components/common/loader";
 import { LuEye } from "react-icons/lu";
 import { PiStarThin, PiWarningBold } from "react-icons/pi";
 
@@ -16,14 +24,22 @@ import Modal from "@/components/common/modal";
 import useBook from "@/hooks/useBook";
 import useChapter from "@/hooks/useChapter";
 import useDenuncias from "@/hooks/useDenuncias";
+import useBook from "@/hooks/useBook";
+import useChapter from "@/hooks/useChapter";
+import useDenuncias from "@/hooks/useDenuncias";
 import useFavorite from "@/hooks/useFavorite";
 import useReadBooks from "@/hooks/useReadBook";
 import useReview from "@/hooks/useReview";
 import { addNumberFormat } from "@/utils";
 import { Tooltip } from "@material-tailwind/react";
 import { Document, Page, StyleSheet, Text, pdf } from "@react-pdf/renderer";
+import useReview from "@/hooks/useReview";
+import { addNumberFormat } from "@/utils";
+import { Tooltip } from "@material-tailwind/react";
+import { Document, Page, StyleSheet, Text, pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import { convert } from "html-to-text";
+import { TbRating18Plus } from "react-icons/tb";
 
 const styles = StyleSheet.create({
   page: {
@@ -288,7 +304,7 @@ export default function BookDetails({ params }) {
             <div className="flex justify-center items-center min-w-96 w-full _lg:w-1/2">
               <div className="flex gap-5 p-10 flex-col _sm:flex-row _sm:p-3 _md:p-12 _xl:p-16 w-4/6 mx-auto">
                 <div className="flex justify-center items-center bg-colorPrimario dark:bg-dark-darkColorButtons">
-                  <div className="flex justify-center items-center w-44 h-42 !min-h-42 text-white">
+                  <div className="flex justify-center items-center w-44 h-42 !min-h-42 text-white relative">
                     {book?.portada ? (
                       <Image
                         src={book.portada}
@@ -299,6 +315,11 @@ export default function BookDetails({ params }) {
                       />
                     ) : (
                       <FaRegImage size={35} />
+                    )}
+                    {book?.adulto && (
+                      <div className="absolute top-0 left-0 p-2">
+                        <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />
+                      </div>
                     )}
                   </div>
                 </div>
