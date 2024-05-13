@@ -22,6 +22,7 @@ export default function Page() {
     aceptado: { key: "aceptado", value: "Aceptado" },
     rechazado: { key: "rechazado", value: "Rechazado" },
     resuelto: { key: "resuelto", value: "Resuelto" },
+    
   };
 
   const router = useRouter();
