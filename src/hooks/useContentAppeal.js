@@ -38,26 +38,20 @@ const useContentAppeal = () => {
   };
 
   const postBookAppeal = async (id, justificacion) => {
+    console.log("id", id, "justificacion", justificacion);
     return handleRequest(() =>
-      api.post(
-        `${APPEAL_ENDPOINT}/libro/${id}`,
-        { justificacion },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      )
+      api.post(`${APPEAL_ENDPOINT}/libro/${id}`, justificacion, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
     );
   };
 
   const postCommentAppeal = async (id, justificacion) => {
+    console.log("id", id, "justificacion", justificacion);
     return handleRequest(() =>
-      api.post(
-        `${APPEAL_ENDPOINT}/comentario/${id}`,
-        { justificacion },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      )
+      api.post(`${APPEAL_ENDPOINT}/comentario/${id}`, justificacion, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
     );
   };
 
