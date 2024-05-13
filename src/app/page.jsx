@@ -52,7 +52,7 @@ const ColoredDivsList = () => {
                     ))}
                 </ScrollableBookList>
             </div>
-            <div className={`${dataContinueReading?.libros?.length? 'flex' : 'hidden'} flex-col gap-3`}>
+            <div className={`${existingCategories?.length? 'flex' : 'hidden'} flex-col gap-3`}>
                 <h2 className='text-3xl leading-7 font-bold pl-9'>Navega por nuestras categorías</h2>
                 <div className='flex flex-col gap-3 pl-12'>
                     {existingCategories?.map((category, index) => 
