@@ -2,6 +2,7 @@
 import { Error } from "@/components/common/Error";
 import InputField from "@/components/common/InputField";
 import Loading from "@/components/common/Loading";
+import PageTheme from "@/components/common/PageTheme";
 import { useUser } from "@/contexts/UserProvider";
 import useAuth from "@/hooks/useAuth";
 import moment from "moment";
@@ -12,8 +13,6 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import styles from "./styles/Registrarse.module.css";
-import PageTheme from "@/components/common/PageTheme";
-import { Watch } from "lucide-react";
 
 const defaultValues = {
   username: "",
@@ -31,7 +30,8 @@ const Page = () => {
   const { data, error, loading, errorResponse, register: registro } = useAuth();
   const { login: saveUser } = useUser();
   const {
-    register, watch,
+    register,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues });
@@ -41,14 +41,11 @@ const Page = () => {
   useEffect(() => {
     if (!data || error) return;
     saveUser(data, emailValue);
-    
   }, [data]);
-  
+
   useEffect(() => {
     if (!errorResponse) return;
   }, [errorResponse]);
-  
-  
 
   const onSubmit = async (formData) => {
     if (
@@ -76,10 +73,7 @@ const Page = () => {
     formData.fecha_nacimiento = fecha;
     // registro(formData);
     const rest = await registro(formData);
-
-    console.log(rest);
-      //router.push(`/auth/email_resend/${email}`);
-    
+    //router.push(`/auth/email_resend/${email}`);
   };
 
   const handleBlur = () => {

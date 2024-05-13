@@ -1,16 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import styles from "./styles/Inicio.module.css";
+import { Error } from "@/components/common/Error";
+import InputField from "@/components/common/InputField";
+import Loading from "@/components/common/Loading";
+import PageTheme from "@/components/common/PageTheme";
+import { useUser } from "@/contexts/UserProvider";
+import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import useAuth from "@/hooks/useAuth";
-import { useUser } from "@/contexts/UserProvider";
-import Loading from "@/components/common/Loading";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import InputField from "@/components/common/InputField";
-import { Error } from "@/components/common/Error";
-import PageTheme from "@/components/common/PageTheme";
+import styles from "./styles/Inicio.module.css";
 
 const defaultValues = {
   email: "",
@@ -31,10 +32,14 @@ const Page = () => {
   const onSubmit = async (formData) => {
     login(formData);
   };
-
+  const router = useRouter();
   useEffect(() => {
     if (!data || error) return;
     saveUser(data);
+    if (data.unconfirmed_email) {
+      const emailPath = `/auth/email_resend/${data.email}`;
+      router.push(emailPath);
+    }
   }, [data]);
 
   useEffect(() => {
