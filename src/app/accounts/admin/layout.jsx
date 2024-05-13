@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
         { path: '/accounts/admin/banned_books', name: 'Libros Baneados', show: true },
         { path: '/accounts/admin/banned_users', name: 'Usuarios Baneados', show: true },
         { path: '/accounts/admin/banned_comments', name: 'Comentarios Baneados', show: true },
-        { path: '/accounts/admin/manage_moderators', name: 'Moderadores', show: role === 'moderador' }
+        { path: '/accounts/admin/manage_moderators', name: 'Moderadores', show: role === 'administrador' }
     ])
 
     const handleTabClick = index => {
@@ -39,10 +39,10 @@ export default function RootLayout({ children }) {
     }, [pathname])
 
     useEffect(() => {
-        if (role === 'moderador') {
+        if (role === 'administrador') {
             let pathsCopy = [...paths] 
             pathsCopy.pop()
-            setPaths([...pathsCopy, { path: '/accounts/admin/manage_moderators', name: 'Moderadores', show: role === 'moderador' }])
+            setPaths([...pathsCopy, { path: '/accounts/admin/manage_moderators', name: 'Moderadores', show: role === 'administrador' }])
         }
     }, [role])
     
@@ -76,7 +76,7 @@ export default function RootLayout({ children }) {
                         <div className={`${paths?.find(tab => pathname.startsWith(tab.path))? 'block' : 'hidden'} border-b-2 border-colorPrimario absolute bottom-0 left-0 transition-transform duration-300 ease-in-out z-30`}
                             style={{ width: `${lineWidth}px`, transform: `translateX(${linePosition}px)` }} />
                     </ul>
-                    {role === 'moderador' && pathname === '/accounts/admin/manage_moderators' &&
+                    {role === 'administrador' && pathname === '/accounts/admin/manage_moderators' &&
                         <button className='h-10 px-2 rounded-md bg-colorPrimario hover:bg-colorHoverPrimario text-white flex items-center gap-1'
                             onClick={() => setShowAddModeratorModal(true)}>
                             <PlusIcon />
