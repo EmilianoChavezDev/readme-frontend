@@ -7,7 +7,9 @@ import { useEffect, useState } from 'react'
 import { Input } from '@material-tailwind/react'
 import { MdOutlineComment } from 'react-icons/md'
 
+import useUserInfo from '@/hooks/useUser'
 import useReport from '@/hooks/useReport'
+import Modal from '@/components/common/modal'
 import Loader from '@/components/common/loader'
 import Pagination from '@/components/common/Pagination'
 import { useAccountContext } from '@/contexts/AccountProvider'
@@ -17,9 +19,11 @@ export default function Page() {
 
     const [data, setData] = useState(null)
     const [currentPage, setCurrentPage] = useState(1)
-    const [moderatorSelected, setModeratorSelected] = useState(null)
     const [usernameToSearch, setUsernameToSearch] = useState('')
+    const [moderatorSelected, setModeratorSelected] = useState(null)
+    const [showRevokePermissionsModal, setShowRevokePermissionsModal] = useState(false)
 
+    const { updateUserRole } = useUserInfo()
     const { getModeratorStatistics, isLoading } = useReport()
     const { showAddModeratorModal, setShowAddModeratorModal } = useAccountContext()
 
@@ -34,6 +38,16 @@ export default function Page() {
 
     const reloadData = () => {
         currentPage === 1? fetchModerators() : setCurrentPage(1)
+    }
+
+    const handleRevokePermissions = async () => {
+        const result = await updateUserRole({ id: moderatorSelected?.id, role: 'usuario' })
+        if (result?.error) {
+            toast.error('No se pudo revocar el permiso')
+        } else {
+            setShowRevokePermissionsModal(false)
+            reloadData()
+        }
     }
 
     useEffect(() => {
@@ -51,6 +65,13 @@ export default function Page() {
 
     return (
         <>
+            <Modal variant='danger'
+                title={`Revocar permisos de ${moderatorSelected?.username}`}
+                open={showRevokePermissionsModal}
+                onHide={() => setShowRevokePermissionsModal(false)}
+                onSave={handleRevokePermissions}>
+                <p>¿Estás seguro de cambiar el rol a <b>Usuario</b>?</p>
+            </Modal>
             <AddModeratorModal show={showAddModeratorModal} 
                 onHide={() => setShowAddModeratorModal(false)}
                 onSave={reloadData} />
@@ -185,7 +206,13 @@ export default function Page() {
                                         </div>
                                     </div>
                                 </article>
-                            </div> 
+                            </div>
+                            <div>
+                                <button className='h-10 rounded-md px-2 bg-red-900 text-white hover:brightness-90'
+                                    onClick={() => setShowRevokePermissionsModal(true)}>
+                                    Revocar Permisos
+                                </button>
+                            </div>
                         </> :
                         <span>No se ha seleccionado ningún moderador</span>
                     }
