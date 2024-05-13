@@ -26,6 +26,7 @@ const useUserInfo = () => {
       });
 
       const data = response.data;
+
       setData(data);
     } catch (error) {
       setIsTrue(false);
