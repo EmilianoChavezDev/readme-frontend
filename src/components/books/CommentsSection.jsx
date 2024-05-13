@@ -4,20 +4,20 @@ import "moment/locale/es";
 import moment from "moment";
 import toast from "react-hot-toast";
 
-import { useEffect, useState } from "react";
-import { VscKebabVertical } from "react-icons/vsc";
 import {
   Popover,
   PopoverContent,
   PopoverHandler,
 } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import { VscKebabVertical } from "react-icons/vsc";
 
-import useComment from "@/hooks/useComment";
 import Modal from "@/components/common/modal";
 import { useUser } from "@/contexts/UserProvider";
-import ProfileView from "../common/ProfileView";
-import Link from "next/link";
+import useComment from "@/hooks/useComment";
 import useDenuncias from "@/hooks/useDenuncias";
+import Link from "next/link";
+import ProfileView from "../common/ProfileView";
 
 export default function xCommentsSection({ bookId }) {
   moment.locale("es");
@@ -43,7 +43,7 @@ export default function xCommentsSection({ bookId }) {
   const [commentIdToRemove, setCommentIdToRemove] = useState(null);
   const [commentIdToReport, setCommentIdToReport] = useState(null);
   const [commentDescriptionToReport, setCommentDescriptionToReport] =
-    useState(null);
+    useState("");
   const [commentSelectToReport, setCommentSelectToReport] = useState(null);
   const [categoryCommentReport, setCategoryCommentReport] = useState([]);
   const [errorCommentMotive, setErrorCommentMotive] = useState(false);
@@ -321,15 +321,20 @@ export default function xCommentsSection({ bookId }) {
                             ¿Estás seguro de que deseas denunciar este
                             comentario?
                           </p>
-                          <textarea
-                            className="w-full h-20 mb-4 border border-gray-400 rounded-lg p-2"
-                            placeholder="Describe el motivo del reporte"
-                            value={commentDescriptionToReport}
-                            onChange={(e) =>
-                              setCommentDescriptionToReport(e.target.value)
-                            }
-                          />
-
+                          <div className="relative">
+                            <textarea
+                              className="w-full h-20 mb-4 border border-gray-400 rounded-lg p-2 pr-12"
+                              placeholder="Describe el motivo del reporte"
+                              value={commentDescriptionToReport}
+                              onChange={(e) =>
+                                setCommentDescriptionToReport(e.target.value)
+                              }
+                              maxLength={500}
+                            />
+                            <span className="absolute top-2 right-2 text-xs text-gray-400">
+                              {commentDescriptionToReport.length}/500
+                            </span>
+                          </div>
                           <select
                             className="w-full mb-4 border border-gray-400 rounded-lg p-2"
                             value={commentSelectToReport}

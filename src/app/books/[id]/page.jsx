@@ -12,6 +12,7 @@ import { PiStarThin, PiWarningBold } from "react-icons/pi";
 import CommentsSection from "@/components/books/CommentsSection";
 import ReviewSelector from "@/components/books/ReviewSelector";
 import Loader from "@/components/common/loader";
+
 import Modal from "@/components/common/modal";
 import useBook from "@/hooks/useBook";
 import useChapter from "@/hooks/useChapter";
@@ -247,11 +248,18 @@ export default function BookDetails({ params }) {
         <div className="flex flex-col gap-2">
           <span>Indícanos el motivo de tu reporte</span>
           <textarea
-            className="text-xs border rounded-lg p-3 flex-grow border-gray-400 outline-none"
+            className="text-xs border rounded-lg p-3 pr-16 flex-grow border-gray-400 outline-none"
             value={reasonForReporting}
-            onChange={(event) => setReasonForReporting(event.target.value)}
-            rows={2}
+            onChange={(event) => {
+              const inputValue = event.target.value.slice(0, 500);
+              setReasonForReporting(inputValue);
+            }}
+            maxLength={500}
+            rows={5}
           />
+          <span className="absolute top-16 right-6 text-xs text-gray-400">
+            {reasonForReporting.length}/500
+          </span>
 
           <select
             className="text-xs border rounded-lg p-2 py-2 border-gray-400 outline-none"
