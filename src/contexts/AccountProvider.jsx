@@ -1,21 +1,25 @@
-'use client'
+"use client";
 
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState } from "react";
 
-const AccountContext = createContext()
+const AccountContext = createContext();
 
 export const useAccountContext = () => {
-    return useContext( AccountContext )
-}
+  return useContext(AccountContext);
+};
 
-export const AccountProvider = ({ children, showAddModeratorModal, setShowAddModeratorModal }) => {
-        
-    const values = {
-        showAddModeratorModal, 
-        setShowAddModeratorModal
-    }
+export const AccountProvider = ({
+  children,
+  showAddModeratorModal,
+  setShowAddModeratorModal,
+}) => {
+  const values = {
+    showAddModeratorModal,
+    setShowAddModeratorModal,
+  };
 
-    return <AccountContext.Provider value={values}>
-        { children }
-    </AccountContext.Provider>
-}
+  return (
+    <AccountContext.Provider value={values}>{children}</AccountContext.Provider>
+  );
+};
+    
