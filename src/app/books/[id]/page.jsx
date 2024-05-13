@@ -2,9 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import toast from "react-hot-toast";
 import { FaRegImage } from "react-icons/fa6";
 import { GoListUnordered } from "react-icons/go";
@@ -14,25 +12,13 @@ import { PiStarThin, PiWarningBold } from "react-icons/pi";
 import CommentsSection from "@/components/books/CommentsSection";
 import ReviewSelector from "@/components/books/ReviewSelector";
 import Loader from "@/components/common/loader";
-import { LuEye } from "react-icons/lu";
-import { PiStarThin, PiWarningBold } from "react-icons/pi";
 
-import CommentsSection from "@/components/books/CommentsSection";
-import ReviewSelector from "@/components/books/ReviewSelector";
-import Loader from "@/components/common/loader";
 import Modal from "@/components/common/modal";
-import useBook from "@/hooks/useBook";
-import useChapter from "@/hooks/useChapter";
-import useDenuncias from "@/hooks/useDenuncias";
 import useBook from "@/hooks/useBook";
 import useChapter from "@/hooks/useChapter";
 import useDenuncias from "@/hooks/useDenuncias";
 import useFavorite from "@/hooks/useFavorite";
 import useReadBooks from "@/hooks/useReadBook";
-import useReview from "@/hooks/useReview";
-import { addNumberFormat } from "@/utils";
-import { Tooltip } from "@material-tailwind/react";
-import { Document, Page, StyleSheet, Text, pdf } from "@react-pdf/renderer";
 import useReview from "@/hooks/useReview";
 import { addNumberFormat } from "@/utils";
 import { Tooltip } from "@material-tailwind/react";
