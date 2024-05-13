@@ -281,8 +281,8 @@ export default function BookDetails({ params }) {
           <section className="flex flex-grow flex-wrap shadow-lg">
             <div className="flex justify-center items-center min-w-96 w-full _lg:w-1/2">
               <div className="flex gap-5 p-10 flex-col _sm:flex-row _sm:p-3 _md:p-12 _xl:p-16 w-4/6 mx-auto">
-                <div className="flex justify-center items-center bg-colorPrimario dark:bg-dark-darkColorButtons">
-                  <div className="flex justify-center items-center w-44 h-42 !min-h-42 text-white relative">
+                <div className="flex justify-center items-center ">
+                  <div className="flex justify-center items-center w-44 aspect-portada text-white relative bg-colorPrimario dark:bg-dark-darkColorButtons text-white relative">
                     {book?.adulto && book?.portada ? (
                       <div className="absolute top-0 left-0 p-2">
                         <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />
