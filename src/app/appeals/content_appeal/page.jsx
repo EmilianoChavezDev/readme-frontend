@@ -30,6 +30,7 @@ export default function Page() {
   const [appealConclusion, setAppealConclusion] = useState("");
   const [tipoSearch, setTipoSearch] = useState("");
   const [showAppealModal, setAppealModal] = useState(false);
+  const [isAppealSubmitted, setIsAppealSubmitted] = useState(false);
 
   const user_id = localStorage.getItem("user_id");
 
@@ -75,6 +76,7 @@ export default function Page() {
     }
 
     setIsSuccess(true);
+    setIsAppealSubmitted(true);
     setAppealModal(false);
     setAppealConclusion("");
   };
@@ -287,7 +289,7 @@ export default function Page() {
                     </p>
                   </div>
                 </div>
-                {!reportSelected?.solicitud_desbaneo && (
+                {!reportSelected?.solicitud_desbaneo && !isAppealSubmitted && (
                   <div className="flex justify-between text-white">
                     <div className="flex gap-2">
                       <button

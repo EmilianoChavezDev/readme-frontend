@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { SlFlag, SlUserFollow, SlUserUnfollow } from "react-icons/sl";
+import useDenuncias from "@/hooks/useDenuncias";
 import { Button } from "@material-tailwind/react";
 import { usePathname, useSearchParams } from "next/navigation";
-import Modal from "../common/modal";
-import useDenuncias from "@/hooks/useDenuncias";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import { SlFlag, SlUserFollow, SlUserUnfollow } from "react-icons/sl";
+import Modal from "../common/modal";
 
 const UserOption = ({
   isFollow,
@@ -97,11 +97,19 @@ const UserOption = ({
         <div className="flex flex-col gap-2">
           <span>Indícanos el motivo de tu reporte</span>
           <textarea
-            className="text-xs border rounded-lg p-3 flex-grow border-gray-400 outline-none"
+            className="text-xs border rounded-lg p-3 pr-16 flex-grow border-gray-400 outline-none"
             value={reasonForReporting}
-            onChange={(event) => setReasonForReporting(event.target.value)}
+            onChange={(event) => {
+              const inputValue = event.target.value.slice(0, 500); // Limitar a 500 caracteres
+              setReasonForReporting(inputValue);
+            }}
+            maxLength={500} // Establecer el límite máximo de caracteres
             rows={2}
           />
+          <span className="absolute top-16 right-6 text-xs text-gray-400">
+            {reasonForReporting ? reasonForReporting.length : 0}/500
+          </span>
+
           <select
             className="text-xs border rounded-lg p-2 border-gray-400 outline-none"
             value={categorySelectReportUser}

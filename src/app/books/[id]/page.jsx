@@ -12,6 +12,7 @@ import { PiStarThin, PiWarningBold } from "react-icons/pi";
 import CommentsSection from "@/components/books/CommentsSection";
 import ReviewSelector from "@/components/books/ReviewSelector";
 import Loader from "@/components/common/loader";
+
 import Modal from "@/components/common/modal";
 import useBook from "@/hooks/useBook";
 import useChapter from "@/hooks/useChapter";
@@ -25,6 +26,7 @@ import { Document, Page, StyleSheet, Text, pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import { convert } from "html-to-text";
 import { TbRating18Plus } from "react-icons/tb";
+import NotFound from "@/components/common/NotFound";
 
 const styles = StyleSheet.create({
   page: {
@@ -246,11 +248,18 @@ export default function BookDetails({ params }) {
         <div className="flex flex-col gap-2">
           <span>Indícanos el motivo de tu reporte</span>
           <textarea
-            className="text-xs border rounded-lg p-3 flex-grow border-gray-400 outline-none"
+            className="text-xs border rounded-lg p-3 pr-16 flex-grow border-gray-400 outline-none"
             value={reasonForReporting}
-            onChange={(event) => setReasonForReporting(event.target.value)}
-            rows={2}
+            onChange={(event) => {
+              const inputValue = event.target.value.slice(0, 500);
+              setReasonForReporting(inputValue);
+            }}
+            maxLength={500}
+            rows={5}
           />
+          <span className="absolute top-16 right-6 text-xs text-gray-400">
+            {reasonForReporting.length}/500
+          </span>
 
           <select
             className="text-xs border rounded-lg p-2 py-2 border-gray-400 outline-none"
@@ -272,8 +281,12 @@ export default function BookDetails({ params }) {
         </div>
       </Modal>
       {error ? (
-        <div className="flex justify-center items-center">
-          <h1>Libro no encontrado</h1>
+        <div className="flex justify-center pt-10">
+          <NotFound
+              message={
+                'Lo siento, el libro que estás buscando no se encuentra en nuestra biblioteca en este momento. Por favor, verifica la URL o intenta buscar otro libro. '
+              }
+            />
         </div>
       ) : (
         <div className="flex flex-col gap-3 relative ">
@@ -281,8 +294,8 @@ export default function BookDetails({ params }) {
           <section className="flex flex-grow flex-wrap shadow-lg">
             <div className="flex justify-center items-center min-w-96 w-full _lg:w-1/2">
               <div className="flex gap-5 p-10 flex-col _sm:flex-row _sm:p-3 _md:p-12 _xl:p-16 w-4/6 mx-auto">
-                <div className="flex justify-center items-center bg-colorPrimario dark:bg-dark-darkColorButtons">
-                  <div className="flex justify-center items-center w-44 h-42 !min-h-42 text-white relative">
+                <div className="flex justify-center items-center ">
+                  <div className="flex justify-center items-center w-44 aspect-portada text-white relative bg-colorPrimario dark:bg-dark-darkColorButtons text-white relative">
                     {book?.adulto && book?.portada ? (
                       <div className="absolute top-0 left-0 p-2">
                         <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />

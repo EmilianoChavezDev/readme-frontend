@@ -79,9 +79,11 @@ export default function Page() {
       ...listCopy[itemIndex],
       estado: report,
     };
+
     listCopy[itemIndex] = { ...itemCopy };
     setReportsData({ ...reportsData, data: listCopy });
-    setReportSelected(itemCopy);
+
+    setReportSelected({ ...itemCopy });
   };
 
   const handleSubmitAppeal = async () => {
@@ -125,11 +127,11 @@ export default function Page() {
         setRejectModal(false);
       } else if (isSuccess) {
         toast.success("Sanción revocada con éxito");
-        handleReloadListValues(reportSelected?.estado);
+        handleReloadListValues("aceptado");
         setAppealModal(false);
       } else if (isRejectSuccess) {
         toast.success("Apelación rechazada con éxito");
-        handleReloadListValues(reportSelected?.estado);
+        handleReloadListValues("rechazado");
         setRejectModal(false);
       }
     }
