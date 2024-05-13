@@ -25,6 +25,7 @@ import { Document, Page, StyleSheet, Text, pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import { convert } from "html-to-text";
 import { TbRating18Plus } from "react-icons/tb";
+import NotFound from "@/components/common/NotFound";
 
 const styles = StyleSheet.create({
   page: {
@@ -272,8 +273,12 @@ export default function BookDetails({ params }) {
         </div>
       </Modal>
       {error ? (
-        <div className="flex justify-center items-center">
-          <h1>Libro no encontrado</h1>
+        <div className="flex justify-center pt-10">
+          <NotFound
+              message={
+                'Lo siento, el libro que estás buscando no se encuentra en nuestra biblioteca en este momento. Por favor, verifica la URL o intenta buscar otro libro. '
+              }
+            />
         </div>
       ) : (
         <div className="flex flex-col gap-3 relative ">
