@@ -313,7 +313,7 @@ export default function xCommentsSection({ bookId }) {
                           commentIdToReport && "visible"
                         }`}
                       >
-                        <div className="bg-white rounded-lg p-8">
+                        <div className="bg-white rounded-lg p-8 dark:bg-dark-darkColorNeutral">
                           <h2 className="text-xl font-bold mb-4">
                             Reportar comentario
                           </h2>
@@ -358,13 +358,13 @@ export default function xCommentsSection({ bookId }) {
                           )}
                           <div className="flex justify-end">
                             <button
-                              className="mr-2 px-4 py-2 border border-gray-400 rounded-lg hover:bg-gray-100"
+                              className="mr-2 px-4 py-2 border border-gray-400 rounded-lg hover:bg-gray-100 dark:bg-red-600 dark:hover:bg-red-400 dark:border-red-600"
                               onClick={handleCancelCommentReport}
                             >
                               Cancelar
                             </button>
                             <button
-                              className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600"
+                              className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
                               onClick={handleCommentReport}
                             >
                               Enviar denuncia
