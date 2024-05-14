@@ -19,7 +19,7 @@ export default function BookListPerCategory({ books, category }) {
         onClick={() =>
           router.push(
             `/books/${
-              books?.filter((book) => book.categoria === category)[0]?.id
+              books[0]?.id
             }`
           )
         }
