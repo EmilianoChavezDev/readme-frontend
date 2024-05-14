@@ -8,31 +8,39 @@ import useGetLibros from '@/hooks/useGetLibros'
 import BookCard from '@/components/books/BookCard'
 import ScrollableBookList from '@/components/books/ScrollableBookList'
 import BookListPerCategory from '@/components/books/BookListPerCategory'
+import useCategory from '@/hooks/useCategory'
+import Loader from '@/components/common/loader'
 
 const ColoredDivsList = () => {
 
-    const router = useRouter()
-
     const { getAllBooks } = useBook()
     const { getContinueReading, dataContinueReading } = useGetLibros()
+    const {data: categories, fetchCategories, loading: categoriesLoading} = useCategory()
 
     const [books, setBooks] = useState([])
+    const [categoryBooks, setCategoryBooks] = useState({})
 
     const fetchNews = async () => {
-        const result = await getAllBooks({ page: 1 })
+        const result = await getAllBooks({ page: 1, cantidad_minima_capitulos: 1 })
         setBooks(result?.data)
     }
 
-    const existingCategories = useMemo(() => {
-        return books?.length? books?.map(book => book.categoria)?.filter((valor, indice, self) => {
-            return self.indexOf(valor) === indice
-        }) : []
-    }, [books])
+    const fetchBooksByCategory = async (category) => {
+        const result = await getAllBooks({ page: 1, categorias: [category[0]], cantidad_minima_capitulos: 1 })
+        if(result?.data.length)
+            setCategoryBooks(prev => ({...prev, [category[1]]:result?.data}))
+    }   
 
     useEffect(() => {
         fetchNews()
         getContinueReading()
+        fetchCategories()
     }, [])
+
+    useEffect(() => {
+        if(!categories) return
+        categories.forEach(category => fetchBooksByCategory(category))
+    },[categories])
 
     return (
         <div className='flex flex-col gap-10 py-10'>
@@ -52,16 +60,18 @@ const ColoredDivsList = () => {
                     ))}
                 </ScrollableBookList>
             </div>
-            <div className={`${dataContinueReading?.libros?.length? 'flex' : 'hidden'} flex-col gap-3`}>
+           {!categoriesLoading ? <div className={`${categories?.length? 'flex' : 'hidden'} flex-col gap-3`}>
                 <h2 className='text-3xl leading-7 font-bold pl-9'>Navega por nuestras categorías</h2>
                 <div className='flex flex-col gap-3 pl-12'>
-                    {existingCategories?.map((category, index) => 
+                    {categories?.filter(c =>{
+                        return Object.keys(categoryBooks).includes(c[1])
+                    } ).map((category, index) => 
                         <BookListPerCategory key={index} 
-                            category={category}
-                            books={books?.filter(book => book.categoria === category)}/>
+                            category={category[1]}
+                            books={categoryBooks[category[1]]}/>
                     )}
                 </div>
-            </div>
+            </div> : <Loader />} 
         </div>
     )
 }

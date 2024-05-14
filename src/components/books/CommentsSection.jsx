@@ -4,20 +4,20 @@ import "moment/locale/es";
 import moment from "moment";
 import toast from "react-hot-toast";
 
-import { useEffect, useState } from "react";
-import { VscKebabVertical } from "react-icons/vsc";
 import {
   Popover,
   PopoverContent,
   PopoverHandler,
 } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import { VscKebabVertical } from "react-icons/vsc";
 
-import useComment from "@/hooks/useComment";
 import Modal from "@/components/common/modal";
 import { useUser } from "@/contexts/UserProvider";
-import ProfileView from "../common/ProfileView";
-import Link from "next/link";
+import useComment from "@/hooks/useComment";
 import useDenuncias from "@/hooks/useDenuncias";
+import Link from "next/link";
+import ProfileView from "../common/ProfileView";
 
 export default function xCommentsSection({ bookId }) {
   moment.locale("es");
@@ -43,7 +43,7 @@ export default function xCommentsSection({ bookId }) {
   const [commentIdToRemove, setCommentIdToRemove] = useState(null);
   const [commentIdToReport, setCommentIdToReport] = useState(null);
   const [commentDescriptionToReport, setCommentDescriptionToReport] =
-    useState(null);
+    useState("");
   const [commentSelectToReport, setCommentSelectToReport] = useState(null);
   const [categoryCommentReport, setCategoryCommentReport] = useState([]);
   const [errorCommentMotive, setErrorCommentMotive] = useState(false);
@@ -313,7 +313,7 @@ export default function xCommentsSection({ bookId }) {
                           commentIdToReport && "visible"
                         }`}
                       >
-                        <div className="bg-white rounded-lg p-8">
+                        <div className="bg-white rounded-lg p-8 dark:bg-dark-darkColorNeutral">
                           <h2 className="text-xl font-bold mb-4">
                             Reportar comentario
                           </h2>
@@ -321,15 +321,20 @@ export default function xCommentsSection({ bookId }) {
                             ¿Estás seguro de que deseas denunciar este
                             comentario?
                           </p>
-                          <textarea
-                            className="w-full h-20 mb-4 border border-gray-400 rounded-lg p-2"
-                            placeholder="Describe el motivo del reporte"
-                            value={commentDescriptionToReport}
-                            onChange={(e) =>
-                              setCommentDescriptionToReport(e.target.value)
-                            }
-                          />
-
+                          <div className="relative">
+                            <textarea
+                              className="w-full h-20 mb-4 border border-gray-400 rounded-lg p-2 pr-12"
+                              placeholder="Describe el motivo del reporte"
+                              value={commentDescriptionToReport}
+                              onChange={(e) =>
+                                setCommentDescriptionToReport(e.target.value)
+                              }
+                              maxLength={500}
+                            />
+                            <span className="absolute top-2 right-2 text-xs text-gray-400">
+                              {commentDescriptionToReport.length}/500
+                            </span>
+                          </div>
                           <select
                             className="w-full mb-4 border border-gray-400 rounded-lg p-2"
                             value={commentSelectToReport}
@@ -353,13 +358,13 @@ export default function xCommentsSection({ bookId }) {
                           )}
                           <div className="flex justify-end">
                             <button
-                              className="mr-2 px-4 py-2 border border-gray-400 rounded-lg hover:bg-gray-100"
+                              className="mr-2 px-4 py-2 border border-gray-400 rounded-lg hover:bg-gray-100 dark:bg-red-600 dark:hover:bg-red-400 dark:border-red-600"
                               onClick={handleCancelCommentReport}
                             >
                               Cancelar
                             </button>
                             <button
-                              className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600"
+                              className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
                               onClick={handleCommentReport}
                             >
                               Enviar denuncia

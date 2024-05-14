@@ -1,19 +1,19 @@
 "use client";
 
+import { Option, Select } from "@material-tailwind/react";
 import moment from "moment";
 import Link from "next/link";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Option, Select } from "@material-tailwind/react";
+import toast from "react-hot-toast";
 
+import Pagination from "@/components/common/Pagination";
+import Loader from "@/components/common/loader";
+import Modal from "@/components/common/modal";
 import useBook from "@/hooks/useBook";
+import useComment from "@/hooks/useComment";
 import useReport from "@/hooks/useReport";
 import useUserInfo from "@/hooks/useUser";
-import useComment from "@/hooks/useComment";
-import Modal from "@/components/common/modal";
-import Loader from "@/components/common/loader";
-import Pagination from "@/components/common/Pagination";
 
 export default function Page() {
   const STATUS = {
@@ -182,8 +182,10 @@ export default function Page() {
     return () => clearTimeout(timeoutId);
   }, [statusToSearch, currentPage]);
 
+  let userRole = localStorage.getItem("role");
+
   useEffect(() => {
-    if (localStorage.getItem("role") !== "moderador") {
+    if (userRole === "usuario") {
       toast.error("Usuario no autorizado");
       router.push("/");
     }

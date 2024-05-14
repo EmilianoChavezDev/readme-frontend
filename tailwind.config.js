@@ -55,6 +55,10 @@ module.exports = withMT({
         textInformationColor: "#222222",
         colorBorderGray: "#89979B",
         colorFondo: "#e9ecef",
+        coldCanada: '#DDFFFF',
+        blueHour: '#0E46A3',
+        flirtyRose: '#D6589F',
+        firecracker: '#FB6D48',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -132,6 +136,8 @@ module.exports = withMT({
     },
 
     screens: {
+      // resoluciones para el boton +18, se hizo esto ya que se necesita resoluciones exactas para que desaparezca el icono +18
+      _ultrasm: "461px",
       // small resolutions
       _sm: "640px",
       _md: "768px",

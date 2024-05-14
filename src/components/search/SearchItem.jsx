@@ -1,14 +1,15 @@
 import { Button, Typography } from "@material-tailwind/react";
 import Image from "next/image";
-import BookStatistics from "./BookStatistics";
-import { FaUser } from "react-icons/fa";
 import Link from "next/link";
+import { FaUser } from "react-icons/fa";
+import { TbRating18Plus } from "react-icons/tb";
+import BookStatistics from "./BookStatistics";
 
 const SearchItem = ({ book }) => {
   return (
     <div className="flex justify-between bg-buttonColorGray shadow-lg p-2 gap-4 dark:bg-dark-darkColorNeutral">
       <div className="flex gap-3">
-        <div class="flex-grow">
+        <div className="flex-grow relative">
           <Image
             src={
               book.portada.length ? book.portada : "/image/template_libro.png"
@@ -17,9 +18,13 @@ const SearchItem = ({ book }) => {
             height={160}
             alt="Portada De Libro"
             priority={true}
-            className=""
             style={{ height: "190px", maxWidth: "350px" }}
           />
+          {book.adulto && (
+            <div className="absolute top-0 left-0 p-2">
+              <TbRating18Plus className="text-5xl bg-white rounded-full text-red-500 dark:bg-red-500" />
+            </div>
+          )}
         </div>
 
         <div className="col-span-12 _md:col-span-7">

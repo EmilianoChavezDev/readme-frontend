@@ -12,6 +12,36 @@ const useUserInfo = () => {
   const [isErrorProfile, setIsErrorProfile] = useState(false);
   const [isErrorProfileUpdate, setIsErrorProfileUpdate] = useState(false);
 
+  const searchUserByUsername = async username => {
+    setLoading(true)
+    try {
+      const url = `${process.env.API_URL}/users/find_by_username/${username}`
+      const token = localStorage.getItem('token')
+      const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` }})
+      return response.data
+    } catch (error) {
+      setIsTrue(false)
+      setIsError(true)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const updateUserRole = async params => {
+    setLoading(true)
+    try {
+      const url = `${process.env.API_URL}/users/role`
+      const token = localStorage.getItem('token')
+      const response = await axios.put(url, params, { headers: { Authorization: `Bearer ${token}` }})
+      return response.data
+    } catch (error) {
+      setIsTrue(false)
+      setIsError(true)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const getUserInformation = async (username) => {
     setLoading(true);
 
@@ -26,6 +56,7 @@ const useUserInfo = () => {
       });
 
       const data = response.data;
+
       setData(data);
     } catch (error) {
       setIsTrue(false);
@@ -595,6 +626,8 @@ const useUserInfo = () => {
     deletePortada,
     deleteUser,
     searchUsers,
+    searchUserByUsername,
+    updateUserRole
   };
 };
 

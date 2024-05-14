@@ -12,6 +12,9 @@ import InputField from "@/components/common/InputField";
 import { Error } from "@/components/common/Error";
 import PageTheme from "@/components/common/PageTheme";
 
+import Modal from "@/components/common/modal";
+import useUnbanAccount from "@/hooks/useUnbanAccount";
+
 const defaultValues = {
   email: "",
   password: "",
@@ -21,12 +24,19 @@ const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { data, error, loading, errorResponse, login } = useAuth();
   const { login: saveUser } = useUser();
+  const { request_Unban, isLoading: unbanLoading, error: unbanError } = useUnbanAccount();
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
+    reset
   } = useForm({ defaultValues });
+  const emailValue = watch("email");
+  
+  const [showModal, setShowModal] = useState(false);
+  const [justificacion, setJustificacion] = useState("");
 
   const onSubmit = async (formData) => {
     login(formData);
@@ -39,11 +49,23 @@ const Page = () => {
 
   useEffect(() => {
     if (!errorResponse) return;
+    if(errorResponse.error === "Usuario baneado") {
+      setShowModal(true);
+    }
   }, [errorResponse]);
 
   const handleBlur = () => {
     setIsFocused(false);
   };
+
+  const handleUnbanRequest = async () => {
+    const res = await request_Unban(emailValue, justificacion);
+    if(res) {
+      reset(defaultValues); // Reset form fields
+      setShowModal(false); // Close modal
+    }
+  };
+
 
   return (
     <PageTheme>
@@ -138,6 +160,25 @@ const Page = () => {
           </div>
         </div>
       </div>
+      {/* Modal for unban request */}
+      <Modal
+        open={showModal}
+        onHide={() => setShowModal(false)}
+        title="Solicitar Desbaneo"
+        disableSubmit={!justificacion}
+        onSave={handleUnbanRequest}
+        isLoading={unbanLoading}
+      >
+        <div className="flex flex-col gap-3">
+          <p>Tu cuenta está actualmente baneada. Puedes solicitar un desbaneo ingresando una justificación:</p>
+          <textarea
+            className="border rounded-lg p-3 text-gray-900 border-gray-400 outline-none"
+            value={justificacion}
+            onChange={(event) => setJustificacion(event.target.value)}
+            rows={3}
+          />
+        </div>
+      </Modal>
     </PageTheme>
   );
 };
