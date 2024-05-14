@@ -129,9 +129,11 @@ export default function Page() {
         toast.success("Sanción revocada con éxito");
         handleReloadListValues("aceptado");
         setAppealModal(false);
+        setIsSuccess(false);
       } else if (isRejectSuccess) {
         toast.success("Apelación rechazada con éxito");
         handleReloadListValues("rechazado");
+        setIsRejectSuccess(false);
         setRejectModal(false);
       }
     }

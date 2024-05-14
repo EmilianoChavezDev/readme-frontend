@@ -88,10 +88,10 @@
   }
 
   tbody tr {
-    @apply dark:hover:bg-dark-darkColorHover;
+    @apply dark:hover:bg-dark-darkColorNeutral;
   }
 
-  tr {
+  tbody tr {
     @apply dark:text-white dark:border-b-dark-darkColorButtons;
   }
 
