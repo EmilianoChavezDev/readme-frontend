@@ -13,6 +13,7 @@ import CommentsSection from "@/components/books/CommentsSection";
 import ReviewSelector from "@/components/books/ReviewSelector";
 import Loader from "@/components/common/loader";
 
+import NotFound from "@/components/common/NotFound";
 import Modal from "@/components/common/modal";
 import useBook from "@/hooks/useBook";
 import useChapter from "@/hooks/useChapter";
@@ -26,7 +27,6 @@ import { Document, Page, StyleSheet, Text, pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import { convert } from "html-to-text";
 import { TbRating18Plus } from "react-icons/tb";
-import NotFound from "@/components/common/NotFound";
 
 const styles = StyleSheet.create({
   page: {
@@ -283,10 +283,10 @@ export default function BookDetails({ params }) {
       {error ? (
         <div className="flex justify-center pt-10">
           <NotFound
-              message={
-                'Lo siento, el libro que estás buscando no se encuentra en nuestra biblioteca en este momento. Por favor, verifica la URL o intenta buscar otro libro. '
-              }
-            />
+            message={
+              "Lo siento, el libro que estás buscando no se encuentra en nuestra biblioteca en este momento. Por favor, verifica la URL o intenta buscar otro libro. "
+            }
+          />
         </div>
       ) : (
         <div className="flex flex-col gap-3 relative ">
@@ -298,11 +298,11 @@ export default function BookDetails({ params }) {
                   <div className="flex justify-center items-center w-44 aspect-portada text-white relative bg-colorPrimario dark:bg-dark-darkColorButtons text-white relative">
                     {book?.adulto && book?.portada ? (
                       <div className="absolute top-0 left-0 p-2">
-                        <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />
+                        <TbRating18Plus className="text-5xl bg-white rounded-full text-red-500 dark:bg-red-500" />
                       </div>
                     ) : book?.adulto && !book?.portada ? (
-                      <div className="absolute bottom-24 left-0 p-2">
-                        <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />
+                      <div className="absolute top-0 left-0 p-2">
+                        <TbRating18Plus className="text-5xl bg-white rounded-full text-red-500 dark:bg-red-500" />
                       </div>
                     ) : null}
                     {book?.portada ? (
