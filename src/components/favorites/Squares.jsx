@@ -57,7 +57,7 @@ const Cuadros = ({ data }) => {
           {adulto && (
             <div className="absolute top-2 left-2 w-full h-full">
               <div className="p-2">
-                <TbRating18Plus className="text-5xl text-red-500" />
+                <TbRating18Plus className="text-5xl bg-white rounded-full text-red-500 dark:bg-red-500" />
               </div>
             </div>
           )}

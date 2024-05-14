@@ -22,7 +22,7 @@ const RecycledBookItem = ({ book, onRestore }) => {
           />
           {book.adulto && (
             <div className="absolute top-0 left-0 p-2">
-              <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />
+              <TbRating18Plus className="text-5xl bg-white rounded-full text-red-500 dark:bg-red-500" />
             </div>
           )}
         </div>
