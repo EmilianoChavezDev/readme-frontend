@@ -301,6 +301,7 @@ const page = ({ params }) => {
     const option = {
       page,
       user_id: id,
+      cantidad_minima_capitulos: 1
     };
     const bookData = await getAllBooks(option);
     setArrBooks(bookData);
