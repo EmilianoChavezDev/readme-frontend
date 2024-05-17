@@ -18,7 +18,7 @@ export const UserProvider = ({ children }) => {
   const [profileUpdate, setProfileUpdate] = useState(false);
 
   const login = (data, email) => {
-
+    localStorage.clear();
     setToken(data?.token);
     setExpiration(data?.expiration);
     setUsername(data?.username);
