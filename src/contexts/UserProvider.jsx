@@ -18,6 +18,7 @@ export const UserProvider = ({ children }) => {
   const [profileUpdate, setProfileUpdate] = useState(false);
 
   const login = (data, email) => {
+
     setToken(data?.token);
     setExpiration(data?.expiration);
     setUsername(data?.username);
@@ -27,7 +28,7 @@ export const UserProvider = ({ children }) => {
     setProfileUpdate(data.profile);
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
-    email?router.push(`/auth/email_resend/${email}`): router.push("/")
+    email ? router.push(`/auth/email_resend/${email}`) : router.push("/");
   };
 
   const refresh = (data) => {

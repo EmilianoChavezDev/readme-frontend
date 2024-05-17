@@ -25,6 +25,7 @@ import toast from "react-hot-toast";
 import OptionsUpdate from "@/components/users/OptionsUpdate";
 import Link from "next/link";
 import NotExist from "@/components/common/NotExist";
+import { cleanDigitSectionValue } from "@mui/x-date-pickers/internals/hooks/useField/useField.utils";
 
 const defaultValues = {
   username: "",
@@ -55,7 +56,6 @@ const page = ({ params }) => {
     isError,
     isTrue,
     message,
-    isLoading: userInformationLoading,
   } = useUserInfo();
   const [selectedOption, setSelectedOption] = useState("misLibros");
   const [arrBooks, setArrBooks] = useState([]);
@@ -102,6 +102,13 @@ const page = ({ params }) => {
   const [libroPage, setLibroPage] = useState(0);
   const [libroLastPage, setLibroLastPage] = useState(false);
   const [cantLibros, setCantLibros] = useState(0);
+  const [nombreLength, setNombreLength] = useState(0);
+  const [direccionLength, setDireccionLength] = useState(0);
+  const [nacionalidadLenghth, setNacionalidadLength] = useState(0);
+  const [descripcionLength, setDescripcionLength] = useState(0);
+  const [socialLength, setSocialLength] = useState(0);
+  const [descripcion, setDescripcion] = useState("");
+  const [social, setSocial] = useState("");
 
   const optionsRef = useRef();
 
@@ -111,10 +118,11 @@ const page = ({ params }) => {
     trigger,
     reset,
     formState: { isDirty },
-    watch,
   } = useForm({ defaultValues });
 
   const onSubmit = async (formData) => {
+    formData.descripcion = descripcion;
+    formData.redes_sociales = social;
     const currentDate = new Date();
 
     const minDate = new Date();
@@ -158,6 +166,10 @@ const page = ({ params }) => {
   useEffect(() => {
     getUserInformation(params.id);
   }, []);
+
+  useEffect(() => {
+    if (!isEdit) return;
+  }, [isEdit]);
 
   useEffect(() => {
     setIsNotDisable(false);
@@ -301,7 +313,7 @@ const page = ({ params }) => {
     const option = {
       page,
       user_id: id,
-      cantidad_minima_capitulos: 1
+      cantidad_minima_capitulos: 1,
     };
     const bookData = await getAllBooks(option);
     setArrBooks(bookData);
@@ -354,7 +366,7 @@ const page = ({ params }) => {
     } catch (e) {}
   };
 
-  const handleEditCancel = () => {
+  const handleEditProfile = () => {
     setPortadaImage(data?.portada);
     setProfileImage(data?.profile);
     setIsPortadaUpdate(false);
@@ -364,7 +376,13 @@ const page = ({ params }) => {
       nacionalidad: data?.nacionalidad,
       fecha_nacimiento: data?.fecha_de_nacimiento,
       descripcion: data?.descripcion,
+      redes_sociales: data?.redes_sociales,
     });
+    setNombreLength(data?.nombre?.length);
+    setDireccionLength(data?.direccion?.length);
+    setNacionalidadLength(data?.nacionalidad?.length);
+    setDescripcionLength(data?.descripcion?.length);
+    setSocialLength(data?.redes_sociales?.length);
     setIsEdit(!isEdit);
     setIsNotDisable(true);
   };
@@ -435,11 +453,39 @@ const page = ({ params }) => {
   const handleUpdate = () => {
     setIsPortadaUpdate((prevState) => !prevState);
   };
-  
-  if(userNotFound)
-    return <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-background text-center">
-        <NotExist message={"Lo sentimos, no hemos encontrado el usuario"} butMessage={""}/>
-    </div>
+
+  if (userNotFound)
+    return (
+      <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-background text-center">
+        <NotExist
+          message={"Lo sentimos, no hemos encontrado el usuario"}
+          butMessage={""}
+        />
+      </div>
+    );
+
+  const handleNombreChange = (event) => {
+    setNombreLength(event.target.value.length);
+    setIsNotDisable(false);
+  };
+  const handleDireccionChange = (event) => {
+    setDireccionLength(event.target.value.length);
+    setIsNotDisable(false);
+  };
+  const handleNacionalidadChange = (event) => {
+    setNacionalidadLength(event.target.value.length);
+    setIsNotDisable(false);
+  };
+  const handleDescripcionChange = (event) => {
+    setDescripcionLength(event.target.value.length);
+    setDescripcion(event.target.value);
+    setIsNotDisable(false);
+  };
+  const handleSocialChange = (event) => {
+    setSocialLength(event.target.value.length);
+    setSocial(event.target.value);
+    setIsNotDisable(false);
+  };
 
   return (
     <>
@@ -460,7 +506,7 @@ const page = ({ params }) => {
                 </Button>
                 <Button
                   className="px-2 py-2 flex text-black border border-textColorGray bg-white hover:bg-textHeaderColorGray hover:text-white dark:border-dark-darkColorButtons dark:bg-dark-darkColorButtons dark:hover:bg-dark-darkColorHover"
-                  onClick={handleEditCancel}
+                  onClick={handleEditProfile}
                 >
                   <span className="flex items-center">Cancelar</span>
                 </Button>
@@ -541,7 +587,7 @@ const page = ({ params }) => {
                       <span>Editar Perfil</span>
                     </div>
                   ),
-                  onClick: handleEditCancel,
+                  onClick: handleEditProfile,
                 }}
               />
             )}
@@ -572,6 +618,7 @@ const page = ({ params }) => {
                 birthday={data?.fecha_de_nacimiento}
                 createAt={data?.created_at}
                 description={data?.descripcion}
+                social={data?.redes_sociales}
               />
             </div>
 
@@ -823,7 +870,7 @@ const page = ({ params }) => {
                 otros usuarios. Ten cuidado al momento de publicar información
                 valiosa.
               </span>
-              <div>
+              <div className="relative">
                 <InputField
                   label={"Nombre"}
                   type={"text"}
@@ -831,9 +878,14 @@ const page = ({ params }) => {
                   register={register}
                   name={"nombre"}
                   required={false}
+                  onChange={handleNombreChange}
+                  maxLength={16}
                 />
+                <span className="absolute bottom-2 right-2 text-xs text-gray-400">
+                  {nombreLength}/{16}
+                </span>
               </div>
-              <div>
+              <div className="relative">
                 <InputField
                   label={"Dirección"}
                   type={"text"}
@@ -841,9 +893,14 @@ const page = ({ params }) => {
                   register={register}
                   name={"direccion"}
                   required={false}
+                  maxLength={16}
+                  onChange={handleDireccionChange}
                 />
+                <span className="absolute bottom-2 right-2 text-xs text-gray-400">
+                  {direccionLength}/{16}
+                </span>
               </div>
-              <div>
+              <div className="relative">
                 <InputField
                   label={"Nacionalidad"}
                   type={"text"}
@@ -851,7 +908,12 @@ const page = ({ params }) => {
                   register={register}
                   name={"nacionalidad"}
                   required={false}
+                  maxLength={16}
+                  onChange={handleNacionalidadChange}
                 />
+                <span className="absolute bottom-2 right-2 text-xs text-gray-400">
+                  {nacionalidadLenghth}/{16}
+                </span>
               </div>
               <div>
                 <InputField
@@ -872,10 +934,35 @@ const page = ({ params }) => {
                     rows="4"
                     {...register("descripcion")}
                     onBlur={() => trigger("descripcion")}
+                    maxLength={50}
+                    onChange={handleDescripcionChange}
                   ></textarea>
                   <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                     Descripción
                   </label>
+                  <span className="absolute bottom-2 right-2 text-xs text-gray-400">
+                    {descripcionLength}/{50}
+                  </span>
+                </div>
+              </div>
+
+              <div className="w-72">
+                <div className="relative w-full min-w-[200px]">
+                  <textarea
+                    className="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
+                    id="redes_sociales"
+                    rows="4"
+                    {...register("redes_sociales")}
+                    onBlur={() => trigger("redes_sociales")}
+                    maxLength={100}
+                    onChange={handleSocialChange}
+                  ></textarea>
+                  <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+                    Enlaces
+                  </label>
+                  <span className="absolute bottom-2 right-2 text-xs text-gray-400">
+                    {socialLength}/{100}
+                  </span>
                 </div>
               </div>
             </div>

@@ -12,35 +12,39 @@ const useUserInfo = () => {
   const [isErrorProfile, setIsErrorProfile] = useState(false);
   const [isErrorProfileUpdate, setIsErrorProfileUpdate] = useState(false);
 
-  const searchUserByUsername = async username => {
-    setLoading(true)
+  const searchUserByUsername = async (username) => {
+    setLoading(true);
     try {
-      const url = `${process.env.API_URL}/users/find_by_username/${username}`
-      const token = localStorage.getItem('token')
-      const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` }})
-      return response.data
+      const url = `${process.env.API_URL}/users/find_by_username/${username}`;
+      const token = localStorage.getItem("token");
+      const response = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
     } catch (error) {
-      setIsTrue(false)
-      setIsError(true)
+      setIsTrue(false);
+      setIsError(true);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const updateUserRole = async params => {
-    setLoading(true)
+  const updateUserRole = async (params) => {
+    setLoading(true);
     try {
-      const url = `${process.env.API_URL}/users/role`
-      const token = localStorage.getItem('token')
-      const response = await axios.put(url, params, { headers: { Authorization: `Bearer ${token}` }})
-      return response.data
+      const url = `${process.env.API_URL}/users/role`;
+      const token = localStorage.getItem("token");
+      const response = await axios.put(url, params, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
     } catch (error) {
-      setIsTrue(false)
-      setIsError(true)
+      setIsTrue(false);
+      setIsError(true);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const getUserInformation = async (username) => {
     setLoading(true);
@@ -433,6 +437,7 @@ const useUserInfo = () => {
           descripcion: data.descripcion,
           nacionalidad: data.nacionalidad,
           nombre: data.nombre,
+          redes_sociales: data.redes_sociales,
         },
         {
           headers: {
@@ -627,7 +632,7 @@ const useUserInfo = () => {
     deleteUser,
     searchUsers,
     searchUserByUsername,
-    updateUserRole
+    updateUserRole,
   };
 };
 
