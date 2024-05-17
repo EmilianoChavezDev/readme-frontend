@@ -58,11 +58,6 @@ const Page = () => {
       return;
     }
 
-    if (!validarLongitudEmail(formData.email)) {
-      errorResponse.error = "Longitud de email invalida";
-      return;
-    }
-
     if (!validarFechaNacimiento(formData.fecha_nacimiento)) {
       errorResponse.error = "Debes tener al menos 12 años y no mas de 120 años";
       return;
@@ -92,11 +87,6 @@ const Page = () => {
       (currentDate - fechaNacimientoDate) / (1000 * 60 * 60 * 24 * 365);
 
     return diferenciaAnhos >= 12 && diferenciaAnhos <= 120;
-  };
-
-  const validarLongitudEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._%+-]{6,}/;
-    return regex.test(email);
   };
 
   const formatErrorMessage = (message) => {
