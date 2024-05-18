@@ -10,6 +10,7 @@ const InputField = ({
   value,
   className = "",
   maxLength,
+  onChange
 }) => {
   return (
     <div className={`w-72`}>
@@ -22,6 +23,7 @@ const InputField = ({
         className={`${className}`}
         aria-label={label}
         maxLength={maxLength}
+        onChange={onChange}
       />
     </div>
   );

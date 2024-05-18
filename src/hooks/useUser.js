@@ -12,35 +12,39 @@ const useUserInfo = () => {
   const [isErrorProfile, setIsErrorProfile] = useState(false);
   const [isErrorProfileUpdate, setIsErrorProfileUpdate] = useState(false);
 
-  const searchUserByUsername = async username => {
-    setLoading(true)
+  const searchUserByUsername = async (username) => {
+    setLoading(true);
     try {
-      const url = `${process.env.API_URL}/users/find_by_username/${username}`
-      const token = localStorage.getItem('token')
-      const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` }})
-      return response.data
+      const url = `${process.env.API_URL}/users/find_by_username/${username}`;
+      const token = localStorage.getItem("token");
+      const response = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
     } catch (error) {
-      setIsTrue(false)
-      setIsError(true)
+      setIsTrue(false);
+      setIsError(true);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const updateUserRole = async params => {
-    setLoading(true)
+  const updateUserRole = async (params) => {
+    setLoading(true);
     try {
-      const url = `${process.env.API_URL}/users/role`
-      const token = localStorage.getItem('token')
-      const response = await axios.put(url, params, { headers: { Authorization: `Bearer ${token}` }})
-      return response.data
+      const url = `${process.env.API_URL}/users/role`;
+      const token = localStorage.getItem("token");
+      const response = await axios.put(url, params, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
     } catch (error) {
-      setIsTrue(false)
-      setIsError(true)
+      setIsTrue(false);
+      setIsError(true);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const getUserInformation = async (username) => {
     setLoading(true);
@@ -131,6 +135,44 @@ const useUserInfo = () => {
         {
           username: newUsername,
           password: password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data.user);
+      setMessage("Datos actualizado con exito");
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateVisibilidad = async (
+    datosPersonales,
+    lecturas,
+    seguidores,
+    seguidos
+  ) => {
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/visibilidad`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        url,
+        {
+          mostrar_datos_personales: datosPersonales,
+          mostrar_lecturas: lecturas,
+          mostrar_seguidores: seguidores,
+          mostrar_seguidos: seguidos,
         },
         {
           headers: {
@@ -433,6 +475,7 @@ const useUserInfo = () => {
           descripcion: data.descripcion,
           nacionalidad: data.nacionalidad,
           nombre: data.nombre,
+          redes_sociales: data.redes_sociales,
         },
         {
           headers: {
@@ -627,7 +670,8 @@ const useUserInfo = () => {
     deleteUser,
     searchUsers,
     searchUserByUsername,
-    updateUserRole
+    updateUserRole,
+    updateVisibilidad,
   };
 };
 
