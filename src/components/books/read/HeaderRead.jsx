@@ -136,12 +136,14 @@ const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
 
         <div className="flex justify-center items-center">
           <div className="mb-2 px-2">
-            <button
-              onClick={handleSpeech}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-              {isSpeaking ? <BiSolidMicrophoneOff /> : <FaMicrophone />}
-            </button>
+            <Tooltip content="Escuchar Capitulo">
+              <button
+                onClick={handleSpeech}
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                {isSpeaking ? <BiSolidMicrophoneOff /> : <FaMicrophone />}
+              </button>
+            </Tooltip>
           </div>
           <div className="relative">
             <Tooltip content="lista de capitulos" className="hidden _lg:block">
