@@ -10,12 +10,44 @@ import CapMenu from "./CapMenu";
 import { useRouter } from "next/navigation";
 import { Tooltip } from "@material-tailwind/react";
 import { UseRead } from "@/contexts/ReadProvider";
+import { FaMicrophone } from "react-icons/fa";
+import { BiSolidMicrophoneOff } from "react-icons/bi";
 
-const HeaderRead = ({ titulo, capitulo, id }) => {
+const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
   const { handleUnZoom, handleZoom } = UseRead();
   const router = useRouter();
   const menuRef = useRef();
   const [showMenuCap, setShowMenuCap] = useState(false);
+  const [previousContentChapter, setPreviousContentChapter] = useState("");
+
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(true);
+  const [language, setLanguage] = useState("es-ES"); // Estado para manejar el idioma
+  const speechSynthesisRef = useRef(null);
+  const utteranceRef = useRef(null);
+
+  useEffect(() => {
+    if (!("speechSynthesis" in window)) {
+      setSpeechSupported(false);
+      toast.error("Speech Synthesis no es soportado en este navegador.");
+    } else {
+      speechSynthesisRef.current = window.speechSynthesis;
+      utteranceRef.current = new SpeechSynthesisUtterance();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (contentChapter !== previousContentChapter && contentChapter) {
+      startSpeech(contentChapter);
+      setPreviousContentChapter(contentChapter);
+    }
+  }, [contentChapter]);
+
+  useEffect(() => {
+    return () => {
+      stopSpeech();
+    };
+  }, []);
 
   const handleShowMenuCap = () => {
     setShowMenuCap(!showMenuCap);
@@ -36,6 +68,47 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleSpeech = () => {
+    if (isSpeaking) {
+      stopSpeech();
+    } else {
+      startSpeech(contentChapter);
+    }
+  };
+
+  const stripHtml = (html) => {
+    const temporalDivElement = document.createElement("div");
+    temporalDivElement.innerHTML = html;
+    return temporalDivElement.textContent || temporalDivElement.innerText || "";
+  };
+
+  const startSpeech = (text) => {
+    if (!speechSupported) return;
+
+    const plainText = stripHtml(text);
+
+    if (!speechSynthesisRef.current || !plainText) return;
+    if (isSpeaking) {
+      stopSpeech();
+      return;
+    }
+
+    utteranceRef.current.text = plainText;
+    utteranceRef.current.lang = language;
+    speechSynthesisRef.current.speak(utteranceRef.current);
+    setIsSpeaking(true);
+
+    utteranceRef.current.onend = () => {
+      setIsSpeaking(false);
+    };
+  };
+
+  const stopSpeech = () => {
+    if (!speechSupported || !speechSynthesisRef.current) return;
+    speechSynthesisRef.current.cancel();
+    setIsSpeaking(false);
+  };
 
   return (
     <div className="sm:w-2/3 mx-auto w-full">
@@ -60,7 +133,18 @@ const HeaderRead = ({ titulo, capitulo, id }) => {
             </h1>
           </div>
         </Tooltip>
+
         <div className="flex justify-center items-center">
+          <div className="mb-2 px-2">
+            <Tooltip content="Escuchar Capitulo">
+              <button
+                onClick={handleSpeech}
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                {isSpeaking ? <BiSolidMicrophoneOff /> : <FaMicrophone />}
+              </button>
+            </Tooltip>
+          </div>
           <div className="relative">
             <Tooltip content="lista de capitulos" className="hidden _lg:block">
               <button onClick={() => handleShowMenuCap()}>

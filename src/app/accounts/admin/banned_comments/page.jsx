@@ -415,9 +415,9 @@ export default function Page() {
                 {reportSelected?.estado !== "aceptado" &&
                   reportSelected?.estado !== "rechazado" && (
                     <div className="flex justify-between text-white">
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 _md:px-2">
                         <button
-                          className="h-10 rounded-md px-2 bg-colorPrimario hover:brightness-90"
+                          className="h-10 _md:h-12 rounded-md px-2 bg-colorPrimario hover:brightness-90"
                           onClick={() => setAppealModal(true)}
                         >
                           Deshacer Baneo
@@ -425,7 +425,7 @@ export default function Page() {
                       </div>
                       <div>
                         <button
-                          className="h-10 rounded-md px-2 bg-red-900 hover:brightness-90"
+                          className="h-10 _md:h-12 rounded-md px-2 bg-red-900 hover:brightness-90"
                           onClick={() => setRejectModal(true)}
                         >
                           Rechazar apelación
