@@ -26,6 +26,15 @@ const NavBar = ({ onSearch }) => {
   }, []);
 
   useEffect(() => {
+    const unEmailConfirmed = localStorage.getItem("unconfirmed_email");
+    const email = localStorage.getItem("email");
+    if (unEmailConfirmed) {
+      router.push(`auth/email_resend/${email}`);
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
     if (!username) return;
     setUsernameStorage(localStorage.getItem("username"));
   }, [username]);
