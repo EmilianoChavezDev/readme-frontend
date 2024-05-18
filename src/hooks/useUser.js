@@ -155,6 +155,44 @@ const useUserInfo = () => {
     }
   };
 
+  const updateVisibilidad = async (
+    datosPersonales,
+    lecturas,
+    seguidores,
+    seguidos
+  ) => {
+    setIsTrue(false);
+    setIsError(false);
+    const url = `${process.env.API_URL}/users/visibilidad`;
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        url,
+        {
+          mostrar_datos_personales: datosPersonales,
+          mostrar_lecturas: lecturas,
+          mostrar_seguidores: seguidores,
+          mostrar_seguidos: seguidos,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsTrue(true);
+      setIsError(false);
+      setCurrentData(response.data.user);
+      setMessage("Datos actualizado con exito");
+    } catch (error) {
+      setIsTrue(false);
+      setIsError(true);
+      setMessage(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const updatePassword = async (
     oldPassword,
     newPassword,
@@ -633,6 +671,7 @@ const useUserInfo = () => {
     searchUsers,
     searchUserByUsername,
     updateUserRole,
+    updateVisibilidad,
   };
 };
 
