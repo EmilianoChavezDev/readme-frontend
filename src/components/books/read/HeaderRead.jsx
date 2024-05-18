@@ -37,7 +37,11 @@ const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
   }, []);
 
   useEffect(() => {
-    if (contentChapter !== previousContentChapter && contentChapter) {
+    if (
+      contentChapter !== previousContentChapter &&
+      contentChapter &&
+      isSpeaking
+    ) {
       startSpeech(contentChapter);
       setPreviousContentChapter(contentChapter);
     }
