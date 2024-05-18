@@ -163,7 +163,7 @@ const BookForm = ({ book }) => {
 
   return (
     <div className="flex flex-col h-screen ">
-      <div className="bg-ChaptearHeader h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg dark:bg-dark-darkColorNavBar">
+      <div className="bg-ChaptearHeader h-20 flex flex-row justify-between items-center px-4 drop-shadow-lg dark:bg-dark-darkColorNavBar _sm:py-5">
         <div className="text-white font-semibold text-lg flex items-center">
           <Link href="/">
             <FaAngleLeft className="text-2xl" />

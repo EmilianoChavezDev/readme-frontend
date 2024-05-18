@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import TextRead from "./TextRead";
 import { UseRead } from "@/contexts/ReadProvider";
@@ -7,9 +6,10 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useSwipeable } from "react-swipeable";
 import { Tooltip } from "@material-tailwind/react";
-import { isMobile } from "react-device-detect"; // Importar isMobile
+import { isMobile } from "react-device-detect";
+import { useEffect } from "react";
 
-const BodyRead = () => {
+const BodyRead = ({ setContentChapter }) => {
   const { chapterData, getCurrentChapterById, data } = UseRead();
   const router = useRouter();
 
@@ -32,7 +32,6 @@ const BodyRead = () => {
         shouldSendTrueNextChapter,
         true
       );
-      console.log("entro aqui");
       router.push(`/books/${chapterData.libro_id}`);
       toast.success("¡Felicidades! Has terminado este libro");
     }
@@ -83,7 +82,10 @@ const BodyRead = () => {
       </div>
 
       <div>
-        <TextRead urlContenido={chapterData?.contenido} />
+        <TextRead
+          urlContenido={chapterData?.contenido}
+          setContentChapter={setContentChapter}
+        />
       </div>
 
       <div
