@@ -58,6 +58,12 @@ const Page = () => {
       return;
     }
 
+    if (!validateUsernameLength(formData.username)) {
+      errorResponse.error =
+        "El nombre de usuario debe tener entre 3 y 10 caracteres";
+      return;
+    }
+
     if (!validarFechaNacimiento(formData.fecha_nacimiento)) {
       errorResponse.error = "Debes tener al menos 12 años y no mas de 120 años";
       return;
@@ -66,9 +72,7 @@ const Page = () => {
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
     formData.fecha_nacimiento = fecha;
-    // registro(formData);
-    const rest = await registro(formData);
-    //router.push(`/auth/email_resend/${email}`);
+    await registro(formData);
   };
 
   const handleBlur = () => {
@@ -87,6 +91,10 @@ const Page = () => {
       (currentDate - fechaNacimientoDate) / (1000 * 60 * 60 * 24 * 365);
 
     return diferenciaAnhos >= 12 && diferenciaAnhos <= 120;
+  };
+
+  const validateUsernameLength = (username) => {
+    return username.length >= 3 && username.length <= 10;
   };
 
   const formatErrorMessage = (message) => {
