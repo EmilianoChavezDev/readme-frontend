@@ -150,7 +150,7 @@ const PolicyPage = () => {
           <section id="informacion-recopilada" className="mb-8">
             <h2
               id="informacion-recopilada-title"
-              className="text-4xl font-semibold"
+              className="text-3xl font-semibold"
             >
               1. Información que recopilamos
             </h2>
@@ -172,7 +172,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="como-utilizamos" className="mb-8">
-            <h2 id="como-utilizamos-title" className="text-4xl font-semibold">
+            <h2 id="como-utilizamos-title" className="text-3xl font-semibold">
               2. Cómo utilizamos su información
             </h2>
             <br />
@@ -197,7 +197,7 @@ const PolicyPage = () => {
           <section id="compartir-informacion" className="mb-8">
             <h2
               id="compartir-informacion-title"
-              className="text-4xl font-semibold"
+              className="text-3xl font-semibold"
             >
               3. Compartir su información
             </h2>
@@ -263,7 +263,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section className="mb-8">
-            <h2 id="seguridad-title" className="text-4xl font-semibold">
+            <h2 id="seguridad-title" className="text-3xl font-semibold">
               4. Seguridad
             </h2>
             <br />
@@ -325,7 +325,7 @@ const PolicyPage = () => {
           </section>
 
           <section id="cambios-politica" className="mb-8">
-            <h2 id="cambios-politica-title" className="text-4xl font-semibold">
+            <h2 id="cambios-politica-title" className="text-3xl font-semibold">
               5. Cambios en esta Política de Privacidad
             </h2>
             <br />
@@ -381,7 +381,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="contacto" className="mb-8">
-            <h2 id="contacto-title" className="text-4xl font-semibold">
+            <h2 id="contacto-title" className="text-3xl font-semibold">
               6. Contacto
             </h2>
             <br />
@@ -427,7 +427,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="derechos-usuario" className="mb-8">
-            <h2 id="derechos-usuario-title" className="text-4xl font-semibold">
+            <h2 id="derechos-usuario-title" className="text-3xl font-semibold">
               7. Derechos del usuario
             </h2>
             <br />
@@ -482,7 +482,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="retencion-datos" className="mb-8">
-            <h2 id="retencion-datos-title" className="text-4xl font-semibold">
+            <h2 id="retencion-datos-title" className="text-3xl font-semibold">
               8. Retención de datos
             </h2>
             <br />
@@ -534,7 +534,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="politica-cookies" className="mb-8">
-            <h2 id="politica-cookies-title" className="text-4xl font-semibold">
+            <h2 id="politica-cookies-title" className="text-3xl font-semibold">
               9. Política de cookies
             </h2>
             <br />
@@ -589,7 +589,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="enlaces-externos" className="mb-8">
-            <h2 id="enlaces-externos-title" className="text-4xl font-semibold">
+            <h2 id="enlaces-externos-title" className="text-3xl font-semibold">
               10. Enlaces a sitios web externos
             </h2>
             <br />
@@ -637,7 +637,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="menores-edad" className="mb-8">
-            <h2 id="menores-edad-title" className="text-4xl font-semibold">
+            <h2 id="menores-edad-title" className="text-3xl font-semibold">
               11. Privacidad de los menores de edad
             </h2>
             <br />
