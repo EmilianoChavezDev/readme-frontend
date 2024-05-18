@@ -6,10 +6,11 @@ import HeaderRead from "@/components/books/read/HeaderRead";
 import ProgressBar from "@/components/books/read/ProgressBar";
 import Loader from "@/components/common/loader";
 import { UseRead } from "@/contexts/ReadProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ReadBook({ params }) {
   const { getAll, data, chapterData, isLoading, getChapter } = UseRead();
+  const [contentChapter, setContentChapter] = useState("");
 
   useEffect(() => {
     getAll(params.id);
@@ -32,11 +33,12 @@ export default function ReadBook({ params }) {
               titulo={chapterData?.titulo}
               id={params.id}
               capitulo={data}
+              contentChapter={contentChapter}
             />
           </div>
           {/**cuerpo */}
           <div className="flex justify-center mt-10 my-24">
-            <BodyRead />
+            <BodyRead setContentChapter={setContentChapter} />
           </div>
           {/**footer */}
           <div className="fixed bottom-0 bg-white z-10 p-4 w-full ">

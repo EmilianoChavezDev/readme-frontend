@@ -1,4 +1,3 @@
-import React, { useEffect, useState, useRef } from "react";
 import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import TextRead from "./TextRead";
 import { UseRead } from "@/contexts/ReadProvider";
@@ -7,27 +6,12 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useSwipeable } from "react-swipeable";
 import { Tooltip } from "@material-tailwind/react";
-import { isMobile } from "react-device-detect"; // Importar isMobile
+import { isMobile } from "react-device-detect";
+import { useEffect } from "react";
 
-const BodyRead = () => {
+const BodyRead = ({ setContentChapter }) => {
   const { chapterData, getCurrentChapterById, data } = UseRead();
   const router = useRouter();
-
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [speechSupported, setSpeechSupported] = useState(true);
-  const [language, setLanguage] = useState("en-EN"); // Estado para manejar el idioma
-  const speechSynthesisRef = useRef(null);
-  const utteranceRef = useRef(null);
-
-  useEffect(() => {
-    if (!("speechSynthesis" in window)) {
-      setSpeechSupported(false);
-      toast.error("Speech Synthesis no es soportado en este navegador.");
-    } else {
-      speechSynthesisRef.current = window.speechSynthesis;
-      utteranceRef.current = new SpeechSynthesisUtterance();
-    }
-  }, []);
 
   const shouldSendTrueNextChapter =
     chapterData?.next_capitulo_id === null ? true : false;
@@ -48,7 +32,6 @@ const BodyRead = () => {
         shouldSendTrueNextChapter,
         true
       );
-      console.log("entro aqui");
       router.push(`/books/${chapterData.libro_id}`);
       toast.success("¡Felicidades! Has terminado este libro");
     }
@@ -73,39 +56,6 @@ const BodyRead = () => {
       trackMouse: true,
     });
   }
-
-  const stripHtml = (html) => {
-    const temporalDivElement = document.createElement("div");
-    temporalDivElement.innerHTML = html;
-    return temporalDivElement.textContent || temporalDivElement.innerText || "";
-  };
-
-  const startSpeech = (text) => {
-    if (!speechSupported) return;
-
-    const plainText = stripHtml(text);
-
-    if (!speechSynthesisRef.current || !plainText) return;
-    if (isSpeaking) {
-      stopSpeech();
-      return;
-    }
-
-    utteranceRef.current.text = plainText;
-    utteranceRef.current.lang = language;
-    speechSynthesisRef.current.speak(utteranceRef.current);
-    setIsSpeaking(true);
-
-    utteranceRef.current.onend = () => {
-      setIsSpeaking(false);
-    };
-  };
-
-  const stopSpeech = () => {
-    if (!speechSupported || !speechSynthesisRef.current) return;
-    speechSynthesisRef.current.cancel();
-    setIsSpeaking(false);
-  };
 
   return (
     <div className="_sm:w-4/6 w-full mx-auto relative" {...swipeHandlers}>
@@ -134,9 +84,7 @@ const BodyRead = () => {
       <div>
         <TextRead
           urlContenido={chapterData?.contenido}
-          isSpeaking={isSpeaking}
-          startSpeech={startSpeech}
-          stopSpeech={stopSpeech}
+          setContentChapter={setContentChapter}
         />
       </div>
 
