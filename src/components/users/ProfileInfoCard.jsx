@@ -13,7 +13,11 @@ export function ProfileInfoCard({
   createAt,
   description,
   social,
+  show,
+  isMyAccount,
 }) {
+  console.log(isMyAccount);
+
   // Función para convertir texto en enlaces
   const renderTextWithLinks = (text) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -36,52 +40,62 @@ export function ProfileInfoCard({
 
   return (
     <Card className="sm:h-96 lg:w-72 rounded-xl shadow-lg dark:bg-dark-darkColorNeutral">
-      <CardBody className="h-full p-4">
-        <div className="flex flex-col gap-y-4">
-          {direction && nacionalidad && (
-            <div className="flex items-center gap-2 flex-wrap">
-              <RiMapPin2Fill size={18} />
-              <span className="min-w-0 break-words">
-                {direction + ", " + nacionalidad}
-              </span>
-            </div>
-          )}
-          {birthday && (
-            <div className="flex items-center gap-2 flex-wrap">
-              <FaBirthdayCake size={18} />
-              <span className="min-w-0 break-words">
-                {moment(birthday).format("MMMM DD, YYYY", { locale: "ES, es" })}
-              </span>
-            </div>
-          )}
-          {createAt && (
-            <div className="flex items-center gap-1 flex-wrap">
-              <span className="font-semibold">Se ha unido en</span>
-              <span className="min-w-0 break-words">
-                {moment(createAt).format("MMMM DD, YYYY", { locale: "ES, es" })}
-              </span>
-            </div>
-          )}
-          {description && (
-            <div className="flex items-start gap-2 flex-wrap">
-              <span className="flex mt-1">
-                <AiOutlinePaperClip size={18} />
-              </span>
-              <span className="min-w-0 break-words">{description}</span>
-            </div>
-          )}
-          {social && (
-            <div className="flex items-start gap-2">
-              <span className="flex mt-1">
-                <FaGlobe size={18} />
-              </span>
-              <span className="min-w-0 break-words">
-                {renderTextWithLinks(social)}
-              </span>
-            </div>
-          )}
-        </div>
-      </CardBody>
+      {show || isMyAccount ? (
+        <CardBody className="h-full p-4">
+          <div className="flex flex-col gap-y-4">
+            {direction && nacionalidad && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <RiMapPin2Fill size={18} />
+                <span className="min-w-0 break-words">
+                  {direction + ", " + nacionalidad}
+                </span>
+              </div>
+            )}
+            {birthday && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <FaBirthdayCake size={18} />
+                <span className="min-w-0 break-words">
+                  {moment(birthday).format("MMMM DD, YYYY", {
+                    locale: "ES, es",
+                  })}
+                </span>
+              </div>
+            )}
+            {createAt && (
+              <div className="flex items-center gap-1 flex-wrap">
+                <span className="font-semibold">Se ha unido en</span>
+                <span className="min-w-0 break-words">
+                  {moment(createAt).format("MMMM DD, YYYY", {
+                    locale: "ES, es",
+                  })}
+                </span>
+              </div>
+            )}
+            {description && (
+              <div className="flex items-start gap-2 flex-wrap">
+                <span className="flex mt-1">
+                  <AiOutlinePaperClip size={18} />
+                </span>
+                <span className="min-w-0 break-words">{description}</span>
+              </div>
+            )}
+            {social && (
+              <div className="flex items-start gap-2">
+                <span className="flex mt-1">
+                  <FaGlobe size={18} />
+                </span>
+                <span className="min-w-0 break-words">
+                  {renderTextWithLinks(social)}
+                </span>
+              </div>
+            )}
+          </div>
+        </CardBody>
+      ) : (
+        <span className="text-center mt-2">
+          Este usuario ha desactivado esta opción.
+        </span>
+      )}
     </Card>
   );
 }

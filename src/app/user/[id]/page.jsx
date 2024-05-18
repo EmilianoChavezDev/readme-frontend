@@ -166,6 +166,10 @@ const page = ({ params }) => {
   useEffect(() => {
     getUserInformation(params.id);
   }, []);
+  useEffect(() => {
+    if (!data) return;
+    console.log(data);
+  }, [data]);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -175,7 +179,7 @@ const page = ({ params }) => {
     setIsNotDisable(false);
   }, [isDirty]);
 
-  const isMyBook = useMemo(() => {
+  const isMyAccount = useMemo(() => {
     return usernameLs !== data?.username;
   });
 
@@ -619,6 +623,8 @@ const page = ({ params }) => {
                 createAt={data?.created_at}
                 description={data?.descripcion}
                 social={data?.redes_sociales}
+                show={data?.mostrar_datos_personales}
+                isMyAccount={!isMyAccount}
               />
             </div>
 
@@ -634,11 +640,11 @@ const page = ({ params }) => {
                     {!allLibros.length ? (
                       <div className="col-span-12 flex flex-col justify-center text-center">
                         <Typography variant="h4">
-                          {!isMyBook
+                          {!isMyAccount
                             ? "Aun no tienes libros"
                             : "Este usuario no tiene libros"}
                         </Typography>
-                        {!isMyBook && (
+                        {!isMyAccount && (
                           <Typography variant="h4">
                             ¡Comienza ya a escribir tus libros!
                           </Typography>
@@ -678,61 +684,68 @@ const page = ({ params }) => {
                 </div>
               )}
 
-              {selectedOption === "listaLectura" && (
-                <div>
-                  <div className="flex flex-col">
-                    {!allLecturas.length ? (
-                      <div className="col-span-12 flex flex-col justify-center text-center">
-                        <Typography variant="h4">
-                          {!isMyBook
-                            ? "Aun no tienes lecturas"
-                            : "Este usuario no tiene lecturas"}
-                        </Typography>
-                        {!isMyBook && (
+              {selectedOption === "listaLectura" &&
+                (data?.mostrar_lecturas || !isMyAccount ? (
+                  <div>
+                    <div className="flex flex-col">
+                      {!allLecturas.length ? (
+                        <div className="col-span-12 flex flex-col justify-center text-center">
                           <Typography variant="h4">
-                            ¡Lee libros y conoce a tus autores favoritos!
+                            {!isMyAccount
+                              ? "Aun no tienes lecturas"
+                              : "Este usuario no tiene lecturas"}
                           </Typography>
+                          {!isMyAccount && (
+                            <Typography variant="h4">
+                              ¡Lee libros y conoce a tus autores favoritos!
+                            </Typography>
+                          )}
+                        </div>
+                      ) : (
+                        <>
+                          <span className="text-xl font-semibold">
+                            Lista de lectura de {data?.nombre || data?.username}
+                          </span>
+                          <span className="text-textColorGray text-sm">
+                            {lecturas?.total_items} libros leidos
+                          </span>
+                        </>
+                      )}
+                      <div className="flex flex-col gap-y-5 mt-3">
+                        {allLecturas?.map((lectura) => (
+                          <SearchItem key={lectura?.id} book={lectura} />
+                        ))}
+                      </div>
+                      <div className="flex justify-center w-full mt-10">
+                        {lecturasLoading ? (
+                          <Spinner />
+                        ) : (
+                          !lecturaLastPage && (
+                            <IconButton onClick={handleLecturasNextPage}>
+                              <FaArrowDown />
+                            </IconButton>
+                          )
                         )}
                       </div>
-                    ) : (
-                      <>
-                        <span className="text-xl font-semibold">
-                          Lista de lectura de {data?.nombre || data?.username}
-                        </span>
-                        <span className="text-textColorGray text-sm">
-                          {lecturas?.total_items} libros leidos
-                        </span>
-                      </>
-                    )}
-                    <div className="flex flex-col gap-y-5 mt-3">
-                      {allLecturas?.map((lectura) => (
-                        <SearchItem key={lectura?.id} book={lectura} />
-                      ))}
-                    </div>
-                    <div className="flex justify-center w-full mt-10">
-                      {lecturasLoading ? (
-                        <Spinner />
-                      ) : (
-                        !lecturaLastPage && (
-                          <IconButton onClick={handleLecturasNextPage}>
-                            <FaArrowDown />
-                          </IconButton>
-                        )
-                      )}
                     </div>
                   </div>
-                </div>
-              )}
+                ) : (
+                  <span className="text-center">
+                    El usuario ha decidido no mostrar esto
+                  </span>
+                ))}
               {selectedOption === "seguidos" && (
                 <div>
                   <div className="grid grid-col _lg:grid-cols-4 grid-cols-2 gap-2">
                     {!followedLoading && !allFollowed.length && (
                       <div className="col-span-12 flex flex-col justify-center text-center">
                         <Typography variant="h4">
-                          Aún no sigues a nadie
+                          {!isMyAccount
+                            ? " Aún no sigues a nadie"
+                            : "Este usuario aun no sigue a nadie"}
                         </Typography>
                         <Typography variant="h4">
-                          ¡Lee libros y conoce a tus autores favoritos!
+                          ¡Lee libros y sigue a tus autores favoritos!
                         </Typography>
                       </div>
                     )}
@@ -786,80 +799,87 @@ const page = ({ params }) => {
                   </div>
                 </div>
               )}
-              {selectedOption === "seguidores" && (
-                <div>
-                  <div className="grid grid-col grid-cols-4 gap-1">
-                    {!allFollowers.length && (
-                      <div className="col-span-12 flex flex-col justify-center text-center">
-                        <Typography variant="h4">
-                          {!isMyBook
-                            ? "Aun no tienes seguidores"
-                            : "Este usuario no tiene seguidores"}
-                        </Typography>
-                        <Typography variant="h4">
-                          {!isMyBook && " ¡Escribe para que te conozcan!"}
-                        </Typography>
-                      </div>
-                    )}
-                    {allFollowers?.map((follower) => (
-                      <div key={follower?.id}>
-                        <UserCard
-                          username={
-                            follower?.username ??
-                            "Nombre de Usuario no encotrado"
-                          }
-                          nombre={follower?.nombre ?? follower?.username}
-                          image={follower?.profile}
-                          description={follower?.descripcion ?? ""}
-                          canDelete={usernameLs === data?.username}
-                          deleteButtonProps={{
-                            deleteInfo: (
-                              <span className="flex items-center">
-                                <AiOutlineUserDelete />
-                              </span>
-                            ),
-                            onDelete: () => handleDeleteFollower(follower?.id),
-                          }}
-                          buttonProps={
-                            follower?.seguidor
-                              ? {
-                                  info: (
-                                    <span className="flex items-center">
-                                      <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
-                                      Dejar de seguir
-                                    </span>
-                                  ),
-                                  onClick: () => handleUnfollow(follower?.id),
-                                }
-                              : {
-                                  info: (
-                                    <>
+              {selectedOption === "seguidores" &&
+                (data?.mostrar_seguidores || !isMyAccount ? (
+                  <div>
+                    <div className="grid grid-col grid-cols-4 gap-1">
+                      {!allFollowers.length && (
+                        <div className="col-span-12 flex flex-col justify-center text-center">
+                          <Typography variant="h4">
+                            {!isMyAccount
+                              ? "Aun no tienes seguidores"
+                              : "Este usuario no tiene seguidores"}
+                          </Typography>
+                          <Typography variant="h4">
+                            {!isMyAccount && " ¡Escribe para que te conozcan!"}
+                          </Typography>
+                        </div>
+                      )}
+                      {allFollowers?.map((follower) => (
+                        <div key={follower?.id}>
+                          <UserCard
+                            username={
+                              follower?.username ??
+                              "Nombre de Usuario no encotrado"
+                            }
+                            nombre={follower?.nombre ?? follower?.username}
+                            image={follower?.profile}
+                            description={follower?.descripcion ?? ""}
+                            canDelete={usernameLs === data?.username}
+                            deleteButtonProps={{
+                              deleteInfo: (
+                                <span className="flex items-center">
+                                  <AiOutlineUserDelete />
+                                </span>
+                              ),
+                              onDelete: () =>
+                                handleDeleteFollower(follower?.id),
+                            }}
+                            buttonProps={
+                              follower?.seguidor
+                                ? {
+                                    info: (
                                       <span className="flex items-center">
-                                        <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
-                                        Seguir
+                                        <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+                                        Dejar de seguir
                                       </span>
-                                    </>
-                                  ),
-                                  onClick: () => handleFollow(follower?.id),
-                                }
-                          }
-                        />
-                      </div>
-                    ))}
+                                    ),
+                                    onClick: () => handleUnfollow(follower?.id),
+                                  }
+                                : {
+                                    info: (
+                                      <>
+                                        <span className="flex items-center">
+                                          <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+                                          Seguir
+                                        </span>
+                                      </>
+                                    ),
+                                    onClick: () => handleFollow(follower?.id),
+                                  }
+                            }
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-center w-full mt-10">
+                      {followersLoading ? (
+                        <Spinner />
+                      ) : (
+                        !followersLastPage && (
+                          <IconButton onClick={handleFollowersNextPage}>
+                            <FaArrowDown />
+                          </IconButton>
+                        )
+                      )}
+                    </div>
                   </div>
-                  <div className="flex justify-center w-full mt-10">
-                    {followersLoading ? (
-                      <Spinner />
-                    ) : (
-                      !followersLastPage && (
-                        <IconButton onClick={handleFollowersNextPage}>
-                          <FaArrowDown />
-                        </IconButton>
-                      )
-                    )}
-                  </div>
-                </div>
-              )}
+                ) : (
+                  <span className="text-center">
+                    No puedes ver los seguidores de este usuario porque son
+                    privados.
+                  </span>
+                ))}
             </div>
           </div>
           {isEdit && (
