@@ -1,4 +1,4 @@
-import { Card, CardBody, Typography } from "@material-tailwind/react";
+import { Card, CardBody } from "@material-tailwind/react";
 import { FaBirthdayCake, FaGlobe } from "react-icons/fa";
 import { RiMapPin2Fill } from "react-icons/ri";
 import { AiOutlinePaperClip } from "react-icons/ai";
@@ -16,9 +16,6 @@ export function ProfileInfoCard({
   show,
   isMyAccount,
 }) {
-  console.log(isMyAccount);
-
-  // Función para convertir texto en enlaces
   const renderTextWithLinks = (text) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.split(urlRegex).map((part, index) =>
@@ -33,7 +30,9 @@ export function ProfileInfoCard({
           {part}
         </a>
       ) : (
-        part
+        <div key={index} className="min-w-0 break-words">
+          {part}
+        </div>
       )
     );
   };
@@ -76,7 +75,8 @@ export function ProfileInfoCard({
                 <span className="flex mt-1">
                   <AiOutlinePaperClip size={18} />
                 </span>
-                <span className="min-w-0 break-words">{description}</span>
+
+                <div className="min-w-0 break-words">{description}</div>
               </div>
             )}
             {social && (
@@ -84,9 +84,10 @@ export function ProfileInfoCard({
                 <span className="flex mt-1">
                   <FaGlobe size={18} />
                 </span>
-                <span className="min-w-0 break-words">
+
+                <div className="min-w-0 break-words">
                   {renderTextWithLinks(social)}
-                </span>
+                </div>
               </div>
             )}
           </div>

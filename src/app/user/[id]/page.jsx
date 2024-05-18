@@ -166,10 +166,6 @@ const page = ({ params }) => {
   useEffect(() => {
     getUserInformation(params.id);
   }, []);
-  useEffect(() => {
-    if (!data) return;
-    console.log(data);
-  }, [data]);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -730,75 +726,82 @@ const page = ({ params }) => {
                     </div>
                   </div>
                 ) : (
-                  <span className="text-center">
+                  <Typography className="text-center" variant="h4">
                     El usuario ha decidido no mostrar esto
-                  </span>
+                  </Typography>
                 ))}
-              {selectedOption === "seguidos" && (
-                <div>
-                  <div className="grid grid-col _lg:grid-cols-4 grid-cols-2 gap-2">
-                    {!followedLoading && !allFollowed.length && (
-                      <div className="col-span-12 flex flex-col justify-center text-center">
-                        <Typography variant="h4">
-                          {!isMyAccount
-                            ? " Aún no sigues a nadie"
-                            : "Este usuario aun no sigue a nadie"}
-                        </Typography>
-                        <Typography variant="h4">
-                          ¡Lee libros y sigue a tus autores favoritos!
-                        </Typography>
-                      </div>
-                    )}
-                    {allFollowed?.map((followed) => (
-                      <div
-                        className="grid grid-col _lg:grid-cols-4 grid-cols-1 _lg:gap-2"
-                        key={followed?.id}
-                      >
-                        <UserCard
-                          username={followed?.username ?? followed?.nombre}
-                          nombre={followed?.nombre ?? followed?.username}
-                          image={followed?.profile}
-                          description={followed?.descripcion ?? ""}
-                          buttonProps={
-                            followed?.seguidor
-                              ? {
-                                  info: (
-                                    <span className="flex items-center">
-                                      <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
-                                      Dejar de seguir
-                                    </span>
-                                  ),
-                                  onClick: () => handleUnfollow(followed?.id),
-                                }
-                              : {
-                                  info: (
-                                    <>
+              {selectedOption === "seguidos" &&
+                (data?.mostrar_seguidos ? (
+                  <div>
+                    <div className="grid grid-col _lg:grid-cols-4 grid-cols-2 gap-2">
+                      {!followedLoading && !allFollowed.length && (
+                        <div className="col-span-12 flex flex-col justify-center text-center">
+                          <Typography variant="h4">
+                            {!isMyAccount
+                              ? " Aún no sigues a nadie"
+                              : "Este usuario aun no sigue a nadie"}
+                          </Typography>
+                          <Typography variant="h4">
+                            {!isMyAccount &&
+                              "¡Lee libros y sigue a tus autores favoritos!"}
+                          </Typography>
+                        </div>
+                      )}
+                      {allFollowed?.map((followed) => (
+                        <div
+                          className="grid grid-col _lg:grid-cols-4 grid-cols-1 _lg:gap-2"
+                          key={followed?.id}
+                        >
+                          <UserCard
+                            username={followed?.username ?? followed?.nombre}
+                            nombre={followed?.nombre ?? followed?.username}
+                            image={followed?.profile}
+                            description={followed?.descripcion ?? ""}
+                            buttonProps={
+                              followed?.seguidor
+                                ? {
+                                    info: (
                                       <span className="flex items-center">
-                                        <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
-                                        Seguir
+                                        <SlUserUnfollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+                                        Dejar de seguir
                                       </span>
-                                    </>
-                                  ),
-                                  onClick: () => handleFollow(followed?.id),
-                                }
-                          }
-                        />
-                      </div>
-                    ))}
+                                    ),
+                                    onClick: () => handleUnfollow(followed?.id),
+                                  }
+                                : {
+                                    info: (
+                                      <>
+                                        <span className="flex items-center">
+                                          <SlUserFollow className="inline-block align-middle mr-1  _md:w-4 _md:h-4" />
+                                          Seguir
+                                        </span>
+                                      </>
+                                    ),
+                                    onClick: () => handleFollow(followed?.id),
+                                  }
+                            }
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-center w-full mt-10">
+                      {followedLoading ? (
+                        <Spinner />
+                      ) : (
+                        !followedLastPage && (
+                          <IconButton onClick={handleFollowedNextPage}>
+                            <FaArrowDown />
+                          </IconButton>
+                        )
+                      )}
+                    </div>
                   </div>
-                  <div className="flex justify-center w-full mt-10">
-                    {followedLoading ? (
-                      <Spinner />
-                    ) : (
-                      !followedLastPage && (
-                        <IconButton onClick={handleFollowedNextPage}>
-                          <FaArrowDown />
-                        </IconButton>
-                      )
-                    )}
-                  </div>
-                </div>
-              )}
+                ) : (
+                  <Typography className="text-center" variant="h4">
+                    No puedes ver los seguidos de este usuario porque son
+                    privados.
+                  </Typography>
+                ))}
               {selectedOption === "seguidores" &&
                 (data?.mostrar_seguidores || !isMyAccount ? (
                   <div>
@@ -875,10 +878,10 @@ const page = ({ params }) => {
                     </div>
                   </div>
                 ) : (
-                  <span className="text-center">
+                  <Typography className="text-center" variant="h4">
                     No puedes ver los seguidores de este usuario porque son
                     privados.
-                  </span>
+                  </Typography>
                 ))}
             </div>
           </div>
