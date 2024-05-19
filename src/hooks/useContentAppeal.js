@@ -29,6 +29,7 @@ const useContentAppeal = () => {
   // Functions to interact with the API
 
   const getAllAppeals = async (params = {}) => {
+    console.log("params", params);
     return handleRequest(() =>
       api.get(`${APPEAL_ENDPOINT}/`, {
         params,

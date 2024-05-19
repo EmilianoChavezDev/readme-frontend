@@ -47,7 +47,8 @@ export default function Page() {
       page: currentPage,
       estado: statusToSearch,
       username: usernameToSearch,
-      fecha_desde: dateFrom,
+      fecha_desde: dateFrom ? moment(dateFrom).toISOString() : null,
+      fecha_hasta: dateTo ? moment(dateTo).toISOString() : null,
       tipo: "comentario",
     });
 
@@ -207,7 +208,9 @@ export default function Page() {
                       containerProps={{ className: "!min-w-40 !max-w-40" }}
                       labelProps={{ className: "!max-w-40" }}
                       label="Fecha desde"
-                      onChange={(e) => setDateFrom(e.target.value)}
+                      onChange={(e) =>
+                        setDateFrom(moment(e.target.value).toISOString())
+                      }
                     />
                   </div>
                 </form>
@@ -222,7 +225,9 @@ export default function Page() {
                       containerProps={{ className: "!min-w-40 !max-w-40" }}
                       labelProps={{ className: "!max-w-40" }}
                       label="Fecha hasta"
-                      onChange={(e) => setDateTo(e.target.value)}
+                      onChange={(e) =>
+                        setDateTo(moment(e.target.value).toISOString())
+                      }
                     />
                   </div>
                 </form>
@@ -249,6 +254,9 @@ export default function Page() {
                     <th className="text-center font-semibold">Estado</th>
                     <th className="text-center font-semibold">
                       Baneado en Fecha
+                    </th>
+                    <th className="text-center font-semibold">
+                      Creado en Fecha
                     </th>
                   </tr>
                 </thead>
@@ -321,6 +329,16 @@ export default function Page() {
                         }`}
                       >
                         {moment(report.fecha_de_baneo).format("DD-MM-YYYY")}
+                      </td>
+
+                      <td
+                        className={`text-center font-normal ${
+                          report.id === reportSelected.id
+                            ? "text-colorPrimario font-semibold"
+                            : "text-gray-800"
+                        }`}
+                      >
+                        {moment(report.created_at).format("DD-MM-YYYY")}
                       </td>
                     </tr>
                   ))}
