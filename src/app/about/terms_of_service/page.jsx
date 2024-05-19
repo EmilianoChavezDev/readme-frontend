@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect } from "react";
 
 const TermsOfServicePage = () => {
@@ -34,112 +35,112 @@ const TermsOfServicePage = () => {
           <br />
           <ul className="space-y-4 space">
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#aceptacion-terminos-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 1. Aceptación de los Términos
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#descripcion-servicio-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 2. Descripción del Servicio
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#registro-cuenta-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 3. Registro de Cuenta
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#uso-sitio-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 4. Uso del Sitio
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#propiedad-intelectual-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 5. Derechos de Propiedad Intelectual
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#privacidad-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 6. Privacidad
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#terminacion-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 7. Terminación
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#exencion-responsabilidad-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 8. Exención de Responsabilidad
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#limitacion-responsabilidad-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 9. Limitación de Responsabilidad
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#modificaciones-terminos-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 10. Modificaciones a los Términos
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#ley-aplicable-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 11. Ley Aplicable
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#contacto-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 12. Contacto
-              </a>
+              </Link>
             </li>
           </ul>
 

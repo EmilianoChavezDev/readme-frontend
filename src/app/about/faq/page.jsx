@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect } from "react";
 
 const FaqPage = () => {
@@ -32,51 +33,50 @@ const FaqPage = () => {
           <br />
           <ul className="space-y-4 space">
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#pregunta-1"
                 className="hover:text-blue-500 text-colorPrimario faq-link"
                 onClick={handleClick}
               >
                 1. ¿Cómo puedo subir un libro a ReadMe?
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#pregunta-2"
                 className="hover:text-blue-500 text-colorPrimario faq-link"
                 onClick={handleClick}
               >
                 2. ¿Cómo puedo seguir a otros usuarios en ReadMe?
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#pregunta-3"
                 className="hover:text-blue-500 text-colorPrimario faq-link"
                 onClick={handleClick}
               >
                 3. ¿Puedo leer libros en ReadMe sin registrarme?
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#pregunta-4"
                 className="hover:text-blue-500 text-colorPrimario faq-link"
                 onClick={handleClick}
               >
                 4. ¿Cómo puedo reportar contenido inapropiado en ReadMe?
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#pregunta-5"
                 className="hover:text-blue-500 text-colorPrimario faq-link"
                 onClick={handleClick}
               >
                 5. ¿Qué debo hacer si olvidé mi contraseña de ReadMe?
-              </a>
+              </Link>
             </li>
-            {/* Agrega más preguntas según sea necesario */}
           </ul>
 
           <br />

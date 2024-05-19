@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect } from "react";
 
 const PolicyPage = () => {
@@ -29,10 +30,7 @@ const PolicyPage = () => {
     <div>
       <div className="sm:px-10 md:px-60 py-5 ">
         <div className="sm:block p-4 dark:bg-dark-darkColorNavBar ">
-         
-          <h1 className="text-5xl font-bold mb-8">
-            Política de Privacidad
-          </h1>
+          <h1 className="text-5xl font-bold mb-8">Política de Privacidad</h1>
           <p>Última actualización: 06/05/2024</p>
           <br></br>
           <p>
@@ -44,103 +42,103 @@ const PolicyPage = () => {
           <br></br>
           <ul className="space-y-4 space">
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#informacion-recopilada-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 1. Información que recopilamos
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#como-utilizamos-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 2. Cómo utilizamos su información
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#compartir-informacion-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 3. Compartir su información
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#seguridad-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 4. Seguridad
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#cambios-politica-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 5. Cambios en esta Política de Privacidad
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#contacto-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 6. Contacto
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#derechos-usuario-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 7. Derechos del usuario
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#retencion-datos-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 8. Retención de datos
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#politica-cookies-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 9. Política de cookies
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#enlaces-externos-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 10. Enlaces a sitios web externos
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#menores-edad-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 11. Privacidad de los menores de edad
-              </a>
+              </Link>
             </li>
           </ul>
 
