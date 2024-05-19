@@ -57,10 +57,24 @@ const useUnbanAccount = () => {
       )
     );
   };
+
+  const request_Unban = async (email, justificacion) => {
+    return handleRequest(() =>
+      api.post(
+        UNBAN_ACCOUNT_ENDPOINT,
+        { email, justificacion },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+    );
+  };
+
   return {
     getUnbanAccount,
     restoreAccount,
     rejectAppeal,
+    request_Unban, 
     error,
     isLoading,
   };

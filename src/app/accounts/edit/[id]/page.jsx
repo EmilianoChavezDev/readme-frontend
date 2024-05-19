@@ -42,6 +42,7 @@ const page = ({ params }) => {
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const [isNotDisable, setIsNotDisable] = useState(true);
   const [isRefresh, setIsRefresh] = useState(true);
+  const [usernameLength, setUsernameLength] = useState(0);
 
   const {
     register,
@@ -63,10 +64,12 @@ const page = ({ params }) => {
   useEffect(() => {
     if (isError && !isTrue) {
       toast.error(message);
+      setIsNotDisable(true);
       return;
     }
     if (isTrue && !isError) {
       toast.success(message);
+      setIsNotDisable(true);
       return;
     }
   }, [isError, isTrue]);
@@ -94,6 +97,7 @@ const page = ({ params }) => {
       confirmNewPassword: "",
     });
     setIsNotDisable(true);
+    setUsernameLength(data?.username.length || 0);
   }, [data]);
 
   useEffect(() => {
@@ -112,10 +116,12 @@ const page = ({ params }) => {
     const whitespaceRegex = /\s/;
 
     if (username !== username.toLowerCase()) {
+      setIsNotDisable(true);
       return "El nombre de usuario debe estar en minúsculas.";
     }
 
     if (whitespaceRegex.test(username)) {
+      setIsNotDisable(true);
       return "El nombre de usuario no debe contener espacios.";
     }
 
@@ -124,14 +130,17 @@ const page = ({ params }) => {
 
   const validatePassword = (oldPassword, newPassword, confirmNewPassword) => {
     if (newPassword && newPassword === oldPassword) {
+      setIsNotDisable(true);
       return "La nueva contraseña debe ser diferente de la contraseña anterior.";
     }
 
     if (newPassword !== confirmNewPassword) {
+      setIsNotDisable(true);
       return "Las contraseñas no coinciden.";
     }
 
     if (newPassword && newPassword.length < 8) {
+      setIsNotDisable(true);
       return "La nueva contraseña debe tener al menos 8 caracteres.";
     }
 
@@ -194,6 +203,16 @@ const page = ({ params }) => {
     });
   };
 
+  const handleUsernameChange = (event) => {
+    if (!event.target.value.length) {
+      setIsNotDisable(true);
+      setUsernameLength(event.target.value.length);
+      return;
+    }
+    setIsNotDisable(false);
+    setUsernameLength(event.target.value.length);
+  };
+
   return (
     <>
       {loading ? (
@@ -239,7 +258,7 @@ const page = ({ params }) => {
                 </div>
               </div>
               <div className="flex _sm:mt-0 flex-col items-center _lg:justify-start _sm:items-start _md:gap-y-8 gap-y-4">
-                <div>
+                <div className="relative">
                   <InputField
                     label={"Nombre de usuario"}
                     type={"text"}
@@ -247,7 +266,12 @@ const page = ({ params }) => {
                     register={register}
                     name={"username"}
                     required={true}
+                    onChange={handleUsernameChange}
+                    maxLength={10}
                   />
+                  <span className="absolute bottom-2 right-2 text-xs text-gray-400">
+                    {usernameLength}/10
+                  </span>
                 </div>
 
                 <div>

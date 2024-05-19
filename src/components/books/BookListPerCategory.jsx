@@ -19,7 +19,7 @@ export default function BookListPerCategory({ books, category }) {
         onClick={() =>
           router.push(
             `/books/${
-              books?.filter((book) => book.categoria === category)[0]?.id
+              books[0]?.id
             }`
           )
         }
@@ -34,7 +34,7 @@ export default function BookListPerCategory({ books, category }) {
               />
               {books[0].adulto && (
                 <div className="absolute top-0 left-0 p-2">
-                  <TbRating18Plus className="text-5xl text-red-500 dark:text-red-500" />
+                  <TbRating18Plus className="text-5xl bg-white rounded-full text-red-500 dark:bg-red-500" />
                 </div>
               )}
             </div>

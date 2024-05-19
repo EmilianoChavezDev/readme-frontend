@@ -19,7 +19,7 @@ export default function BookCard({ book }) {
       <div className="group relative flex flex-col gap-2 cursor-pointer">
         {book.adulto && (
           <div className="absolute top-0 left-0 p-2">
-            <TbRating18Plus className="text-5xl text-red-500" />
+            <TbRating18Plus className="text-5xl bg-white rounded-full text-red-500 dark:bg-red-500" />
           </div>
         )}
         {book?.portada ? (

@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import Modal from "@/components/common/modal";
 import Loader from "@/components/common/loader";
+import { useRouter } from "next/navigation";
 import Pagination from "@/components/common/Pagination";
 import { Tooltip, Option, Select, Input } from "@material-tailwind/react";
 import useContentAppeal from "@/hooks/useContentAppeal";
@@ -16,7 +17,7 @@ export default function Page() {
     aceptado: { key: "aceptado", value: "Aceptado" },
     rechazado: { key: "rechazado", value: "Rechazado" },
   };
-
+  const router = useRouter();
   const {
     getAllAppeals,
     postAcceptAppeal,
@@ -129,9 +130,11 @@ export default function Page() {
         toast.success("Sanción revocada con éxito");
         handleReloadListValues("aceptado");
         setAppealModal(false);
+        setIsSuccess(false);
       } else if (isRejectSuccess) {
         toast.success("Apelación rechazada con éxito");
         handleReloadListValues("rechazado");
+        setIsRejectSuccess(false);
         setRejectModal(false);
       }
     }
@@ -140,6 +143,13 @@ export default function Page() {
       isMounted = false;
     };
   }, [error, errorResponse, isLoading, isSuccess]);
+  let userRole = localStorage.getItem("role");
+  useEffect(() => {
+    if (userRole === "usuario") {
+      toast.error("Usuario no autorizado");
+      router.push("/");
+    }
+  }, []);
 
   return (
     <>
@@ -413,9 +423,9 @@ export default function Page() {
                 {reportSelected?.estado !== "aceptado" &&
                   reportSelected?.estado !== "rechazado" && (
                     <div className="flex justify-between text-white">
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 _md:px-2">
                         <button
-                          className="h-10 rounded-md px-2 bg-colorPrimario hover:brightness-90"
+                          className="h-10 _md:h-12 rounded-md px-2 bg-colorPrimario hover:brightness-90"
                           onClick={() => setAppealModal(true)}
                         >
                           Deshacer Baneo
@@ -423,7 +433,7 @@ export default function Page() {
                       </div>
                       <div>
                         <button
-                          className="h-10 rounded-md px-2 bg-red-900 hover:brightness-90"
+                          className="h-10 _md:h-12 rounded-md px-2 bg-red-900 hover:brightness-90"
                           onClick={() => setRejectModal(true)}
                         >
                           Rechazar apelación

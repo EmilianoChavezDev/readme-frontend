@@ -58,8 +58,9 @@ const Page = () => {
       return;
     }
 
-    if (!validarLongitudEmail(formData.email)) {
-      errorResponse.error = "Longitud de email invalida";
+    if (!validateUsernameLength(formData.username)) {
+      errorResponse.error =
+        "El nombre de usuario debe tener entre 3 y 10 caracteres";
       return;
     }
 
@@ -71,9 +72,7 @@ const Page = () => {
     formData.role = "usuario";
     const fecha = moment(formData.fecha_nacimiento).format("DD-MM-YYYY");
     formData.fecha_nacimiento = fecha;
-    // registro(formData);
-    const rest = await registro(formData);
-    //router.push(`/auth/email_resend/${email}`);
+    await registro(formData);
   };
 
   const handleBlur = () => {
@@ -94,9 +93,8 @@ const Page = () => {
     return diferenciaAnhos >= 12 && diferenciaAnhos <= 120;
   };
 
-  const validarLongitudEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._%+-]{6,}/;
-    return regex.test(email);
+  const validateUsernameLength = (username) => {
+    return username.length >= 3 && username.length <= 10;
   };
 
   const formatErrorMessage = (message) => {
