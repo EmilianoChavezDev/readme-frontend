@@ -148,4 +148,3 @@ const AboutUsPage = () => {
 };
 
 export default AboutUsPage;
-s
