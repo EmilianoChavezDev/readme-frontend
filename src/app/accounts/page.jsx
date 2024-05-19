@@ -20,6 +20,7 @@ const Page = () => {
 
   return (
     <div className="flex p-6 sm:py-8 sm:px-20 flex-col gap-3 sm:gap-10">
+      
       <h1 className="font-bold text-2xl text-textHeaderColorGray dark:text-white">
         Mi cuenta
       </h1>

@@ -1,7 +1,5 @@
 "use client";
-import Link from "next/link";
 import { useEffect } from "react";
-import { VscChevronRight } from "react-icons/vsc";
 
 const PolicyPage = () => {
   const handleClick = (event) => {

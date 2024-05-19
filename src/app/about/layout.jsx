@@ -1,13 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
-  const [lineWidth, setLineWidth] = useState(0);
-  const [linePosition, setLinePosition] = useState(0);
   const [paths, setPaths] = useState([
     {
       path: "/about/privacy_policy",
@@ -29,13 +28,18 @@ export default function RootLayout({ children }) {
 
   const handleTabClick = (index) => {
     const tabElement = document.getElementById(`tab-${index}`);
-    if (tabElement) {
-      setLinePosition(tabElement.offsetLeft);
-      setLineWidth(tabElement.offsetWidth);
-    }
   };
+  
   return (
     <div className="relative flex flex-col gap-3 px-20 py-9 items-center">
+      <div className="md:block hidden absolute left-0 top-0 -z-10">
+        <Image
+          src="/image/img_inicio.png"
+          width={400}
+          height={200}
+          alt="Imagen de inicio"
+        />
+      </div>
       <h1 font-bold className="text-6xl font-bold pb-5 ">
         Centro de Privacidad
       </h1>
@@ -56,17 +60,6 @@ export default function RootLayout({ children }) {
               </li>
             </Link>
           ))}
-          <div
-            className={`${
-              paths?.find((tab) => pathname.startsWith(tab.path))
-                ? "block"
-                : "hidden"
-            } border-b-2 border-colorPrimario absolute bottom-0 left-0 transition-transform duration-300 ease-in-out z-30`}
-            style={{
-              width: `${lineWidth}px`,
-              transform: `translateX(${linePosition}px)`,
-            }}
-          />
         </ul>
       </div>
       {children}
