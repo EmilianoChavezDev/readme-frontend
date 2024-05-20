@@ -14,6 +14,8 @@ import Loader from "@/components/common/loader";
 import Pagination from "@/components/common/Pagination";
 import { useAccountContext } from "@/contexts/AccountProvider";
 import AddModeratorModal from "@/components/accounts/addModeratorModal";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [data, setData] = useState(null);
@@ -22,7 +24,7 @@ export default function Page() {
   const [moderatorSelected, setModeratorSelected] = useState(null);
   const [showRevokePermissionsModal, setShowRevokePermissionsModal] =
     useState(false);
-
+  const router = useRouter();
   const { updateUserRole } = useUserInfo();
   const { getModeratorStatistics, isLoading } = useReport();
   const { showAddModeratorModal, setShowAddModeratorModal } =
@@ -66,6 +68,14 @@ export default function Page() {
     }, 400);
     return () => (isCanceled = true);
   }, [usernameToSearch]);
+
+  let userRole = localStorage.getItem("role");
+  useEffect(() => {
+    if (userRole === "usuario") {
+      toast.error("Usuario no autorizado");
+      router.push("/");
+    }
+  }, []);
 
   return (
     <>

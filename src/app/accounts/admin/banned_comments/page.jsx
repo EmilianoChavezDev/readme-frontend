@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import Modal from "@/components/common/modal";
 import Loader from "@/components/common/loader";
+import { useRouter } from "next/navigation";
 import Pagination from "@/components/common/Pagination";
 import { Tooltip, Option, Select, Input } from "@material-tailwind/react";
 import useContentAppeal from "@/hooks/useContentAppeal";
@@ -16,7 +17,7 @@ export default function Page() {
     aceptado: { key: "aceptado", value: "Aceptado" },
     rechazado: { key: "rechazado", value: "Rechazado" },
   };
-
+  const router = useRouter();
   const {
     getAllAppeals,
     postAcceptAppeal,
@@ -143,6 +144,13 @@ export default function Page() {
       isMounted = false;
     };
   }, [error, errorResponse, isLoading, isSuccess]);
+  let userRole = localStorage.getItem("role");
+  useEffect(() => {
+    if (userRole === "usuario") {
+      toast.error("Usuario no autorizado");
+      router.push("/");
+    }
+  }, []);
 
   return (
     <>

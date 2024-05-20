@@ -96,6 +96,14 @@ export default function Page() {
     return delayedFetchData.cancel;
   }, [currentPage, statusToSearch, usernameToSearch]);
 
+  let userRole = localStorage.getItem("role");
+  useEffect(() => {
+    if (userRole === "usuario") {
+      toast.error("Usuario no autorizado");
+      router.push("/");
+    }
+  }, []);
+
   return (
     <>
       <div className="relative flex flex-col gap-9 px-20 py-9">
