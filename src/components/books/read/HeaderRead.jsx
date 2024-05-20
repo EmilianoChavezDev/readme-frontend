@@ -10,8 +10,9 @@ import CapMenu from "./CapMenu";
 import { useRouter } from "next/navigation";
 import { Tooltip } from "@material-tailwind/react";
 import { UseRead } from "@/contexts/ReadProvider";
-import { FaMicrophone } from "react-icons/fa";
+import { FaMicrophone, FaPause, FaPlay, FaRedo } from "react-icons/fa";
 import { BiSolidMicrophoneOff } from "react-icons/bi";
+import toast from "react-hot-toast";
 
 const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
   const { handleUnZoom, handleZoom } = UseRead();
@@ -21,6 +22,7 @@ const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
   const [previousContentChapter, setPreviousContentChapter] = useState("");
 
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(true);
   const [language, setLanguage] = useState("es-ES"); // Estado para manejar el idioma
   const speechSynthesisRef = useRef(null);
@@ -81,6 +83,25 @@ const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
     }
   };
 
+  const handlePause = () => {
+    if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
+      speechSynthesisRef.current.pause();
+      setIsPaused(true);
+    }
+  };
+
+  const handleResume = () => {
+    if (speechSynthesisRef.current && speechSynthesisRef.current.paused) {
+      speechSynthesisRef.current.resume();
+      setIsPaused(false);
+    }
+  };
+
+  const handleRestart = () => {
+    stopSpeech();
+    startSpeech(contentChapter);
+  };
+
   const stripHtml = (html) => {
     const temporalDivElement = document.createElement("div");
     temporalDivElement.innerHTML = html;
@@ -112,6 +133,7 @@ const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
     if (!speechSupported || !speechSynthesisRef.current) return;
     speechSynthesisRef.current.cancel();
     setIsSpeaking(false);
+    setIsPaused(false);
   };
 
   return (
@@ -140,13 +162,40 @@ const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
 
         <div className="flex justify-center items-center">
           <div className="mb-2 px-2">
-            <Tooltip content="Escuchar Capitulo">
-              <button
-                onClick={handleSpeech}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-              >
-                {isSpeaking ? <BiSolidMicrophoneOff /> : <FaMicrophone />}
-              </button>
+            <Tooltip content="Controlar Capitulo">
+              <div className="flex gap-2">
+                <button
+                  onClick={handleSpeech}
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                >
+                  {isSpeaking ? <BiSolidMicrophoneOff /> : <FaMicrophone />}
+                </button>
+                {isSpeaking && (
+                  <>
+                    {isPaused ? (
+                      <button
+                        onClick={handleResume}
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                      >
+                        <FaPlay />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handlePause}
+                        className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                      >
+                        <FaPause />
+                      </button>
+                    )}
+                    <button
+                      onClick={handleRestart}
+                      className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                    >
+                      <FaRedo />
+                    </button>
+                  </>
+                )}
+              </div>
             </Tooltip>
           </div>
           <div className="relative">

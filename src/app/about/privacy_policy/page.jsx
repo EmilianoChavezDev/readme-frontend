@@ -1,8 +1,6 @@
 "use client";
-import NavBar from "@/components/NavBar";
 import Link from "next/link";
 import { useEffect } from "react";
-import { VscChevronRight } from "react-icons/vsc";
 
 const PolicyPage = () => {
   const handleClick = (event) => {
@@ -30,23 +28,9 @@ const PolicyPage = () => {
 
   return (
     <div>
-      <NavBar />
       <div className="sm:px-10 md:px-60 py-5 ">
         <div className="sm:block p-4 dark:bg-dark-darkColorNavBar ">
-          <div className="flex gap-2 items-center pb-4">
-            <Link href="/accounts" className="font-semibold text-gray-800">
-              Cuenta
-            </Link>
-            <span>
-              <VscChevronRight />
-            </span>
-            <span className="font-semibold text-gray-800">
-              Política de Privacidad
-            </span>
-          </div>
-          <h1 className="text-6xl font-bold mb-8">
-            <strong>Política de Privacidad</strong>
-          </h1>
+          <h1 className="text-5xl font-bold mb-8">Política de Privacidad</h1>
           <p>Última actualización: 06/05/2024</p>
           <br></br>
           <p>
@@ -58,103 +42,103 @@ const PolicyPage = () => {
           <br></br>
           <ul className="space-y-4 space">
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#informacion-recopilada-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 1. Información que recopilamos
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#como-utilizamos-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 2. Cómo utilizamos su información
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#compartir-informacion-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 3. Compartir su información
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#seguridad-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 4. Seguridad
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#cambios-politica-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 5. Cambios en esta Política de Privacidad
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#contacto-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 6. Contacto
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#derechos-usuario-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 7. Derechos del usuario
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#retencion-datos-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 8. Retención de datos
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#politica-cookies-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 9. Política de cookies
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#enlaces-externos-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 10. Enlaces a sitios web externos
-              </a>
+              </Link>
             </li>
             <li className="transition duration-300 ease-in-out transform hover:translate-x-1">
-              <a
+              <Link
                 href="#menores-edad-title"
                 className="hover:text-blue-500 text-colorPrimario policy-link"
                 onClick={handleClick}
               >
                 11. Privacidad de los menores de edad
-              </a>
+              </Link>
             </li>
           </ul>
 
@@ -162,7 +146,7 @@ const PolicyPage = () => {
           <section id="informacion-recopilada" className="mb-8">
             <h2
               id="informacion-recopilada-title"
-              className="text-4xl font-semibold"
+              className="text-3xl font-semibold"
             >
               1. Información que recopilamos
             </h2>
@@ -184,7 +168,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="como-utilizamos" className="mb-8">
-            <h2 id="como-utilizamos-title" className="text-4xl font-semibold">
+            <h2 id="como-utilizamos-title" className="text-3xl font-semibold">
               2. Cómo utilizamos su información
             </h2>
             <br />
@@ -209,7 +193,7 @@ const PolicyPage = () => {
           <section id="compartir-informacion" className="mb-8">
             <h2
               id="compartir-informacion-title"
-              className="text-4xl font-semibold"
+              className="text-3xl font-semibold"
             >
               3. Compartir su información
             </h2>
@@ -275,7 +259,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section className="mb-8">
-            <h2 id="seguridad-title" className="text-4xl font-semibold">
+            <h2 id="seguridad-title" className="text-3xl font-semibold">
               4. Seguridad
             </h2>
             <br />
@@ -337,7 +321,7 @@ const PolicyPage = () => {
           </section>
 
           <section id="cambios-politica" className="mb-8">
-            <h2 id="cambios-politica-title" className="text-4xl font-semibold">
+            <h2 id="cambios-politica-title" className="text-3xl font-semibold">
               5. Cambios en esta Política de Privacidad
             </h2>
             <br />
@@ -393,7 +377,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="contacto" className="mb-8">
-            <h2 id="contacto-title" className="text-4xl font-semibold">
+            <h2 id="contacto-title" className="text-3xl font-semibold">
               6. Contacto
             </h2>
             <br />
@@ -439,7 +423,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="derechos-usuario" className="mb-8">
-            <h2 id="derechos-usuario-title" className="text-4xl font-semibold">
+            <h2 id="derechos-usuario-title" className="text-3xl font-semibold">
               7. Derechos del usuario
             </h2>
             <br />
@@ -494,7 +478,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="retencion-datos" className="mb-8">
-            <h2 id="retencion-datos-title" className="text-4xl font-semibold">
+            <h2 id="retencion-datos-title" className="text-3xl font-semibold">
               8. Retención de datos
             </h2>
             <br />
@@ -546,7 +530,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="politica-cookies" className="mb-8">
-            <h2 id="politica-cookies-title" className="text-4xl font-semibold">
+            <h2 id="politica-cookies-title" className="text-3xl font-semibold">
               9. Política de cookies
             </h2>
             <br />
@@ -601,7 +585,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="enlaces-externos" className="mb-8">
-            <h2 id="enlaces-externos-title" className="text-4xl font-semibold">
+            <h2 id="enlaces-externos-title" className="text-3xl font-semibold">
               10. Enlaces a sitios web externos
             </h2>
             <br />
@@ -649,7 +633,7 @@ const PolicyPage = () => {
             </p>
           </section>
           <section id="menores-edad" className="mb-8">
-            <h2 id="menores-edad-title" className="text-4xl font-semibold">
+            <h2 id="menores-edad-title" className="text-3xl font-semibold">
               11. Privacidad de los menores de edad
             </h2>
             <br />
