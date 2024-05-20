@@ -7,6 +7,7 @@ import Options from "./navbar/Options";
 import UserOptions from "./navbar/UserOptions";
 import MobileMenu from "./navbar/MobileMenu";
 import useCategory from "@/hooks/useCategory";
+import useUserInfo from "@/hooks/useUser";
 
 const NavBar = ({ onSearch }) => {
   const { username, logout, expiration, isOpen, setIsOpen } = useUser();
@@ -29,7 +30,7 @@ const NavBar = ({ onSearch }) => {
     const unEmailConfirmed = localStorage.getItem("unconfirmed_email");
     const email = localStorage.getItem("email");
     if (unEmailConfirmed) {
-      router.push(`auth/email_resend/${email}`);
+      router.push(`/auth/email_resend/${email}`);
       return;
     }
   }, []);
