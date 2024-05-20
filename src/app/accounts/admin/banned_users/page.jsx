@@ -38,8 +38,10 @@ export default function Page() {
       page: currentPage,
       estado: statusToSearch,
       username: usernameToSearch,
-      fecha_desde: dateFrom,
-      fecha_hasta: dateTo,
+      fecha_desde: dateFrom ? moment(dateFrom).toISOString("YYYY-MM-DD") : null,
+      fecha_hasta: dateTo
+        ? moment(dateTo).endOf("day").toISOString("YYYY-MM-DD")
+        : null,
     });
     let mappedValues = {
       data: result?.solicitudes_desbaneo,

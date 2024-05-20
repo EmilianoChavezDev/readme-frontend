@@ -49,8 +49,10 @@ export default function Page() {
       page: currentPage,
       estado: statusToSearch,
       username: usernameToSearch,
-      fecha_desde: dateFrom ? moment(dateFrom).format("YYYY-MM-DD") : null,
-      fecha_hasta: dateTo ? moment(dateTo).format("YYYY-MM-DD") : null,
+      fecha_desde: dateFrom ? moment(dateFrom).toISOString("YYYY-MM-DD") : null,
+      fecha_hasta: dateTo
+        ? moment(dateTo).endOf("day").toISOString("YYYY-MM-DD")
+        : null,
       tipo: "libro",
     });
 

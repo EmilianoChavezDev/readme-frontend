@@ -48,8 +48,10 @@ export default function Page() {
       page: currentPage,
       estado: statusToSearch,
       username: usernameToSearch,
-      fecha_desde: dateFrom ? moment(dateFrom).toISOString() : null,
-      fecha_hasta: dateTo ? moment(dateTo).toISOString() : null,
+      fecha_desde: dateFrom ? moment(dateFrom).toISOString("YYYY-MM-DD") : null,
+      fecha_hasta: dateTo
+        ? moment(dateTo).endOf("day").toISOString("YYYY-MM-DD")
+        : null,
       tipo: "comentario",
     });
 
@@ -216,9 +218,7 @@ export default function Page() {
                       containerProps={{ className: "!min-w-40 !max-w-40" }}
                       labelProps={{ className: "!max-w-40" }}
                       label="Fecha desde"
-                      onChange={(e) =>
-                        setDateFrom(moment(e.target.value).toISOString())
-                      }
+                      onChange={(e) => setDateFrom(e.target.value)}
                     />
                   </div>
                 </form>
@@ -233,9 +233,7 @@ export default function Page() {
                       containerProps={{ className: "!min-w-40 !max-w-40" }}
                       labelProps={{ className: "!max-w-40" }}
                       label="Fecha hasta"
-                      onChange={(e) =>
-                        setDateTo(moment(e.target.value).toISOString())
-                      }
+                      onChange={(e) => setDateTo(e.target.value)}
                     />
                   </div>
                 </form>
