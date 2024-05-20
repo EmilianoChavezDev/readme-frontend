@@ -24,12 +24,17 @@ export default function RootLayout({ children }) {
       name: "Preguntas Frecuentes",
       show: true,
     },
+    {
+      path: "/about/about_us",
+      name: "Acerca de Nosotros",
+      show: true,
+    },
   ]);
 
   const handleTabClick = (index) => {
     const tabElement = document.getElementById(`tab-${index}`);
   };
-  
+
   return (
     <div className="relative flex flex-col gap-3 px-20 py-9 items-center">
       <div className="md:block hidden absolute left-0 top-0 -z-10">
