@@ -13,11 +13,13 @@ export const UserProvider = ({ children }) => {
   const [role, setRole] = useState(null);
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [unconfirmed_email, setUnconfirmedEmail] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isActualizado, setIsActualizado] = useState(false);
   const [profileUpdate, setProfileUpdate] = useState(false);
 
   const login = (data, email) => {
+    localStorage.clear();
     setToken(data?.token);
     setExpiration(data?.expiration);
     setUsername(data?.username);
@@ -25,9 +27,10 @@ export const UserProvider = ({ children }) => {
     setUserId(data.userId);
     setProfile(data.profile);
     setProfileUpdate(data.profile);
+    setUnconfirmedEmail(data?.unconfirmed_email);
 
     Object.keys(data).forEach((key) => localStorage.setItem(key, data[key]));
-    email?router.push(`/auth/email_resend/${email}`): router.push("/")
+    email ? router.push(`/auth/email_resend/${email}`) : router.push("/");
   };
 
   const refresh = (data) => {
@@ -108,6 +111,7 @@ export const UserProvider = ({ children }) => {
         setIsActualizado,
         setProfileUpdate,
         profileUpdate,
+        unconfirmed_email,
       }}
     >
       {children}

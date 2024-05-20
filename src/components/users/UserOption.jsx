@@ -153,19 +153,19 @@ const UserOption = ({
           >
             Lista de lectura
           </span>
-          {usernameLs === username && (
-            <span
-              className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 pb-2 hover:border-colorPrimario dark:hover:border-dark-darkColorButtons
+
+          <span
+            className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 pb-2 hover:border-colorPrimario dark:hover:border-dark-darkColorButtons
                 ${
                   selectedOption === "seguidos"
                     ? "border-colorPrimario dark:border-dark-darkColorButtons"
                     : "border-transparent"
                 }`}
-              onClick={() => onSelectOption("seguidos")}
-            >
-              Seguidos
-            </span>
-          )}
+            onClick={() => onSelectOption("seguidos")}
+          >
+            Seguidos
+          </span>
+
           <span
             className={`hover:cursor-pointer transition-all transform duration-200 border-b-2 pb-2 hover:border-colorPrimario dark:hover:border-dark-darkColorButtons
               ${
