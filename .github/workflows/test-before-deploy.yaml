@@ -29,8 +29,3 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-<<<<<<< HEAD
-=======
-
-    # Add your deployment steps here, such as deploying to Vercel or another platform
->>>>>>> 2a330c452886cf10915ccf0d476494e2a725fb41
