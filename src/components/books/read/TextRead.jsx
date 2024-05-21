@@ -6,7 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import "./custom-quill.css";
 import { UseRead } from "@/contexts/ReadProvider";
 
-const TextRead = ({ urlContenido }) => {
+const TextRead = ({ urlContenido, setContentChapter }) => {
   const { zoom } = UseRead();
   const { getContentChapter, contentChapter, isChangeChapter } = useReadBooks();
 
@@ -20,6 +20,7 @@ const TextRead = ({ urlContenido }) => {
   useEffect(() => {
     if (!contentChapter) return;
     setText(contentChapter);
+    setContentChapter(contentChapter);
   }, [contentChapter]);
 
   return (

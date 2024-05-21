@@ -20,6 +20,7 @@ const Page = () => {
 
   return (
     <div className="flex p-6 sm:py-8 sm:px-20 flex-col gap-3 sm:gap-10">
+      
       <h1 className="font-bold text-2xl text-textHeaderColorGray dark:text-white">
         Mi cuenta
       </h1>
@@ -40,6 +41,24 @@ const Page = () => {
             </div>
           </div>
         </Link>
+        <Link
+          href={`/accounts/privacity/${username}`}
+          className="cursor-pointer rounded-lg border border-gray-100 hover:shadow-lg transition-all transform duration-300 hover:scale-105 w-full"
+        >
+          <div className="flex flex-row sm:flex-col items-center sm:items-start p-3 gap-4">
+            <span className="w-8 h-8">
+              <FaUser className="size-10" />
+            </span>
+            <div className="flex flex-col gap-1">
+              <h2 className="font-semibold">Privacidad de la cuenta</h2>
+              <p className="text-sm text-gray-700">
+                Ajusta la visibilidad de tu información personal y gestiona tus
+                preferencias de privacidad.
+              </p>
+            </div>
+          </div>
+        </Link>
+
         <Link
           href="/accounts/statistics"
           className="cursor-pointer rounded-lg border border-gray-100 hover:shadow-lg transition-all transform duration-300 hover:scale-105 w-full"
