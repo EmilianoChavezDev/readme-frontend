@@ -3,7 +3,7 @@ name: Test-before-deploy
 on:
   push:
     branches:
-      - main
+      - test
 
 jobs:
   build:
