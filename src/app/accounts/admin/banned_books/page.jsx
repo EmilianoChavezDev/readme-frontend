@@ -49,7 +49,10 @@ export default function Page() {
       page: currentPage,
       estado: statusToSearch,
       username: usernameToSearch,
-      fecha_desde: dateFrom,
+      fecha_desde: dateFrom ? moment(dateFrom).toISOString("YYYY-MM-DD") : null,
+      fecha_hasta: dateTo
+        ? moment(dateTo).endOf("day").toISOString("YYYY-MM-DD")
+        : null,
       tipo: "libro",
     });
 
@@ -263,6 +266,9 @@ export default function Page() {
                     <th className="text-center font-semibold">
                       Baneado en Fecha
                     </th>
+                    <th className="text-center font-semibold">
+                      Creado en Fecha
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -334,6 +340,16 @@ export default function Page() {
                         }`}
                       >
                         {moment(report.fecha_de_baneo).format("DD-MM-YYYY")}
+                      </td>
+
+                      <td
+                        className={`text-center font-normal ${
+                          report.id === reportSelected.id
+                            ? "text-colorPrimario font-semibold"
+                            : "text-gray-800"
+                        }`}
+                      >
+                        {moment(report.created_at).format("DD-MM-YYYY")}
                       </td>
                     </tr>
                   ))}
