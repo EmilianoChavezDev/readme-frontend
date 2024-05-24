@@ -54,6 +54,10 @@ const page = ({ params }) => {
     defaultValues,
   });
 
+  useEffect(() => {
+    setIsNotDisable(!isDirty); // Habilitar botón si hay cambios sin guardar
+  }, [isDirty]);
+
   // trae la informacion del usuario
   useEffect(() => {
     if (!params.id) return;
@@ -73,10 +77,6 @@ const page = ({ params }) => {
       return;
     }
   }, [isError, isTrue]);
-
-  useEffect(() => {
-    setIsNotDisable(false);
-  }, [isDirty]);
 
   //si se efectuan cambios cambiar todo el entorno de la pagina con la informacion nueva
   useEffect(() => {
@@ -154,6 +154,7 @@ const page = ({ params }) => {
     return null;
   };
 
+  //formulario
   const onSubmit = (formData) => {
     const usernameError = validateUsername(formData.username);
     const passwordError = validatePassword(
@@ -211,6 +212,13 @@ const page = ({ params }) => {
     }
     setIsNotDisable(false);
     setUsernameLength(event.target.value.length);
+  };
+
+  const handlePasswordNewChange = (event) => {
+    setIsNotDisable(false);
+  };
+  const handlePasswordNewConfirmChange = (event) => {
+    setIsNotDisable(false);
   };
 
   return (
@@ -321,6 +329,7 @@ const page = ({ params }) => {
                           register={register}
                           name={"newPassword"}
                           required={false}
+                          onChange={handlePasswordNewChange}
                         />
                         <button
                           className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
@@ -339,6 +348,7 @@ const page = ({ params }) => {
                           register={register}
                           name={"confirmNewPassword"}
                           required={false}
+                          onChange={handlePasswordNewConfirmChange}
                         />
                         <button
                           className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"

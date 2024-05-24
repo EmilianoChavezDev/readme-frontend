@@ -50,6 +50,14 @@ const useBook = () => {
     );
   };
 
+  const getBookIntereses = async () => {
+    return handleRequest(() =>
+      api.get(`${BOOK_ENDPOINT}/get/intereses`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+    );
+  };
+
   const updateBook = async (id, params) => {
     return handleRequest(() =>
       api.put(`${BOOK_ENDPOINT}/${id}`, params, {
@@ -77,6 +85,7 @@ const useBook = () => {
     createBook,
     getAllBooks,
     getBookByID,
+    getBookIntereses,
     updateBook,
     deleteBook,
     getCategory,

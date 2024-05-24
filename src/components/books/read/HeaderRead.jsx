@@ -24,6 +24,7 @@ const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(true);
+  const [isContentReady, setIsContentReady] = useState(false);
   const [language, setLanguage] = useState("es-ES"); // Estado para manejar el idioma
   const speechSynthesisRef = useRef(null);
   const utteranceRef = useRef(null);
@@ -37,6 +38,10 @@ const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
       utteranceRef.current = new SpeechSynthesisUtterance();
     }
   }, []);
+
+  useEffect(() => {
+    setIsContentReady(true);
+  }, [contentChapter]);
 
   useEffect(() => {
     if (
@@ -78,20 +83,21 @@ const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
   const handleSpeech = () => {
     if (isSpeaking) {
       stopSpeech();
-    } else {
+    }
+    if (isContentReady) {
       startSpeech(contentChapter);
     }
   };
 
   const handlePause = () => {
-    if (speechSynthesisRef.current && speechSynthesisRef.current.speaking) {
+    if (speechSynthesisRef.current?.speaking) {
       speechSynthesisRef.current.pause();
       setIsPaused(true);
     }
   };
 
   const handleResume = () => {
-    if (speechSynthesisRef.current && speechSynthesisRef.current.paused) {
+    if (speechSynthesisRef.current?.paused) {
       speechSynthesisRef.current.resume();
       setIsPaused(false);
     }
@@ -152,16 +158,17 @@ const HeaderRead = ({ titulo, capitulo, id, contentChapter }) => {
             </div>
           </button>
         </div>
-        <Tooltip content={titulo}>
-          <div className="flex text-center items-center w-2/3 truncate">
-            <h1 className="mx-auto md:text-3xl text-colorPrimario text-center font-semibold text-lg truncate">
+
+        <div className="flex text-center items-center w-2/3 truncate">
+          <Tooltip content={titulo}>
+            <h1 className="mx-auto md:text-3xl text-colorPrimario text-center font-semibold text-lg truncate absolute left-0 right-0 max-w-32">
               {titulo}
             </h1>
-          </div>
-        </Tooltip>
+          </Tooltip>
+        </div>
 
-        <div className="flex justify-center items-center">
-          <div className="mb-2 px-2">
+        <div className="flex justify-center items-center ">
+          <div className="mb-2 px-2 max-w-60">
             <Tooltip content="Controlar Capitulo">
               <div className="flex gap-2">
                 <button
