@@ -81,6 +81,17 @@ const useBook = () => {
       })
     );
   };
+
+  const activateNotification = async (id) => {
+    return handleRequest(() =>
+      api.post(`${BOOK_ENDPOINT}/notificacion/${id}`, null, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+    );
+  };
+
+ 
+
   return {
     createBook,
     getAllBooks,
@@ -91,6 +102,7 @@ const useBook = () => {
     getCategory,
     error,
     isLoading,
+    activateNotification,
   };
 };
 

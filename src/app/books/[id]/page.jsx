@@ -27,6 +27,8 @@ import { Document, Page, StyleSheet, Text, pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import { convert } from "html-to-text";
 import { TbRating18Plus } from "react-icons/tb";
+import { FaBellSlash } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
 
 const styles = StyleSheet.create({
   page: {
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
 
 export default function BookDetails({ params }) {
   const { getReadBook } = useReadBooks();
-  const { getBookByID, isLoading, error } = useBook();
+  const { getBookByID, isLoading, error, activateNotification } = useBook();
   const {
     downloadBook,
     data: capitulos,
@@ -181,6 +183,10 @@ export default function BookDetails({ params }) {
   };
 
   useEffect(() => {
+    const fetchBook = async () => {
+      const result = await getBookByID(params.id);
+      setBook(result);
+    };
     fetchBook();
   }, [params.id]);
 
@@ -196,6 +202,35 @@ export default function BookDetails({ params }) {
     if (!isDownloading) return;
     generatePdf(book?.titulo, chapters);
   }, [isDownloading, capitulos]);
+
+  const [notificationEnabled, setNotificationEnabled] = useState(
+    book?.notificaciones
+  );
+
+  useEffect(() => {
+    // Establecer el estado de notificationEnabled con el valor de book.notificacion
+    if (book) {
+      setNotificationEnabled(book.notificacion);
+    }
+  }, [book]);
+
+  const toggleNotification = async () => {
+    try {
+      // Llamar a la función para activar o desactivar la notificación en el backend
+      await activateNotification(book.id, !notificationEnabled);
+      // Actualizar el estado de la notificación en el frontend
+      setNotificationEnabled((prev) => !prev);
+      // Mostrar un mensaje de éxito
+      toast.success(
+        `Notificación ${
+          notificationEnabled ? "desactivada" : "activada"
+        } correctamente`
+      );
+    } catch (error) {
+      console.error("Error toggling notification:", error);
+      toast.error("Hubo un error al cambiar la notificación");
+    }
+  };
 
   const downloadChapterContent = async (contenidoUrl) => {
     try {
@@ -355,9 +390,11 @@ export default function BookDetails({ params }) {
                         <span className="text-sm">Puntuación</span>
                       </div>
                       <span className="font-semibold">
-                        {addNumberFormat(
-                          Number(book?.puntuacion_media.toFixed(1))
-                        )}
+                        {book && book.puntuacion_media !== undefined
+                          ? addNumberFormat(
+                              Number(book.puntuacion_media.toFixed(1))
+                            )
+                          : ""}
                       </span>
                     </div>
                     <div className="flex flex-col items-center flex-grow pl-2">
@@ -369,6 +406,7 @@ export default function BookDetails({ params }) {
                         {book?.cantidad_capitulos_publicados ?? 0}
                       </span>
                     </div>
+                    {/* Botón para activar/desactivar notificaciones */}
                   </div>
                   <div className="flex flex-col gap-3 text-white text-xs">
                     <Link href={`/books/${params.id}/read`}>
@@ -416,15 +454,26 @@ export default function BookDetails({ params }) {
                 <span>
                   <PiWarningBold />
                 </span>
+
                 <span className="text-xs whitespace-nowrap  ">
                   Denunciar este libro
                 </span>
               </button>
-              <div className="absolute top-10 right-10">
+              <div className="absolute top-10 right-10 flex flex-col items-center">
                 <ReviewSelector
                   currentPoint={review?.puntuacion ?? 0}
                   onSelect={updateReview}
                 />
+                <button
+                  className="mt-4 h-8 w-24 rounded-md bg-gray-500 hover:bg-gray-600 dark:bg-dark-darkColorButtons text-lg flex justify-center items-center"
+                  onClick={toggleNotification}
+                >
+                  {notificationEnabled ? (
+                    <FaBellSlash size={32} />
+                  ) : (
+                    <FaBell size={32} />
+                  )}
+                </button>
               </div>
             </div>
           </section>
