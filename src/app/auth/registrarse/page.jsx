@@ -236,8 +236,32 @@ const Page = () => {
                 required={true}
                 className="bg-white"
               />
+
+              {/* Checkbox de términos y condiciones */}
+              <div className="flex items-center text-xs">
+                <input
+                  type="checkbox"
+                  {...register("acceptTerms", { required: true })}
+                  className="mr-2"
+                />
+                <span>
+                  He leído y acepto los{" "}
+                  <Link href="/about/privacy_policy" legacyBehavior>
+                    <a target="_blank" className="text-blue-500">
+                      términos y condiciones
+                    </a>
+                  </Link>
+                </span>
+              </div>
+              {errors.acceptTerms && (
+                <p className="px-3 text-red-500 text-2xs">
+                  *Debes aceptar los términos y condiciones
+                </p>
+              )}
             </div>
-          </div>
+
+            </div>
+          
           <div className={styles.content_button_submit}>
             <button
               type="submit"
