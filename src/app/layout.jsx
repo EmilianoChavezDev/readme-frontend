@@ -22,10 +22,15 @@ export default function RootLayout({ children }) {
         <ThemeProvider attribute="class" defaultTheme="system">
           <UserProvider>
             <ReadProvider>
-              <Toaster position="top-center" containerStyle={{ zIndex: 99999 }} />
+              <Toaster
+                position="top-center"
+                containerStyle={{ zIndex: 99999 }}
+              />
               <Layout />
-              {children}
-              <Footer/>
+              <div>
+                {children}
+              </div>
+              <Footer />
             </ReadProvider>
           </UserProvider>
         </ThemeProvider>
