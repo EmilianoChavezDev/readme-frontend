@@ -10,15 +10,15 @@ export default function RootLayout({ children }) {
   const [paths, setPaths] = useState([
     {
       path: "/about/privacy_policy",
-      name: "Politicas de Privacidad",
+      name: "Política de Privacidad",
       show: true,
     },
     {
       path: "/about/terms_of_service",
-      name: "Terminos de Servicio",
+      name: "Términos de Servicio",
       show: true,
     },
-    { path: "/about/tecnologies", name: "Tecnologias", show: true },
+    { path: "/about/tecnologies", name: "Tecnologías", show: true },
     {
       path: "/about/faq",
       name: "Preguntas Frecuentes",
