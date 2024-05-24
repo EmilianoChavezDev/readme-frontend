@@ -11,6 +11,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import InputField from "@/components/common/InputField";
 import { Error } from "@/components/common/Error";
 import PageTheme from "@/components/common/PageTheme";
+import Footer from "@/components/Footer";
 
 import Modal from "@/components/common/modal";
 import useUnbanAccount from "@/hooks/useUnbanAccount";
@@ -24,17 +25,21 @@ const Page = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { data, error, loading, errorResponse, login } = useAuth();
   const { login: saveUser } = useUser();
-  const { request_Unban, isLoading: unbanLoading, error: unbanError } = useUnbanAccount();
+  const {
+    request_Unban,
+    isLoading: unbanLoading,
+    error: unbanError,
+  } = useUnbanAccount();
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-    reset
+    reset,
   } = useForm({ defaultValues });
   const emailValue = watch("email");
-  
+
   const [showModal, setShowModal] = useState(false);
   const [justificacion, setJustificacion] = useState("");
 
@@ -49,7 +54,7 @@ const Page = () => {
 
   useEffect(() => {
     if (!errorResponse) return;
-    if(errorResponse.error === "Usuario baneado") {
+    if (errorResponse.error === "Usuario baneado") {
       setShowModal(true);
     }
   }, [errorResponse]);
@@ -60,12 +65,11 @@ const Page = () => {
 
   const handleUnbanRequest = async () => {
     const res = await request_Unban(emailValue, justificacion);
-    if(res) {
+    if (res) {
       reset(defaultValues); // Reset form fields
       setShowModal(false); // Close modal
     }
   };
-
 
   return (
     <PageTheme>
@@ -170,7 +174,10 @@ const Page = () => {
         isLoading={unbanLoading}
       >
         <div className="flex flex-col gap-3">
-          <p>Tu cuenta está actualmente baneada. Puedes solicitar un desbaneo ingresando una justificación:</p>
+          <p>
+            Tu cuenta está actualmente baneada. Puedes solicitar un desbaneo
+            ingresando una justificación:
+          </p>
           <textarea
             className="border rounded-lg p-3 text-gray-900 border-gray-400 outline-none"
             value={justificacion}

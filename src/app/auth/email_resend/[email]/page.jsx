@@ -5,9 +5,10 @@ import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import styles from "@/app/auth/login/styles/Inicio.module.css"
+import styles from "@/app/auth/login/styles/Inicio.module.css";
 
 import { AiTwotoneMail } from "react-icons/ai";
+import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
   email: "",
@@ -50,7 +51,7 @@ const EmailResend = ({ params }) => {
   };
 
   return (
-    <div>
+    <PageTheme>
       <div>
         <Image
           src="/image/img_inicio.png"
@@ -60,17 +61,17 @@ const EmailResend = ({ params }) => {
         />
       </div>
       <div>
-      {errorResponse?.error && (
-            <Error>
-              <p>{errorResponse.error}</p>
-            </Error>
-          )}
+        {errorResponse?.error && (
+          <Error>
+            <p>{errorResponse.error}</p>
+          </Error>
+        )}
 
-          {success2Response.length >= 1 && (
-            <Success2>
-              <p>{success2Response}</p>
-            </Success2>
-          )}
+        {success2Response.length >= 1 && (
+          <Success2>
+            <p>{success2Response}</p>
+          </Success2>
+        )}
         <div className={styles.content_detalle}>
           <div className={styles.content_logo}>
             <Image
@@ -81,7 +82,6 @@ const EmailResend = ({ params }) => {
             />
           </div>
 
-          
           <div className="text-center font-bold text-xl text-gray-700 pt-4">
             <p>Confirma tu dirección de correo electrónico.</p>
           </div>
@@ -116,7 +116,7 @@ const EmailResend = ({ params }) => {
           </div>
         </div>
       </div>
-    </div>
+    </PageTheme>
   );
 };
 
