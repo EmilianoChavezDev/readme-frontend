@@ -49,12 +49,6 @@ const styles = StyleSheet.create({
 export default function BookDetails({ params }) {
   const { getReadBook } = useReadBooks();
   const { getBookByID, isLoading, error, activateNotification } = useBook();
-  const {
-    downloadBook,
-    data: capitulos,
-    getContentChapter,
-    contentChapter,
-  } = useReadBooks();
   const { createOrUpdateReview, getReviewByUserAndBook, deleteReview } =
     useReview();
   const { getFavoriteByUserAndBook, createFavorite, updateFavorite } =
@@ -183,10 +177,6 @@ export default function BookDetails({ params }) {
   };
 
   useEffect(() => {
-    const fetchBook = async () => {
-      const result = await getBookByID(params.id);
-      setBook(result);
-    };
     fetchBook();
   }, [params.id]);
 
@@ -197,11 +187,6 @@ export default function BookDetails({ params }) {
       getCurrentReadBook();
     }
   }, [book?.id]);
-
-  useEffect(() => {
-    if (!isDownloading) return;
-    generatePdf(book?.titulo, chapters);
-  }, [isDownloading, capitulos]);
 
   const [notificationEnabled, setNotificationEnabled] = useState(
     book?.notificaciones
@@ -230,6 +215,12 @@ export default function BookDetails({ params }) {
       console.error("Error toggling notification:", error);
       toast.error("Hubo un error al cambiar la notificación");
     }
+  };
+
+  const handleDownloadBook = async () => {
+    setIsDownloading(true);
+    await generatePdf(book?.titulo, chapters);
+    setIsDownloading(false);
   };
 
   const downloadChapterContent = async (contenidoUrl) => {
@@ -265,11 +256,6 @@ export default function BookDetails({ params }) {
 
     const pdfBlob = await pdf(doc).toBlob();
     saveAs(pdfBlob, `${bookTitle}.pdf`);
-    setIsDownloading(false);
-  };
-
-  const handleDownloadBook = async () => {
-    setIsDownloading(true);
   };
 
   return (
@@ -432,7 +418,8 @@ export default function BookDetails({ params }) {
                     </button>
                     <button
                       className="h-9 rounded-md bg-gray-500 hover:brightness-90 dark:bg-dark-darkColorButtons"
-                      onClick={() => handleDownloadBook()}
+                      onClick={handleDownloadBook}
+                      disabled={isDownloading}
                     >
                       Descargar
                     </button>
