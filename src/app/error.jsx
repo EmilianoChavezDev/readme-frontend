@@ -22,7 +22,6 @@ const ErrorPage = ({ error }) => {
         height={300}
       />
       <h1 className="text-4xl font-bold mb-4">Oops! Ha ocurrido un problema</h1>
-      <p className="text-lg mb-4">{error.message}</p>
       <p className="text-lg mb-8">
         Por favor, busca ayuda si el problema persiste.
       </p>

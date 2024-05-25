@@ -21,7 +21,7 @@ const Footer = () => {
             <div className="flex flex-wrap justify-between items-center">
               <div className="w-full md:w-auto ">
                 <p className="text-lg font-semibold mb-1">
-                  readmeapp@gmail.com
+                  readmeapp.social@gmail.com
                 </p>
               </div>
               <div className="w-full md:w-auto md:border-l-2 md:border-gray-500 md:pl-7">
