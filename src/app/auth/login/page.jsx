@@ -11,6 +11,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import InputField from "@/components/common/InputField";
 import { Error } from "@/components/common/Error";
 import PageTheme from "@/components/common/PageTheme";
+import Footer from "@/components/Footer";
 
 import Modal from "@/components/common/modal";
 import useUnbanAccount from "@/hooks/useUnbanAccount";

@@ -6,6 +6,7 @@ import UserProvider from "@/contexts/UserProvider";
 import ReadProvider from "@/contexts/ReadProvider";
 import { ThemeProvider } from "next-themes";
 import Layout from "@/components/common/Layout";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,10 @@ export default function RootLayout({ children }) {
                 containerStyle={{ zIndex: 99999 }}
               />
               <Layout />
-              {children}
+              <div>
+                {children}
+              </div>
+              <Footer />
             </ReadProvider>
           </UserProvider>
         </ThemeProvider>

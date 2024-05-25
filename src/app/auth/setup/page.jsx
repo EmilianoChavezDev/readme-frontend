@@ -13,6 +13,7 @@ import { Tooltip } from "@material-tailwind/react";
 import { HiXMark } from "react-icons/hi2";
 import { SlPicture } from "react-icons/sl";
 import { TbCameraPlus } from "react-icons/tb";
+import PageTheme from "@/components/common/PageTheme";
 
 const defaultValues = {
   direccion: "",
@@ -144,7 +145,7 @@ export default function SetUp() {
   };
 
   return (
-    <>
+    <PageTheme>
       {page === 1 && (
         <>
           <div>
@@ -514,6 +515,6 @@ export default function SetUp() {
           </div>
         </>
       )}
-    </>
+    </PageTheme>
   );
 }
