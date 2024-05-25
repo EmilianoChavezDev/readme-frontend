@@ -15,7 +15,7 @@ const Footer = () => {
   return (
     <div className="absolute bottom-0 left-0 w-full">
       {shouldRenderFooter && (
-        <footer className="bg-[#E9ECEF] text-gray-800 py-3">
+        <footer className="bg-[#E9ECEF] text-gray-800 py-3 dark:bg-dark-darkColorNavBar">
           <div className="container mx-auto">
             {/* Parte Superior */}
             <div className="flex flex-wrap justify-between items-center">
@@ -69,7 +69,7 @@ const Footer = () => {
             </div>
 
             {/* Parte Inferior */}
-            <div className="bg-[#E9ECEF] text-center mt-3 flex flex-col md:flex-row justify-between items-center">
+            <div className="bg-[#E9ECEF] text-center mt-3 flex flex-col md:flex-row justify-between items-center dark:bg-dark-darkColorNavBar">
               <p className="mb-2 md:mb-0">
                 &copy; 2024 Readme. Todos los derechos reservados pertenecen a
                 sus respectivos dueños.
