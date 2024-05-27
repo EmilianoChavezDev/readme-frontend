@@ -193,7 +193,6 @@ export default function BookDetails({ params }) {
   );
 
   useEffect(() => {
-    // Establecer el estado de notificationEnabled con el valor de book.notificacion
     if (book) {
       setNotificationEnabled(book.notificacion);
     }
@@ -201,11 +200,8 @@ export default function BookDetails({ params }) {
 
   const toggleNotification = async () => {
     try {
-      // Llamar a la función para activar o desactivar la notificación en el backend
       await activateNotification(book.id, !notificationEnabled);
-      // Actualizar el estado de la notificación en el frontend
       setNotificationEnabled((prev) => !prev);
-      // Mostrar un mensaje de éxito
       toast.success(
         `Notificación ${
           notificationEnabled ? "desactivada" : "activada"
@@ -451,16 +447,24 @@ export default function BookDetails({ params }) {
                   currentPoint={review?.puntuacion ?? 0}
                   onSelect={updateReview}
                 />
-                <button
-                  className="mt-4 h-8 w-24 rounded-md bg-gray-500 hover:bg-gray-600 dark:bg-dark-darkColorButtons text-lg flex justify-center items-center"
-                  onClick={toggleNotification}
+                <Tooltip
+                  content={
+                    notificationEnabled
+                      ? "Desactivar notificación"
+                      : "Activar notificación"
+                  }
                 >
-                  {notificationEnabled ? (
-                    <FaBellSlash size={32} />
-                  ) : (
-                    <FaBell size={32} />
-                  )}
-                </button>
+                  <button
+                    className="mt-4 h-8 w-8 flex justify-center items-center bg-transparent border-none outline-none"
+                    onClick={toggleNotification}
+                  >
+                    {notificationEnabled ? (
+                      <FaBellSlash size={32} className="text-black-500" />
+                    ) : (
+                      <FaBell size={32} className="text-green-500" />
+                    )}
+                  </button>
+                </Tooltip>
               </div>
             </div>
           </section>
