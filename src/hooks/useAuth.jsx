@@ -24,11 +24,14 @@ const useAuth = () => {
       }
 
       const data = await response.data;
+
       setData(data);
       setError(false);
       setErrorResponse([]);
+      return data;
     } catch (error) {
       setError(true);
+
       if (error.response) {
         setErrorResponse(error.response.data);
       } else {
@@ -36,6 +39,7 @@ const useAuth = () => {
         console.error("No hay respuesta de error definida");
       }
       setLoading(false);
+      return error.response.data;
     } finally {
       setLoading(false);
     }

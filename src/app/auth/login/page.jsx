@@ -13,6 +13,7 @@ import { Error } from "@/components/common/Error";
 import PageTheme from "@/components/common/PageTheme";
 import Modal from "@/components/common/modal";
 import useUnbanAccount from "@/hooks/useUnbanAccount";
+import toast from "react-hot-toast";
 
 const defaultValues = {
   email: "",
@@ -44,7 +45,7 @@ const Page = () => {
   const [unbanRequested, setUnbanRequested] = useState(false);
 
   const onSubmit = async (formData) => {
-    login(formData);
+    const res = await login(formData);
   };
 
   useEffect(() => {
@@ -54,6 +55,10 @@ const Page = () => {
 
   useEffect(() => {
     if (!errorResponse) return;
+    if (errorResponse.estado === "solicitado") {
+      setShowConfirmationModal(true);
+      return;
+    }
     if (errorResponse.error === "Usuario baneado") {
       setShowModal(true);
     }
@@ -65,11 +70,14 @@ const Page = () => {
   const [showConfirmationMessage, setShowConfirmationMessage] = useState(false);
   const handleUnbanRequest = async () => {
     const res = await request_Unban(emailValue, justificacion);
-    if (res) {
+
+    if (res.error) {
       setUnbanRequested(true);
       reset(defaultValues);
       setShowConfirmationMessage(true); // Mostrar mensaje de confirmación
+      return;
     }
+    toast.success("Solicitud enviada");
   };
 
   return (
@@ -171,7 +179,7 @@ const Page = () => {
         open={showModal}
         onHide={() => setShowModal(false)}
         title="Solicitar Desbaneo"
-        disableSubmit={!justificacion && !unbanRequested}
+        disableSubmit={!justificacion}
         onSave={() => {
           handleUnbanRequest();
           setShowModal(false); // Cerrar modal al guardar la solicitud
@@ -179,22 +187,19 @@ const Page = () => {
         isLoading={unbanLoading}
       >
         <div className="flex flex-col gap-3">
-          {unbanRequested ? (
-            <p>Ya has enviado tu solicitud de desbaneo.</p>
-          ) : (
-            <>
-              <p>
-                Tu cuenta está actualmente baneada. Puedes solicitar un desbaneo
-                ingresando una justificación:
-              </p>
-              <textarea
-                className="border rounded-lg p-3 text-gray-900 border-gray-400 outline-none"
-                value={justificacion}
-                onChange={(event) => setJustificacion(event.target.value)}
-                rows={3}
-              />
-            </>
-          )}
+          <>
+            <p>
+              Tu cuenta está actualmente baneada. Puedes solicitar un desbaneo
+              ingresando una justificación:
+            </p>
+
+            <textarea
+              className="border rounded-lg p-3 text-gray-900 border-gray-400 outline-none"
+              value={justificacion}
+              onChange={(event) => setJustificacion(event.target.value)}
+              rows={3}
+            />
+          </>
         </div>
       </Modal>
 
@@ -203,8 +208,6 @@ const Page = () => {
         open={showConfirmationModal}
         onHide={() => setShowConfirmationModal(false)}
         title="Solicitud Enviada"
-        disableSubmit={true}
-        hideCancelButton={true}
         onSave={() => setShowConfirmationModal(false)}
       >
         <div className="flex flex-col gap-3">
