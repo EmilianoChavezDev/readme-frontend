@@ -11,8 +11,6 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import InputField from "@/components/common/InputField";
 import { Error } from "@/components/common/Error";
 import PageTheme from "@/components/common/PageTheme";
-import Footer from "@/components/Footer";
-
 import Modal from "@/components/common/modal";
 import useUnbanAccount from "@/hooks/useUnbanAccount";
 
@@ -41,7 +39,9 @@ const Page = () => {
   const emailValue = watch("email");
 
   const [showModal, setShowModal] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [justificacion, setJustificacion] = useState("");
+  const [unbanRequested, setUnbanRequested] = useState(false);
 
   const onSubmit = async (formData) => {
     login(formData);
@@ -62,12 +62,13 @@ const Page = () => {
   const handleBlur = () => {
     setIsFocused(false);
   };
-
+  const [showConfirmationMessage, setShowConfirmationMessage] = useState(false);
   const handleUnbanRequest = async () => {
     const res = await request_Unban(emailValue, justificacion);
     if (res) {
-      reset(defaultValues); // Reset form fields
-      setShowModal(false); // Close modal
+      setUnbanRequested(true);
+      reset(defaultValues);
+      setShowConfirmationMessage(true); // Mostrar mensaje de confirmación
     }
   };
 
@@ -129,6 +130,7 @@ const Page = () => {
               />
 
               <button
+                type="button"
                 className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
                 onClick={() => setShowPassword(!showPassword)}
               >
@@ -169,21 +171,47 @@ const Page = () => {
         open={showModal}
         onHide={() => setShowModal(false)}
         title="Solicitar Desbaneo"
-        disableSubmit={!justificacion}
-        onSave={handleUnbanRequest}
+        disableSubmit={!justificacion && !unbanRequested}
+        onSave={() => {
+          handleUnbanRequest();
+          setShowModal(false); // Cerrar modal al guardar la solicitud
+        }}
         isLoading={unbanLoading}
       >
         <div className="flex flex-col gap-3">
+          {unbanRequested ? (
+            <p>Ya has enviado tu solicitud de desbaneo.</p>
+          ) : (
+            <>
+              <p>
+                Tu cuenta está actualmente baneada. Puedes solicitar un desbaneo
+                ingresando una justificación:
+              </p>
+              <textarea
+                className="border rounded-lg p-3 text-gray-900 border-gray-400 outline-none"
+                value={justificacion}
+                onChange={(event) => setJustificacion(event.target.value)}
+                rows={3}
+              />
+            </>
+          )}
+        </div>
+      </Modal>
+
+      {/* Confirmation Modal */}
+      <Modal
+        open={showConfirmationModal}
+        onHide={() => setShowConfirmationModal(false)}
+        title="Solicitud Enviada"
+        disableSubmit={true}
+        hideCancelButton={true}
+        onSave={() => setShowConfirmationModal(false)}
+      >
+        <div className="flex flex-col gap-3">
           <p>
-            Tu cuenta está actualmente baneada. Puedes solicitar un desbaneo
-            ingresando una justificación:
+            Ya has enviado tu solicitud de desbaneo. Te notificaremos una vez
+            que tu solicitud sea revisada.
           </p>
-          <textarea
-            className="border rounded-lg p-3 text-gray-900 border-gray-400 outline-none"
-            value={justificacion}
-            onChange={(event) => setJustificacion(event.target.value)}
-            rows={3}
-          />
         </div>
       </Modal>
     </PageTheme>

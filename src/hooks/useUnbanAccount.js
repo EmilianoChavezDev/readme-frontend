@@ -1,5 +1,3 @@
-"use client";
-
 import axios from "axios";
 import { useState } from "react";
 
@@ -29,7 +27,7 @@ const useUnbanAccount = () => {
     return handleRequest(() =>
       api.get(UNBAN_ACCOUNT_ENDPOINT, {
         params,
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: { Authorization: `Bearer ${typeof window !== 'undefined' && localStorage.getItem("token")}` },
       })
     );
   };
@@ -40,7 +38,7 @@ const useUnbanAccount = () => {
         `${UNBAN_ACCOUNT_ENDPOINT}/aceptar/${id}`,
         {},
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Bearer ${typeof window !== 'undefined' && localStorage.getItem("token")}` },
         }
       )
     );
@@ -52,7 +50,7 @@ const useUnbanAccount = () => {
         `${UNBAN_ACCOUNT_ENDPOINT}/rechazar/${id}`,
         {},
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Bearer ${typeof window !== 'undefined' && localStorage.getItem("token")}` },
         }
       )
     );
@@ -64,7 +62,7 @@ const useUnbanAccount = () => {
         UNBAN_ACCOUNT_ENDPOINT,
         { email, justificacion },
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: { Authorization: `Bearer ${typeof window !== 'undefined' && localStorage.getItem("token")}` },
         }
       )
     );
