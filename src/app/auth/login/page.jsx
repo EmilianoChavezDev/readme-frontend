@@ -27,6 +27,7 @@ const Page = () => {
   const {
     request_Unban,
     isLoading: unbanLoading,
+    //1
     error: unbanError,
   } = useUnbanAccount();
 
@@ -40,12 +41,15 @@ const Page = () => {
   const emailValue = watch("email");
 
   const [showModal, setShowModal] = useState(false);
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [justificacion, setJustificacion] = useState("");
-  const [unbanRequested, setUnbanRequested] = useState(false);
-
+ // 2
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [setUnbanRequested] = useState(false);
+  
   const onSubmit = async (formData) => {
-    const res = await login(formData);
+    // login(formData);
+    //3
+    login(formData);
   };
 
   useEffect(() => {
@@ -53,6 +57,13 @@ const Page = () => {
     saveUser(data);
   }, [data]);
 
+  // useEffect(() => {
+  //   if (!errorResponse) return;
+  //   if (errorResponse.error === "Usuario baneado") {
+  //     setShowModal(true);
+  //   }
+  // }, [errorResponse]);
+  //4
   useEffect(() => {
     if (!errorResponse) return;
     if (errorResponse.estado === "solicitado") {
@@ -67,7 +78,16 @@ const Page = () => {
   const handleBlur = () => {
     setIsFocused(false);
   };
+  //4
   const [showConfirmationMessage, setShowConfirmationMessage] = useState(false);
+  // const handleUnbanRequest = async () => {
+  //   const res = await request_Unban(emailValue, justificacion);
+  //   if (res) {
+  //     reset(defaultValues); // Reset form fields
+  //     setShowModal(false); // Close modal
+  //   }
+  // };
+  //5
   const handleUnbanRequest = async () => {
     const res = await request_Unban(emailValue, justificacion);
 
@@ -138,7 +158,6 @@ const Page = () => {
               />
 
               <button
-                type="button"
                 className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
                 onClick={() => setShowPassword(!showPassword)}
               >
