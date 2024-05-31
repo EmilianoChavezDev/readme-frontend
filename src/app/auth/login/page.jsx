@@ -11,9 +11,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import InputField from "@/components/common/InputField";
 import { Error } from "@/components/common/Error";
 import PageTheme from "@/components/common/PageTheme";
-
 import Modal from "@/components/common/modal";
 import useUnbanAccount from "@/hooks/useUnbanAccount";
+import toast from "react-hot-toast";
 
 const defaultValues = {
   email: "",
@@ -27,6 +27,7 @@ const Page = () => {
   const {
     request_Unban,
     isLoading: unbanLoading,
+    //1
     error: unbanError,
   } = useUnbanAccount();
 
@@ -41,8 +42,13 @@ const Page = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [justificacion, setJustificacion] = useState("");
-
+ // 2
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [setUnbanRequested] = useState(false);
+  
   const onSubmit = async (formData) => {
+    // login(formData);
+    //3
     login(formData);
   };
 
@@ -51,8 +57,19 @@ const Page = () => {
     saveUser(data);
   }, [data]);
 
+  // useEffect(() => {
+  //   if (!errorResponse) return;
+  //   if (errorResponse.error === "Usuario baneado") {
+  //     setShowModal(true);
+  //   }
+  // }, [errorResponse]);
+  //4
   useEffect(() => {
     if (!errorResponse) return;
+    if (errorResponse.estado === "solicitado") {
+      setShowConfirmationModal(true);
+      return;
+    }
     if (errorResponse.error === "Usuario baneado") {
       setShowModal(true);
     }
@@ -61,13 +78,26 @@ const Page = () => {
   const handleBlur = () => {
     setIsFocused(false);
   };
-
+  //4
+  const [showConfirmationMessage, setShowConfirmationMessage] = useState(false);
+  // const handleUnbanRequest = async () => {
+  //   const res = await request_Unban(emailValue, justificacion);
+  //   if (res) {
+  //     reset(defaultValues); // Reset form fields
+  //     setShowModal(false); // Close modal
+  //   }
+  // };
+  //5
   const handleUnbanRequest = async () => {
     const res = await request_Unban(emailValue, justificacion);
-    if (res) {
-      reset(defaultValues); // Reset form fields
-      setShowModal(false); // Close modal
+
+    if (res.error) {
+      setUnbanRequested(true);
+      reset(defaultValues);
+      setShowConfirmationMessage(true); // Mostrar mensaje de confirmación
+      return;
     }
+    toast.success("Solicitud enviada");
   };
 
   return (
@@ -169,20 +199,41 @@ const Page = () => {
         onHide={() => setShowModal(false)}
         title="Solicitar Desbaneo"
         disableSubmit={!justificacion}
-        onSave={handleUnbanRequest}
+        onSave={() => {
+          handleUnbanRequest();
+          setShowModal(false); // Cerrar modal al guardar la solicitud
+        }}
         isLoading={unbanLoading}
       >
         <div className="flex flex-col gap-3">
+          <>
+            <p>
+              Tu cuenta está actualmente baneada. Puedes solicitar un desbaneo
+              ingresando una justificación:
+            </p>
+
+            <textarea
+              className="border rounded-lg p-3 text-gray-900 border-gray-400 outline-none"
+              value={justificacion}
+              onChange={(event) => setJustificacion(event.target.value)}
+              rows={3}
+            />
+          </>
+        </div>
+      </Modal>
+
+      {/* Confirmation Modal */}
+      <Modal
+        open={showConfirmationModal}
+        onHide={() => setShowConfirmationModal(false)}
+        title="Solicitud Enviada"
+        onSave={() => setShowConfirmationModal(false)}
+      >
+        <div className="flex flex-col gap-3">
           <p>
-            Tu cuenta está actualmente baneada. Puedes solicitar un desbaneo
-            ingresando una justificación:
+            Ya has enviado tu solicitud de desbaneo. Te notificaremos una vez
+            que tu solicitud sea revisada.
           </p>
-          <textarea
-            className="border rounded-lg p-3 text-gray-900 border-gray-400 outline-none"
-            value={justificacion}
-            onChange={(event) => setJustificacion(event.target.value)}
-            rows={3}
-          />
         </div>
       </Modal>
     </PageTheme>

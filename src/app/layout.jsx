@@ -6,6 +6,7 @@ import UserProvider from "@/contexts/UserProvider";
 import ReadProvider from "@/contexts/ReadProvider";
 import { ThemeProvider } from "next-themes";
 import Layout from "@/components/common/Layout";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +19,18 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system">
+        <ThemeProvider attribute="class" defaultTheme="light">
           <UserProvider>
             <ReadProvider>
-              <Toaster position="top-center" containerStyle={{ zIndex: 99999 }} />
+              <Toaster
+                position="top-center"
+                containerStyle={{ zIndex: 99999 }}
+              />
               <Layout />
-              {children}
+              <div>
+                {children}
+              </div>
+              <Footer />
             </ReadProvider>
           </UserProvider>
         </ThemeProvider>
